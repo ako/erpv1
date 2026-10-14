@@ -1,26 +1,27 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-14 21:01:59",
-  "overallScore": 95.9,
+  "date": "2026-10-14 21:22:11",
+  "overallScore": 53.8,
   "summary": {
-    "total": 14,
+    "total": 347,
     "errors": 0,
-    "warnings": 3,
-    "infos": 11
+    "warnings": 124,
+    "infos": 223
   },
   "categories": [
     {
       "name": "Security",
-      "score": 89,
-      "total": 7,
+      "score": 0,
+      "total": 229,
       "errors": 0,
-      "warnings": 2,
-      "infos": 5,
+      "warnings": 41,
+      "infos": 188,
       "topActions": [
+        "Add an XPath constraint to limit which rows 'Core.Admin' can READ on 'Company'",
+        "Remove the CREATE and DELETE rights and implement a microflow (ACT_) with security checks",
         "Review the user role assignments for 'Core.User' and ensure a 1:1 mapping",
-        "Add an XPath constraint to limit which rows 'Partners.Editor' can READ on 'Partner'",
-        "ALTER APP SECURITY ( EnableDemoUsers: FALSE )",
-        "Add XPath constraints to scope access to the current user's own data, e.g. [Sales.Order_Customer/Sales.Customer/id = '[%CurrentUser%]']"
+        "Add XPath constraints to scope access to the current user's own data, e.g. [Sales.Order_Customer/Sales.Customer/id = '[%CurrentUser%]']",
+        "ALTER APP SECURITY ( EnableDemoUsers: FALSE )"
       ]
     },
     {
@@ -38,13 +39,14 @@
     },
     {
       "name": "Architecture",
-      "score": 97,
-      "total": 1,
+      "score": 0,
+      "total": 75,
       "errors": 0,
-      "warnings": 1,
+      "warnings": 75,
       "infos": 0,
       "topActions": [
-        "Add an attribute like 'PartnerCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE"
+        "Add an attribute like 'CompanyCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE",
+        "Create microflows (e.g., ACT_SaveCompany, VAL_Company) to handle create/update operations with proper validation."
       ]
     },
     {
@@ -58,23 +60,27 @@
     },
     {
       "name": "Naming",
-      "score": 99,
-      "total": 1,
+      "score": 70,
+      "total": 30,
       "errors": 0,
       "warnings": 0,
-      "infos": 1,
+      "infos": 30,
       "topActions": [
+        "Rename to 'IsPOApprovalEnabled' or another appropriate prefix (Has, Can, Should, Was, Will)",
+        "Remove the default value and set it in a Before Create (BCR_) microflow for 'Company'",
         "Rename the page to include a suffix indicating its purpose, e.g., 'Home_Web_Overview'"
       ]
     },
     {
       "name": "Design",
-      "score": 100,
-      "total": 0,
+      "score": 76,
+      "total": 8,
       "errors": 0,
-      "warnings": 0,
+      "warnings": 8,
       "infos": 0,
-      "topActions": null
+      "topActions": [
+        "Extract related attributes into separate entities with associations, or use entity generalization."
+      ]
     },
     {
       "name": "Other",

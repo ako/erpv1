@@ -1,0 +1,6 @@
+mdl 1;
+-- One-off: remove the mxcli-new scaffold's generic user role and its demo users; the 9 roles of
+-- 1-domain/100-security-roles.mdl and the demo users of 190 replace them. MxAdmin untouched.
+drop demo user if exists 'demo_user';
+drop demo user if exists 'demo_administrator';
+drop user role if exists User;

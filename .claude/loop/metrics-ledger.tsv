@@ -12,3 +12,19 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-14T20:58:40Z	00-skeleton.mdl	pass	applied-lint-rose	55	0	1	14	0	95.9	89	96	97	100	99	100	99	14	88bc957
 2026-10-14T21:01:01Z	000-scaffold.mdl	pass	applied-lint-rose	54	0	1	14	0	95.9	89	96	97	100	99	100	99	14	af71af9
 2026-10-14T21:01:59Z	00-skeleton.mdl	pass	applied-lint-rose	57	0	1	14	0	95.9	89	96	97	100	99	100	99	14	69e8efd
+2026-10-14T21:07:02Z	100-security-roles.mdl	pass	applied-lint-rose	63	0	1	25	0	93.1	78	96	97	100	99	100	99	25	b3a6986
+2026-10-14T21:08:13Z	110-core-domain.mdl	pass	applied-lint-rose	64	0	1	92	0	70.8	19	95	55	100	91	97	99	92	f72dc9d
+2026-10-14T21:09:16Z	120-products-domain.mdl	pass	applied-lint-rose	61	0	1	148	0	57.5	0	92	7	100	87	94	99	148	36d6e63
+2026-10-14T21:10:38Z	110-core-domain.mdl	pass	applied-lint-rose	60	0	1	147	0	57.7	0	93	7	100	87	94	99	147	679510c
+2026-10-14T21:11:39Z	120-products-domain.mdl	pass	applied-lint-rose	59	0	1	144	0	58.3	0	96	7	100	87	94	99	144	39f61cc
+2026-10-14T21:12:40Z	130-partners-domain.mdl	pass	applied-lint-rose	58	0	1	176	0	56.7	0	96	0	100	84	91	99	176	809ce57
+2026-10-14T21:13:44Z	140-sales-domain.mdl	fail	gate-failed	63	?			1										cfa8e16
+2026-10-14T21:15:20Z	150-purchasing-domain.mdl	pass	applied-lint-rose	94	0	1	203	0	56	0	96	0	100	83	85	99	203	cfa8e16
+2026-10-14T21:15:23Z	160-inventory-domain.mdl	not-run	blocked	1	?			0										320c35f
+2026-10-14T21:15:25Z	170-invoicing-domain.mdl	not-run	blocked	1	?			0										320c35f
+2026-10-14T21:16:41Z	140-sales-domain.mdl	pass	applied-lint-rose	63	0	1	245	0	55	0	96	0	100	79	79	99	245	320c35f
+2026-10-14T21:17:46Z	160-inventory-domain.mdl	pass	applied-lint-rose	64	0	1	310	0	54.1	0	96	0	100	70	79	99	310	4e6f103
+2026-10-14T21:18:54Z	170-invoicing-domain.mdl	pass	applied-lint-rose	67	0	1	347	0	53.8	0	96	0	100	70	76	99	347	db0eae1
+2026-10-14T21:20:01Z	2026-10-14-drop-scaffold-user-role.mdl	pass	applied-lint-rose	55	0	1	347	0	53.8	0	96	0	100	70	76	99	347	cefcc69
+2026-10-14T21:20:57Z	190-security-demo-users.mdl	pass	applied-lint-rose	55	0	1	347	0	53.8	0	96	0	100	70	76	99	347	7e8c61c
+2026-10-14T21:22:11Z	140-sales-domain.mdl	pass	applied-lint-rose	58	0	1	347	0	53.8	0	96	0	100	70	76	99	347	e9e9e5a

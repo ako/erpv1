@@ -1,18 +1,23 @@
 {
-  "timestamp": "2026-10-14T21:01:53Z",
+  "timestamp": "2026-10-14T21:22:04Z",
   "verdict": "FAIL",
-  "total": 14,
-  "rule_count": 10,
+  "total": 347,
+  "rule_count": 15,
   "counts": {
-    "ARCH003": 1,
+    "ARCH002": 37,
+    "ARCH003": 38,
+    "CONV001": 26,
+    "CONV002": 3,
     "CONV003": 1,
-    "CONV007": 2,
-    "CONV008": 3,
+    "CONV006": 38,
+    "CONV007": 174,
+    "CONV008": 14,
     "CONV019": 1,
     "CUSTOM002": 1,
+    "DESIGN001": 8,
     "QUAL002": 2,
     "QUAL004": 1,
     "SEC003": 1,
-    "SEC008": 1
+    "SEC008": 2
   }
 }
