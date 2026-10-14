@@ -5,7 +5,7 @@ Every gate decision lands here as `CONFIRMED` or `ASSUMED`, never silently decid
 
 ## Current stage
 
-**Stage 4 — Build Plan**, in progress — gates passed: P, 0, 1, 2, 3 (derived by gate-check on 2026-10-14; re-run it rather than editing this line).
+**Stage 5 — Build**, in progress (manual gate: its verdict is a Decisions row, not a file) — gates passed: P, 0, 1, 2, 3, 4 · manual: 5 (derived by gate-check on 2026-10-14; re-run it rather than editing this line).
 
 Toolkit commit: d16f578
 Interview mode: assist
@@ -63,7 +63,16 @@ Opt-in artifact erd: user asked for the target-domain ERD at Stage 2 close (chat
 | 3 | Odoo mixins (`_inherit` with new `_name`, e.g. `mail.thread`): no multiple inheritance in Mendix; at most one shared generalization (e.g. `Core.BusinessDocument`), otherwise associations; chatter out of scope | CONFIRMED | User 2026-10-14 (Stage 3 sign-off, \"all as proposed\") |
 | 3 | Odoo delegation (`_inherits`): always an **association**, never a Mendix generalization (e.g. product.product → product.template is 1–n; res.users → res.partner can be created later) | CONFIRMED | User 2026-10-14 (Stage 3 sign-off, \"all as proposed\") |
 | 3 | Mendix generalization only for true, fixed-at-creation is-a (e.g. account → `System.User`, attachments → `System.FileDocument`) | CONFIRMED | User 2026-10-14 (Stage 3 sign-off, \"all as proposed\") |
-| 4 | Model location: two-tree layout, app at `app/erpv1.mpr` (`mxcli new --output-dir app`), repo tooling at the root; CLAUDE.local.md Wiring updated; 6 dev-process agents completed (build-ready PASS) | ASSUMED | Agent, Stage 4 2026-10-14 — the layout bin/_common.sh find_mpr() probes; confirm with the plan |
+| 4 | Model location: two-tree layout, app at `app/erpv1.mpr` (`mxcli new --output-dir app`), repo tooling at the root; CLAUDE.local.md Wiring updated; 6 dev-process agents completed (build-ready PASS) | CONFIRMED | User 2026-10-14: "all as proposed" (PD question 7) |
+| 4 | PD-1 Acceptance criteria per module: verify-module.sh no FAULT · every use case walked as its demo user with data effect asserted by OQL · unit tests pass · every page LOOKed at 1280/390 px vs its wireframe · coverage ledger clean | CONFIRMED | User 2026-10-14: "all as proposed" |
+| 4 | PD-2 Environment: local only (`mxcli run --local`, `--hub` preview URL for the demo); no Mendix Cloud, no DTAP | CONFIRMED | User 2026-10-14: "all as proposed" |
+| 4 | PD-3 StyleGallery UI module: No — ledger theme recipe classes + design/design-system.html are the reference | CONFIRMED | User 2026-10-14: "all as proposed" |
+| 4 | PD-4 Generation strategy: phase-by-phase in dependency order (draft + exec + verify a phase before the next); security in layer 1, grants co-located in every script | CONFIRMED | User 2026-10-14: "all as proposed" |
+| 4 | PD-5 Priority: none — pure dependency order Core → … → Invoicing | CONFIRMED | User 2026-10-14: "all as proposed" |
+| 4 | PD-6 Demo script: yes, written before phase 3 | CONFIRMED | User 2026-10-14: "all as proposed" |
+| 4 | Stage 4 ✋ sign-off: architecture/build-plan.md (95 rows, 10 phases), per-BRD coverage ledgers (8 clean), 7 module briefs approved | CONFIRMED | User 2026-10-14: "all as proposed, continue with stage 5" |
+
+Opt-in artifact demo-script: PD-6 — the POC ends in a demo (user, 2026-10-14)
 
 ## Change log
 
@@ -92,7 +101,7 @@ Carried into the build plan (architecture-blueprint.md Step 5). Numbered OI-n on
 | 1 | Goal: faithful port of Odoo's data model, or "Odoo-inspired" Mendix-native design? (intake Q3) | Kickoff 2026-10-14 | answered — Odoo-inspired, Mendix-native (see Decisions) |
 | 3 | Stage 2 BRD questions Q-F001-1..3, Q-F003-1..2, Q-F004-1..3, Q-F005-1, Q-F006-1..3, Q-F008-1..3 (15) | Stage 2, 2026-10-14 | answered — all as proposed (user, 2026-10-14) |
 | 2 | Project driver: POC/demo, or production use? (intake Q2) | Kickoff 2026-10-14 | answered — POC/demo (see Decisions) |
-| 4 | Stage 4 ✋ build-plan sign-off + PD-1..PD-6 (acceptance criteria, environment, StyleGallery, generation strategy/security timing, priority, demo-script opt-in) — proposals in architecture/build-plan.md §Pending decisions | Stage 4, 2026-10-14 | open — asked in chat |
+| 4 | Stage 4 ✋ build-plan sign-off + PD-1..PD-6 (acceptance criteria, environment, StyleGallery, generation strategy/security timing, priority, demo-script opt-in) — proposals in architecture/build-plan.md §Pending decisions | Stage 4, 2026-10-14 | answered — all as proposed (user, 2026-10-14) |
 
 ## Assumptions (ASSUMED, unresolved)
 
