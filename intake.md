@@ -24,17 +24,11 @@ Answered (CONFIRMED): Migration. Legacy source = Odoo 18.0 Community (Python ORM
 
 ## 2. What is this project, and what is driving it?
 
-_Not yet asked._ Sets stakes, urgency and the default for Q3 in one answer. (a) POC/demo —
-prove feasibility, throwaway output, speed over completeness. (b) Production replacement with
-a hard date — licence expiry, platform EOL, contract; fidelity and speed win, improvements
-deferred. (c) Production replacement, open-ended — modernisation is part of the goal. Only
-the user knows; record the date itself if there is one.
+Answered (CONFIRMED): (a) POC / demo / test use — will not be used in production, no hard date. Speed and a convincing, working slice over completeness; no data migration, hardening or cutover to production. User, chat 2026-10-14.
 
 ## 3. Fidelity: port as-is, or improve as we go?
 
-_Not yet asked._ Default inherited from Q2 — (b) implies as-is, (c) licenses redesign — so
-put the inherited default to the user and ask what to override. This decides whether every
-Stage 3 fit-gap finding is a gap to close or an opportunity to take.
+Answered (CONFIRMED): Improve as we go — "Odoo-inspired, but do what makes most sense from a Mendix perspective." Odoo is the functional reference, not a model to replicate: every Stage 3 fit-gap finding is an opportunity to take the Mendix-native route (workflows, view entities, generalization only where it fits, simpler data model). User, chat 2026-10-14.
 
 ## 4. What are we working on: the whole application, or a part of it — and what else does that touch?
 

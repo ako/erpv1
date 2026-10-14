@@ -31,6 +31,8 @@ Unit tests default: no
 | P | Source: Odoo `18.0` @ `0c430eda`, Community only, subset in `sources/odoo/` (no i18n/static/tests) | CONFIRMED | Chat 2026-10-14; provenance in `sources/odoo/SOURCE.md` |
 | P | Target Mendix version: **11.15** (mxbuild 11.15.0 available in the container) | CONFIRMED | Chat 2026-10-14; patch level 11.15.0 is ASSUMED until `mxcli new` at Stage 5 |
 | P | Scope slicing: W1 Core (base, uom, product) → W2 Sales & Purchasing → W3 Inventory → W4 Invoicing; out: website, POS, MRP, HR, mail/chatter, portal, payment, QWeb reports, multi-company | CONFIRMED | Chat 2026-10-14 |
+| P | Project driver: **POC / demo / test**, never production; no hard date | CONFIRMED | Intake Q2, chat 2026-10-14. Implies: no Odoo data migration, Stage 7 cutover reduces to "demo-ready" |
+| P | Fidelity: **Odoo-inspired, Mendix-native** — do what makes most sense in Mendix; Odoo is the functional reference, not the model to copy | CONFIRMED | Intake Q3, chat 2026-10-14. Stage 3 fit-gap findings are opportunities, not gaps to close |
 | P | Source is committed to git (`sources/` tracked) | ASSUMED | LGPL-3.0 public code; container is ephemeral so an ignored copy would be lost (cloud-dev-environment.md step 5) |
 | 3 | Odoo in-place extension (`_inherit` without new `_name`): fields go into the owning Mendix entity; 1–1 extension entity only where the module must stay optional; method overrides → explicit sub-microflow hooks | ASSUMED | Discussed in chat 2026-10-14, to confirm at Stage 3 |
 | 3 | Odoo mixins (`_inherit` with new `_name`, e.g. `mail.thread`): no multiple inheritance in Mendix; at most one shared generalization (e.g. `Core.BusinessDocument`), otherwise associations; chatter out of scope | ASSUMED | Chat 2026-10-14 |
@@ -48,8 +50,8 @@ Feedback and change requests, one row each, written BEFORE any edit (`skills/cha
 
 | # | Question | Raised at | Status |
 |---|---|---|---|
-| 1 | Goal: faithful port of Odoo's data model, or "Odoo-inspired" Mendix-native design? (intake Q3) | Kickoff 2026-10-14 | open |
-| 2 | Project driver: POC/demo, or production use? (intake Q2) | Kickoff 2026-10-14 | open |
+| 1 | Goal: faithful port of Odoo's data model, or "Odoo-inspired" Mendix-native design? (intake Q3) | Kickoff 2026-10-14 | answered — Odoo-inspired, Mendix-native (see Decisions) |
+| 2 | Project driver: POC/demo, or production use? (intake Q2) | Kickoff 2026-10-14 | answered — POC/demo (see Decisions) |
 
 ## Assumptions (ASSUMED, unresolved)
 
