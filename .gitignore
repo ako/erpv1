@@ -46,3 +46,9 @@ mxcli.exe
 # Build product of project-bin/build-plan-status.sh --json, derived from
 # architecture/build-plan.md. Regenerate on demand; never commit a stale copy.
 /architecture/build-plan.json
+
+# Machine-local toolkit marker (doctor.sh property-set check)
+/.claude/.property-sets-receipt
+
+# Machine-local toolkit marker (model-stamp.sh verification stamp)
+/.claude/.model-verified

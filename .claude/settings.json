@@ -1,6 +1,7 @@
 {
   "env": {
-    "MXCLI_QUIET": "1"
+    "MXCLI_QUIET": "1",
+    "JAVA_HOME": "/usr/lib/jvm/java-25-openjdk-amd64"
   },
   "hooks": {
     "SessionStart": [
