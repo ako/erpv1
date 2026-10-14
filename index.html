@@ -38,7 +38,7 @@
 <tr><td>⟳</td><td>Protocol freshness</td><td><span class="status PASS">PASS</span></td><td>session acknowledged toolkit commit d16f578 (origin)</td></tr>
 <tr><td>⇄</td><td>BRD drift-sync</td><td><span class="status PASS">PASS</span></td><td>no unsynced BRD-drift markers in ./PROJECT.md</td></tr>
 <tr><td>Δ</td><td>Change log (warn-only)</td><td><span class="status PASS">PASS</span></td><td>0 change requests logged (a change made with no row is invisible here — log every ask first, skills/change-intake.md)</td></tr>
-<tr><td>?</td><td>Open questions raised</td><td><span class="status PASS">PASS</span></td><td>every question has been raised [UNRAISED=0 RAISED=15 ANSWERED=0 ASSUMED=0 MOOT=0 UNRECOGNISED=0; examined 8 BRD file(s), 0 sme-questions file(s), 0 duplicate(s) collapsed]</td></tr>
+<tr><td>?</td><td>Open questions raised</td><td><span class="status PASS">PASS</span></td><td>every question has been raised [UNRAISED=0 RAISED=0 ANSWERED=15 ASSUMED=0 MOOT=0 UNRECOGNISED=0; examined 8 BRD file(s), 0 sme-questions file(s), 0 duplicate(s) collapsed]</td></tr>
 <tr><td>~</td><td>Source sufficiency assessed</td><td><span class="status PASS">PASS</span></td><td>assessed: band=SPECIFICATION pct=70 — a thin verdict is information, not a refusal</td></tr>
 <tr><td>≡</td><td>Source ledger (every file consumed?)</td><td><span class="status PASS">PASS</span></td><td>825 inventoried — 825 extracted (825 name-verified) · 0 waived · 0 sensitive · 0 superseded · 0 pending · 0 fault · 0 missing · 0 on disk and NOT inventoried</td></tr>
 <tr><td>⚑</td><td>Report disposition (Stage 5/6)</td><td><span class="status MANUAL">MANUAL</span></td><td>cannot evaluate, which is not a pass — FAULT: no docs/report.json, no report (docs/progress/*.html, design/ui-reviews/*.html,        .claude/loop/verify/*/summary.tsv), and no /home/user/erpv1/docs/improvement-register.md found.        Nothing was measured — this is not a clean run.</td></tr>
@@ -46,14 +46,14 @@
 <tr><td>0</td><td>Triage</td><td><span class="status PASS">PASS</span></td><td>triage.md signed off by "user, in chat on 2026-10-14 (extraction approach, missing-dependency policies, interview mode assist, scope)." [./triage.md]</td></tr>
 <tr><td>1</td><td>Analysis</td><td><span class="status PASS">PASS</span></td><td>extraction-report.html present and non-empty</td></tr>
 <tr><td>2</td><td>Requirements</td><td><span class="status PASS">PASS</span></td><td>brd/*.brd.json present, Stop condition reads "Clean — 0 open findings. 7 findings were raised during this pass and all 7 were fixed at the root"</td></tr>
-<tr><td>3</td><td>Architecture & Design</td><td><span class="status PENDING">PENDING</span></td><td>missing: architecture/fit-gap.md design/design-system.html design/wireframes/*.html architecture/blueprint.html | present: none (design-artifacts.md Step 3 wants one wireframe per screen; architecture-blueprint.md Step 7 the blueprint render)</td></tr>
+<tr><td>3</td><td>Architecture & Design</td><td><span class="status PASS">PASS</span></td><td>fit-gap, blueprint render, design system, wireframes present and a Stage-3 CONFIRMED decision is in ./PROJECT.md</td></tr>
 <tr><td>4</td><td>Build Plan</td><td><span class="status PENDING">PENDING</span></td><td>architecture/build-plan.md not written yet</td></tr>
 <tr><td>5</td><td>Build</td><td><span class="status MANUAL">MANUAL</span></td><td>not file-existence-checkable — fill in status manually</td></tr>
 <tr><td>6</td><td>Test</td><td><span class="status PENDING">PENDING</span></td><td>no test surface yet — need test-report.html (project root or reports/), or docs/verification/report.html + docs/report.json (verify-module.sh's render rung)</td></tr>
 <tr><td>7</td><td>Cutover</td><td><span class="status PENDING">PENDING</span></td><td>no cutover decision row in ./PROJECT.md — add a Decisions row whose Stage field is 7 (or whose Decision names the cutover) with Status CONFIRMED</td></tr>
 </table>
 <div class="footer">
-  <!-- generated-at: 2026-10-14T18:30:59Z -->
+  <!-- generated-at: 2026-10-14T19:35:49Z -->
   Board for root <code>.</code>. A board carries no date in its body on purpose —
   see the comment above, which is excluded from change detection.
   Re-run bin/gate-check.sh . to refresh.
