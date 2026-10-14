@@ -36,11 +36,7 @@ Answered (CONFIRMED): a part of Odoo, sliced in waves (confirmed in chat 2026-10
 
 ## 5. Of what we touch, what must stay exactly as it is?
 
-_Not yet asked._ Integrations, data contracts, external URLs, scheduled jobs, reports other
-systems consume. These are the constraints that invalidate an architecture late and cheaply
-if found now; they are rarely visible in the source, because they live in its consumers. For
-an existing app the default is that nothing beyond the ask changes — this question names the
-things the change must not break.
+Answered (CONFIRMED): nothing must stay as-is — no integrations, data contracts or Odoo compatibility required (POC). User, chat 2026-10-14.
 
 ## 6. Are there licence/security constraints on storing this client's source in this workspace?
 
@@ -48,55 +44,28 @@ Answered (CONFIRMED): Odoo Community is public LGPL-3.0 source; committing the i
 
 ## 7. Is an SME available — who, and at what cadence?
 
-_Not yet asked._ Availability is not the useful half: an SME who exists but answers in two
-weeks reshapes the plan as much as no SME at all. Ask who, for which class of decision, and
-what the realistic turnaround is.
+Answered (CONFIRMED): the user (project owner) is the SME for all decision classes, answering in chat during sessions. User, chat 2026-10-14.
 
 ## 8. Anything else — scope, priorities, or worries?
 
-_Not yet asked._ The standing open-floor question the runbook requires at every checkpoint
-(§1). Closed questions capture decisions; they never surface what the user wanted to say
-unprompted. "Nothing further" is a valid answer — but it has to be the user's, not assumed.
+Answered (CONFIRMED): nothing further. User, chat 2026-10-14.
 
 ## 9. Interview mode: attended (default) or unattended?
 
-_Not yet asked._ How to verify: ask the user; default is `steering`. Record it as
-`Interview mode:` in PROJECT.md: `steering` = every gate question is asked in chat and the agent
-waits; `assist` = questions batched at gates, low-consequence ones assumed and reported; `auto`
-(opt-in only, explicit request required) = nothing blocks, positions recorded as ASSUMED for
-reconciliation. `attended` / `unattended` are accepted aliases for `steering` / `auto`.
+Answered (CONFIRMED): interactive — Interview mode: steering (every gate question asked in chat, agent waits). User, chat 2026-10-14.
 
 ## 10. Is any of this already done outside the toolkit — and where does the pipeline pick up?
 
-_Not yet asked._ Only relevant when the project did not start here: a build already underway,
-analysis that lives in Confluence, a design system someone else owns. Name the stage the toolkit
-picks up at and record it — `bin/gate-check.sh <project> --adopt <stage> --reason "..."` — so the
-earlier stages report WAIVED instead of a red row nobody can ever clear. Answer "starting from
-scratch here" and nothing is waived, which is the right answer for most projects. Do NOT infer
-this from what happens to be on disk: a missing artifact and an artifact produced elsewhere look
-identical, and guessing wrong either nags forever or waives a stage that genuinely still matters.
+Answered (CONFIRMED): starting from scratch here — nothing done outside the toolkit, no stages adopted or waived. User, chat 2026-10-14.
 
 ## 11. Exec approval: `auto` (default) or `ask`?
 
-_Not yet asked._ How to verify: ask the user; default is `auto`. Full rule text (what it
-gates, the resolution order, the STOP-table carve-out): `bin/lib/wiring-item3.sh` — the same
-text every agent's Start-here stamp carries. See `bin/exec-approval.sh --explain` for what is
-currently resolved and why; the user switches it, never the agent on its own judgement.
+Answered (CONFIRMED): auto — scripts run through bin/exec.sh (mxbuild-gated) without asking each time; STOP-table operations are still announced. User, chat 2026-10-14.
 
 ## 12. Claude Code permissions: `project` (default), `wrappers`, or `full`?
 
-_Not yet asked._ How to verify: ask the user; default is `project`. `wrappers` = only the
-toolkit's safe wrappers run without a prompt. `project` = those plus edits inside this folder and
-the everyday test/npm/docker/git-commit commands. `full` = everything, on this person's machine
-only (`.claude/settings.local.json`); force-push, `git reset --hard`, `git clean` and `sudo`
-still prompt. Record it as `Permission profile:` in PROJECT.md, then run
-`bin/install-harness-permissions.sh <project> --profile <answer>`; `bin/doctor.sh <project>`
-shows what is in effect.
+Answered (CONFIRMED): project. User, chat 2026-10-14.
 
 ## 13. Unit tests (`.test.mdl`): project default `no` (default) or `yes`?
 
-_Not yet asked._ How to verify: ask the user; default is `no`. Every module already gets UI
-journeys and data assertions. Unit tests cost a closed Studio Pro and a snapshot per run, and
-agents ran them everywhere when no default was set (toolkit issue #274). With `no`, a module
-still flips to `yes` in its brief when it has calculation, mapping or date/money logic, calls Java or REST, or had a bug fixed in that flow (`testing-shape.md` §2). Record it as
-`Unit tests default:` in PROJECT.md.
+Answered (CONFIRMED): yes — every module gets `.test.mdl` unit tests by default. User, chat 2026-10-14.

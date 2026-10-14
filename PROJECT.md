@@ -5,12 +5,13 @@ Every gate decision lands here as `CONFIRMED` or `ASSUMED`, never silently decid
 
 ## Current stage
 
-**Stage P — Kickoff**, needs attention — gates passed: none yet (derived by gate-check on 2026-10-14; re-run it rather than editing this line).
+**Stage 0 — Triage**, needs attention — gates passed: P (derived by gate-check on 2026-10-14; re-run it rather than editing this line).
 
 Toolkit commit: d16f578
+Interview mode: steering
 Exec approval: auto
 Permission profile: project
-Unit tests default: no
+Unit tests default: yes
 
 <!-- The bold line above is a READOUT: bin/gate-check.sh rewrites it on every full run from the
      verdicts it just produced (first stage neither PASS nor WAIVED). Do not edit it by hand.
@@ -33,6 +34,8 @@ Unit tests default: no
 | P | Scope slicing: W1 Core (base, uom, product) → W2 Sales & Purchasing → W3 Inventory → W4 Invoicing; out: website, POS, MRP, HR, mail/chatter, portal, payment, QWeb reports, multi-company | CONFIRMED | Chat 2026-10-14 |
 | P | Project driver: **POC / demo / test**, never production; no hard date | CONFIRMED | Intake Q2, chat 2026-10-14. Implies: no Odoo data migration, Stage 7 cutover reduces to "demo-ready" |
 | P | Fidelity: **Odoo-inspired, Mendix-native** — do what makes most sense in Mendix; Odoo is the functional reference, not the model to copy | CONFIRMED | Intake Q3, chat 2026-10-14. Stage 3 fit-gap findings are opportunities, not gaps to close |
+| P | Interview mode: steering (interactive); SME = the user, in chat; nothing outside scope must stay as-is; starting from scratch (no adopt/waive) | CONFIRMED | Intake Q5, Q7–Q10, chat 2026-10-14 |
+| P | Exec approval auto; permission profile project; unit tests default **yes** | CONFIRMED | Intake Q11–Q13, chat 2026-10-14 |
 | P | Source is committed to git (`sources/` tracked) | ASSUMED | LGPL-3.0 public code; container is ephemeral so an ignored copy would be lost (cloud-dev-environment.md step 5) |
 | 3 | Odoo in-place extension (`_inherit` without new `_name`): fields go into the owning Mendix entity; 1–1 extension entity only where the module must stay optional; method overrides → explicit sub-microflow hooks | ASSUMED | Discussed in chat 2026-10-14, to confirm at Stage 3 |
 | 3 | Odoo mixins (`_inherit` with new `_name`, e.g. `mail.thread`): no multiple inheritance in Mendix; at most one shared generalization (e.g. `Core.BusinessDocument`), otherwise associations; chatter out of scope | ASSUMED | Chat 2026-10-14 |

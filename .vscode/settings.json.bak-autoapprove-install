@@ -1,0 +1,9 @@
+{
+  "chat.tools.terminal.autoApprove": {
+    "./mxcli": true,
+    "mxcli": true,
+    "./bin/exec.sh": true,
+    "bin/exec.sh": true,
+    "/^\\.?\\/?bin\\/[^ ]+\\.sh$/": true
+  }
+}
