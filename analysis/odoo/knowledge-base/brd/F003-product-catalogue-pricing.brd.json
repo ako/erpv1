@@ -8,11 +8,10 @@
   "SalesManager",
   "PurchaseManager",
   "InventoryManager",
-  "SalesUser",
-  "Purchaser"
+  "SalesUser"
  ],
  "capability": "C3",
- "summary": "Products (goods or services) with category, units, prices, taxes and tags; vendor prices; customer pricelists with fixed-price or discount rules.",
+ "summary": "Products (goods or services) with category, units, prices, taxes and tags; customer pricelists with fixed-price or discount rules.",
  "provenance": "code-extracted",
  "generatedAt": "2026-10-14",
  "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
@@ -29,9 +28,6 @@
   ],
   "SalesUser": [
    "sales_team.group_sale_salesman"
-  ],
-  "Purchaser": [
-   "purchase.group_purchase_user"
   ]
  },
  "useCases": [
@@ -71,34 +67,6 @@
   },
   {
    "id": "UC002",
-   "title": "Record vendor prices",
-   "actors": [
-    "PurchaseManager",
-    "Purchaser"
-   ],
-   "preconditions": [
-    "Product and vendor exist"
-   ],
-   "postconditions": [
-    "RFQ lines default to this price and lead time"
-   ],
-   "mainFlow": [
-    "1. On the product Purchase tab, user adds a vendor line: vendor, min quantity, price, discount, lead time, validity",
-    "2. System uses the first valid line (sequence, min qty, dates) when a purchase line is created"
-   ],
-   "alternativeFlows": [],
-   "screens": [
-    "Product_NewEdit"
-   ],
-   "odooRefs": [
-    "product.product_supplierinfo_form_view",
-    "product.product._select_seller"
-   ],
-   "status": "code-inferred",
-   "reviewStatus": "pending"
-  },
-  {
-   "id": "UC003",
    "title": "Maintain a pricelist",
    "actors": [
     "SalesManager"
@@ -127,7 +95,7 @@
    "reviewStatus": "pending"
   },
   {
-   "id": "UC004",
+   "id": "UC003",
    "title": "Get the price for a customer",
    "actors": [
     "SalesUser"
@@ -155,7 +123,7 @@
    "reviewStatus": "pending"
   },
   {
-   "id": "UC005",
+   "id": "UC004",
    "title": "Archive a product",
    "actors": [
     "SalesManager",
@@ -448,7 +416,7 @@
     {
      "name": "Product_CustomerTaxes",
      "owner": "Products.Product",
-     "target": "Invoicing.Tax",
+     "target": "Core.Tax",
      "type": "ReferenceSet",
      "sourceOdoo": "product.template.taxes_id",
      "odooTarget": "account.tax",
@@ -457,7 +425,7 @@
     {
      "name": "Product_VendorTaxes",
      "owner": "Products.Product",
-     "target": "Invoicing.Tax",
+     "target": "Core.Tax",
      "type": "ReferenceSet",
      "sourceOdoo": "product.template.supplier_taxes_id",
      "odooTarget": "account.tax",
@@ -538,122 +506,6 @@
     }
    ],
    "associations": [],
-   "note": null,
-   "brd": "F003"
-  },
-  {
-   "name": "Products.VendorPrice",
-   "module": "Products",
-   "persistent": true,
-   "purpose": "A vendor's price and lead time for a product (drives RFQ prices).",
-   "sourceOdoo": "product.supplierinfo",
-   "generalization": null,
-   "systemMembers": [
-    "createdDate",
-    "changedDate",
-    "owner",
-    "changedBy"
-   ],
-   "attributes": [
-    {
-     "name": "MinQuantity",
-     "type": "Decimal",
-     "sourceOdoo": "product.supplierinfo.min_qty",
-     "odooType": "Float",
-     "mandatory": true,
-     "label": "Quantity",
-     "odooDefault": "0.0"
-    },
-    {
-     "name": "Price",
-     "type": "Decimal",
-     "sourceOdoo": "product.supplierinfo.price",
-     "odooType": "Float",
-     "mandatory": true,
-     "label": "Price",
-     "odooDefault": "0.0"
-    },
-    {
-     "name": "Discount",
-     "type": "Decimal",
-     "sourceOdoo": "product.supplierinfo.discount",
-     "odooType": "Float",
-     "mandatory": false,
-     "label": "Discount (%)"
-    },
-    {
-     "name": "LeadTimeDays",
-     "type": "Integer",
-     "sourceOdoo": "product.supplierinfo.delay",
-     "odooType": "Integer",
-     "mandatory": true,
-     "label": "Delivery Lead Time",
-     "odooDefault": "1"
-    },
-    {
-     "name": "VendorProductCode",
-     "type": "String",
-     "sourceOdoo": "product.supplierinfo.product_code",
-     "odooType": "Char",
-     "mandatory": false,
-     "label": "Vendor Product Code",
-     "length": 200
-    },
-    {
-     "name": "VendorProductName",
-     "type": "String",
-     "sourceOdoo": "product.supplierinfo.product_name",
-     "odooType": "Char",
-     "mandatory": false,
-     "label": "Vendor Product Name",
-     "length": 200
-    },
-    {
-     "name": "ValidFrom",
-     "type": "DateTime",
-     "sourceOdoo": "product.supplierinfo.date_start",
-     "odooType": "Date",
-     "mandatory": false,
-     "label": "Start Date"
-    },
-    {
-     "name": "ValidTo",
-     "type": "DateTime",
-     "sourceOdoo": "product.supplierinfo.date_end",
-     "odooType": "Date",
-     "mandatory": false,
-     "label": "End Date"
-    },
-    {
-     "name": "Sequence",
-     "type": "Integer",
-     "sourceOdoo": "product.supplierinfo.sequence",
-     "odooType": "Integer",
-     "mandatory": false,
-     "label": "Sequence",
-     "odooDefault": "1"
-    }
-   ],
-   "associations": [
-    {
-     "name": "VendorPrice_Vendor",
-     "owner": "Products.VendorPrice",
-     "target": "Partners.Partner",
-     "type": "Reference",
-     "sourceOdoo": "product.supplierinfo.partner_id",
-     "odooTarget": "res.partner",
-     "mandatory": true
-    },
-    {
-     "name": "VendorPrice_Product",
-     "owner": "Products.VendorPrice",
-     "target": "Products.Product",
-     "type": "Reference",
-     "sourceOdoo": "product.supplierinfo.product_tmpl_id",
-     "odooTarget": "product.template",
-     "mandatory": false
-    }
-   ],
    "note": null,
    "brd": "F003"
   },
@@ -952,7 +804,8 @@
    "odooRefs": [
     "product.template.create",
     "product.template._check_uom"
-   ]
+   ],
+   "module": "Products"
   },
   {
    "name": "VAL_Product",
@@ -971,7 +824,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "product.template._check_uom"
-   ]
+   ],
+   "module": "Products"
   },
   {
    "name": "SUB_Pricelist_GetPrice",
@@ -1005,34 +859,8 @@
    "odooRefs": [
     "product.pricelist._compute_price_rule",
     "product.pricelist.item._compute_price"
-   ]
-  },
-  {
-   "name": "SUB_Product_GetVendorPrice",
-   "kind": "Microflow",
-   "purpose": "Best vendor price line for vendor/product/quantity/date.",
-   "params": [
-    {
-     "name": "Vendor",
-     "type": "Partners.Partner"
-    },
-    {
-     "name": "Product",
-     "type": "Products.Product"
-    },
-    {
-     "name": "Quantity",
-     "type": "Decimal"
-    }
    ],
-   "returns": "Products.VendorPrice",
-   "pattern": "retrieve",
-   "calls": [],
-   "validations": [],
-   "hiddenRules": [],
-   "odooRefs": [
-    "product.product._select_seller"
-   ]
+   "module": "Products"
   }
  ],
  "workflows": [],
@@ -1271,10 +1099,10 @@
  "confidence": "high",
  "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 5 gap(s) point at not-implemented addons (mail/portal/utm/...)",
  "summaryCounts": {
-  "useCases": 5,
-  "entities": 7,
+  "useCases": 4,
+  "entities": 6,
   "enumerations": 5,
-  "microflows": 4,
+  "microflows": 3,
   "pages": 5,
   "openQuestions": 2
  }

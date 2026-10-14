@@ -1,0 +1,155 @@
+{
+ "layers": [
+  "Core",
+  "Products",
+  "Partners",
+  "Sales",
+  "Purchasing",
+  "Inventory",
+  "Invoicing"
+ ],
+ "associationEdges": {
+  "Inventory -> Partners": [
+   "Warehouse_Address",
+   "Transfer_Partner",
+   "ReorderRule_Vendor"
+  ],
+  "Inventory -> Products": [
+   "StockMove_Product",
+   "StockMove_UoM",
+   "StockLevel_Product",
+   "ReorderRule_Product"
+  ],
+  "Inventory -> Purchasing": [
+   "Transfer_PurchaseOrder",
+   "StockMove_PurchaseOrderLine",
+   "ReorderRule_PurchaseOrders"
+  ],
+  "Inventory -> Sales": [
+   "Transfer_SalesOrder",
+   "StockMove_SalesOrderLine"
+  ],
+  "Invoicing -> Core": [
+   "Invoice_PaymentTerm",
+   "Invoice_Currency",
+   "InvoiceLine_Taxes",
+   "Payment_Currency"
+  ],
+  "Invoicing -> Partners": [
+   "Invoice_Partner",
+   "Invoice_DeliveryAddress",
+   "Invoice_BankAccount",
+   "Payment_Partner",
+   "Payment_BankAccount"
+  ],
+  "Invoicing -> Products": [
+   "InvoiceLine_Product",
+   "InvoiceLine_UoM"
+  ],
+  "Invoicing -> Purchasing": [
+   "Invoice_PurchaseOrder",
+   "InvoiceLine_PurchaseOrderLine"
+  ],
+  "Invoicing -> Sales": [
+   "Invoice_SalesOrders",
+   "InvoiceLine_SalesOrderLines"
+  ],
+  "Partners -> Core": [
+   "Partner_Country",
+   "Partner_CustomerPaymentTerm",
+   "Partner_VendorPaymentTerm"
+  ],
+  "Partners -> Products": [
+   "Partner_Pricelist"
+  ],
+  "Products -> Core": [
+   "Product_CustomerTaxes",
+   "Product_VendorTaxes",
+   "Pricelist_Currency"
+  ],
+  "Purchasing -> Core": [
+   "PurchaseOrder_PaymentTerm",
+   "PurchaseOrder_Currency",
+   "PurchaseOrderLine_Taxes"
+  ],
+  "Purchasing -> Partners": [
+   "VendorPrice_Vendor",
+   "PurchaseOrder_Vendor"
+  ],
+  "Purchasing -> Products": [
+   "VendorPrice_Product",
+   "PurchaseOrderLine_Product",
+   "PurchaseOrderLine_UoM"
+  ],
+  "Sales -> Core": [
+   "SalesOrder_PaymentTerm",
+   "SalesOrder_Currency",
+   "SalesOrderLine_Taxes"
+  ],
+  "Sales -> Partners": [
+   "SalesOrder_Customer",
+   "SalesOrder_InvoiceAddress",
+   "SalesOrder_DeliveryAddress"
+  ],
+  "Sales -> Products": [
+   "SalesOrder_Pricelist",
+   "SalesOrderLine_Product",
+   "SalesOrderLine_UoM",
+   "QuotationTemplateLine_Product",
+   "QuotationTemplateLine_UoM"
+  ]
+ },
+ "callEdges": {
+  "Inventory -> Core": [
+   "SUB_SalesOrder_CreateDelivery -> SUB_Sequence_NextNumber",
+   "SUB_PurchaseOrder_CreateReceipt -> SUB_Sequence_NextNumber"
+  ],
+  "Inventory -> Purchasing": [
+   "SUB_Transfer_Done -> SUB_PurchaseOrder_UpdateReceived",
+   "SUB_ReorderRule_Replenish -> ACT_PurchaseOrder_New",
+   "SUB_ReorderRule_Replenish -> SUB_VendorPrice_GetBest"
+  ],
+  "Inventory -> Sales": [
+   "SUB_Transfer_Done -> SUB_SalesOrder_UpdateDelivered"
+  ],
+  "Invoicing -> Core": [
+   "SUB_Invoice_RecomputeTotals -> SUB_Tax_ComputeLine",
+   "ACT_Invoice_Post -> SUB_PaymentTerm_ComputeDueDate",
+   "ACT_Invoice_Post -> SUB_Sequence_NextNumber",
+   "SUB_Payment_Create -> SUB_Sequence_NextNumber"
+  ],
+  "Invoicing -> Purchasing": [
+   "ACT_PurchaseOrder_CreateBill -> SUB_PurchaseOrder_UpdateBillingStatus",
+   "ACT_Invoice_Post -> SUB_PurchaseOrder_UpdateBillingStatus"
+  ],
+  "Invoicing -> Sales": [
+   "SUB_SalesOrders_CreateInvoices -> SUB_SalesOrder_UpdateInvoiceStatus",
+   "ACT_Invoice_Post -> SUB_SalesOrder_UpdateInvoiceStatus"
+  ],
+  "Purchasing -> Core": [
+   "SUB_PurchaseOrder_RecomputeTotals -> SUB_Tax_ComputeLine"
+  ],
+  "Purchasing -> Inventory": [
+   "SUB_PurchaseOrder_Approve -> SUB_PurchaseOrder_CreateReceipt"
+  ],
+  "Purchasing -> Products": [
+   "SUB_PurchaseOrder_UpdateReceived -> SUB_UoM_ConvertQuantity"
+  ],
+  "Sales -> Core": [
+   "SUB_SalesOrder_RecomputeTotals -> SUB_Tax_ComputeLine"
+  ],
+  "Sales -> Inventory": [
+   "ACT_SalesOrder_Confirm -> SUB_SalesOrder_CreateDelivery"
+  ],
+  "Sales -> Partners": [
+   "ACT_SalesOrder_New -> SUB_Partner_GetAddress"
+  ],
+  "Sales -> Products": [
+   "ACT_SalesOrderLine_ChangeProduct -> SUB_Pricelist_GetPrice",
+   "SUB_SalesOrder_UpdateDelivered -> SUB_UoM_ConvertQuantity"
+  ]
+ },
+ "sanctionedUpwardCalls": "Sales/Purchasing -> Inventory/Invoicing: user actions on orders trigger the downstream bridge microflows (Odoo sale_stock / purchase_stock / sale->account)",
+ "unsanctionedUpwardCalls": {},
+ "associationCycle": null
+}

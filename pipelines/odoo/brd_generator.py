@@ -270,6 +270,74 @@ def main():
             for sc in u['screens']:
                 if sc not in page_names and sc not in platform_pages:
                     errors.append('%s %s: screen %s is not a defined page' % (fid, u['id'], sc))
+    # module dependency graph: associations must be acyclic; microflow calls against the layer order are listed
+    short = {}
+    for n in ent_out:
+        short.setdefault(n.split('.')[1], n.split('.')[0])
+    def mf_module(name):
+        if name in C.MF_MODULE:
+            return C.MF_MODULE[name]
+        parts = name.split('_')
+        for cand in (parts[1] if len(parts) > 1 else '', parts[1].rstrip('s') if len(parts) > 1 else ''):
+            if cand in short:
+                return short[cand]
+        errors.append('microflow %s: cannot infer module (add to MF_MODULE)' % name)
+        return None
+    mf_mod = {}
+    for b in C.BRDS.values():
+        for m in b['microflows'] + b.get('workflows', []):
+            m['module'] = mf_mod[m['name']] = mf_module(m['name'])
+    assoc_edges = {}
+    for v in ent_out.values():
+        for asc in v['associations']:
+            src, dst = v['module'], asc['target'].split('.')[0]
+            if src != dst and dst in S.MODULES:
+                assoc_edges.setdefault((src, dst), []).append(asc['name'])
+    def has_cycle(edges):
+        g = {}
+        for (x, y) in edges:
+            g.setdefault(x, set()).add(y)
+        seen, stack = set(), set()
+        def dfs(n, path):
+            if n in stack:
+                return path[path.index(n):] + [n]
+            if n in seen:
+                return None
+            seen.add(n); stack.add(n)
+            for nxt in sorted(g.get(n, ())):
+                r = dfs(nxt, path + [n])
+                if r:
+                    return r
+            stack.discard(n)
+            return None
+        for n in sorted(g):
+            r = dfs(n, [])
+            if r:
+                return r
+        return None
+    cyc = has_cycle(assoc_edges)
+    if cyc:
+        errors.append('association dependency cycle between modules: ' + ' -> '.join(cyc))
+    layer = {m: i for i, m in enumerate(S.MODULES)}
+    call_edges = {}
+    for b in C.BRDS.values():
+        for m in b['microflows']:
+            for cl in m['calls']:
+                src, dst = mf_mod.get(m['name']), mf_mod.get(cl)
+                if src and dst and src != dst:
+                    call_edges.setdefault((src, dst), []).append('%s -> %s' % (m['name'], cl))
+    upward = {'%s -> %s' % k: v for k, v in call_edges.items() if layer[k[1]] > layer[k[0]] and not (k[0] in ('Sales', 'Purchasing') and k[1] in ('Inventory', 'Invoicing')) and k != ('Core', 'Products')}
+    graph = {'layers': S.MODULES, 'associationEdges': {'%s -> %s' % k: v for k, v in sorted(assoc_edges.items())},
+             'callEdges': {'%s -> %s' % k: v for k, v in sorted(call_edges.items())},
+             'sanctionedUpwardCalls': 'Sales/Purchasing -> Inventory/Invoicing: user actions on orders trigger the downstream bridge microflows (Odoo sale_stock / purchase_stock / sale->account)',
+             'unsanctionedUpwardCalls': upward, 'associationCycle': cyc}
+    json.dump(graph, open(os.path.join(outdir, 'module-graph.json'), 'w'), indent=1)
+    for row in index:
+        path = os.path.join(outdir, row['file'])
+        b = json.load(open(path, encoding='utf-8'))
+        src = C.BRDS[row['id']]
+        b['microflows'] = src['microflows']; b['workflows'] = src.get('workflows', [])
+        json.dump(b, open(path, 'w', encoding='utf-8'), indent=1, ensure_ascii=False)
     unowned = [n for n, v in ent_out.items() if v['brd'] not in C.BRDS]
     for u in unowned:
         errors.append('entity %s has no BRD' % u)

@@ -303,18 +303,7 @@
      "enumeration": "Purchasing.ENUM_ReceiptStatus"
     }
    ],
-   "associations": [
-    {
-     "name": "PurchaseOrder_DeliverTo",
-     "owner": "Purchasing.PurchaseOrder",
-     "target": "Inventory.OperationType",
-     "type": "Reference",
-     "sourceOdoo": "purchase.order.picking_type_id",
-     "odooTarget": "stock.picking.type",
-     "mandatory": true,
-     "note": "receipt operation of the warehouse"
-    }
-   ]
+   "associations": []
   },
   {
    "name": "Purchasing.PurchaseOrderLine",
@@ -364,7 +353,8 @@
    "odooRefs": [
     "sale.order.line._action_launch_stock_rule",
     "sale.order.line._prepare_procurement_values"
-   ]
+   ],
+   "module": "Inventory"
   },
   {
    "name": "SUB_SalesOrder_UpdateDelivered",
@@ -387,7 +377,8 @@
    "odooRefs": [
     "sale.order.line._compute_qty_delivered",
     "sale.order._compute_delivery_status"
-   ]
+   ],
+   "module": "Sales"
   },
   {
    "name": "SUB_PurchaseOrder_CreateReceipt",
@@ -410,7 +401,8 @@
    "odooRefs": [
     "purchase.order._create_picking",
     "purchase.order.line._prepare_stock_moves"
-   ]
+   ],
+   "module": "Inventory"
   },
   {
    "name": "SUB_PurchaseOrder_UpdateReceived",
@@ -433,7 +425,8 @@
    "odooRefs": [
     "purchase.order.line._compute_qty_received",
     "purchase.order._compute_receipt_status"
-   ]
+   ],
+   "module": "Purchasing"
   }
  ],
  "workflows": [],
@@ -457,7 +450,7 @@
   },
   {
    "name": "PurchaseOrder_NewEdit",
-   "purpose": "Extension: Receipt smart button, receipt status, deliver-to operation type.",
+   "purpose": "Extension: Receipt smart button and receipt status.",
    "dataContext": "Purchasing.PurchaseOrder",
    "pattern": "extension",
    "sections": [

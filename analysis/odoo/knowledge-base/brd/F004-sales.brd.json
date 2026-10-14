@@ -527,7 +527,7 @@
     {
      "name": "SalesOrder_PaymentTerm",
      "owner": "Sales.SalesOrder",
-     "target": "Invoicing.PaymentTerm",
+     "target": "Core.PaymentTerm",
      "type": "Reference",
      "sourceOdoo": "sale.order.payment_term_id",
      "odooTarget": "account.payment.term",
@@ -722,7 +722,7 @@
     {
      "name": "SalesOrderLine_Taxes",
      "owner": "Sales.SalesOrderLine",
-     "target": "Invoicing.Tax",
+     "target": "Core.Tax",
      "type": "ReferenceSet",
      "sourceOdoo": "sale.order.line.tax_id",
      "odooTarget": "account.tax",
@@ -1010,7 +1010,8 @@
     "sale.order._compute_pricelist_id",
     "sale.order._compute_payment_term_id",
     "sale.order._compute_validity_date"
-   ]
+   ],
+   "module": "Sales"
   },
   {
    "name": "ACT_SalesOrder_ApplyTemplate",
@@ -1029,7 +1030,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "sale.order._onchange_sale_order_template_id"
-   ]
+   ],
+   "module": "Sales"
   },
   {
    "name": "ACT_SalesOrderLine_ChangeProduct",
@@ -1053,7 +1055,8 @@
     "sale.order.line._compute_product_uom",
     "sale.order.line._compute_tax_id",
     "sale.order.line._compute_price_unit"
-   ]
+   ],
+   "module": "Sales"
   },
   {
    "name": "SUB_SalesOrder_RecomputeTotals",
@@ -1078,7 +1081,8 @@
    "odooRefs": [
     "sale.order.line._compute_amount",
     "sale.order._compute_amounts"
-   ]
+   ],
+   "module": "Sales"
   },
   {
    "name": "ACT_SalesOrder_MarkSent",
@@ -1097,7 +1101,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "sale.order.action_quotation_sent"
-   ]
+   ],
+   "module": "Sales"
   },
   {
    "name": "ACT_SalesOrder_Confirm",
@@ -1125,7 +1130,8 @@
     "sale.order._action_confirm",
     "sale.order._confirmation_error_message",
     "sale.order._prepare_confirmation_values"
-   ]
+   ],
+   "module": "Sales"
   },
   {
    "name": "ACT_SalesOrder_Cancel",
@@ -1147,7 +1153,8 @@
    "odooRefs": [
     "sale.order.action_cancel",
     "sale.order._action_cancel"
-   ]
+   ],
+   "module": "Sales"
   },
   {
    "name": "ACT_SalesOrder_SetToQuotation",
@@ -1166,7 +1173,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "sale.order.action_draft"
-   ]
+   ],
+   "module": "Sales"
   },
   {
    "name": "ACT_SalesOrder_ToggleLock",
@@ -1186,7 +1194,8 @@
    "odooRefs": [
     "sale.order.action_lock",
     "sale.order.action_unlock"
-   ]
+   ],
+   "module": "Sales"
   },
   {
    "name": "SUB_SalesOrder_UpdateInvoiceStatus",
@@ -1209,7 +1218,8 @@
     "sale.order.line._compute_qty_to_invoice",
     "sale.order.line._compute_invoice_status",
     "sale.order._compute_invoice_status"
-   ]
+   ],
+   "module": "Sales"
   }
  ],
  "workflows": [],

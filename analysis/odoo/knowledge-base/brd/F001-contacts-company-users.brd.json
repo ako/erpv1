@@ -175,7 +175,7 @@
    ],
    "mainFlow": [
     "1. Administrator creates a Mendix account (Administration module) and assigns user roles",
-    "2. System creates the Core.UserProfile with display name and links it to a partner (created if missing)",
+    "2. System creates the Partners.UserProfile with display name and links it to a partner (created if missing)",
     "3. Optionally sets the default sales team"
    ],
    "alternativeFlows": [],
@@ -392,7 +392,7 @@
     {
      "name": "Company_DefaultSalesTax",
      "owner": "Core.Company",
-     "target": "Invoicing.Tax",
+     "target": "Core.Tax",
      "type": "Reference",
      "sourceOdoo": "res.company.account_sale_tax_id",
      "odooTarget": "account.tax",
@@ -401,7 +401,7 @@
     {
      "name": "Company_DefaultPurchaseTax",
      "owner": "Core.Company",
-     "target": "Invoicing.Tax",
+     "target": "Core.Tax",
      "type": "Reference",
      "sourceOdoo": "res.company.account_purchase_tax_id",
      "odooTarget": "account.tax",
@@ -574,8 +574,8 @@
    "brd": "F001"
   },
   {
-   "name": "Core.UserProfile",
-   "module": "Core",
+   "name": "Partners.UserProfile",
+   "module": "Partners",
    "persistent": true,
    "purpose": "Business data of an app user (Mendix account): display name and linked partner. Team membership lives on Sales.SalesTeam.",
    "sourceOdoo": "res.users",
@@ -600,7 +600,7 @@
    "associations": [
     {
      "name": "UserProfile_Account",
-     "owner": "Core.UserProfile",
+     "owner": "Partners.UserProfile",
      "target": "Administration.Account",
      "type": "Reference",
      "new": true,
@@ -608,7 +608,7 @@
     },
     {
      "name": "UserProfile_Partner",
-     "owner": "Core.UserProfile",
+     "owner": "Partners.UserProfile",
      "target": "Partners.Partner",
      "type": "Reference",
      "sourceOdoo": "res.users.partner_id",
@@ -829,7 +829,7 @@
     {
      "name": "Partner_CustomerPaymentTerm",
      "owner": "Partners.Partner",
-     "target": "Invoicing.PaymentTerm",
+     "target": "Core.PaymentTerm",
      "type": "Reference",
      "sourceOdoo": "res.partner.property_payment_term_id",
      "odooTarget": "account.payment.term",
@@ -839,7 +839,7 @@
     {
      "name": "Partner_VendorPaymentTerm",
      "owner": "Partners.Partner",
-     "target": "Invoicing.PaymentTerm",
+     "target": "Core.PaymentTerm",
      "type": "Reference",
      "sourceOdoo": "res.partner.property_supplier_payment_term_id",
      "odooTarget": "account.payment.term",
@@ -978,9 +978,299 @@
    ],
    "note": null,
    "brd": "F001"
+  },
+  {
+   "name": "Core.Tax",
+   "module": "Core",
+   "persistent": true,
+   "purpose": "A sales or purchase tax: percentage or fixed amount, price-included or not.",
+   "sourceOdoo": "account.tax",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "account.tax.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Tax Name",
+     "length": 200
+    },
+    {
+     "name": "Scope",
+     "type": "Enumeration",
+     "sourceOdoo": "account.tax.type_tax_use",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Tax Type",
+     "odooDefault": "'sale'",
+     "enumeration": "Core.ENUM_TaxScope"
+    },
+    {
+     "name": "Computation",
+     "type": "Enumeration",
+     "sourceOdoo": "account.tax.amount_type",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Tax Computation",
+     "odooDefault": "'percent'",
+     "enumeration": "Core.ENUM_TaxComputation"
+    },
+    {
+     "name": "Amount",
+     "type": "Decimal",
+     "sourceOdoo": "account.tax.amount",
+     "odooType": "Float",
+     "mandatory": true,
+     "odooDefault": "0.0"
+    },
+    {
+     "name": "IncludedInPrice",
+     "type": "Boolean",
+     "sourceOdoo": "account.tax.price_include_override",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Included in Price",
+     "note": "Odoo tax_included/tax_excluded/company default -> boolean"
+    },
+    {
+     "name": "LabelOnInvoice",
+     "type": "String",
+     "sourceOdoo": "account.tax.invoice_label",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Label on Invoices",
+     "length": 200
+    },
+    {
+     "name": "Sequence",
+     "type": "Integer",
+     "sourceOdoo": "account.tax.sequence",
+     "odooType": "Integer",
+     "mandatory": true,
+     "odooDefault": "1"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "account.tax.active"
+    }
+   ],
+   "associations": [],
+   "note": "No tax groups, repartition lines, fiscal positions or cash basis.",
+   "brd": "F001"
+  },
+  {
+   "name": "Core.PaymentTerm",
+   "module": "Core",
+   "persistent": true,
+   "purpose": "When an invoice must be paid: one or more instalments.",
+   "sourceOdoo": "account.payment.term",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "account.payment.term.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Payment Terms",
+     "length": 200
+    },
+    {
+     "name": "Note",
+     "type": "String",
+     "sourceOdoo": "account.payment.term.note",
+     "odooType": "Html",
+     "mandatory": false,
+     "label": "Description on the Invoice",
+     "length": "unlimited"
+    },
+    {
+     "name": "Sequence",
+     "type": "Integer",
+     "sourceOdoo": "account.payment.term.sequence",
+     "odooType": "Integer",
+     "mandatory": true,
+     "odooDefault": "10"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "account.payment.term.active"
+    }
+   ],
+   "associations": [],
+   "note": "Early-payment discounts dropped.",
+   "brd": "F001"
+  },
+  {
+   "name": "Core.PaymentTermLine",
+   "module": "Core",
+   "persistent": true,
+   "purpose": "One instalment: percent or fixed amount, due N days after a reference date.",
+   "sourceOdoo": "account.payment.term.line",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Value",
+     "type": "Enumeration",
+     "sourceOdoo": "account.payment.term.line.value",
+     "odooType": "Selection",
+     "mandatory": true,
+     "odooDefault": "'percent'",
+     "enumeration": "Core.ENUM_PaymentTermValue"
+    },
+    {
+     "name": "ValueAmount",
+     "type": "Decimal",
+     "sourceOdoo": "account.payment.term.line.value_amount",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Due",
+     "odooComputedBy": "_compute_value_amount"
+    },
+    {
+     "name": "Days",
+     "type": "Integer",
+     "sourceOdoo": "account.payment.term.line.nb_days",
+     "odooType": "Integer",
+     "mandatory": false,
+     "label": "Days",
+     "odooComputedBy": "_compute_days"
+    },
+    {
+     "name": "DelayType",
+     "type": "Enumeration",
+     "sourceOdoo": "account.payment.term.line.delay_type",
+     "odooType": "Selection",
+     "mandatory": true,
+     "odooDefault": "'days_after'",
+     "enumeration": "Core.ENUM_PaymentTermDelay"
+    }
+   ],
+   "associations": [
+    {
+     "name": "PaymentTermLine_PaymentTerm",
+     "owner": "Core.PaymentTermLine",
+     "target": "Core.PaymentTerm",
+     "type": "Reference",
+     "sourceOdoo": "account.payment.term.line.payment_id",
+     "odooTarget": "account.payment.term",
+     "mandatory": true
+    }
+   ],
+   "note": null,
+   "brd": "F001"
   }
  ],
  "enumerations": [
+  {
+   "name": "Core.ENUM_PaymentTermDelay",
+   "module": "Core",
+   "sourceOdoo": "account.payment.term.line.delay_type",
+   "values": [
+    {
+     "name": "DaysAfterInvoiceDate",
+     "caption": "Days after invoice date",
+     "odooValue": "days_after"
+    },
+    {
+     "name": "DaysAfterEndOfMonth",
+     "caption": "Days after end of month",
+     "odooValue": "days_after_end_of_month"
+    }
+   ],
+   "droppedOdooValues": [
+    "days_after_end_of_next_month",
+    "days_end_of_month_on_the"
+   ],
+   "note": "two rarer delay types dropped"
+  },
+  {
+   "name": "Core.ENUM_PaymentTermValue",
+   "module": "Core",
+   "sourceOdoo": "account.payment.term.line.value",
+   "values": [
+    {
+     "name": "Percent",
+     "caption": "Percent",
+     "odooValue": "percent"
+    },
+    {
+     "name": "Fixed",
+     "caption": "Fixed amount",
+     "odooValue": "fixed"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": null
+  },
+  {
+   "name": "Core.ENUM_TaxComputation",
+   "module": "Core",
+   "sourceOdoo": "account.tax.amount_type",
+   "values": [
+    {
+     "name": "Percentage",
+     "caption": "Percentage of price",
+     "odooValue": "percent"
+    },
+    {
+     "name": "Fixed",
+     "caption": "Fixed amount per unit",
+     "odooValue": "fixed"
+    }
+   ],
+   "droppedOdooValues": [
+    "division",
+    "group"
+   ],
+   "note": "'group' and 'division' dropped"
+  },
+  {
+   "name": "Core.ENUM_TaxScope",
+   "module": "Core",
+   "sourceOdoo": "account.tax.type_tax_use",
+   "values": [
+    {
+     "name": "Sales",
+     "caption": "Sales",
+     "odooValue": "sale"
+    },
+    {
+     "name": "Purchases",
+     "caption": "Purchases",
+     "odooValue": "purchase"
+    }
+   ],
+   "droppedOdooValues": [
+    "none"
+   ],
+   "note": "'none' (tax groups children) dropped"
+  },
   {
    "name": "Partners.ENUM_AddressType",
    "module": "Partners",
@@ -1038,7 +1328,8 @@
     "res.partner.create",
     "res.partner.write",
     "res.partner._check_parent_id"
-   ]
+   ],
+   "module": "Partners"
   },
   {
    "name": "VAL_Partner",
@@ -1059,7 +1350,8 @@
    ],
    "odooRefs": [
     "res.partner._check_parent_id"
-   ]
+   ],
+   "module": "Partners"
   },
   {
    "name": "SUB_Partner_GetCommercialPartner",
@@ -1078,7 +1370,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "res.partner._compute_commercial_partner"
-   ]
+   ],
+   "module": "Partners"
   },
   {
    "name": "SUB_Partner_GetAddress",
@@ -1101,7 +1394,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "res.partner.address_get"
-   ]
+   ],
+   "module": "Partners"
   },
   {
    "name": "SUB_Sequence_NextNumber",
@@ -1122,7 +1416,8 @@
    ],
    "odooRefs": [
     "ir.sequence.next_by_code"
-   ]
+   ],
+   "module": "Core"
   },
   {
    "name": "ASU_Core_SeedData",
@@ -1138,7 +1433,8 @@
    ],
    "odooRefs": [
     "res.company.create"
-   ]
+   ],
+   "module": "Core"
   },
   {
    "name": "ACT_UserProfile_Create",
@@ -1150,14 +1446,15 @@
      "type": "Administration.Account"
     }
    ],
-   "returns": "Core.UserProfile",
+   "returns": "Partners.UserProfile",
    "pattern": "create",
    "calls": [],
    "validations": [],
    "hiddenRules": [],
    "odooRefs": [
     "res.users.create"
-   ]
+   ],
+   "module": "Partners"
   }
  ],
  "workflows": [],
@@ -1246,7 +1543,7 @@
   {
    "name": "UserProfile_Edit",
    "purpose": "Business profile of a user.",
-   "dataContext": "Core.UserProfile",
+   "dataContext": "Partners.UserProfile",
    "pattern": "form",
    "sections": [
     "Profile"
@@ -1280,7 +1577,7 @@
  "integrations": [],
  "simplifications": [
   "Single company; res.company address flattened onto Core.Company (Odoo stores it on a linked partner).",
-  "res.users replaced by Administration.Account + Core.UserProfile (association, not generalization — Stage 3 inheritance rule).",
+  "res.users replaced by Administration.Account + Partners.UserProfile (association, not generalization — Stage 3 inheritance rule).",
   "customer_rank/supplier_rank integers replaced by IsCustomer/IsVendor booleans.",
   "States, titles, industries, country groups dropped.",
   "Company-dependent properties (payment terms, pricelist) become plain associations (single company)."
@@ -1406,11 +1703,11 @@
   "analysis/odoo/non-code-sources.md"
  ],
  "confidence": "high",
- "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 3 gap(s) point at not-implemented addons (mail/portal/utm/...)",
+ "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 4 gap(s) point at not-implemented addons (mail/portal/utm/...)",
  "summaryCounts": {
   "useCases": 6,
-  "entities": 8,
-  "enumerations": 1,
+  "entities": 11,
+  "enumerations": 5,
   "microflows": 7,
   "pages": 6,
   "openQuestions": 3

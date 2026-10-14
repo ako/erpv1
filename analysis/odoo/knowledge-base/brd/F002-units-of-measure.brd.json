@@ -248,7 +248,8 @@
    ],
    "odooRefs": [
     "uom.uom._compute_quantity"
-   ]
+   ],
+   "module": "Products"
   },
   {
    "name": "SUB_UoM_ConvertPrice",
@@ -275,7 +276,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "uom.uom._compute_price"
-   ]
+   ],
+   "module": "Products"
   },
   {
    "name": "VAL_UoMCategory",
@@ -294,7 +296,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "uom.uom._check_category_reference_uniqueness"
-   ]
+   ],
+   "module": "Products"
   }
  ],
  "workflows": [],

@@ -974,6 +974,14 @@
      "sourceOdoo": "stock.warehouse.orderpoint.vendor_id",
      "odooTarget": "res.partner",
      "mandatory": false
+    },
+    {
+     "name": "ReorderRule_PurchaseOrders",
+     "owner": "Inventory.ReorderRule",
+     "target": "Purchasing.PurchaseOrder",
+     "type": "ReferenceSet",
+     "new": true,
+     "note": "new: RFQs this rule created; owned by Inventory so Purchasing never depends on Inventory"
     }
    ],
    "note": null,
@@ -1141,7 +1149,8 @@
    "odooRefs": [
     "stock.picking.action_confirm",
     "stock.move._action_confirm"
-   ]
+   ],
+   "module": "Inventory"
   },
   {
    "name": "ACT_Transfer_CheckAvailability",
@@ -1164,7 +1173,8 @@
     "stock.picking.action_assign",
     "stock.move._action_assign",
     "stock.quant._update_reserved_quantity"
-   ]
+   ],
+   "module": "Inventory"
   },
   {
    "name": "ACT_Transfer_Validate",
@@ -1189,7 +1199,8 @@
    "odooRefs": [
     "stock.picking.button_validate",
     "stock.picking._pre_action_done_hook"
-   ]
+   ],
+   "module": "Inventory"
   },
   {
    "name": "SUB_Transfer_Done",
@@ -1220,7 +1231,8 @@
     "stock.move._action_done",
     "stock.picking._create_backorder",
     "stock.quant._update_available_quantity"
-   ]
+   ],
+   "module": "Inventory"
   },
   {
    "name": "ACT_Transfer_Cancel",
@@ -1240,7 +1252,8 @@
    "odooRefs": [
     "stock.picking.action_cancel",
     "stock.move._action_cancel"
-   ]
+   ],
+   "module": "Inventory"
   },
   {
    "name": "ACT_StockLevel_ApplyCount",
@@ -1260,7 +1273,8 @@
    "odooRefs": [
     "stock.quant.action_apply_inventory",
     "stock.quant._apply_inventory"
-   ]
+   ],
+   "module": "Inventory"
   },
   {
    "name": "SCE_ReorderRules_Run",
@@ -1277,7 +1291,8 @@
    "odooRefs": [
     "stock.warehouse.orderpoint._procure_orderpoint_confirm",
     "stock.warehouse.orderpoint._compute_qty_to_order_computed"
-   ]
+   ],
+   "module": "Inventory"
   },
   {
    "name": "SUB_ReorderRule_Replenish",
@@ -1293,13 +1308,14 @@
    "pattern": "action",
    "calls": [
     "ACT_PurchaseOrder_New",
-    "SUB_Product_GetVendorPrice"
+    "SUB_VendorPrice_GetBest"
    ],
    "validations": [],
    "hiddenRules": [],
    "odooRefs": [
     "stock.warehouse.orderpoint.action_replenish"
-   ]
+   ],
+   "module": "Inventory"
   }
  ],
  "workflows": [],

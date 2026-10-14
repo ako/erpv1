@@ -192,19 +192,19 @@
   "new": true
  },
  {
-  "entity": "Core.UserProfile",
+  "entity": "Partners.UserProfile",
   "attribute": "DisplayName",
   "odoo": "res.users (framework, not extracted field-level)",
   "new": true
  },
  {
-  "entity": "Core.UserProfile",
+  "entity": "Partners.UserProfile",
   "association": "UserProfile_Account",
   "odoo": null,
   "new": true
  },
  {
-  "entity": "Core.UserProfile",
+  "entity": "Partners.UserProfile",
   "association": "UserProfile_Partner",
   "odoo": "res.users.partner_id",
   "new": false
@@ -606,67 +606,67 @@
   "new": false
  },
  {
-  "entity": "Products.VendorPrice",
+  "entity": "Purchasing.VendorPrice",
   "attribute": "MinQuantity",
   "odoo": "product.supplierinfo.min_qty",
   "new": false
  },
  {
-  "entity": "Products.VendorPrice",
+  "entity": "Purchasing.VendorPrice",
   "attribute": "Price",
   "odoo": "product.supplierinfo.price",
   "new": false
  },
  {
-  "entity": "Products.VendorPrice",
+  "entity": "Purchasing.VendorPrice",
   "attribute": "Discount",
   "odoo": "product.supplierinfo.discount",
   "new": false
  },
  {
-  "entity": "Products.VendorPrice",
+  "entity": "Purchasing.VendorPrice",
   "attribute": "LeadTimeDays",
   "odoo": "product.supplierinfo.delay",
   "new": false
  },
  {
-  "entity": "Products.VendorPrice",
+  "entity": "Purchasing.VendorPrice",
   "attribute": "VendorProductCode",
   "odoo": "product.supplierinfo.product_code",
   "new": false
  },
  {
-  "entity": "Products.VendorPrice",
+  "entity": "Purchasing.VendorPrice",
   "attribute": "VendorProductName",
   "odoo": "product.supplierinfo.product_name",
   "new": false
  },
  {
-  "entity": "Products.VendorPrice",
+  "entity": "Purchasing.VendorPrice",
   "attribute": "ValidFrom",
   "odoo": "product.supplierinfo.date_start",
   "new": false
  },
  {
-  "entity": "Products.VendorPrice",
+  "entity": "Purchasing.VendorPrice",
   "attribute": "ValidTo",
   "odoo": "product.supplierinfo.date_end",
   "new": false
  },
  {
-  "entity": "Products.VendorPrice",
+  "entity": "Purchasing.VendorPrice",
   "attribute": "Sequence",
   "odoo": "product.supplierinfo.sequence",
   "new": false
  },
  {
-  "entity": "Products.VendorPrice",
+  "entity": "Purchasing.VendorPrice",
   "association": "VendorPrice_Vendor",
   "odoo": "product.supplierinfo.partner_id",
   "new": false
  },
  {
-  "entity": "Products.VendorPrice",
+  "entity": "Purchasing.VendorPrice",
   "association": "VendorPrice_Product",
   "odoo": "product.supplierinfo.product_tmpl_id",
   "new": false
@@ -1194,18 +1194,6 @@
   "new": false
  },
  {
-  "entity": "Purchasing.PurchaseOrder",
-  "association": "PurchaseOrder_DeliverTo",
-  "odoo": "purchase.order.picking_type_id",
-  "new": false
- },
- {
-  "entity": "Purchasing.PurchaseOrder",
-  "association": "PurchaseOrder_ReorderRule",
-  "odoo": null,
-  "new": true
- },
- {
   "entity": "Purchasing.PurchaseOrderLine",
   "attribute": "Sequence",
   "odoo": "purchase.order.line.sequence",
@@ -1686,6 +1674,12 @@
   "new": false
  },
  {
+  "entity": "Inventory.ReorderRule",
+  "association": "ReorderRule_PurchaseOrders",
+  "odoo": null,
+  "new": true
+ },
+ {
   "entity": "Inventory.ValidateTransferRequest",
   "attribute": "CreateBackorder",
   "odoo": "stock.backorder.confirmation (framework, not extracted field-level)",
@@ -1920,91 +1914,91 @@
   "new": false
  },
  {
-  "entity": "Invoicing.Tax",
+  "entity": "Core.Tax",
   "attribute": "Name",
   "odoo": "account.tax.name",
   "new": false
  },
  {
-  "entity": "Invoicing.Tax",
+  "entity": "Core.Tax",
   "attribute": "Scope",
   "odoo": "account.tax.type_tax_use",
   "new": false
  },
  {
-  "entity": "Invoicing.Tax",
+  "entity": "Core.Tax",
   "attribute": "Computation",
   "odoo": "account.tax.amount_type",
   "new": false
  },
  {
-  "entity": "Invoicing.Tax",
+  "entity": "Core.Tax",
   "attribute": "Amount",
   "odoo": "account.tax.amount",
   "new": false
  },
  {
-  "entity": "Invoicing.Tax",
+  "entity": "Core.Tax",
   "attribute": "IncludedInPrice",
   "odoo": "account.tax.price_include_override",
   "new": false
  },
  {
-  "entity": "Invoicing.Tax",
+  "entity": "Core.Tax",
   "attribute": "LabelOnInvoice",
   "odoo": "account.tax.invoice_label",
   "new": false
  },
  {
-  "entity": "Invoicing.Tax",
+  "entity": "Core.Tax",
   "attribute": "Sequence",
   "odoo": "account.tax.sequence",
   "new": false
  },
  {
-  "entity": "Invoicing.PaymentTerm",
+  "entity": "Core.PaymentTerm",
   "attribute": "Name",
   "odoo": "account.payment.term.name",
   "new": false
  },
  {
-  "entity": "Invoicing.PaymentTerm",
+  "entity": "Core.PaymentTerm",
   "attribute": "Note",
   "odoo": "account.payment.term.note",
   "new": false
  },
  {
-  "entity": "Invoicing.PaymentTerm",
+  "entity": "Core.PaymentTerm",
   "attribute": "Sequence",
   "odoo": "account.payment.term.sequence",
   "new": false
  },
  {
-  "entity": "Invoicing.PaymentTermLine",
+  "entity": "Core.PaymentTermLine",
   "attribute": "Value",
   "odoo": "account.payment.term.line.value",
   "new": false
  },
  {
-  "entity": "Invoicing.PaymentTermLine",
+  "entity": "Core.PaymentTermLine",
   "attribute": "ValueAmount",
   "odoo": "account.payment.term.line.value_amount",
   "new": false
  },
  {
-  "entity": "Invoicing.PaymentTermLine",
+  "entity": "Core.PaymentTermLine",
   "attribute": "Days",
   "odoo": "account.payment.term.line.nb_days",
   "new": false
  },
  {
-  "entity": "Invoicing.PaymentTermLine",
+  "entity": "Core.PaymentTermLine",
   "attribute": "DelayType",
   "odoo": "account.payment.term.line.delay_type",
   "new": false
  },
  {
-  "entity": "Invoicing.PaymentTermLine",
+  "entity": "Core.PaymentTermLine",
   "association": "PaymentTermLine_PaymentTerm",
   "odoo": "account.payment.term.line.payment_id",
   "new": false

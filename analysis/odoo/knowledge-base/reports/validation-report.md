@@ -94,3 +94,12 @@ validations (line required, no negative total, bill date on vendor bills — `ac
 Not applicable yet: no `design/prototype.html` exists (Stage 3 produces it). Use cases carry
 `screens` (Mendix pages); `routes` are added at Stage 3 when the prototype exists, and this check
 runs then.
+
+## Re-validation 2026-10-14 (Stage 3 module restructure)
+
+Stage 3's boundary check found association cycles between modules (Partners ⇄ Products, Core ⇄ Partners,
+Purchasing ⇄ Inventory, master data → Invoicing). Fixed in `brd_spec.py`/`brd_content.py`: Tax, PaymentTerm,
+PaymentTermLine → Core; UserProfile → Partners; VendorPrice (+ F003 UC002, SUB_VendorPrice_GetBest) → Purchasing
+(now F005 UC007); PurchaseOrder_DeliverTo dropped; PurchaseOrder_ReorderRule reversed to ReorderRule_PurchaseOrders.
+The generator now also fails on any association cycle (mutation-tested) and assigns every microflow to a module.
+All checks above re-run after regeneration: 0 findings; 357 members (337 traced, 20 new); 89/89 in-scope models accounted.

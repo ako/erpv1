@@ -552,7 +552,7 @@
     {
      "name": "Invoice_PaymentTerm",
      "owner": "Invoicing.Invoice",
-     "target": "Invoicing.PaymentTerm",
+     "target": "Core.PaymentTerm",
      "type": "Reference",
      "sourceOdoo": "account.move.invoice_payment_term_id",
      "odooTarget": "account.payment.term",
@@ -728,7 +728,7 @@
     {
      "name": "InvoiceLine_Taxes",
      "owner": "Invoicing.InvoiceLine",
-     "target": "Invoicing.Tax",
+     "target": "Core.Tax",
      "type": "ReferenceSet",
      "sourceOdoo": "account.move.line.tax_ids",
      "odooTarget": "account.tax",
@@ -751,212 +751,6 @@
      "sourceOdoo": "account.move.line.purchase_line_id",
      "odooTarget": "purchase.order.line",
      "mandatory": false
-    }
-   ],
-   "note": null,
-   "brd": "F008"
-  },
-  {
-   "name": "Invoicing.Tax",
-   "module": "Invoicing",
-   "persistent": true,
-   "purpose": "A sales or purchase tax: percentage or fixed amount, price-included or not.",
-   "sourceOdoo": "account.tax",
-   "generalization": null,
-   "systemMembers": [
-    "createdDate",
-    "changedDate",
-    "owner",
-    "changedBy"
-   ],
-   "attributes": [
-    {
-     "name": "Name",
-     "type": "String",
-     "sourceOdoo": "account.tax.name",
-     "odooType": "Char",
-     "mandatory": true,
-     "label": "Tax Name",
-     "length": 200
-    },
-    {
-     "name": "Scope",
-     "type": "Enumeration",
-     "sourceOdoo": "account.tax.type_tax_use",
-     "odooType": "Selection",
-     "mandatory": true,
-     "label": "Tax Type",
-     "odooDefault": "'sale'",
-     "enumeration": "Invoicing.ENUM_TaxScope"
-    },
-    {
-     "name": "Computation",
-     "type": "Enumeration",
-     "sourceOdoo": "account.tax.amount_type",
-     "odooType": "Selection",
-     "mandatory": true,
-     "label": "Tax Computation",
-     "odooDefault": "'percent'",
-     "enumeration": "Invoicing.ENUM_TaxComputation"
-    },
-    {
-     "name": "Amount",
-     "type": "Decimal",
-     "sourceOdoo": "account.tax.amount",
-     "odooType": "Float",
-     "mandatory": true,
-     "odooDefault": "0.0"
-    },
-    {
-     "name": "IncludedInPrice",
-     "type": "Boolean",
-     "sourceOdoo": "account.tax.price_include_override",
-     "odooType": "Selection",
-     "mandatory": false,
-     "label": "Included in Price",
-     "note": "Odoo tax_included/tax_excluded/company default -> boolean"
-    },
-    {
-     "name": "LabelOnInvoice",
-     "type": "String",
-     "sourceOdoo": "account.tax.invoice_label",
-     "odooType": "Char",
-     "mandatory": false,
-     "label": "Label on Invoices",
-     "length": 200
-    },
-    {
-     "name": "Sequence",
-     "type": "Integer",
-     "sourceOdoo": "account.tax.sequence",
-     "odooType": "Integer",
-     "mandatory": true,
-     "odooDefault": "1"
-    },
-    {
-     "name": "Active",
-     "type": "Boolean",
-     "default": "true",
-     "mandatory": false,
-     "sourceOdoo": "account.tax.active"
-    }
-   ],
-   "associations": [],
-   "note": "No tax groups, repartition lines, fiscal positions or cash basis.",
-   "brd": "F008"
-  },
-  {
-   "name": "Invoicing.PaymentTerm",
-   "module": "Invoicing",
-   "persistent": true,
-   "purpose": "When an invoice must be paid: one or more instalments.",
-   "sourceOdoo": "account.payment.term",
-   "generalization": null,
-   "systemMembers": [
-    "createdDate",
-    "changedDate",
-    "owner",
-    "changedBy"
-   ],
-   "attributes": [
-    {
-     "name": "Name",
-     "type": "String",
-     "sourceOdoo": "account.payment.term.name",
-     "odooType": "Char",
-     "mandatory": true,
-     "label": "Payment Terms",
-     "length": 200
-    },
-    {
-     "name": "Note",
-     "type": "String",
-     "sourceOdoo": "account.payment.term.note",
-     "odooType": "Html",
-     "mandatory": false,
-     "label": "Description on the Invoice",
-     "length": "unlimited"
-    },
-    {
-     "name": "Sequence",
-     "type": "Integer",
-     "sourceOdoo": "account.payment.term.sequence",
-     "odooType": "Integer",
-     "mandatory": true,
-     "odooDefault": "10"
-    },
-    {
-     "name": "Active",
-     "type": "Boolean",
-     "default": "true",
-     "mandatory": false,
-     "sourceOdoo": "account.payment.term.active"
-    }
-   ],
-   "associations": [],
-   "note": "Early-payment discounts dropped.",
-   "brd": "F008"
-  },
-  {
-   "name": "Invoicing.PaymentTermLine",
-   "module": "Invoicing",
-   "persistent": true,
-   "purpose": "One instalment: percent or fixed amount, due N days after a reference date.",
-   "sourceOdoo": "account.payment.term.line",
-   "generalization": null,
-   "systemMembers": [
-    "createdDate",
-    "changedDate",
-    "owner",
-    "changedBy"
-   ],
-   "attributes": [
-    {
-     "name": "Value",
-     "type": "Enumeration",
-     "sourceOdoo": "account.payment.term.line.value",
-     "odooType": "Selection",
-     "mandatory": true,
-     "odooDefault": "'percent'",
-     "enumeration": "Invoicing.ENUM_PaymentTermValue"
-    },
-    {
-     "name": "ValueAmount",
-     "type": "Decimal",
-     "sourceOdoo": "account.payment.term.line.value_amount",
-     "odooType": "Float",
-     "mandatory": false,
-     "label": "Due",
-     "odooComputedBy": "_compute_value_amount"
-    },
-    {
-     "name": "Days",
-     "type": "Integer",
-     "sourceOdoo": "account.payment.term.line.nb_days",
-     "odooType": "Integer",
-     "mandatory": false,
-     "label": "Days",
-     "odooComputedBy": "_compute_days"
-    },
-    {
-     "name": "DelayType",
-     "type": "Enumeration",
-     "sourceOdoo": "account.payment.term.line.delay_type",
-     "odooType": "Selection",
-     "mandatory": true,
-     "odooDefault": "'days_after'",
-     "enumeration": "Invoicing.ENUM_PaymentTermDelay"
-    }
-   ],
-   "associations": [
-    {
-     "name": "PaymentTermLine_PaymentTerm",
-     "owner": "Invoicing.PaymentTermLine",
-     "target": "Invoicing.PaymentTerm",
-     "type": "Reference",
-     "sourceOdoo": "account.payment.term.line.payment_id",
-     "odooTarget": "account.payment.term",
-     "mandatory": true
     }
    ],
    "note": null,
@@ -1434,90 +1228,6 @@
     "invoicing_legacy"
    ],
    "note": "'in_payment' (bank reconciliation pending), 'blocked', 'invoicing_legacy' dropped"
-  },
-  {
-   "name": "Invoicing.ENUM_PaymentTermDelay",
-   "module": "Invoicing",
-   "sourceOdoo": "account.payment.term.line.delay_type",
-   "values": [
-    {
-     "name": "DaysAfterInvoiceDate",
-     "caption": "Days after invoice date",
-     "odooValue": "days_after"
-    },
-    {
-     "name": "DaysAfterEndOfMonth",
-     "caption": "Days after end of month",
-     "odooValue": "days_after_end_of_month"
-    }
-   ],
-   "droppedOdooValues": [
-    "days_after_end_of_next_month",
-    "days_end_of_month_on_the"
-   ],
-   "note": "two rarer delay types dropped"
-  },
-  {
-   "name": "Invoicing.ENUM_PaymentTermValue",
-   "module": "Invoicing",
-   "sourceOdoo": "account.payment.term.line.value",
-   "values": [
-    {
-     "name": "Percent",
-     "caption": "Percent",
-     "odooValue": "percent"
-    },
-    {
-     "name": "Fixed",
-     "caption": "Fixed amount",
-     "odooValue": "fixed"
-    }
-   ],
-   "droppedOdooValues": [],
-   "note": null
-  },
-  {
-   "name": "Invoicing.ENUM_TaxComputation",
-   "module": "Invoicing",
-   "sourceOdoo": "account.tax.amount_type",
-   "values": [
-    {
-     "name": "Percentage",
-     "caption": "Percentage of price",
-     "odooValue": "percent"
-    },
-    {
-     "name": "Fixed",
-     "caption": "Fixed amount per unit",
-     "odooValue": "fixed"
-    }
-   ],
-   "droppedOdooValues": [
-    "division",
-    "group"
-   ],
-   "note": "'group' and 'division' dropped"
-  },
-  {
-   "name": "Invoicing.ENUM_TaxScope",
-   "module": "Invoicing",
-   "sourceOdoo": "account.tax.type_tax_use",
-   "values": [
-    {
-     "name": "Sales",
-     "caption": "Sales",
-     "odooValue": "sale"
-    },
-    {
-     "name": "Purchases",
-     "caption": "Purchases",
-     "odooValue": "purchase"
-    }
-   ],
-   "droppedOdooValues": [
-    "none"
-   ],
-   "note": "'none' (tax groups children) dropped"
   }
  ],
  "viewEntities": [
@@ -1546,7 +1256,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "sale.order.action_view_invoice"
-   ]
+   ],
+   "module": "Invoicing"
   },
   {
    "name": "SUB_SalesOrders_CreateInvoices",
@@ -1572,7 +1283,8 @@
     "sale.order._create_invoices",
     "sale.order._prepare_invoice",
     "sale.order.line._prepare_invoice_line"
-   ]
+   ],
+   "module": "Invoicing"
   },
   {
    "name": "ACT_PurchaseOrder_CreateBill",
@@ -1597,7 +1309,8 @@
    "odooRefs": [
     "purchase.order.action_create_invoice",
     "purchase.order._prepare_invoice"
-   ]
+   ],
+   "module": "Invoicing"
   },
   {
    "name": "SUB_Tax_ComputeLine",
@@ -1618,7 +1331,7 @@
     },
     {
      "name": "Taxes",
-     "type": "List of Invoicing.Tax"
+     "type": "List of Core.Tax"
     }
    ],
    "returns": "Core.LineAmounts (non-persistent)",
@@ -1633,7 +1346,8 @@
    "odooRefs": [
     "account.tax._get_tax_details",
     "account.tax.compute_all"
-   ]
+   ],
+   "module": "Core"
   },
   {
    "name": "SUB_Invoice_RecomputeTotals",
@@ -1655,7 +1369,8 @@
    "odooRefs": [
     "account.move._compute_amount",
     "account.move.line._compute_totals"
-   ]
+   ],
+   "module": "Invoicing"
   },
   {
    "name": "SUB_PaymentTerm_ComputeDueDate",
@@ -1664,7 +1379,7 @@
    "params": [
     {
      "name": "PaymentTerm",
-     "type": "Invoicing.PaymentTerm"
+     "type": "Core.PaymentTerm"
     },
     {
      "name": "InvoiceDate",
@@ -1679,7 +1394,8 @@
    "odooRefs": [
     "account.payment.term._compute_terms",
     "account.payment.term.line._get_due_date"
-   ]
+   ],
+   "module": "Core"
   },
   {
    "name": "ACT_Invoice_Post",
@@ -1709,7 +1425,8 @@
    "odooRefs": [
     "account.move.action_post",
     "account.move._post"
-   ]
+   ],
+   "module": "Invoicing"
   },
   {
    "name": "ACT_Invoice_ResetToDraft",
@@ -1730,7 +1447,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "account.move.button_draft"
-   ]
+   ],
+   "module": "Invoicing"
   },
   {
    "name": "ACT_Invoice_Cancel",
@@ -1749,7 +1467,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "account.move.button_cancel"
-   ]
+   ],
+   "module": "Invoicing"
   },
   {
    "name": "ACT_Invoice_CreateCreditNote",
@@ -1769,7 +1488,8 @@
    "odooRefs": [
     "account.move.reversal.reverse_moves",
     "account.move._reverse_moves"
-   ]
+   ],
+   "module": "Invoicing"
   },
   {
    "name": "ACT_Invoice_RegisterPayment",
@@ -1790,7 +1510,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "account.move.action_register_payment"
-   ]
+   ],
+   "module": "Invoicing"
   },
   {
    "name": "SUB_Payment_Create",
@@ -1815,7 +1536,8 @@
    "odooRefs": [
     "account.payment.register._create_payments",
     "account.payment.register._create_payment_vals_from_wizard"
-   ]
+   ],
+   "module": "Invoicing"
   },
   {
    "name": "SUB_Invoice_UpdatePaymentStatus",
@@ -1834,7 +1556,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "account.move._compute_payment_state"
-   ]
+   ],
+   "module": "Invoicing"
   }
  ],
  "workflows": [],
@@ -1955,7 +1678,7 @@
   {
    "name": "Tax_Overview",
    "purpose": "Taxes.",
-   "dataContext": "Invoicing.Tax",
+   "dataContext": "Core.Tax",
    "pattern": "list",
    "sections": [
     "Grid"
@@ -1972,7 +1695,7 @@
   {
    "name": "PaymentTerm_NewEdit",
    "purpose": "Payment term with instalment lines.",
-   "dataContext": "Invoicing.PaymentTerm",
+   "dataContext": "Core.PaymentTerm",
    "pattern": "form",
    "sections": [
     "Term",
@@ -2119,11 +1842,11 @@
   "analysis/odoo/non-code-sources.md"
  ],
  "confidence": "high",
- "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 7 gap(s) point at not-implemented addons (mail/portal/utm/...)",
+ "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 6 gap(s) point at not-implemented addons (mail/portal/utm/...)",
  "summaryCounts": {
   "useCases": 9,
-  "entities": 11,
-  "enumerations": 12,
+  "entities": 8,
+  "enumerations": 8,
   "microflows": 13,
   "pages": 9,
   "openQuestions": 3

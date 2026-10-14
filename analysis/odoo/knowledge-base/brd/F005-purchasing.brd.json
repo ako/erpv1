@@ -197,9 +197,153 @@
    "status": "proposed",
    "reviewStatus": "pending",
    "signOff": "Q-F004-3"
+  },
+  {
+   "id": "UC007",
+   "title": "Record vendor prices",
+   "actors": [
+    "PurchaseManager",
+    "Purchaser"
+   ],
+   "preconditions": [
+    "Product and vendor exist"
+   ],
+   "postconditions": [
+    "RFQ lines default to this price and lead time"
+   ],
+   "mainFlow": [
+    "1. On the product Purchase tab, user adds a vendor line: vendor, min quantity, price, discount, lead time, validity",
+    "2. System uses the first valid line (sequence, min qty, dates) when a purchase line is created"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "VendorPrice_Overview"
+   ],
+   "odooRefs": [
+    "product.product_supplierinfo_form_view",
+    "product.product._select_seller"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
   }
  ],
  "domainEntities": [
+  {
+   "name": "Purchasing.VendorPrice",
+   "module": "Purchasing",
+   "persistent": true,
+   "purpose": "A vendor's price and lead time for a product (drives RFQ prices).",
+   "sourceOdoo": "product.supplierinfo",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "MinQuantity",
+     "type": "Decimal",
+     "sourceOdoo": "product.supplierinfo.min_qty",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Quantity",
+     "odooDefault": "0.0"
+    },
+    {
+     "name": "Price",
+     "type": "Decimal",
+     "sourceOdoo": "product.supplierinfo.price",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Price",
+     "odooDefault": "0.0"
+    },
+    {
+     "name": "Discount",
+     "type": "Decimal",
+     "sourceOdoo": "product.supplierinfo.discount",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Discount (%)"
+    },
+    {
+     "name": "LeadTimeDays",
+     "type": "Integer",
+     "sourceOdoo": "product.supplierinfo.delay",
+     "odooType": "Integer",
+     "mandatory": true,
+     "label": "Delivery Lead Time",
+     "odooDefault": "1"
+    },
+    {
+     "name": "VendorProductCode",
+     "type": "String",
+     "sourceOdoo": "product.supplierinfo.product_code",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Vendor Product Code",
+     "length": 200
+    },
+    {
+     "name": "VendorProductName",
+     "type": "String",
+     "sourceOdoo": "product.supplierinfo.product_name",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Vendor Product Name",
+     "length": 200
+    },
+    {
+     "name": "ValidFrom",
+     "type": "DateTime",
+     "sourceOdoo": "product.supplierinfo.date_start",
+     "odooType": "Date",
+     "mandatory": false,
+     "label": "Start Date"
+    },
+    {
+     "name": "ValidTo",
+     "type": "DateTime",
+     "sourceOdoo": "product.supplierinfo.date_end",
+     "odooType": "Date",
+     "mandatory": false,
+     "label": "End Date"
+    },
+    {
+     "name": "Sequence",
+     "type": "Integer",
+     "sourceOdoo": "product.supplierinfo.sequence",
+     "odooType": "Integer",
+     "mandatory": false,
+     "label": "Sequence",
+     "odooDefault": "1"
+    }
+   ],
+   "associations": [
+    {
+     "name": "VendorPrice_Vendor",
+     "owner": "Purchasing.VendorPrice",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "product.supplierinfo.partner_id",
+     "odooTarget": "res.partner",
+     "mandatory": true
+    },
+    {
+     "name": "VendorPrice_Product",
+     "owner": "Purchasing.VendorPrice",
+     "target": "Products.Product",
+     "type": "Reference",
+     "sourceOdoo": "product.supplierinfo.product_tmpl_id",
+     "odooTarget": "product.template",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F005"
+  },
   {
    "name": "Purchasing.PurchaseOrder",
    "module": "Purchasing",
@@ -367,7 +511,7 @@
     {
      "name": "PurchaseOrder_PaymentTerm",
      "owner": "Purchasing.PurchaseOrder",
-     "target": "Invoicing.PaymentTerm",
+     "target": "Core.PaymentTerm",
      "type": "Reference",
      "sourceOdoo": "purchase.order.payment_term_id",
      "odooTarget": "account.payment.term",
@@ -381,24 +525,6 @@
      "sourceOdoo": "purchase.order.currency_id",
      "odooTarget": "res.currency",
      "mandatory": true
-    },
-    {
-     "name": "PurchaseOrder_DeliverTo",
-     "owner": "Purchasing.PurchaseOrder",
-     "target": "Inventory.OperationType",
-     "type": "Reference",
-     "sourceOdoo": "purchase.order.picking_type_id",
-     "odooTarget": "stock.picking.type",
-     "mandatory": true,
-     "note": "receipt operation of the warehouse"
-    },
-    {
-     "name": "PurchaseOrder_ReorderRule",
-     "owner": "Purchasing.PurchaseOrder",
-     "target": "Inventory.ReorderRule",
-     "type": "Reference",
-     "new": true,
-     "note": "new: which replenishment rule created this RFQ"
     }
    ],
    "note": null,
@@ -569,7 +695,7 @@
     {
      "name": "PurchaseOrderLine_Taxes",
      "owner": "Purchasing.PurchaseOrderLine",
-     "target": "Invoicing.Tax",
+     "target": "Core.Tax",
      "type": "ReferenceSet",
      "sourceOdoo": "purchase.order.line.taxes_id",
      "odooTarget": "account.tax",
@@ -718,7 +844,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "purchase.order.onchange_partner_id"
-   ]
+   ],
+   "module": "Purchasing"
   },
   {
    "name": "ACT_PurchaseOrderLine_ChangeProduct",
@@ -733,14 +860,15 @@
    "returns": "Boolean",
    "pattern": "onchange",
    "calls": [
-    "SUB_Product_GetVendorPrice"
+    "SUB_VendorPrice_GetBest"
    ],
    "validations": [],
    "hiddenRules": [],
    "odooRefs": [
     "purchase.order.line._compute_price_unit_and_date_planned_and_name",
     "purchase.order.line._compute_tax_id"
-   ]
+   ],
+   "module": "Purchasing"
   },
   {
    "name": "SUB_PurchaseOrder_RecomputeTotals",
@@ -762,7 +890,8 @@
    "odooRefs": [
     "purchase.order.line._compute_amount",
     "purchase.order._amount_all"
-   ]
+   ],
+   "module": "Purchasing"
   },
   {
    "name": "ACT_PurchaseOrder_MarkSent",
@@ -781,7 +910,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "purchase.order.action_rfq_send"
-   ]
+   ],
+   "module": "Purchasing"
   },
   {
    "name": "ACT_PurchaseOrder_Confirm",
@@ -810,7 +940,8 @@
     "purchase.order.button_confirm",
     "purchase.order._approval_allowed",
     "purchase.order._add_supplier_to_product"
-   ]
+   ],
+   "module": "Purchasing"
   },
   {
    "name": "SUB_PurchaseOrder_Approve",
@@ -832,7 +963,8 @@
    "odooRefs": [
     "purchase.order.button_approve",
     "purchase.order._create_picking"
-   ]
+   ],
+   "module": "Purchasing"
   },
   {
    "name": "ACT_PurchaseOrder_Reject",
@@ -851,7 +983,8 @@
     "Reason not empty"
    ],
    "hiddenRules": [],
-   "odooRefs": []
+   "odooRefs": [],
+   "module": "Purchasing"
   },
   {
    "name": "ACT_PurchaseOrder_Cancel",
@@ -873,7 +1006,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "purchase.order.button_cancel"
-   ]
+   ],
+   "module": "Purchasing"
   },
   {
    "name": "ACT_PurchaseOrder_SetToDraft",
@@ -892,7 +1026,8 @@
    "hiddenRules": [],
    "odooRefs": [
     "purchase.order.button_draft"
-   ]
+   ],
+   "module": "Purchasing"
   },
   {
    "name": "ACT_PurchaseOrder_ToggleLock",
@@ -912,7 +1047,36 @@
    "odooRefs": [
     "purchase.order.button_done",
     "purchase.order.button_unlock"
-   ]
+   ],
+   "module": "Purchasing"
+  },
+  {
+   "name": "SUB_VendorPrice_GetBest",
+   "kind": "Microflow",
+   "purpose": "Best vendor price line for vendor/product/quantity/date.",
+   "params": [
+    {
+     "name": "Vendor",
+     "type": "Partners.Partner"
+    },
+    {
+     "name": "Product",
+     "type": "Products.Product"
+    },
+    {
+     "name": "Quantity",
+     "type": "Decimal"
+    }
+   ],
+   "returns": "Purchasing.VendorPrice",
+   "pattern": "retrieve",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "product.product._select_seller"
+   ],
+   "module": "Purchasing"
   },
   {
    "name": "SUB_PurchaseOrder_UpdateBillingStatus",
@@ -932,7 +1096,8 @@
    "odooRefs": [
     "purchase.order.line._compute_qty_invoiced",
     "purchase.order._get_invoiced"
-   ]
+   ],
+   "module": "Purchasing"
   }
  ],
  "workflows": [
@@ -1016,6 +1181,24 @@
    "odooRefs": []
   },
   {
+   "name": "VendorPrice_Overview",
+   "purpose": "Editable vendor price list per product/vendor.",
+   "dataContext": "Purchasing.VendorPrice",
+   "pattern": "list",
+   "sections": [
+    "Filters",
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Edit"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "product.product_supplierinfo_tree_view"
+   ]
+  },
+  {
    "name": "PurchaseAnalysis_Report",
    "purpose": "Charts and grid over Purchasing.PurchaseAnalysis.",
    "dataContext": "Purchasing.PurchaseAnalysis",
@@ -1093,11 +1276,11 @@
  "confidence": "high",
  "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 3 gap(s) point at not-implemented addons (mail/portal/utm/...)",
  "summaryCounts": {
-  "useCases": 6,
-  "entities": 2,
+  "useCases": 7,
+  "entities": 3,
   "enumerations": 4,
-  "microflows": 11,
-  "pages": 4,
+  "microflows": 12,
+  "pages": 5,
   "openQuestions": 1
  }
 }

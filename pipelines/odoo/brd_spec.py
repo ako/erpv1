@@ -14,7 +14,7 @@ Conventions (Mendix-native, recorded as deviations from brd-generation.md's temp
   * Document numbers come from a Core.Sequence entity (Odoo ir.sequence / sequence.mixin prefixes).
 """
 
-MODULES = ['Core', 'Partners', 'Products', 'Sales', 'Purchasing', 'Inventory', 'Invoicing']
+MODULES = ['Core', 'Products', 'Partners', 'Sales', 'Purchasing', 'Inventory', 'Invoicing']
 
 # ── Enumerations: (MendixValue, odooValue|None, caption) ─────────────────────────────────────
 ENUMS = {
@@ -86,14 +86,14 @@ ENUMS = {
     'Invoicing.ENUM_PaymentMethod': dict(odoo=None, values=[
         ('BankTransfer', None, 'Bank transfer'), ('Cash', None, 'Cash')],
         note="new: replaces account.journal (bank/cash journals) + account.payment.method.line"),
-    'Invoicing.ENUM_TaxScope': dict(odoo='account.tax.type_tax_use', values=[
+    'Core.ENUM_TaxScope': dict(odoo='account.tax.type_tax_use', values=[
         ('Sales', 'sale', 'Sales'), ('Purchases', 'purchase', 'Purchases')], note="'none' (tax groups children) dropped"),
-    'Invoicing.ENUM_TaxComputation': dict(odoo='account.tax.amount_type', values=[
+    'Core.ENUM_TaxComputation': dict(odoo='account.tax.amount_type', values=[
         ('Percentage', 'percent', 'Percentage of price'), ('Fixed', 'fixed', 'Fixed amount per unit')],
         note="'group' and 'division' dropped"),
-    'Invoicing.ENUM_PaymentTermValue': dict(odoo='account.payment.term.line.value', values=[
+    'Core.ENUM_PaymentTermValue': dict(odoo='account.payment.term.line.value', values=[
         ('Percent', 'percent', 'Percent'), ('Fixed', 'fixed', 'Fixed amount')]),
-    'Invoicing.ENUM_PaymentTermDelay': dict(odoo='account.payment.term.line.delay_type', values=[
+    'Core.ENUM_PaymentTermDelay': dict(odoo='account.payment.term.line.delay_type', values=[
         ('DaysAfterInvoiceDate', 'days_after', 'Days after invoice date'),
         ('DaysAfterEndOfMonth', 'days_after_end_of_month', 'Days after end of month')],
         note="two rarer delay types dropped"),
@@ -122,8 +122,8 @@ entity('Core.Company', 'res.company', 'The single company operating the app: ide
 ], [
     ('Company_Country', 'Core.Country', 'Reference', 'country_id', None),
     ('Company_Currency', 'Core.Currency', 'Reference', 'currency_id', None),
-    ('Company_DefaultSalesTax', 'Invoicing.Tax', 'Reference', 'account_sale_tax_id', None),
-    ('Company_DefaultPurchaseTax', 'Invoicing.Tax', 'Reference', 'account_purchase_tax_id', None),
+    ('Company_DefaultSalesTax', 'Core.Tax', 'Reference', 'account_sale_tax_id', None),
+    ('Company_DefaultPurchaseTax', 'Core.Tax', 'Reference', 'account_purchase_tax_id', None),
 ], brd='F001', note='Singleton (multi-company out of scope). Odoo keeps the address on a linked res.partner; flattened here.')
 entity('Core.Country', 'res.country', 'Countries for addresses.', [
     ('Name', 'name', {}), ('Code', 'code', {})], brd='F001')
@@ -140,7 +140,7 @@ entity('Core.Sequence', 'ir.sequence', 'Document numbering per document type (S0
 entity('Core.LineAmounts', None, 'Result of a line amount computation (subtotal, tax, total) passed between microflows.', [
     ('Subtotal', None, {'type': 'Decimal'}), ('TaxAmount', None, {'type': 'Decimal'}), ('Total', None, {'type': 'Decimal'})],
     persistent=False, brd='F008', note='new: helper for SUB_Tax_ComputeLine')
-entity('Core.UserProfile', 'res.users', 'Business data of an app user (Mendix account): display name and linked partner. Team membership lives on Sales.SalesTeam.', [
+entity('Partners.UserProfile', 'res.users', 'Business data of an app user (Mendix account): display name and linked partner. Team membership lives on Sales.SalesTeam.', [
     ('DisplayName', None, {'type': 'String', 'length': 200, 'note': 'shown on documents; Odoo takes it from the linked partner'}),
 ], [
     ('UserProfile_Account', 'Administration.Account', 'Reference', None, 'Mendix account (System.User) — replaces res.users login/groups'),
@@ -158,8 +158,8 @@ entity('Partners.Partner', 'res.partner', 'Any customer, vendor or contact perso
     ('Partner_Country', 'Core.Country', 'Reference', 'country_id', None),
     ('Partner_Tags', 'Partners.PartnerTag', 'ReferenceSet', 'category_id', None),
     ('Partner_Salesperson', 'Administration.Account', 'Reference', 'user_id', None),
-    ('Partner_CustomerPaymentTerm', 'Invoicing.PaymentTerm', 'Reference', 'property_payment_term_id', 'company-dependent in Odoo; single company here'),
-    ('Partner_VendorPaymentTerm', 'Invoicing.PaymentTerm', 'Reference', 'property_supplier_payment_term_id', None),
+    ('Partner_CustomerPaymentTerm', 'Core.PaymentTerm', 'Reference', 'property_payment_term_id', 'company-dependent in Odoo; single company here'),
+    ('Partner_VendorPaymentTerm', 'Core.PaymentTerm', 'Reference', 'property_supplier_payment_term_id', None),
     ('Partner_Pricelist', 'Products.Pricelist', 'Reference', 'property_product_pricelist', None),
 ], active=True, brd='F001')
 entity('Partners.PartnerTag', 'res.partner.category', 'Free tags to classify partners.', [
@@ -196,8 +196,8 @@ entity('Products.Product', 'product.template', 'A sellable and/or purchasable pr
     ('Product_Category', 'Products.ProductCategory', 'Reference', 'categ_id', None),
     ('Product_UoM', 'Products.UoM', 'Reference', 'uom_id', 'sales and stock unit'),
     ('Product_PurchaseUoM', 'Products.UoM', 'Reference', 'uom_po_id', None),
-    ('Product_CustomerTaxes', 'Invoicing.Tax', 'ReferenceSet', 'taxes_id', None),
-    ('Product_VendorTaxes', 'Invoicing.Tax', 'ReferenceSet', 'supplier_taxes_id', None),
+    ('Product_CustomerTaxes', 'Core.Tax', 'ReferenceSet', 'taxes_id', None),
+    ('Product_VendorTaxes', 'Core.Tax', 'ReferenceSet', 'supplier_taxes_id', None),
     ('Product_Tags', 'Products.ProductTag', 'ReferenceSet', 'product_tag_ids', None),
 ], active=True, brd='F003',
     note='product.template and product.product merged: variants out of scope. Image via a ProductImage specialization of System.Image.')
@@ -205,12 +205,12 @@ entity('Products.ProductImage', None, 'Product picture.', [], [
     ('ProductImage_Product', 'Products.Product', 'Reference', None, 'Odoo image.mixin image_1920')], brd='F003',
     generalization='System.Image', note='new: Mendix-native file storage for image.mixin')
 entity('Products.ProductTag', 'product.tag', 'Free tags on products.', [('Name', 'name', {}), ('Color', 'color', {})], brd='F003')
-entity('Products.VendorPrice', 'product.supplierinfo', "A vendor's price and lead time for a product (drives RFQ prices).", [
+entity('Purchasing.VendorPrice', 'product.supplierinfo', "A vendor's price and lead time for a product (drives RFQ prices).", [
     ('MinQuantity', 'min_qty', {}), ('Price', 'price', {}), ('Discount', 'discount', {}), ('LeadTimeDays', 'delay', {}),
     ('VendorProductCode', 'product_code', {}), ('VendorProductName', 'product_name', {}),
     ('ValidFrom', 'date_start', {}), ('ValidTo', 'date_end', {}), ('Sequence', 'sequence', {})], [
     ('VendorPrice_Vendor', 'Partners.Partner', 'Reference', 'partner_id', None),
-    ('VendorPrice_Product', 'Products.Product', 'Reference', 'product_tmpl_id', None)], brd='F003')
+    ('VendorPrice_Product', 'Products.Product', 'Reference', 'product_tmpl_id', None)], brd='F005')
 entity('Products.Pricelist', 'product.pricelist', 'A named set of price rules assigned to customers.', [
     ('Name', 'name', {}), ('Sequence', 'sequence', {})], [
     ('Pricelist_Currency', 'Core.Currency', 'Reference', 'currency_id', None)], active=True, brd='F003')
@@ -244,7 +244,7 @@ entity('Sales.SalesOrder', 'sale.order', 'A quotation that becomes a confirmed s
     ('SalesOrder_Salesperson', 'Administration.Account', 'Reference', 'user_id', None),
     ('SalesOrder_SalesTeam', 'Sales.SalesTeam', 'Reference', 'team_id', None),
     ('SalesOrder_Pricelist', 'Products.Pricelist', 'Reference', 'pricelist_id', None),
-    ('SalesOrder_PaymentTerm', 'Invoicing.PaymentTerm', 'Reference', 'payment_term_id', None),
+    ('SalesOrder_PaymentTerm', 'Core.PaymentTerm', 'Reference', 'payment_term_id', None),
     ('SalesOrder_Currency', 'Core.Currency', 'Reference', 'currency_id', None),
     ('SalesOrder_QuotationTemplate', 'Sales.QuotationTemplate', 'Reference', 'sale_order_template_id', None),
 ], brd='F004')
@@ -257,7 +257,7 @@ entity('Sales.SalesOrderLine', 'sale.order.line', 'A product, section or note li
     ('SalesOrderLine_SalesOrder', 'Sales.SalesOrder', 'Reference', 'order_id', 'delete lines with the order'),
     ('SalesOrderLine_Product', 'Products.Product', 'Reference', 'product_id', None),
     ('SalesOrderLine_UoM', 'Products.UoM', 'Reference', 'product_uom', None),
-    ('SalesOrderLine_Taxes', 'Invoicing.Tax', 'ReferenceSet', 'tax_id', None)], brd='F004')
+    ('SalesOrderLine_Taxes', 'Core.Tax', 'ReferenceSet', 'tax_id', None)], brd='F004')
 entity('Sales.QuotationTemplate', 'sale.order.template', 'Reusable quotation: default lines, validity and terms.', [
     ('Name', 'name', {}), ('ValidityDays', 'number_of_days', {}), ('TermsAndConditions', 'note', {})], active=True, brd='F004')
 entity('Sales.QuotationTemplateLine', 'sale.order.template.line', 'A default line of a quotation template.', [
@@ -282,10 +282,9 @@ entity('Purchasing.PurchaseOrder', 'purchase.order', 'A request for quotation th
     ('ReceiptStatus', 'receipt_status', {'enum': 'Purchasing.ENUM_ReceiptStatus'})], [
     ('PurchaseOrder_Vendor', 'Partners.Partner', 'Reference', 'partner_id', None),
     ('PurchaseOrder_Buyer', 'Administration.Account', 'Reference', 'user_id', None),
-    ('PurchaseOrder_PaymentTerm', 'Invoicing.PaymentTerm', 'Reference', 'payment_term_id', None),
+    ('PurchaseOrder_PaymentTerm', 'Core.PaymentTerm', 'Reference', 'payment_term_id', None),
     ('PurchaseOrder_Currency', 'Core.Currency', 'Reference', 'currency_id', None),
-    ('PurchaseOrder_DeliverTo', 'Inventory.OperationType', 'Reference', 'picking_type_id', 'receipt operation of the warehouse'),
-    ('PurchaseOrder_ReorderRule', 'Inventory.ReorderRule', 'Reference', None, 'new: which replenishment rule created this RFQ')],
+],
     brd='F005')
 entity('Purchasing.PurchaseOrderLine', 'purchase.order.line', 'A product, section or note line of a purchase order.', [
     ('Sequence', 'sequence', {}), ('LineType', 'display_type', {'enum': 'Core.ENUM_LineType'}), ('Description', 'name', {}),
@@ -295,7 +294,7 @@ entity('Purchasing.PurchaseOrderLine', 'purchase.order.line', 'A product, sectio
     ('PurchaseOrderLine_PurchaseOrder', 'Purchasing.PurchaseOrder', 'Reference', 'order_id', 'delete lines with the order'),
     ('PurchaseOrderLine_Product', 'Products.Product', 'Reference', 'product_id', None),
     ('PurchaseOrderLine_UoM', 'Products.UoM', 'Reference', 'product_uom', None),
-    ('PurchaseOrderLine_Taxes', 'Invoicing.Tax', 'ReferenceSet', 'taxes_id', None)], brd='F005')
+    ('PurchaseOrderLine_Taxes', 'Core.Tax', 'ReferenceSet', 'taxes_id', None)], brd='F005')
 
 # F006 — Inventory (C6)
 entity('Inventory.Warehouse', 'stock.warehouse', 'The (single) warehouse: its stock location and operation types.', [
@@ -348,7 +347,9 @@ entity('Inventory.ReorderRule', 'stock.warehouse.orderpoint', 'Min/max replenish
     ('QuantityMultiple', 'qty_multiple', {}), ('Automatic', 'trigger', {'type': 'Boolean', 'note': "Odoo trigger auto/manual -> boolean"})], [
     ('ReorderRule_Product', 'Products.Product', 'Reference', 'product_id', None),
     ('ReorderRule_Location', 'Inventory.Location', 'Reference', 'location_id', None),
-    ('ReorderRule_Vendor', 'Partners.Partner', 'Reference', 'vendor_id', None)], active=True, brd='F006')
+    ('ReorderRule_Vendor', 'Partners.Partner', 'Reference', 'vendor_id', None),
+    ('ReorderRule_PurchaseOrders', 'Purchasing.PurchaseOrder', 'ReferenceSet', None,
+     'new: RFQs this rule created; owned by Inventory so Purchasing never depends on Inventory')], active=True, brd='F006')
 entity('Inventory.ValidateTransferRequest', 'stock.backorder.confirmation', 'Wizard data: validate a transfer with less than the demand — create a backorder or not.', [
     ('CreateBackorder', None, {'type': 'Boolean', 'default': 'true', 'note': 'Odoo: two buttons process / process_cancel_backorder'})], [
     ('ValidateTransferRequest_Transfer', 'Inventory.Transfer', 'Reference', 'pick_ids', None)], persistent=False, brd='F006')
@@ -365,7 +366,7 @@ entity('Invoicing.Invoice', 'account.move', 'Customer invoice / credit note or v
     ('Invoice_Partner', 'Partners.Partner', 'Reference', 'partner_id', None),
     ('Invoice_DeliveryAddress', 'Partners.Partner', 'Reference', 'partner_shipping_id', None),
     ('Invoice_Salesperson', 'Administration.Account', 'Reference', 'invoice_user_id', None),
-    ('Invoice_PaymentTerm', 'Invoicing.PaymentTerm', 'Reference', 'invoice_payment_term_id', None),
+    ('Invoice_PaymentTerm', 'Core.PaymentTerm', 'Reference', 'invoice_payment_term_id', None),
     ('Invoice_Currency', 'Core.Currency', 'Reference', 'currency_id', None),
     ('Invoice_ReversalOf', 'Invoicing.Invoice', 'Reference', 'reversed_entry_id', 'credit note -> original invoice'),
     ('Invoice_BankAccount', 'Partners.BankAccount', 'Reference', 'partner_bank_id', 'where the money goes'),
@@ -379,22 +380,22 @@ entity('Invoicing.InvoiceLine', 'account.move.line', 'A product, section or note
     ('InvoiceLine_Invoice', 'Invoicing.Invoice', 'Reference', 'move_id', 'delete lines with the invoice'),
     ('InvoiceLine_Product', 'Products.Product', 'Reference', 'product_id', None),
     ('InvoiceLine_UoM', 'Products.UoM', 'Reference', 'product_uom_id', None),
-    ('InvoiceLine_Taxes', 'Invoicing.Tax', 'ReferenceSet', 'tax_ids', None),
+    ('InvoiceLine_Taxes', 'Core.Tax', 'ReferenceSet', 'tax_ids', None),
     ('InvoiceLine_SalesOrderLines', 'Sales.SalesOrderLine', 'ReferenceSet', 'sale_line_ids', None),
     ('InvoiceLine_PurchaseOrderLine', 'Purchasing.PurchaseOrderLine', 'Reference', 'purchase_line_id', None)], brd='F008')
-entity('Invoicing.Tax', 'account.tax', 'A sales or purchase tax: percentage or fixed amount, price-included or not.', [
-    ('Name', 'name', {}), ('Scope', 'type_tax_use', {'enum': 'Invoicing.ENUM_TaxScope'}),
-    ('Computation', 'amount_type', {'enum': 'Invoicing.ENUM_TaxComputation'}), ('Amount', 'amount', {}),
+entity('Core.Tax', 'account.tax', 'A sales or purchase tax: percentage or fixed amount, price-included or not.', [
+    ('Name', 'name', {}), ('Scope', 'type_tax_use', {'enum': 'Core.ENUM_TaxScope'}),
+    ('Computation', 'amount_type', {'enum': 'Core.ENUM_TaxComputation'}), ('Amount', 'amount', {}),
     ('IncludedInPrice', 'price_include_override', {'type': 'Boolean', 'note': "Odoo tax_included/tax_excluded/company default -> boolean"}),
-    ('LabelOnInvoice', 'invoice_label', {}), ('Sequence', 'sequence', {})], active=True, brd='F008',
+    ('LabelOnInvoice', 'invoice_label', {}), ('Sequence', 'sequence', {})], active=True, brd='F001',
     note='No tax groups, repartition lines, fiscal positions or cash basis.')
-entity('Invoicing.PaymentTerm', 'account.payment.term', 'When an invoice must be paid: one or more instalments.', [
-    ('Name', 'name', {}), ('Note', 'note', {}), ('Sequence', 'sequence', {})], active=True, brd='F008',
+entity('Core.PaymentTerm', 'account.payment.term', 'When an invoice must be paid: one or more instalments.', [
+    ('Name', 'name', {}), ('Note', 'note', {}), ('Sequence', 'sequence', {})], active=True, brd='F001',
     note='Early-payment discounts dropped.')
-entity('Invoicing.PaymentTermLine', 'account.payment.term.line', 'One instalment: percent or fixed amount, due N days after a reference date.', [
-    ('Value', 'value', {'enum': 'Invoicing.ENUM_PaymentTermValue'}), ('ValueAmount', 'value_amount', {}),
-    ('Days', 'nb_days', {}), ('DelayType', 'delay_type', {'enum': 'Invoicing.ENUM_PaymentTermDelay'})], [
-    ('PaymentTermLine_PaymentTerm', 'Invoicing.PaymentTerm', 'Reference', 'payment_id', None)], brd='F008')
+entity('Core.PaymentTermLine', 'account.payment.term.line', 'One instalment: percent or fixed amount, due N days after a reference date.', [
+    ('Value', 'value', {'enum': 'Core.ENUM_PaymentTermValue'}), ('ValueAmount', 'value_amount', {}),
+    ('Days', 'nb_days', {}), ('DelayType', 'delay_type', {'enum': 'Core.ENUM_PaymentTermDelay'})], [
+    ('PaymentTermLine_PaymentTerm', 'Core.PaymentTerm', 'Reference', 'payment_id', None)], brd='F001')
 entity('Invoicing.Payment', 'account.payment', 'Money received from a customer or paid to a vendor, allocated to invoices.', [
     ('Number', 'name', {'note': 'PAY/2026/00001'}), ('Direction', 'payment_type', {'enum': 'Invoicing.ENUM_PaymentDirection'}),
     ('PartnerKind', 'partner_type', {'enum': 'Invoicing.ENUM_PartnerKind'}), ('Amount', 'amount', {}), ('PaymentDate', 'date', {}),
