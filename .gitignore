@@ -52,3 +52,6 @@ mxcli.exe
 
 # Machine-local toolkit marker (model-stamp.sh verification stamp)
 /.claude/.model-verified
+# Pre-exec model snapshots (project-bin/snapshot-mpr.sh). A full .mpr + mprcontents
+# copy per exec, five kept. Never committed: it is the client model, several times over.
+/.mpr-snapshots/

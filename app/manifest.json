@@ -1,0 +1,22 @@
+{
+  "manifest-version": "1.0.0",
+  "package": {
+    "package-id": "120734a6-c311-57fe-b15a-61242d3d48c8",
+    "name": "WorkflowCommons",
+    "version": "4.11.1",
+    "type": "Module",
+    "checksum": "{SHA256}xe+Yp0JDmE5CPPMxq4l+jLMv3QJsyqytdCZ5ejV3Muk="
+  },
+  "model-version": "11.13.0",
+  "files": [
+    "javasource/workflowcommons/actions/JA_UserTaskView_GenerateKey.java",
+    "themesource/workflowcommons/web/design-properties.json",
+    "themesource/workflowcommons/web/main.scss",
+    "themesource/workflowcommons/web/shared/_badges.scss",
+    "themesource/workflowcommons/web/shared/_duedate.scss",
+    "themesource/workflowcommons/web/shared/_listview-fix.scss",
+    "themesource/workflowcommons/web/shared/_misc.scss",
+    "themesource/workflowcommons/web/shared/_timeline.scss",
+    "themesource/workflowcommons/web/shared/_truncating-groupbox.scss"
+  ]
+}
