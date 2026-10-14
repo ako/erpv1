@@ -25,7 +25,7 @@ the short version is that anything mxcli can answer must never be written down.
 ## Communication Style
 
 - **Never show raw MDL in chat.** Describe changes in plain language as a numbered list.
-- After the user approves, write the MDL to a script file, validate it, and execute it silently.
+- Unless exec approval resolves to `ask` (`bin/exec-approval.sh <project-root>`), write the MDL to a script file, validate it, execute it through `bin/exec.sh`, and report what ran — no approval round-trip.
 - Show MDL only if the user asks to see the script.
 - Report results as plain language, not as a diff.
 

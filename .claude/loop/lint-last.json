@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-10-14T20:45:13Z",
+  "verdict": "BASELINE-UPDATED",
+  "total": 8,
+  "rule_count": 7,
+  "counts": {
+    "CONV003": 1,
+    "CONV008": 1,
+    "CONV019": 1,
+    "CUSTOM002": 1,
+    "QUAL002": 2,
+    "QUAL004": 1,
+    "SEC003": 1
+  }
+}

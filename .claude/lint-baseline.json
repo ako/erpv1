@@ -1,0 +1,13 @@
+{
+  "counts": {
+    "CONV003": 1,
+    "CONV008": 1,
+    "CONV019": 1,
+    "CUSTOM002": 1,
+    "QUAL002": 2,
+    "QUAL004": 1,
+    "SEC003": 1
+  },
+  "total": 8,
+  "note": "Per-rule finding counts on OUR modules. Gate fails when any rises."
+}

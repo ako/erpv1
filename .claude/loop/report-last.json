@@ -1,0 +1,85 @@
+{
+  "projectName": "erpv1",
+  "date": "2026-10-14 20:44:42",
+  "overallScore": 98.1,
+  "summary": {
+    "total": 8,
+    "errors": 0,
+    "warnings": 1,
+    "infos": 7
+  },
+  "categories": [
+    {
+      "name": "Security",
+      "score": 96,
+      "total": 2,
+      "errors": 0,
+      "warnings": 1,
+      "infos": 1,
+      "topActions": [
+        "ALTER APP SECURITY ( EnableDemoUsers: FALSE )",
+        "Review the user role assignments for 'Core.User' and ensure a 1:1 mapping"
+      ]
+    },
+    {
+      "name": "Quality",
+      "score": 96,
+      "total": 4,
+      "errors": 0,
+      "warnings": 0,
+      "infos": 4,
+      "topActions": [
+        "Describe what the page shows and who reaches it.",
+        "Give the page a URL \u2014 `Url: 'home_web'` on CREATE PAGE, or the URL property in Studio Pro \u2014 so it is reachable at /p/home_web. Disable CONV019 in .claude/lint-config.yaml if this app deliberately has no deep links.",
+        "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point."
+      ]
+    },
+    {
+      "name": "Architecture",
+      "score": 100,
+      "total": 0,
+      "errors": 0,
+      "warnings": 0,
+      "infos": 0,
+      "topActions": null
+    },
+    {
+      "name": "Performance",
+      "score": 100,
+      "total": 0,
+      "errors": 0,
+      "warnings": 0,
+      "infos": 0,
+      "topActions": null
+    },
+    {
+      "name": "Naming",
+      "score": 99,
+      "total": 1,
+      "errors": 0,
+      "warnings": 0,
+      "infos": 1,
+      "topActions": [
+        "Rename the page to include a suffix indicating its purpose, e.g., 'Home_Web_Overview'"
+      ]
+    },
+    {
+      "name": "Design",
+      "score": 100,
+      "total": 0,
+      "errors": 0,
+      "warnings": 0,
+      "infos": 0,
+      "topActions": null
+    },
+    {
+      "name": "Other",
+      "score": 99,
+      "total": 1,
+      "errors": 0,
+      "warnings": 0,
+      "infos": 1,
+      "topActions": null
+    }
+  ]
+}

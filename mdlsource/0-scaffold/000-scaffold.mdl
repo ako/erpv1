@@ -1,0 +1,32 @@
+mdl 1;
+-- 000-scaffold.mdl — build-plan row 2 (Phase 0). Owns: module rename, Core.App_Default layout,
+-- project security level. Navigation is owned by 010-navigation.mdl (generated, one owner).
+
+-- The scaffold's MyFirstModule becomes Core (layer 0), so the owned layout and home page
+-- live in a module of the design rather than a throwaway one.
+rename module MyFirstModule to Core;
+
+/** App shell: ledger side rail (navigation tree) + thin top bar + content. */
+create or modify layout Core.App_Default (
+  layouttype: 'Responsive',
+  class: 'layout-atlas layout-atlas-responsive-default'
+) {
+  scrollcontainer layoutContainer {
+    region top (Class: 'region-topbar') {
+      container topbarContent (
+        Class: 'topbar-content',
+        DesignProperties: ('Flex container': 'Horizontal (row)', 'Align items Y': 'Center', 'Disable row wrap': on, 'Grow / shrink (self)': 'Fill container (only grow)')
+      ) {
+        dynamictext appName (Content: 'erpv1', RenderMode: H4)
+      }
+    }
+    region left (Size: 232, SizeMode: 'Pixels', Class: 'region-sidebar') {
+      navigationtree mainNav (Profile: 'Responsive')
+    }
+    region center (Class: 'region-content') {
+      placeholder Main
+    }
+  }
+};
+
+alter app security ( SecurityLevel: PRODUCTION, EnableDemoUsers: TRUE, EnableGuestAccess: FALSE );

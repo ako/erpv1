@@ -1,0 +1,2 @@
+ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score	security	quality	architecture	performance	naming	design	other	violations	model_commit
+2026-10-14T20:44:42Z	000-scaffold.mdl	pass	applied-lint-blind	58	0	3		0	98.1	96	96	100	100	99	100	99	8	7419a91

@@ -21,7 +21,7 @@ code{font-size:.85em}
 details{margin:.5rem 0} summary{cursor:pointer;color:var(--muted);font-size:.85rem}
 .claims{font-size:.82rem} .warn summary{color:var(--warn)}
 </style></head><body><main>
-<h1>Build Plan</h1><p class=note id=stamp>Generated 2026-10-14T20:06:49Z by project-bin/build-plan-status.sh from architecture/build-plan.md, mdlsource/ and the module review files. exec.sh and gate-check.sh regenerate it; never hand-edit.</p>
+<h1>Build Plan</h1><p class=note id=stamp>Generated 2026-10-14T20:44:43Z by project-bin/build-plan-status.sh from architecture/build-plan.md, mdlsource/ and the module review files. exec.sh and gate-check.sh regenerate it; never hand-edit.</p>
 <h2>The plan</h2>
 <p class=lede>From <code>architecture/build-plan.md</code>: 10 phases, 95 rows: <b class=st-built>0 built</b>, <b class=st-todo>95 not built</b>, <b class=st-person>0 pending a person</b>.</p>
 <p class=note>Scripts named in the plan: 115, of which 0 are renamed <code>done-</code> under <code>mdlsource/</code>.</p>
@@ -29,7 +29,7 @@ details{margin:.5rem 0} summary{cursor:pointer;color:var(--muted);font-size:.85r
 <p class=note>0 of 4 rows built</p>
 <div class=scroll><table><tr><th>#</th><th>Kind</th><th>Step</th><th>Produces / Proves</th><th>Depends on</th><th>State</th><th>Scripts</th></tr>
 <tr><td>1</td><td>BRIEF</td><td>Check the briefs exist for every module (Phase 0/1 content: domain, access, folders)&lt;br&gt;<code>architecture/modules/*/module-brief.md</code></td><td>7 briefs present with domain + access sections</td><td></td><td class="st-todo">not built</td><td></td></tr>
-<tr><td>2</td><td>BUILD</td><td>Project scaffold&lt;br&gt;<code>./mxcli new erpv1 --version 11.15.0 --output-dir app (then bin/doctor.sh --install . --yes)</code>&lt;br&gt;<code>mdlsource/0-scaffold/000-scaffold.mdl</code></td><td>app/erpv1.mpr (Mendix 11.15.0); theme ledger (<code>./mxcli theme apply ledger</code>); project security production, demo users on, guest off; layout erpv1 App_Default with side rail; Responsive navigation shell with the 8 groups of ui_spec.NAV</td><td>1</td><td class="st-todo">not built</td><td><span class="st-todo" title="000-scaffold.mdl: missing">not written yet</span></td></tr>
+<tr><td>2</td><td>BUILD</td><td>Project scaffold&lt;br&gt;<code>./mxcli new erpv1 --version 11.15.0 --output-dir app (then bin/doctor.sh --install . --yes)</code>&lt;br&gt;<code>mdlsource/0-scaffold/000-scaffold.mdl</code></td><td>app/erpv1.mpr (Mendix 11.15.0); theme ledger (<code>./mxcli theme apply ledger</code>); project security production, demo users on, guest off; layout erpv1 App_Default with side rail; Responsive navigation shell with the 8 groups of ui_spec.NAV</td><td>1</td><td class="st-todo">not built</td><td><span class="st-progress" title="000-scaffold.mdl: written">0 of 1 done-</span></td></tr>
 <tr><td>3</td><td>BUILD</td><td>Marketplace imports (Step 0, CONFIRMED Buy)&lt;br&gt;<code>./mxcli marketplace install &lt;id&gt; -p app/erpv1.mpr for: Administration, Data Widgets, Charts, Workflow Commons (Atlas Core ships with mxcli new)</code></td><td>Administration, DataWidgets, Charts, WorkflowCommons modules in the model</td><td>2</td><td class="st-todo">not built</td><td></td></tr>
 <tr><td>4</td><td>PROVE</td><td>Scaffold builds and boots&lt;br&gt;<code>./bin/verify-model.sh</code>&lt;br&gt;<code>./mxcli run --local --setup --ensure-db -p app/erpv1.mpr (snapshot first)</code></td><td>mxbuild 0 errors; app boots; MxAdmin can log in; ledger paints</td><td>3</td><td class="st-todo">not built</td><td></td></tr>
 </table></div>
@@ -446,7 +446,9 @@ details{margin:.5rem 0} summary{cursor:pointer;color:var(--muted);font-size:.85r
 </table></div>
 </section>
 <h2>A. Script folders: how much is built</h2>
-<p class=empty>No phase folders under <code>mdlsource/</code> yet. They appear as the build starts, one folder per phase (brd-to-build-plan.md); until then the plan above is the whole picture.</p>
+<div class=scroll><table><tr><th>Phase folder</th><th>Done / Total</th><th>%</th><th>Status</th></tr>
+<tr><td>0-scaffold</td><td>0/1</td><td>0%</td><td class="pending">pending</td></tr>
+</table></div>
 <h2>B. Modules: how much is proven</h2>
 <p class=note>Briefs are written one module at a time, as that module's build starts (module-brief.md), so "no" before then is expected.</p>
 <div class=scroll><table><tr><th>Module</th><th>Briefed</th><th>Reviewed</th><th>Open findings</th></tr>
