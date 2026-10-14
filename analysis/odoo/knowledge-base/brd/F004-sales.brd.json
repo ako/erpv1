@@ -1,0 +1,1425 @@
+{
+ "id": "F004",
+ "title": "Sales: quotations to sales orders",
+ "modules": [
+  "Sales"
+ ],
+ "actors": [
+  "SalesUser",
+  "SalesManager"
+ ],
+ "capability": "C4",
+ "summary": "Create quotations (optionally from a template), price them from the pricelist, send, confirm into sales orders, cancel or lock; sales teams; sales analysis.",
+ "provenance": "code-extracted",
+ "generatedAt": "2026-10-14",
+ "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
+ "actorRoleMapping": {
+  "SalesUser": [
+   "sales_team.group_sale_salesman"
+  ],
+  "SalesManager": [
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman_all_leads"
+  ]
+ },
+ "useCases": [
+  {
+   "id": "UC001",
+   "title": "Create a quotation",
+   "actors": [
+    "SalesUser"
+   ],
+   "preconditions": [
+    "Customer and products exist"
+   ],
+   "postconditions": [
+    "Quotation in status Quotation with number S000nn"
+   ],
+   "mainFlow": [
+    "1. User opens Sales > Quotations > New",
+    "2. Picks the customer; system fills invoice/delivery address, pricelist, payment term, salesperson, team",
+    "3. Optionally picks a quotation template: system copies its lines and validity",
+    "4. Adds product lines: system fills description, unit, unit price (pricelist) and taxes; user may change quantity, price, discount",
+    "5. Adds section and note lines for layout",
+    "6. System recomputes subtotal, tax and total on every line change",
+    "7. User saves; system assigns the number"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "SalesOrder_Overview",
+    "SalesOrder_NewEdit"
+   ],
+   "odooRefs": [
+    "sale.view_order_form",
+    "sale.view_quotation_tree",
+    "sale.order._onchange_partner_id",
+    "sale.order.line._compute_price_unit",
+    "sale.order.line._compute_amount",
+    "sale.order._compute_amounts"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC002",
+   "title": "Mark a quotation as sent",
+   "actors": [
+    "SalesUser"
+   ],
+   "preconditions": [
+    "Quotation in status Quotation"
+   ],
+   "postconditions": [
+    "Status QuotationSent"
+   ],
+   "mainFlow": [
+    "1. User clicks Mark as sent (no email is sent — mail declared not implemented)",
+    "2. System sets status QuotationSent"
+   ],
+   "alternativeFlows": [
+    "1a. Odoo emails the quotation (action_quotation_send); here only the status changes"
+   ],
+   "screens": [
+    "SalesOrder_NewEdit"
+   ],
+   "odooRefs": [
+    "sale.order.action_quotation_sent"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC003",
+   "title": "Confirm a quotation into a sales order",
+   "actors": [
+    "SalesUser"
+   ],
+   "preconditions": [
+    "Status Quotation or QuotationSent",
+    "At least one product line"
+   ],
+   "postconditions": [
+    "Status SalesOrder, order date = now; delivery transfer created for goods (F007)"
+   ],
+   "mainFlow": [
+    "1. User clicks Confirm",
+    "2. System checks the status is Quotation/QuotationSent and that no line lacks a product (sections/notes excepted)",
+    "3. System sets status SalesOrder and order date",
+    "4. System triggers delivery creation (F007) and recomputes invoice status"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "SalesOrder_NewEdit"
+   ],
+   "odooRefs": [
+    "sale.order.action_confirm",
+    "sale.order._action_confirm",
+    "sale.order._confirmation_error_message"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC004",
+   "title": "Cancel and reset a sales document",
+   "actors": [
+    "SalesUser"
+   ],
+   "preconditions": [
+    "Not locked; no posted invoice"
+   ],
+   "postconditions": [
+    "Status Cancelled (or back to Quotation)"
+   ],
+   "mainFlow": [
+    "1. User clicks Cancel; system asks for confirmation",
+    "2. System cancels open delivery transfers and sets status Cancelled",
+    "3. From Cancelled, user can Set to quotation (status Quotation)"
+   ],
+   "alternativeFlows": [
+    "1a. A posted invoice exists: cancellation refused with a message"
+   ],
+   "screens": [
+    "SalesOrder_NewEdit"
+   ],
+   "odooRefs": [
+    "sale.order.action_cancel",
+    "sale.order._action_cancel",
+    "sale.order.action_draft"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC005",
+   "title": "Lock / unlock a confirmed order",
+   "actors": [
+    "SalesManager"
+   ],
+   "preconditions": [
+    "Status SalesOrder"
+   ],
+   "postconditions": [
+    "Locked orders cannot be edited"
+   ],
+   "mainFlow": [
+    "1. Manager clicks Lock (or Unlock)",
+    "2. System toggles Locked"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "SalesOrder_NewEdit"
+   ],
+   "odooRefs": [
+    "sale.order.action_lock",
+    "sale.order.action_unlock"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC006",
+   "title": "Follow up orders to invoice and deliver",
+   "actors": [
+    "SalesUser",
+    "SalesManager"
+   ],
+   "preconditions": [
+    "Orders exist"
+   ],
+   "postconditions": [
+    "—"
+   ],
+   "mainFlow": [
+    "1. User opens Orders to invoice (InvoiceStatus = ToInvoice) or filters on delivery status",
+    "2. Opens an order and continues in F007/F008"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "SalesOrder_Overview"
+   ],
+   "odooRefs": [
+    "sale.action_orders_to_invoice"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC007",
+   "title": "Analyse sales",
+   "actors": [
+    "SalesManager"
+   ],
+   "preconditions": [
+    "Confirmed orders exist"
+   ],
+   "postconditions": [
+    "—"
+   ],
+   "mainFlow": [
+    "1. Manager opens Reporting > Sales",
+    "2. System shows totals per period, customer, product, salesperson from the SalesAnalysis view entity"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "SalesAnalysis_Report"
+   ],
+   "odooRefs": [
+    "sale.view_order_product_pivot"
+   ],
+   "status": "proposed",
+   "reviewStatus": "pending",
+   "signOff": "Q-F004-3"
+  },
+  {
+   "id": "UC008",
+   "title": "Maintain quotation templates and sales teams",
+   "actors": [
+    "SalesManager"
+   ],
+   "preconditions": [
+    "—"
+   ],
+   "postconditions": [
+    "Templates/teams available on quotations"
+   ],
+   "mainFlow": [
+    "1. Manager maintains templates (lines, validity days, terms) and sales teams (leader, members)"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "QuotationTemplate_NewEdit",
+    "SalesTeam_NewEdit"
+   ],
+   "odooRefs": [
+    "sale_management.sale_order_template_view_form",
+    "sales_team.crm_team_view_form"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  }
+ ],
+ "domainEntities": [
+  {
+   "name": "Sales.SalesTeam",
+   "module": "Sales",
+   "persistent": true,
+   "purpose": "Sales team with a leader and members (reporting, default on orders).",
+   "sourceOdoo": "crm.team",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "crm.team.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Sales Team",
+     "length": 200
+    },
+    {
+     "name": "InvoicingTarget",
+     "type": "Decimal",
+     "sourceOdoo": "crm.team.invoiced_target",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Invoicing Target"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "crm.team.active"
+    }
+   ],
+   "associations": [
+    {
+     "name": "SalesTeam_Leader",
+     "owner": "Sales.SalesTeam",
+     "target": "Administration.Account",
+     "type": "Reference",
+     "sourceOdoo": "crm.team.user_id",
+     "odooTarget": "res.users",
+     "mandatory": false
+    },
+    {
+     "name": "SalesTeam_Members",
+     "owner": "Sales.SalesTeam",
+     "target": "Administration.Account",
+     "type": "ReferenceSet",
+     "sourceOdoo": "crm.team.member_ids",
+     "odooTarget": "res.users",
+     "mandatory": false,
+     "note": "crm.team.member flattened to a reference set"
+    }
+   ],
+   "note": null,
+   "brd": "F004"
+  },
+  {
+   "name": "Sales.SalesOrder",
+   "module": "Sales",
+   "persistent": true,
+   "purpose": "A quotation that becomes a confirmed sales order.",
+   "sourceOdoo": "sale.order",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Number",
+     "type": "String",
+     "sourceOdoo": "sale.order.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Order Reference",
+     "odooDefault": "lambda self: _('New')",
+     "length": 200,
+     "note": "Core.Sequence code sale.order, prefix S"
+    },
+    {
+     "name": "Status",
+     "type": "Enumeration",
+     "sourceOdoo": "sale.order.state",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Status",
+     "odooDefault": "'draft'",
+     "enumeration": "Sales.ENUM_SalesOrderStatus"
+    },
+    {
+     "name": "Locked",
+     "type": "Boolean",
+     "sourceOdoo": "sale.order.locked",
+     "odooType": "Boolean",
+     "mandatory": false,
+     "odooDefault": "False"
+    },
+    {
+     "name": "OrderDate",
+     "type": "DateTime",
+     "sourceOdoo": "sale.order.date_order",
+     "odooType": "Datetime",
+     "mandatory": true,
+     "label": "Order Date",
+     "odooDefault": "fields.Datetime.now"
+    },
+    {
+     "name": "ExpirationDate",
+     "type": "DateTime",
+     "sourceOdoo": "sale.order.validity_date",
+     "odooType": "Date",
+     "mandatory": false,
+     "label": "Expiration",
+     "odooComputedBy": "_compute_validity_date"
+    },
+    {
+     "name": "DeliveryDate",
+     "type": "DateTime",
+     "sourceOdoo": "sale.order.commitment_date",
+     "odooType": "Datetime",
+     "mandatory": false,
+     "label": "Delivery Date"
+    },
+    {
+     "name": "CustomerReference",
+     "type": "String",
+     "sourceOdoo": "sale.order.client_order_ref",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Customer Reference",
+     "length": 200
+    },
+    {
+     "name": "Source",
+     "type": "String",
+     "sourceOdoo": "sale.order.origin",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Source Document",
+     "length": 200
+    },
+    {
+     "name": "TermsAndConditions",
+     "type": "String",
+     "sourceOdoo": "sale.order.note",
+     "odooType": "Html",
+     "mandatory": false,
+     "label": "Terms and conditions",
+     "odooComputedBy": "_compute_note",
+     "length": "unlimited"
+    },
+    {
+     "name": "AmountUntaxed",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.amount_untaxed",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Untaxed Amount",
+     "odooComputedBy": "_compute_amounts",
+     "note": "stored, recomputed by SUB_SalesOrder_RecomputeTotals"
+    },
+    {
+     "name": "AmountTax",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.amount_tax",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Taxes",
+     "odooComputedBy": "_compute_amounts"
+    },
+    {
+     "name": "AmountTotal",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.amount_total",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Total",
+     "odooComputedBy": "_compute_amounts"
+    },
+    {
+     "name": "InvoiceStatus",
+     "type": "Enumeration",
+     "sourceOdoo": "sale.order.invoice_status",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Invoice Status",
+     "odooComputedBy": "_compute_invoice_status",
+     "enumeration": "Core.ENUM_InvoiceStatus"
+    },
+    {
+     "name": "DeliveryStatus",
+     "type": "Enumeration",
+     "sourceOdoo": "sale.order.delivery_status",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Delivery Status",
+     "odooComputedBy": "_compute_delivery_status",
+     "enumeration": "Sales.ENUM_DeliveryStatus"
+    }
+   ],
+   "associations": [
+    {
+     "name": "SalesOrder_Customer",
+     "owner": "Sales.SalesOrder",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.partner_id",
+     "odooTarget": "res.partner",
+     "mandatory": true
+    },
+    {
+     "name": "SalesOrder_InvoiceAddress",
+     "owner": "Sales.SalesOrder",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.partner_invoice_id",
+     "odooTarget": "res.partner",
+     "mandatory": true
+    },
+    {
+     "name": "SalesOrder_DeliveryAddress",
+     "owner": "Sales.SalesOrder",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.partner_shipping_id",
+     "odooTarget": "res.partner",
+     "mandatory": true
+    },
+    {
+     "name": "SalesOrder_Salesperson",
+     "owner": "Sales.SalesOrder",
+     "target": "Administration.Account",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.user_id",
+     "odooTarget": "res.users",
+     "mandatory": false
+    },
+    {
+     "name": "SalesOrder_SalesTeam",
+     "owner": "Sales.SalesOrder",
+     "target": "Sales.SalesTeam",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.team_id",
+     "odooTarget": "crm.team",
+     "mandatory": false
+    },
+    {
+     "name": "SalesOrder_Pricelist",
+     "owner": "Sales.SalesOrder",
+     "target": "Products.Pricelist",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.pricelist_id",
+     "odooTarget": "product.pricelist",
+     "mandatory": false
+    },
+    {
+     "name": "SalesOrder_PaymentTerm",
+     "owner": "Sales.SalesOrder",
+     "target": "Invoicing.PaymentTerm",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.payment_term_id",
+     "odooTarget": "account.payment.term",
+     "mandatory": false
+    },
+    {
+     "name": "SalesOrder_Currency",
+     "owner": "Sales.SalesOrder",
+     "target": "Core.Currency",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.currency_id",
+     "odooTarget": "res.currency",
+     "mandatory": false
+    },
+    {
+     "name": "SalesOrder_QuotationTemplate",
+     "owner": "Sales.SalesOrder",
+     "target": "Sales.QuotationTemplate",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.sale_order_template_id",
+     "odooTarget": "sale.order.template",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F004"
+  },
+  {
+   "name": "Sales.SalesOrderLine",
+   "module": "Sales",
+   "persistent": true,
+   "purpose": "A product, section or note line of a sales order.",
+   "sourceOdoo": "sale.order.line",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Sequence",
+     "type": "Integer",
+     "sourceOdoo": "sale.order.line.sequence",
+     "odooType": "Integer",
+     "mandatory": false,
+     "label": "Sequence",
+     "odooDefault": "10"
+    },
+    {
+     "name": "LineType",
+     "type": "Enumeration",
+     "sourceOdoo": "sale.order.line.display_type",
+     "odooType": "Selection",
+     "mandatory": false,
+     "odooDefault": "False",
+     "enumeration": "Core.ENUM_LineType"
+    },
+    {
+     "name": "Description",
+     "type": "String",
+     "sourceOdoo": "sale.order.line.name",
+     "odooType": "Text",
+     "mandatory": true,
+     "label": "Description",
+     "odooComputedBy": "_compute_name",
+     "length": "unlimited"
+    },
+    {
+     "name": "Quantity",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.line.product_uom_qty",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Quantity",
+     "odooComputedBy": "_compute_product_uom_qty",
+     "odooDefault": "1.0"
+    },
+    {
+     "name": "UnitPrice",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.line.price_unit",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Unit Price",
+     "odooComputedBy": "_compute_price_unit"
+    },
+    {
+     "name": "DiscountPercent",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.line.discount",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Discount (%)",
+     "odooComputedBy": "_compute_discount"
+    },
+    {
+     "name": "Subtotal",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.line.price_subtotal",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Subtotal",
+     "odooComputedBy": "_compute_amount"
+    },
+    {
+     "name": "TaxAmount",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.line.price_tax",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Total Tax",
+     "odooComputedBy": "_compute_amount"
+    },
+    {
+     "name": "Total",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.line.price_total",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Total",
+     "odooComputedBy": "_compute_amount"
+    },
+    {
+     "name": "QuantityDelivered",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.line.qty_delivered",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Delivery Quantity",
+     "odooComputedBy": "_compute_qty_delivered",
+     "odooDefault": "0.0"
+    },
+    {
+     "name": "QuantityInvoiced",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.line.qty_invoiced",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Invoiced Quantity",
+     "odooComputedBy": "_compute_qty_invoiced"
+    },
+    {
+     "name": "QuantityToInvoice",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.line.qty_to_invoice",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Quantity To Invoice",
+     "odooComputedBy": "_compute_qty_to_invoice"
+    },
+    {
+     "name": "LeadTimeDays",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.line.customer_lead",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Lead Time",
+     "odooComputedBy": "_compute_customer_lead"
+    }
+   ],
+   "associations": [
+    {
+     "name": "SalesOrderLine_SalesOrder",
+     "owner": "Sales.SalesOrderLine",
+     "target": "Sales.SalesOrder",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.line.order_id",
+     "odooTarget": "sale.order",
+     "mandatory": true,
+     "note": "delete lines with the order"
+    },
+    {
+     "name": "SalesOrderLine_Product",
+     "owner": "Sales.SalesOrderLine",
+     "target": "Products.Product",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.line.product_id",
+     "odooTarget": "product.product",
+     "mandatory": false
+    },
+    {
+     "name": "SalesOrderLine_UoM",
+     "owner": "Sales.SalesOrderLine",
+     "target": "Products.UoM",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.line.product_uom",
+     "odooTarget": "uom.uom",
+     "mandatory": false
+    },
+    {
+     "name": "SalesOrderLine_Taxes",
+     "owner": "Sales.SalesOrderLine",
+     "target": "Invoicing.Tax",
+     "type": "ReferenceSet",
+     "sourceOdoo": "sale.order.line.tax_id",
+     "odooTarget": "account.tax",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F004"
+  },
+  {
+   "name": "Sales.QuotationTemplate",
+   "module": "Sales",
+   "persistent": true,
+   "purpose": "Reusable quotation: default lines, validity and terms.",
+   "sourceOdoo": "sale.order.template",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "sale.order.template.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Quotation Template",
+     "length": 200
+    },
+    {
+     "name": "ValidityDays",
+     "type": "Integer",
+     "sourceOdoo": "sale.order.template.number_of_days",
+     "odooType": "Integer",
+     "mandatory": false,
+     "label": "Quotation Duration"
+    },
+    {
+     "name": "TermsAndConditions",
+     "type": "String",
+     "sourceOdoo": "sale.order.template.note",
+     "odooType": "Html",
+     "mandatory": false,
+     "label": "Terms and conditions",
+     "length": "unlimited"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "sale.order.template.active"
+    }
+   ],
+   "associations": [],
+   "note": null,
+   "brd": "F004"
+  },
+  {
+   "name": "Sales.QuotationTemplateLine",
+   "module": "Sales",
+   "persistent": true,
+   "purpose": "A default line of a quotation template.",
+   "sourceOdoo": "sale.order.template.line",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Sequence",
+     "type": "Integer",
+     "sourceOdoo": "sale.order.template.line.sequence",
+     "odooType": "Integer",
+     "mandatory": false,
+     "label": "Sequence",
+     "odooDefault": "10"
+    },
+    {
+     "name": "LineType",
+     "type": "Enumeration",
+     "sourceOdoo": "sale.order.template.line.display_type",
+     "odooType": "Selection",
+     "mandatory": false,
+     "odooDefault": "False",
+     "enumeration": "Core.ENUM_LineType"
+    },
+    {
+     "name": "Description",
+     "type": "String",
+     "sourceOdoo": "sale.order.template.line.name",
+     "odooType": "Text",
+     "mandatory": false,
+     "label": "Description",
+     "length": "unlimited"
+    },
+    {
+     "name": "Quantity",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.template.line.product_uom_qty",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Quantity",
+     "odooDefault": "1"
+    }
+   ],
+   "associations": [
+    {
+     "name": "QuotationTemplateLine_Template",
+     "owner": "Sales.QuotationTemplateLine",
+     "target": "Sales.QuotationTemplate",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.template.line.sale_order_template_id",
+     "odooTarget": "sale.order.template",
+     "mandatory": true
+    },
+    {
+     "name": "QuotationTemplateLine_Product",
+     "owner": "Sales.QuotationTemplateLine",
+     "target": "Products.Product",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.template.line.product_id",
+     "odooTarget": "product.product",
+     "mandatory": false
+    },
+    {
+     "name": "QuotationTemplateLine_UoM",
+     "owner": "Sales.QuotationTemplateLine",
+     "target": "Products.UoM",
+     "type": "Reference",
+     "sourceOdoo": "sale.order.template.line.product_uom_id",
+     "odooTarget": "uom.uom",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F004"
+  }
+ ],
+ "enumerations": [
+  {
+   "name": "Core.ENUM_InvoiceStatus",
+   "module": "Core",
+   "sourceOdoo": "sale.order.invoice_status",
+   "values": [
+    {
+     "name": "NothingToInvoice",
+     "caption": "Nothing to invoice",
+     "odooValue": "no"
+    },
+    {
+     "name": "ToInvoice",
+     "caption": "To invoice",
+     "odooValue": "to invoice"
+    },
+    {
+     "name": "FullyInvoiced",
+     "caption": "Fully invoiced",
+     "odooValue": "invoiced"
+    }
+   ],
+   "droppedOdooValues": [
+    "upselling"
+   ],
+   "note": "sale 'upselling' dropped; shared by sales and purchase orders (purchase.order.invoice_status has the same 3 values)"
+  },
+  {
+   "name": "Core.ENUM_LineType",
+   "module": "Core",
+   "sourceOdoo": "sale.order.line.display_type",
+   "values": [
+    {
+     "name": "Product",
+     "caption": "Product line",
+     "odooValue": null
+    },
+    {
+     "name": "Section",
+     "caption": "Section",
+     "odooValue": "line_section"
+    },
+    {
+     "name": "Note",
+     "caption": "Note",
+     "odooValue": "line_note"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": "Odoo uses display_type=False for product lines; made explicit. Shared by sales, purchase and invoice lines"
+  },
+  {
+   "name": "Sales.ENUM_DeliveryStatus",
+   "module": "Sales",
+   "sourceOdoo": "sale.order.delivery_status",
+   "values": [
+    {
+     "name": "NotDelivered",
+     "caption": "Not delivered",
+     "odooValue": "pending"
+    },
+    {
+     "name": "Started",
+     "caption": "Started",
+     "odooValue": "started"
+    },
+    {
+     "name": "PartiallyDelivered",
+     "caption": "Partially delivered",
+     "odooValue": "partial"
+    },
+    {
+     "name": "FullyDelivered",
+     "caption": "Fully delivered",
+     "odooValue": "full"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": null
+  },
+  {
+   "name": "Sales.ENUM_SalesOrderStatus",
+   "module": "Sales",
+   "sourceOdoo": "sale.order.state",
+   "values": [
+    {
+     "name": "Quotation",
+     "caption": "Quotation",
+     "odooValue": "draft"
+    },
+    {
+     "name": "QuotationSent",
+     "caption": "Quotation sent",
+     "odooValue": "sent"
+    },
+    {
+     "name": "SalesOrder",
+     "caption": "Sales order",
+     "odooValue": "sale"
+    },
+    {
+     "name": "Cancelled",
+     "caption": "Cancelled",
+     "odooValue": "cancel"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": null
+  }
+ ],
+ "viewEntities": [
+  {
+   "name": "Sales.SalesAnalysis",
+   "odoo": "sale.report",
+   "brd": "F004",
+   "purpose": "Order lines joined to order, customer, product, salesperson: amounts and quantities for pivots/charts."
+  }
+ ],
+ "microflows": [
+  {
+   "name": "ACT_SalesOrder_New",
+   "kind": "Microflow",
+   "purpose": "Create a quotation with company defaults; on customer change fill addresses, pricelist, payment term, salesperson.",
+   "params": [
+    {
+     "name": "Customer",
+     "type": "Partners.Partner"
+    }
+   ],
+   "returns": "Sales.SalesOrder",
+   "pattern": "create",
+   "calls": [
+    "SUB_Partner_GetAddress"
+   ],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "sale.order._onchange_partner_id",
+    "sale.order._compute_partner_invoice_id",
+    "sale.order._compute_pricelist_id",
+    "sale.order._compute_payment_term_id",
+    "sale.order._compute_validity_date"
+   ]
+  },
+  {
+   "name": "ACT_SalesOrder_ApplyTemplate",
+   "kind": "Microflow",
+   "purpose": "Replace lines by the template lines; set expiration = today + template validity.",
+   "params": [
+    {
+     "name": "SalesOrder",
+     "type": "Sales.SalesOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "action",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "sale.order._onchange_sale_order_template_id"
+   ]
+  },
+  {
+   "name": "ACT_SalesOrderLine_ChangeProduct",
+   "kind": "Microflow",
+   "purpose": "Default description, unit, taxes and pricelist price for a new product on a line.",
+   "params": [
+    {
+     "name": "SalesOrderLine",
+     "type": "Sales.SalesOrderLine"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "onchange",
+   "calls": [
+    "SUB_Pricelist_GetPrice"
+   ],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "sale.order.line._compute_name",
+    "sale.order.line._compute_product_uom",
+    "sale.order.line._compute_tax_id",
+    "sale.order.line._compute_price_unit"
+   ]
+  },
+  {
+   "name": "SUB_SalesOrder_RecomputeTotals",
+   "kind": "Microflow",
+   "purpose": "Per line subtotal/tax/total (discount, taxes incl./excl.), then order totals.",
+   "params": [
+    {
+     "name": "SalesOrder",
+     "type": "Sales.SalesOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "calculation",
+   "calls": [
+    "SUB_Tax_ComputeLine"
+   ],
+   "validations": [],
+   "hiddenRules": [
+    "Section/note lines carry no amounts",
+    "Rounding per line (Odoo round_per_line default)"
+   ],
+   "odooRefs": [
+    "sale.order.line._compute_amount",
+    "sale.order._compute_amounts"
+   ]
+  },
+  {
+   "name": "ACT_SalesOrder_MarkSent",
+   "kind": "Microflow",
+   "purpose": "Status Quotation -> QuotationSent.",
+   "params": [
+    {
+     "name": "SalesOrder",
+     "type": "Sales.SalesOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "sale.order.action_quotation_sent"
+   ]
+  },
+  {
+   "name": "ACT_SalesOrder_Confirm",
+   "kind": "Microflow",
+   "purpose": "Validate and confirm; set order date; launch delivery (F007); recompute statuses.",
+   "params": [
+    {
+     "name": "SalesOrder",
+     "type": "Sales.SalesOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [
+    "SUB_SalesOrder_CreateDelivery",
+    "SUB_SalesOrder_UpdateInvoiceStatus"
+   ],
+   "validations": [
+    "Status is Quotation or QuotationSent (sale_order.py _confirmation_error_message)",
+    "No line without product except sections/notes (same)"
+   ],
+   "hiddenRules": [],
+   "odooRefs": [
+    "sale.order.action_confirm",
+    "sale.order._action_confirm",
+    "sale.order._confirmation_error_message",
+    "sale.order._prepare_confirmation_values"
+   ]
+  },
+  {
+   "name": "ACT_SalesOrder_Cancel",
+   "kind": "Microflow",
+   "purpose": "Cancel open transfers and the order.",
+   "params": [
+    {
+     "name": "SalesOrder",
+     "type": "Sales.SalesOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [],
+   "validations": [
+    "No posted invoice linked"
+   ],
+   "hiddenRules": [],
+   "odooRefs": [
+    "sale.order.action_cancel",
+    "sale.order._action_cancel"
+   ]
+  },
+  {
+   "name": "ACT_SalesOrder_SetToQuotation",
+   "kind": "Microflow",
+   "purpose": "Cancelled -> Quotation.",
+   "params": [
+    {
+     "name": "SalesOrder",
+     "type": "Sales.SalesOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "sale.order.action_draft"
+   ]
+  },
+  {
+   "name": "ACT_SalesOrder_ToggleLock",
+   "kind": "Microflow",
+   "purpose": "Lock/unlock a confirmed order.",
+   "params": [
+    {
+     "name": "SalesOrder",
+     "type": "Sales.SalesOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "sale.order.action_lock",
+    "sale.order.action_unlock"
+   ]
+  },
+  {
+   "name": "SUB_SalesOrder_UpdateInvoiceStatus",
+   "kind": "Microflow",
+   "purpose": "Per line qty to invoice (by product invoice policy) -> order InvoiceStatus.",
+   "params": [
+    {
+     "name": "SalesOrder",
+     "type": "Sales.SalesOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "calculation",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [
+    "Ordered-quantities policy: to invoice = ordered - invoiced; delivered policy: delivered - invoiced"
+   ],
+   "odooRefs": [
+    "sale.order.line._compute_qty_to_invoice",
+    "sale.order.line._compute_invoice_status",
+    "sale.order._compute_invoice_status"
+   ]
+  }
+ ],
+ "workflows": [],
+ "pages": [
+  {
+   "name": "SalesOrder_Overview",
+   "purpose": "Quotations / Orders / To invoice lists with status badges and filters.",
+   "dataContext": "Sales.SalesOrder",
+   "pattern": "list",
+   "sections": [
+    "Tabs",
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Open"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "sale.view_quotation_tree",
+    "sale.view_order_tree",
+    "sale.view_sales_order_filter"
+   ]
+  },
+  {
+   "name": "SalesOrder_NewEdit",
+   "purpose": "Quotation/order form: status bar, header, editable lines with sections/notes, totals, other info tab, smart buttons to deliveries and invoices.",
+   "dataContext": "Sales.SalesOrder",
+   "pattern": "form",
+   "sections": [
+    "StatusBar",
+    "Header",
+    "Lines",
+    "Totals",
+    "OtherInfo"
+   ],
+   "actions": [
+    "ACT_SalesOrder_MarkSent",
+    "ACT_SalesOrder_Confirm",
+    "ACT_SalesOrder_Cancel",
+    "ACT_SalesOrder_SetToQuotation",
+    "ACT_SalesOrder_ToggleLock",
+    "ACT_SalesOrder_CreateInvoice"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "sale.view_order_form"
+   ]
+  },
+  {
+   "name": "QuotationTemplate_NewEdit",
+   "purpose": "Template with lines.",
+   "dataContext": "Sales.QuotationTemplate",
+   "pattern": "form",
+   "sections": [
+    "Template",
+    "Lines"
+   ],
+   "actions": [
+    "Save",
+    "Cancel"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "sale_management.sale_order_template_view_form"
+   ]
+  },
+  {
+   "name": "SalesTeam_NewEdit",
+   "purpose": "Sales team.",
+   "dataContext": "Sales.SalesTeam",
+   "pattern": "form",
+   "sections": [
+    "Team",
+    "Members"
+   ],
+   "actions": [
+    "Save",
+    "Cancel"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "sales_team.crm_team_view_form"
+   ]
+  },
+  {
+   "name": "SalesAnalysis_Report",
+   "purpose": "Charts and pivot-style grid over Sales.SalesAnalysis.",
+   "dataContext": "Sales.SalesAnalysis",
+   "pattern": "report",
+   "sections": [
+    "Filters",
+    "Charts",
+    "Grid"
+   ],
+   "actions": [],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "sale.view_order_product_pivot",
+    "sale.view_order_product_graph"
+   ]
+  }
+ ],
+ "timers": [],
+ "integrations": [
+  {
+   "name": "Send quotation by email",
+   "type": "Email",
+   "stubName": "—",
+   "stubBehaviour": "Not implemented: Mark as sent only",
+   "realTarget": "Odoo mail.template sale.email_template_edi_sale",
+   "apiDoc": "Stage 0: mail declared not implemented"
+  }
+ ],
+ "simplifications": [
+  "No email sending, online signature, online payment or customer portal (mail/portal/payment declared not implemented).",
+  "Invoice status 'upselling' dropped; optional products dropped.",
+  "Order totals stored and recomputed by microflow on line change (Odoo stored computes).",
+  "sale.report SQL view -> OQL view entity Sales.SalesAnalysis."
+ ],
+ "odooModelsInCapability": [
+  "crm.tag",
+  "crm.team",
+  "crm.team.member",
+  "sale.order",
+  "sale.order.line",
+  "sale.order.option",
+  "sale.order.template",
+  "sale.order.template.line",
+  "sale.order.template.option",
+  "sale.report"
+ ],
+ "droppedOdooModels": [
+  {
+   "odooModel": "crm.tag",
+   "reason": "CRM tags on orders — not used without the CRM app"
+  },
+  {
+   "odooModel": "crm.team.member",
+   "reason": "flattened into SalesTeam_Members reference set"
+  },
+  {
+   "odooModel": "sale.order.option",
+   "reason": "optional products on quotes — dropped (portal upsell feature)"
+  },
+  {
+   "odooModel": "sale.order.template.option",
+   "reason": "optional products on templates — dropped with sale.order.option"
+  },
+  {
+   "odooModel": "sale.mass.cancel.orders",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "sale.payment.provider.onboarding.wizard",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "sale.order.cancel",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "sale.order.discount",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  }
+ ],
+ "openQuestions": [
+  {
+   "id": "Q-F004-1",
+   "question": "Quotation PDF: Odoo prints the quotation/order (QWeb). Should the POC produce a PDF (Mendix document template), or is the on-screen document enough?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": false,
+   "kind": "DECISION",
+   "proposed": "On-screen only for the POC"
+  },
+  {
+   "id": "Q-F004-2",
+   "question": "Keep quotation templates (sale_management) in wave 2?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": false,
+   "kind": "DECISION",
+   "proposed": "Yes, small"
+  },
+  {
+   "id": "Q-F004-3",
+   "question": "Reporting: Odoo's pivot/graph analyses (sales, purchase, invoices, stock) become Mendix report pages on OQL view entities (charts + grid), not a pivot engine. OK?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": false,
+   "kind": "DECISION",
+   "proposed": "Yes"
+  }
+ ],
+ "sourceKB": [
+  "analysis/odoo/knowledge-base/entities.json",
+  "analysis/odoo/knowledge-base/structures.json",
+  "analysis/odoo/knowledge-base/staticEntities.json",
+  "analysis/odoo/knowledge-base/logics.json",
+  "analysis/odoo/knowledge-base/screens.json",
+  "analysis/odoo/knowledge-base/workflows.json",
+  "analysis/odoo/knowledge-base/roles.json",
+  "analysis/odoo/non-code-sources.md"
+ ],
+ "confidence": "high",
+ "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 5 gap(s) point at not-implemented addons (mail/portal/utm/...)",
+ "summaryCounts": {
+  "useCases": 8,
+  "entities": 5,
+  "enumerations": 4,
+  "microflows": 10,
+  "pages": 5,
+  "openQuestions": 3
+ }
+}

@@ -5,7 +5,7 @@ Every gate decision lands here as `CONFIRMED` or `ASSUMED`, never silently decid
 
 ## Current stage
 
-**Stage 2 — Requirements**, in progress — gates passed: P, 0, 1 (derived by gate-check on 2026-10-14; re-run it rather than editing this line).
+**Stage 3 — Architecture & Design**, in progress — gates passed: P, 0, 1, 2 (derived by gate-check on 2026-10-14; re-run it rather than editing this line).
 
 Toolkit commit: d16f578
 Interview mode: assist
@@ -44,6 +44,8 @@ Unit tests default: yes
 | 1 | Path B (documents): the 24 non-code files (READMEs, licence, anglo-saxon PDF/ODS, framework assets) read by hand | CONFIRMED | `analysis/odoo/non-code-sources.md`; source ledger 825/825 name-verified, 0 waivers |
 | 1 | Path C (SME): no open questions that code + docs cannot answer at this point; behavioural questions are raised at the Stage 2 interview gate (SME = user, assist mode) | ASSUMED | Agent, 2026-10-14 — reported in chat |
 | 1 | Extraction scope (CAC-1b): extraction covers all 13 imported addons; **BRDs only for C1–C8** (89 entities, 56 structures, 504 views in scope). C9–C12 output (76 entities, 68 structures, 208 views) stays in the KB as reference, no BRDs. Nothing missing for an in-scope capability | ASSUMED | Follows from the CAC-1 decision; stated in chat 2026-10-14 (assist mode) |
+| 2 | BRD set F001–F008 (one per capability C1–C8), generated from `pipelines/odoo/brd_spec.py` + `brd_content.py` by `brd_generator.py`: 7 modules (Core, Partners, Products, Sales, Purchasing, Inventory, Invoicing), 43 entities, 27 enumerations, 4 view entities, 48 use cases, 60 microflows, 1 workflow (PO approval); 338 of 358 members traced to Odoo fields; 89/89 in-scope Odoo models mapped (39) or dropped with reason (50); validation clean | ASSUMED | Agent 2026-10-14; becomes CONFIRMED with the answers to the 15 Stage 2 questions (raised in chat 2026-10-14) |
+| 2 | Mendix conventions in BRDs: system members (createdDate/changedDate/owner/changedBy) instead of hand-made audit attributes; `Active` only where Odoo archives; document numbers via Core.Sequence | ASSUMED | Deviation from brd-generation.md template, recorded in brd_spec.py header |
 | P | Source is committed to git (`sources/` tracked) | ASSUMED | LGPL-3.0 public code; container is ephemeral so an ignored copy would be lost (cloud-dev-environment.md step 5) |
 | 3 | Odoo in-place extension (`_inherit` without new `_name`): fields go into the owning Mendix entity; 1–1 extension entity only where the module must stay optional; method overrides → explicit sub-microflow hooks | ASSUMED | Discussed in chat 2026-10-14, to confirm at Stage 3 |
 | 3 | Odoo mixins (`_inherit` with new `_name`, e.g. `mail.thread`): no multiple inheritance in Mendix; at most one shared generalization (e.g. `Core.BusinessDocument`), otherwise associations; chatter out of scope | ASSUMED | Chat 2026-10-14 |
@@ -62,6 +64,7 @@ Feedback and change requests, one row each, written BEFORE any edit (`skills/cha
 | # | Question | Raised at | Status |
 |---|---|---|---|
 | 1 | Goal: faithful port of Odoo's data model, or "Odoo-inspired" Mendix-native design? (intake Q3) | Kickoff 2026-10-14 | answered — Odoo-inspired, Mendix-native (see Decisions) |
+| 3 | Stage 2 BRD questions Q-F001-1..3, Q-F003-1..2, Q-F004-1..3, Q-F005-1, Q-F006-1..3, Q-F008-1..3 (15) — see `bin/open-questions.sh . --stage 2` | Stage 2, 2026-10-14 | raised in chat, awaiting answer |
 | 2 | Project driver: POC/demo, or production use? (intake Q2) | Kickoff 2026-10-14 | answered — POC/demo (see Decisions) |
 
 ## Assumptions (ASSUMED, unresolved)

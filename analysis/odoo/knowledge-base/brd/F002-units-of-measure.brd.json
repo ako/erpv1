@@ -1,0 +1,369 @@
+{
+ "id": "F002",
+ "title": "Units of measure",
+ "modules": [
+  "Products"
+ ],
+ "actors": [
+  "InventoryManager",
+  "SalesManager",
+  "Administrator"
+ ],
+ "capability": "C2",
+ "summary": "Unit categories and units with conversion factors; quantity and price conversion between units of one category.",
+ "provenance": "code-extracted",
+ "generatedAt": "2026-10-14",
+ "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
+ "actorRoleMapping": {
+  "InventoryManager": [
+   "stock.group_stock_manager"
+  ],
+  "SalesManager": [
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman_all_leads"
+  ],
+  "Administrator": [
+   "base.group_system"
+  ]
+ },
+ "useCases": [
+  {
+   "id": "UC001",
+   "title": "Maintain units of measure",
+   "actors": [
+    "InventoryManager",
+    "Administrator"
+   ],
+   "preconditions": [
+    "Seeded categories exist (Unit, Weight, Volume, Length, Time)"
+   ],
+   "postconditions": [
+    "Unit usable on products and lines"
+   ],
+   "mainFlow": [
+    "1. User opens Configuration > Units of Measure",
+    "2. Selects a category and adds a unit: name, type (bigger/smaller/reference), factor, rounding",
+    "3. System checks exactly one reference unit per category and a positive factor",
+    "4. System saves"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "UoMCategory_Overview",
+    "UoMCategory_NewEdit"
+   ],
+   "odooRefs": [
+    "uom.product_uom_categ_form_view",
+    "uom.uom._check_category_reference_uniqueness"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC002",
+   "title": "Convert quantities between units",
+   "actors": [
+    "SalesUser",
+    "Purchaser",
+    "InventoryUser"
+   ],
+   "preconditions": [
+    "Product unit and line unit in the same category"
+   ],
+   "postconditions": [
+    "Stock and prices computed in the product unit"
+   ],
+   "mainFlow": [
+    "1. A line uses a different unit than the product (e.g. Dozens vs Units)",
+    "2. System converts the quantity via the reference unit and rounds UP to the target unit rounding",
+    "3. Prices are converted inversely"
+   ],
+   "alternativeFlows": [],
+   "screens": [],
+   "odooRefs": [
+    "uom.uom._compute_quantity",
+    "uom.uom._compute_price"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  }
+ ],
+ "domainEntities": [
+  {
+   "name": "Products.UoMCategory",
+   "module": "Products",
+   "persistent": true,
+   "purpose": "Groups units that convert into each other (Unit, Weight, Volume, Time...).",
+   "sourceOdoo": "uom.category",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "uom.category.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Unit of Measure Category",
+     "length": 200
+    }
+   ],
+   "associations": [],
+   "note": null,
+   "brd": "F002"
+  },
+  {
+   "name": "Products.UoM",
+   "module": "Products",
+   "persistent": true,
+   "purpose": "A unit of measure and its conversion factor to the category reference unit.",
+   "sourceOdoo": "uom.uom",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "uom.uom.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Unit of Measure",
+     "length": 200
+    },
+    {
+     "name": "UoMType",
+     "type": "Enumeration",
+     "sourceOdoo": "uom.uom.uom_type",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Type",
+     "odooDefault": "'reference'",
+     "enumeration": "Products.ENUM_UoMType"
+    },
+    {
+     "name": "Factor",
+     "type": "Decimal",
+     "sourceOdoo": "uom.uom.factor",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Ratio",
+     "odooDefault": "1.0",
+     "note": "reference units per this unit, Odoo semantics"
+    },
+    {
+     "name": "Rounding",
+     "type": "Decimal",
+     "sourceOdoo": "uom.uom.rounding",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Rounding Precision",
+     "odooDefault": "0.01"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "uom.uom.active"
+    }
+   ],
+   "associations": [
+    {
+     "name": "UoM_Category",
+     "owner": "Products.UoM",
+     "target": "Products.UoMCategory",
+     "type": "Reference",
+     "sourceOdoo": "uom.uom.category_id",
+     "odooTarget": "uom.category",
+     "mandatory": true
+    }
+   ],
+   "note": null,
+   "brd": "F002"
+  }
+ ],
+ "enumerations": [
+  {
+   "name": "Products.ENUM_UoMType",
+   "module": "Products",
+   "sourceOdoo": "uom.uom.uom_type",
+   "values": [
+    {
+     "name": "Reference",
+     "caption": "Reference unit for this category",
+     "odooValue": "reference"
+    },
+    {
+     "name": "Bigger",
+     "caption": "Bigger than the reference unit",
+     "odooValue": "bigger"
+    },
+    {
+     "name": "Smaller",
+     "caption": "Smaller than the reference unit",
+     "odooValue": "smaller"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": null
+  }
+ ],
+ "viewEntities": [],
+ "microflows": [
+  {
+   "name": "SUB_UoM_ConvertQuantity",
+   "kind": "Microflow",
+   "purpose": "qty / from.Factor * to.Factor, rounded UP to the target unit rounding (Odoo default rounding_method=UP).",
+   "params": [
+    {
+     "name": "Quantity",
+     "type": "Decimal"
+    },
+    {
+     "name": "FromUoM",
+     "type": "Products.UoM"
+    },
+    {
+     "name": "ToUoM",
+     "type": "Products.UoM"
+    }
+   ],
+   "returns": "Decimal",
+   "pattern": "calculation",
+   "calls": [],
+   "validations": [
+    "Both units in the same category, else error (uom_uom.py _compute_quantity)"
+   ],
+   "hiddenRules": [
+    "Odoo factor = units of this UoM per reference unit; quantity_ref = qty / from.factor; result = quantity_ref * to.factor"
+   ],
+   "odooRefs": [
+    "uom.uom._compute_quantity"
+   ]
+  },
+  {
+   "name": "SUB_UoM_ConvertPrice",
+   "kind": "Microflow",
+   "purpose": "Convert a unit price between units of one category (inverse of quantity).",
+   "params": [
+    {
+     "name": "Price",
+     "type": "Decimal"
+    },
+    {
+     "name": "FromUoM",
+     "type": "Products.UoM"
+    },
+    {
+     "name": "ToUoM",
+     "type": "Products.UoM"
+    }
+   ],
+   "returns": "Decimal",
+   "pattern": "calculation",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "uom.uom._compute_price"
+   ]
+  },
+  {
+   "name": "VAL_UoMCategory",
+   "kind": "Microflow",
+   "purpose": "Exactly one active reference unit per category; factor > 0.",
+   "params": [
+    {
+     "name": "UoMCategory",
+     "type": "Products.UoMCategory"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "validation",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "uom.uom._check_category_reference_uniqueness"
+   ]
+  }
+ ],
+ "workflows": [],
+ "pages": [
+  {
+   "name": "UoMCategory_Overview",
+   "purpose": "List of unit categories.",
+   "dataContext": "Products.UoMCategory",
+   "pattern": "list",
+   "sections": [
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Edit"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "uom.product_uom_categ_tree_view"
+   ]
+  },
+  {
+   "name": "UoMCategory_NewEdit",
+   "purpose": "Category with its editable unit lines.",
+   "dataContext": "Products.UoMCategory",
+   "pattern": "form",
+   "sections": [
+    "Category",
+    "Units"
+   ],
+   "actions": [
+    "Save",
+    "Cancel"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "uom.product_uom_categ_form_view"
+   ]
+  }
+ ],
+ "timers": [],
+ "integrations": [],
+ "simplifications": [
+  "Factor/ratio kept with Odoo semantics; factor_inv and the computed ratio are derived, not stored."
+ ],
+ "odooModelsInCapability": [
+  "uom.category",
+  "uom.uom"
+ ],
+ "droppedOdooModels": [],
+ "openQuestions": [],
+ "sourceKB": [
+  "analysis/odoo/knowledge-base/entities.json",
+  "analysis/odoo/knowledge-base/structures.json",
+  "analysis/odoo/knowledge-base/staticEntities.json",
+  "analysis/odoo/knowledge-base/logics.json",
+  "analysis/odoo/knowledge-base/screens.json",
+  "analysis/odoo/knowledge-base/workflows.json",
+  "analysis/odoo/knowledge-base/roles.json",
+  "analysis/odoo/non-code-sources.md"
+ ],
+ "confidence": "high",
+ "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 0 gap(s) point at not-implemented addons (mail/portal/utm/...)",
+ "summaryCounts": {
+  "useCases": 2,
+  "entities": 2,
+  "enumerations": 1,
+  "microflows": 3,
+  "pages": 2,
+  "openQuestions": 0
+ }
+}

@@ -1,0 +1,2150 @@
+[
+ {
+  "entity": "Core.Company",
+  "attribute": "Name",
+  "odoo": "res.company.name",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "attribute": "Email",
+  "odoo": "res.company.email",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "attribute": "Phone",
+  "odoo": "res.company.phone",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "attribute": "Street",
+  "odoo": "res.company.street",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "attribute": "Street2",
+  "odoo": "res.company.street2",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "attribute": "Zip",
+  "odoo": "res.company.zip",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "attribute": "City",
+  "odoo": "res.company.city",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "attribute": "VATNumber",
+  "odoo": "res.company.vat",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "attribute": "Website",
+  "odoo": "res.company.website",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "attribute": "QuotationValidityDays",
+  "odoo": "res.company.quotation_validity_days",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "attribute": "POApprovalEnabled",
+  "odoo": "res.company.po_double_validation",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "attribute": "POApprovalThreshold",
+  "odoo": "res.company.po_double_validation_amount",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "attribute": "PurchaseLeadDays",
+  "odoo": "res.company.po_lead",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "attribute": "InvoiceTerms",
+  "odoo": "res.company.invoice_terms",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "association": "Company_Country",
+  "odoo": "res.company.country_id",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "association": "Company_Currency",
+  "odoo": "res.company.currency_id",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "association": "Company_DefaultSalesTax",
+  "odoo": "res.company.account_sale_tax_id",
+  "new": false
+ },
+ {
+  "entity": "Core.Company",
+  "association": "Company_DefaultPurchaseTax",
+  "odoo": "res.company.account_purchase_tax_id",
+  "new": false
+ },
+ {
+  "entity": "Core.Country",
+  "attribute": "Name",
+  "odoo": "res.country.name",
+  "new": false
+ },
+ {
+  "entity": "Core.Country",
+  "attribute": "Code",
+  "odoo": "res.country.code",
+  "new": false
+ },
+ {
+  "entity": "Core.Currency",
+  "attribute": "Name",
+  "odoo": "res.currency.name",
+  "new": false
+ },
+ {
+  "entity": "Core.Currency",
+  "attribute": "Symbol",
+  "odoo": "res.currency.symbol",
+  "new": false
+ },
+ {
+  "entity": "Core.Currency",
+  "attribute": "Rounding",
+  "odoo": "res.currency.rounding",
+  "new": false
+ },
+ {
+  "entity": "Core.Currency",
+  "attribute": "DecimalPlaces",
+  "odoo": "res.currency.decimal_places",
+  "new": false
+ },
+ {
+  "entity": "Core.Currency",
+  "attribute": "SymbolPosition",
+  "odoo": "res.currency.position",
+  "new": false
+ },
+ {
+  "entity": "Core.Sequence",
+  "attribute": "Code",
+  "odoo": "ir.sequence (framework, not extracted field-level)",
+  "new": true
+ },
+ {
+  "entity": "Core.Sequence",
+  "attribute": "Prefix",
+  "odoo": "ir.sequence (framework, not extracted field-level)",
+  "new": true
+ },
+ {
+  "entity": "Core.Sequence",
+  "attribute": "Padding",
+  "odoo": "ir.sequence (framework, not extracted field-level)",
+  "new": true
+ },
+ {
+  "entity": "Core.Sequence",
+  "attribute": "NextNumber",
+  "odoo": "ir.sequence (framework, not extracted field-level)",
+  "new": true
+ },
+ {
+  "entity": "Core.LineAmounts",
+  "attribute": "Subtotal",
+  "odoo": null,
+  "new": true
+ },
+ {
+  "entity": "Core.LineAmounts",
+  "attribute": "TaxAmount",
+  "odoo": null,
+  "new": true
+ },
+ {
+  "entity": "Core.LineAmounts",
+  "attribute": "Total",
+  "odoo": null,
+  "new": true
+ },
+ {
+  "entity": "Core.UserProfile",
+  "attribute": "DisplayName",
+  "odoo": "res.users (framework, not extracted field-level)",
+  "new": true
+ },
+ {
+  "entity": "Core.UserProfile",
+  "association": "UserProfile_Account",
+  "odoo": null,
+  "new": true
+ },
+ {
+  "entity": "Core.UserProfile",
+  "association": "UserProfile_Partner",
+  "odoo": "res.users.partner_id",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "Name",
+  "odoo": "res.partner.name",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "IsCompany",
+  "odoo": "res.partner.is_company",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "AddressType",
+  "odoo": "res.partner.type",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "Email",
+  "odoo": "res.partner.email",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "Phone",
+  "odoo": "res.partner.phone",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "Mobile",
+  "odoo": "res.partner.mobile",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "JobPosition",
+  "odoo": "res.partner.function",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "Street",
+  "odoo": "res.partner.street",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "Street2",
+  "odoo": "res.partner.street2",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "Zip",
+  "odoo": "res.partner.zip",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "City",
+  "odoo": "res.partner.city",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "VATNumber",
+  "odoo": "res.partner.vat",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "Website",
+  "odoo": "res.partner.website",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "Reference",
+  "odoo": "res.partner.ref",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "Notes",
+  "odoo": "res.partner.comment",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "IsCustomer",
+  "odoo": "res.partner.customer_rank",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "attribute": "IsVendor",
+  "odoo": "res.partner.supplier_rank",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "association": "Partner_ParentCompany",
+  "odoo": "res.partner.parent_id",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "association": "Partner_Country",
+  "odoo": "res.partner.country_id",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "association": "Partner_Tags",
+  "odoo": "res.partner.category_id",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "association": "Partner_Salesperson",
+  "odoo": "res.partner.user_id",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "association": "Partner_CustomerPaymentTerm",
+  "odoo": "res.partner.property_payment_term_id",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "association": "Partner_VendorPaymentTerm",
+  "odoo": "res.partner.property_supplier_payment_term_id",
+  "new": false
+ },
+ {
+  "entity": "Partners.Partner",
+  "association": "Partner_Pricelist",
+  "odoo": "res.partner.property_product_pricelist",
+  "new": false
+ },
+ {
+  "entity": "Partners.PartnerTag",
+  "attribute": "Name",
+  "odoo": "res.partner.category.name",
+  "new": false
+ },
+ {
+  "entity": "Partners.PartnerTag",
+  "attribute": "Color",
+  "odoo": "res.partner.category.color",
+  "new": false
+ },
+ {
+  "entity": "Partners.BankAccount",
+  "attribute": "AccountNumber",
+  "odoo": "res.partner.bank.acc_number",
+  "new": false
+ },
+ {
+  "entity": "Partners.BankAccount",
+  "attribute": "HolderName",
+  "odoo": "res.partner.bank.acc_holder_name",
+  "new": false
+ },
+ {
+  "entity": "Partners.BankAccount",
+  "attribute": "BankName",
+  "odoo": "res.partner.bank.bank_name",
+  "new": false
+ },
+ {
+  "entity": "Partners.BankAccount",
+  "attribute": "BIC",
+  "odoo": "res.partner.bank.bank_bic",
+  "new": false
+ },
+ {
+  "entity": "Partners.BankAccount",
+  "association": "BankAccount_Partner",
+  "odoo": "res.partner.bank.partner_id",
+  "new": false
+ },
+ {
+  "entity": "Products.UoMCategory",
+  "attribute": "Name",
+  "odoo": "uom.category.name",
+  "new": false
+ },
+ {
+  "entity": "Products.UoM",
+  "attribute": "Name",
+  "odoo": "uom.uom.name",
+  "new": false
+ },
+ {
+  "entity": "Products.UoM",
+  "attribute": "UoMType",
+  "odoo": "uom.uom.uom_type",
+  "new": false
+ },
+ {
+  "entity": "Products.UoM",
+  "attribute": "Factor",
+  "odoo": "uom.uom.factor",
+  "new": false
+ },
+ {
+  "entity": "Products.UoM",
+  "attribute": "Rounding",
+  "odoo": "uom.uom.rounding",
+  "new": false
+ },
+ {
+  "entity": "Products.UoM",
+  "association": "UoM_Category",
+  "odoo": "uom.uom.category_id",
+  "new": false
+ },
+ {
+  "entity": "Products.ProductCategory",
+  "attribute": "Name",
+  "odoo": "product.category.name",
+  "new": false
+ },
+ {
+  "entity": "Products.ProductCategory",
+  "attribute": "FullName",
+  "odoo": "product.category.complete_name",
+  "new": false
+ },
+ {
+  "entity": "Products.ProductCategory",
+  "association": "ProductCategory_Parent",
+  "odoo": "product.category.parent_id",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "Name",
+  "odoo": "product.template.name",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "InternalReference",
+  "odoo": "product.template.default_code",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "Barcode",
+  "odoo": "product.template.barcode",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "ProductType",
+  "odoo": "product.template.type",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "TrackInventory",
+  "odoo": "product.template.is_storable",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "SalesPrice",
+  "odoo": "product.template.list_price",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "Cost",
+  "odoo": "product.template.standard_price",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "CanBeSold",
+  "odoo": "product.template.sale_ok",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "CanBePurchased",
+  "odoo": "product.template.purchase_ok",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "InvoicePolicy",
+  "odoo": "product.template.invoice_policy",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "BillPolicy",
+  "odoo": "product.template.purchase_method",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "SalesDescription",
+  "odoo": "product.template.description_sale",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "PurchaseDescription",
+  "odoo": "product.template.description_purchase",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "InternalNotes",
+  "odoo": "product.template.description",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "Weight",
+  "odoo": "product.template.weight",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "Volume",
+  "odoo": "product.template.volume",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "attribute": "CustomerLeadDays",
+  "odoo": "product.template.sale_delay",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "association": "Product_Category",
+  "odoo": "product.template.categ_id",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "association": "Product_UoM",
+  "odoo": "product.template.uom_id",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "association": "Product_PurchaseUoM",
+  "odoo": "product.template.uom_po_id",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "association": "Product_CustomerTaxes",
+  "odoo": "product.template.taxes_id",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "association": "Product_VendorTaxes",
+  "odoo": "product.template.supplier_taxes_id",
+  "new": false
+ },
+ {
+  "entity": "Products.Product",
+  "association": "Product_Tags",
+  "odoo": "product.template.product_tag_ids",
+  "new": false
+ },
+ {
+  "entity": "Products.ProductImage",
+  "association": "ProductImage_Product",
+  "odoo": null,
+  "new": true
+ },
+ {
+  "entity": "Products.ProductTag",
+  "attribute": "Name",
+  "odoo": "product.tag.name",
+  "new": false
+ },
+ {
+  "entity": "Products.ProductTag",
+  "attribute": "Color",
+  "odoo": "product.tag.color",
+  "new": false
+ },
+ {
+  "entity": "Products.VendorPrice",
+  "attribute": "MinQuantity",
+  "odoo": "product.supplierinfo.min_qty",
+  "new": false
+ },
+ {
+  "entity": "Products.VendorPrice",
+  "attribute": "Price",
+  "odoo": "product.supplierinfo.price",
+  "new": false
+ },
+ {
+  "entity": "Products.VendorPrice",
+  "attribute": "Discount",
+  "odoo": "product.supplierinfo.discount",
+  "new": false
+ },
+ {
+  "entity": "Products.VendorPrice",
+  "attribute": "LeadTimeDays",
+  "odoo": "product.supplierinfo.delay",
+  "new": false
+ },
+ {
+  "entity": "Products.VendorPrice",
+  "attribute": "VendorProductCode",
+  "odoo": "product.supplierinfo.product_code",
+  "new": false
+ },
+ {
+  "entity": "Products.VendorPrice",
+  "attribute": "VendorProductName",
+  "odoo": "product.supplierinfo.product_name",
+  "new": false
+ },
+ {
+  "entity": "Products.VendorPrice",
+  "attribute": "ValidFrom",
+  "odoo": "product.supplierinfo.date_start",
+  "new": false
+ },
+ {
+  "entity": "Products.VendorPrice",
+  "attribute": "ValidTo",
+  "odoo": "product.supplierinfo.date_end",
+  "new": false
+ },
+ {
+  "entity": "Products.VendorPrice",
+  "attribute": "Sequence",
+  "odoo": "product.supplierinfo.sequence",
+  "new": false
+ },
+ {
+  "entity": "Products.VendorPrice",
+  "association": "VendorPrice_Vendor",
+  "odoo": "product.supplierinfo.partner_id",
+  "new": false
+ },
+ {
+  "entity": "Products.VendorPrice",
+  "association": "VendorPrice_Product",
+  "odoo": "product.supplierinfo.product_tmpl_id",
+  "new": false
+ },
+ {
+  "entity": "Products.Pricelist",
+  "attribute": "Name",
+  "odoo": "product.pricelist.name",
+  "new": false
+ },
+ {
+  "entity": "Products.Pricelist",
+  "attribute": "Sequence",
+  "odoo": "product.pricelist.sequence",
+  "new": false
+ },
+ {
+  "entity": "Products.Pricelist",
+  "association": "Pricelist_Currency",
+  "odoo": "product.pricelist.currency_id",
+  "new": false
+ },
+ {
+  "entity": "Products.PriceRule",
+  "attribute": "AppliesTo",
+  "odoo": "product.pricelist.item.applied_on",
+  "new": false
+ },
+ {
+  "entity": "Products.PriceRule",
+  "attribute": "Computation",
+  "odoo": "product.pricelist.item.compute_price",
+  "new": false
+ },
+ {
+  "entity": "Products.PriceRule",
+  "attribute": "FixedPrice",
+  "odoo": "product.pricelist.item.fixed_price",
+  "new": false
+ },
+ {
+  "entity": "Products.PriceRule",
+  "attribute": "DiscountPercent",
+  "odoo": "product.pricelist.item.percent_price",
+  "new": false
+ },
+ {
+  "entity": "Products.PriceRule",
+  "attribute": "MinQuantity",
+  "odoo": "product.pricelist.item.min_quantity",
+  "new": false
+ },
+ {
+  "entity": "Products.PriceRule",
+  "attribute": "ValidFrom",
+  "odoo": "product.pricelist.item.date_start",
+  "new": false
+ },
+ {
+  "entity": "Products.PriceRule",
+  "attribute": "ValidTo",
+  "odoo": "product.pricelist.item.date_end",
+  "new": false
+ },
+ {
+  "entity": "Products.PriceRule",
+  "association": "PriceRule_Pricelist",
+  "odoo": "product.pricelist.item.pricelist_id",
+  "new": false
+ },
+ {
+  "entity": "Products.PriceRule",
+  "association": "PriceRule_Product",
+  "odoo": "product.pricelist.item.product_tmpl_id",
+  "new": false
+ },
+ {
+  "entity": "Products.PriceRule",
+  "association": "PriceRule_Category",
+  "odoo": "product.pricelist.item.categ_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesTeam",
+  "attribute": "Name",
+  "odoo": "crm.team.name",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesTeam",
+  "attribute": "InvoicingTarget",
+  "odoo": "crm.team.invoiced_target",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesTeam",
+  "association": "SalesTeam_Leader",
+  "odoo": "crm.team.user_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesTeam",
+  "association": "SalesTeam_Members",
+  "odoo": "crm.team.member_ids",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "Number",
+  "odoo": "sale.order.name",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "Status",
+  "odoo": "sale.order.state",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "Locked",
+  "odoo": "sale.order.locked",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "OrderDate",
+  "odoo": "sale.order.date_order",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "ExpirationDate",
+  "odoo": "sale.order.validity_date",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "DeliveryDate",
+  "odoo": "sale.order.commitment_date",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "CustomerReference",
+  "odoo": "sale.order.client_order_ref",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "Source",
+  "odoo": "sale.order.origin",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "TermsAndConditions",
+  "odoo": "sale.order.note",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "AmountUntaxed",
+  "odoo": "sale.order.amount_untaxed",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "AmountTax",
+  "odoo": "sale.order.amount_tax",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "AmountTotal",
+  "odoo": "sale.order.amount_total",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "InvoiceStatus",
+  "odoo": "sale.order.invoice_status",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "attribute": "DeliveryStatus",
+  "odoo": "sale.order.delivery_status",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "association": "SalesOrder_Customer",
+  "odoo": "sale.order.partner_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "association": "SalesOrder_InvoiceAddress",
+  "odoo": "sale.order.partner_invoice_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "association": "SalesOrder_DeliveryAddress",
+  "odoo": "sale.order.partner_shipping_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "association": "SalesOrder_Salesperson",
+  "odoo": "sale.order.user_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "association": "SalesOrder_SalesTeam",
+  "odoo": "sale.order.team_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "association": "SalesOrder_Pricelist",
+  "odoo": "sale.order.pricelist_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "association": "SalesOrder_PaymentTerm",
+  "odoo": "sale.order.payment_term_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "association": "SalesOrder_Currency",
+  "odoo": "sale.order.currency_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrder",
+  "association": "SalesOrder_QuotationTemplate",
+  "odoo": "sale.order.sale_order_template_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "attribute": "Sequence",
+  "odoo": "sale.order.line.sequence",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "attribute": "LineType",
+  "odoo": "sale.order.line.display_type",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "attribute": "Description",
+  "odoo": "sale.order.line.name",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "attribute": "Quantity",
+  "odoo": "sale.order.line.product_uom_qty",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "attribute": "UnitPrice",
+  "odoo": "sale.order.line.price_unit",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "attribute": "DiscountPercent",
+  "odoo": "sale.order.line.discount",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "attribute": "Subtotal",
+  "odoo": "sale.order.line.price_subtotal",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "attribute": "TaxAmount",
+  "odoo": "sale.order.line.price_tax",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "attribute": "Total",
+  "odoo": "sale.order.line.price_total",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "attribute": "QuantityDelivered",
+  "odoo": "sale.order.line.qty_delivered",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "attribute": "QuantityInvoiced",
+  "odoo": "sale.order.line.qty_invoiced",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "attribute": "QuantityToInvoice",
+  "odoo": "sale.order.line.qty_to_invoice",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "attribute": "LeadTimeDays",
+  "odoo": "sale.order.line.customer_lead",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "association": "SalesOrderLine_SalesOrder",
+  "odoo": "sale.order.line.order_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "association": "SalesOrderLine_Product",
+  "odoo": "sale.order.line.product_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "association": "SalesOrderLine_UoM",
+  "odoo": "sale.order.line.product_uom",
+  "new": false
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
+  "association": "SalesOrderLine_Taxes",
+  "odoo": "sale.order.line.tax_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.QuotationTemplate",
+  "attribute": "Name",
+  "odoo": "sale.order.template.name",
+  "new": false
+ },
+ {
+  "entity": "Sales.QuotationTemplate",
+  "attribute": "ValidityDays",
+  "odoo": "sale.order.template.number_of_days",
+  "new": false
+ },
+ {
+  "entity": "Sales.QuotationTemplate",
+  "attribute": "TermsAndConditions",
+  "odoo": "sale.order.template.note",
+  "new": false
+ },
+ {
+  "entity": "Sales.QuotationTemplateLine",
+  "attribute": "Sequence",
+  "odoo": "sale.order.template.line.sequence",
+  "new": false
+ },
+ {
+  "entity": "Sales.QuotationTemplateLine",
+  "attribute": "LineType",
+  "odoo": "sale.order.template.line.display_type",
+  "new": false
+ },
+ {
+  "entity": "Sales.QuotationTemplateLine",
+  "attribute": "Description",
+  "odoo": "sale.order.template.line.name",
+  "new": false
+ },
+ {
+  "entity": "Sales.QuotationTemplateLine",
+  "attribute": "Quantity",
+  "odoo": "sale.order.template.line.product_uom_qty",
+  "new": false
+ },
+ {
+  "entity": "Sales.QuotationTemplateLine",
+  "association": "QuotationTemplateLine_Template",
+  "odoo": "sale.order.template.line.sale_order_template_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.QuotationTemplateLine",
+  "association": "QuotationTemplateLine_Product",
+  "odoo": "sale.order.template.line.product_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.QuotationTemplateLine",
+  "association": "QuotationTemplateLine_UoM",
+  "odoo": "sale.order.template.line.product_uom_id",
+  "new": false
+ },
+ {
+  "entity": "Sales.CreateInvoiceRequest",
+  "attribute": "ConsolidatePerCustomer",
+  "odoo": "sale.advance.payment.inv (framework, not extracted field-level)",
+  "new": true
+ },
+ {
+  "entity": "Sales.CreateInvoiceRequest",
+  "association": "CreateInvoiceRequest_SalesOrders",
+  "odoo": "sale.advance.payment.inv.sale_order_ids",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "Number",
+  "odoo": "purchase.order.name",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "Status",
+  "odoo": "purchase.order.state",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "Locked",
+  "odoo": "purchase.order (framework, not extracted field-level)",
+  "new": true
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "OrderDeadline",
+  "odoo": "purchase.order.date_order",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "ConfirmationDate",
+  "odoo": "purchase.order.date_approve",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "ExpectedArrival",
+  "odoo": "purchase.order.date_planned",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "VendorReference",
+  "odoo": "purchase.order.partner_ref",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "Source",
+  "odoo": "purchase.order.origin",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "Notes",
+  "odoo": "purchase.order.notes",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "AmountUntaxed",
+  "odoo": "purchase.order.amount_untaxed",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "AmountTax",
+  "odoo": "purchase.order.amount_tax",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "AmountTotal",
+  "odoo": "purchase.order.amount_total",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "BillingStatus",
+  "odoo": "purchase.order.invoice_status",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "attribute": "ReceiptStatus",
+  "odoo": "purchase.order.receipt_status",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "association": "PurchaseOrder_Vendor",
+  "odoo": "purchase.order.partner_id",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "association": "PurchaseOrder_Buyer",
+  "odoo": "purchase.order.user_id",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "association": "PurchaseOrder_PaymentTerm",
+  "odoo": "purchase.order.payment_term_id",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "association": "PurchaseOrder_Currency",
+  "odoo": "purchase.order.currency_id",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "association": "PurchaseOrder_DeliverTo",
+  "odoo": "purchase.order.picking_type_id",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
+  "association": "PurchaseOrder_ReorderRule",
+  "odoo": null,
+  "new": true
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "attribute": "Sequence",
+  "odoo": "purchase.order.line.sequence",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "attribute": "LineType",
+  "odoo": "purchase.order.line.display_type",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "attribute": "Description",
+  "odoo": "purchase.order.line.name",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "attribute": "Quantity",
+  "odoo": "purchase.order.line.product_qty",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "attribute": "UnitPrice",
+  "odoo": "purchase.order.line.price_unit",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "attribute": "DiscountPercent",
+  "odoo": "purchase.order.line.discount",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "attribute": "ExpectedArrival",
+  "odoo": "purchase.order.line.date_planned",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "attribute": "Subtotal",
+  "odoo": "purchase.order.line.price_subtotal",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "attribute": "TaxAmount",
+  "odoo": "purchase.order.line.price_tax",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "attribute": "Total",
+  "odoo": "purchase.order.line.price_total",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "attribute": "QuantityReceived",
+  "odoo": "purchase.order.line.qty_received",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "attribute": "QuantityBilled",
+  "odoo": "purchase.order.line.qty_invoiced",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "attribute": "QuantityToBill",
+  "odoo": "purchase.order.line.qty_to_invoice",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "association": "PurchaseOrderLine_PurchaseOrder",
+  "odoo": "purchase.order.line.order_id",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "association": "PurchaseOrderLine_Product",
+  "odoo": "purchase.order.line.product_id",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "association": "PurchaseOrderLine_UoM",
+  "odoo": "purchase.order.line.product_uom",
+  "new": false
+ },
+ {
+  "entity": "Purchasing.PurchaseOrderLine",
+  "association": "PurchaseOrderLine_Taxes",
+  "odoo": "purchase.order.line.taxes_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Warehouse",
+  "attribute": "Name",
+  "odoo": "stock.warehouse.name",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Warehouse",
+  "attribute": "ShortName",
+  "odoo": "stock.warehouse.code",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Warehouse",
+  "association": "Warehouse_StockLocation",
+  "odoo": "stock.warehouse.lot_stock_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Warehouse",
+  "association": "Warehouse_Address",
+  "odoo": "stock.warehouse.partner_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Location",
+  "attribute": "Name",
+  "odoo": "stock.location.name",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Location",
+  "attribute": "FullName",
+  "odoo": "stock.location.complete_name",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Location",
+  "attribute": "LocationType",
+  "odoo": "stock.location.usage",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Location",
+  "attribute": "Barcode",
+  "odoo": "stock.location.barcode",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Location",
+  "association": "Location_Parent",
+  "odoo": "stock.location.location_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Location",
+  "association": "Location_Warehouse",
+  "odoo": "stock.location.warehouse_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.OperationType",
+  "attribute": "Name",
+  "odoo": "stock.picking.type.name",
+  "new": false
+ },
+ {
+  "entity": "Inventory.OperationType",
+  "attribute": "Kind",
+  "odoo": "stock.picking.type.code",
+  "new": false
+ },
+ {
+  "entity": "Inventory.OperationType",
+  "attribute": "SequenceCode",
+  "odoo": "stock.picking.type.sequence_code",
+  "new": false
+ },
+ {
+  "entity": "Inventory.OperationType",
+  "attribute": "CreateBackorder",
+  "odoo": "stock.picking.type.create_backorder",
+  "new": false
+ },
+ {
+  "entity": "Inventory.OperationType",
+  "association": "OperationType_Warehouse",
+  "odoo": "stock.picking.type.warehouse_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.OperationType",
+  "association": "OperationType_DefaultSource",
+  "odoo": "stock.picking.type.default_location_src_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.OperationType",
+  "association": "OperationType_DefaultDestination",
+  "odoo": "stock.picking.type.default_location_dest_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "attribute": "Number",
+  "odoo": "stock.picking.name",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "attribute": "Status",
+  "odoo": "stock.picking.state",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "attribute": "ScheduledDate",
+  "odoo": "stock.picking.scheduled_date",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "attribute": "DateDone",
+  "odoo": "stock.picking.date_done",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "attribute": "Deadline",
+  "odoo": "stock.picking.date_deadline",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "attribute": "SourceDocument",
+  "odoo": "stock.picking.origin",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "attribute": "Notes",
+  "odoo": "stock.picking.note",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "association": "Transfer_OperationType",
+  "odoo": "stock.picking.picking_type_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "association": "Transfer_Partner",
+  "odoo": "stock.picking.partner_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "association": "Transfer_SourceLocation",
+  "odoo": "stock.picking.location_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "association": "Transfer_DestinationLocation",
+  "odoo": "stock.picking.location_dest_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "association": "Transfer_Backorder",
+  "odoo": "stock.picking.backorder_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "association": "Transfer_SalesOrder",
+  "odoo": "stock.picking.sale_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "association": "Transfer_PurchaseOrder",
+  "odoo": "stock.picking.purchase_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.Transfer",
+  "association": "Transfer_Responsible",
+  "odoo": "stock.picking.user_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "attribute": "Description",
+  "odoo": "stock.move.name",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "attribute": "Status",
+  "odoo": "stock.move.state",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "attribute": "Date",
+  "odoo": "stock.move.date",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "attribute": "DemandQuantity",
+  "odoo": "stock.move.product_uom_qty",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "attribute": "Quantity",
+  "odoo": "stock.move.quantity",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "attribute": "Picked",
+  "odoo": "stock.move.picked",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "attribute": "SourceDocument",
+  "odoo": "stock.move.origin",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "attribute": "IsInventoryAdjustment",
+  "odoo": "stock.move.is_inventory",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "association": "StockMove_Transfer",
+  "odoo": "stock.move.picking_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "association": "StockMove_Product",
+  "odoo": "stock.move.product_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "association": "StockMove_UoM",
+  "odoo": "stock.move.product_uom",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "association": "StockMove_SourceLocation",
+  "odoo": "stock.move.location_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "association": "StockMove_DestinationLocation",
+  "odoo": "stock.move.location_dest_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "association": "StockMove_SalesOrderLine",
+  "odoo": "stock.move.sale_line_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockMove",
+  "association": "StockMove_PurchaseOrderLine",
+  "odoo": "stock.move.purchase_line_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockLevel",
+  "attribute": "Quantity",
+  "odoo": "stock.quant.quantity",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockLevel",
+  "attribute": "ReservedQuantity",
+  "odoo": "stock.quant.reserved_quantity",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockLevel",
+  "attribute": "CountedQuantity",
+  "odoo": "stock.quant.inventory_quantity",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockLevel",
+  "attribute": "CountSet",
+  "odoo": "stock.quant.inventory_quantity_set",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockLevel",
+  "attribute": "ScheduledCountDate",
+  "odoo": "stock.quant.inventory_date",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockLevel",
+  "attribute": "IncomingDate",
+  "odoo": "stock.quant.in_date",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockLevel",
+  "association": "StockLevel_Product",
+  "odoo": "stock.quant.product_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.StockLevel",
+  "association": "StockLevel_Location",
+  "odoo": "stock.quant.location_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.ReorderRule",
+  "attribute": "Name",
+  "odoo": "stock.warehouse.orderpoint.name",
+  "new": false
+ },
+ {
+  "entity": "Inventory.ReorderRule",
+  "attribute": "MinQuantity",
+  "odoo": "stock.warehouse.orderpoint.product_min_qty",
+  "new": false
+ },
+ {
+  "entity": "Inventory.ReorderRule",
+  "attribute": "MaxQuantity",
+  "odoo": "stock.warehouse.orderpoint.product_max_qty",
+  "new": false
+ },
+ {
+  "entity": "Inventory.ReorderRule",
+  "attribute": "QuantityMultiple",
+  "odoo": "stock.warehouse.orderpoint.qty_multiple",
+  "new": false
+ },
+ {
+  "entity": "Inventory.ReorderRule",
+  "attribute": "Automatic",
+  "odoo": "stock.warehouse.orderpoint.trigger",
+  "new": false
+ },
+ {
+  "entity": "Inventory.ReorderRule",
+  "association": "ReorderRule_Product",
+  "odoo": "stock.warehouse.orderpoint.product_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.ReorderRule",
+  "association": "ReorderRule_Location",
+  "odoo": "stock.warehouse.orderpoint.location_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.ReorderRule",
+  "association": "ReorderRule_Vendor",
+  "odoo": "stock.warehouse.orderpoint.vendor_id",
+  "new": false
+ },
+ {
+  "entity": "Inventory.ValidateTransferRequest",
+  "attribute": "CreateBackorder",
+  "odoo": "stock.backorder.confirmation (framework, not extracted field-level)",
+  "new": true
+ },
+ {
+  "entity": "Inventory.ValidateTransferRequest",
+  "association": "ValidateTransferRequest_Transfer",
+  "odoo": "stock.backorder.confirmation.pick_ids",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "Number",
+  "odoo": "account.move.name",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "InvoiceType",
+  "odoo": "account.move.move_type",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "Status",
+  "odoo": "account.move.state",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "PaymentStatus",
+  "odoo": "account.move.payment_state",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "InvoiceDate",
+  "odoo": "account.move.invoice_date",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "DueDate",
+  "odoo": "account.move.invoice_date_due",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "Reference",
+  "odoo": "account.move.ref",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "PaymentReference",
+  "odoo": "account.move.payment_reference",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "SourceDocument",
+  "odoo": "account.move.invoice_origin",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "Notes",
+  "odoo": "account.move.narration",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "AmountUntaxed",
+  "odoo": "account.move.amount_untaxed",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "AmountTax",
+  "odoo": "account.move.amount_tax",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "AmountTotal",
+  "odoo": "account.move.amount_total",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "attribute": "AmountDue",
+  "odoo": "account.move.amount_residual",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "association": "Invoice_Partner",
+  "odoo": "account.move.partner_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "association": "Invoice_DeliveryAddress",
+  "odoo": "account.move.partner_shipping_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "association": "Invoice_Salesperson",
+  "odoo": "account.move.invoice_user_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "association": "Invoice_PaymentTerm",
+  "odoo": "account.move.invoice_payment_term_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "association": "Invoice_Currency",
+  "odoo": "account.move.currency_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "association": "Invoice_ReversalOf",
+  "odoo": "account.move.reversed_entry_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "association": "Invoice_BankAccount",
+  "odoo": "account.move.partner_bank_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "association": "Invoice_SalesOrders",
+  "odoo": null,
+  "new": true
+ },
+ {
+  "entity": "Invoicing.Invoice",
+  "association": "Invoice_PurchaseOrder",
+  "odoo": "account.move.purchase_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "attribute": "Sequence",
+  "odoo": "account.move.line.sequence",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "attribute": "LineType",
+  "odoo": "account.move.line.display_type",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "attribute": "Description",
+  "odoo": "account.move.line.name",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "attribute": "Quantity",
+  "odoo": "account.move.line.quantity",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "attribute": "UnitPrice",
+  "odoo": "account.move.line.price_unit",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "attribute": "DiscountPercent",
+  "odoo": "account.move.line.discount",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "attribute": "Subtotal",
+  "odoo": "account.move.line.price_subtotal",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "attribute": "Total",
+  "odoo": "account.move.line.price_total",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "association": "InvoiceLine_Invoice",
+  "odoo": "account.move.line.move_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "association": "InvoiceLine_Product",
+  "odoo": "account.move.line.product_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "association": "InvoiceLine_UoM",
+  "odoo": "account.move.line.product_uom_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "association": "InvoiceLine_Taxes",
+  "odoo": "account.move.line.tax_ids",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "association": "InvoiceLine_SalesOrderLines",
+  "odoo": "account.move.line.sale_line_ids",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.InvoiceLine",
+  "association": "InvoiceLine_PurchaseOrderLine",
+  "odoo": "account.move.line.purchase_line_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Tax",
+  "attribute": "Name",
+  "odoo": "account.tax.name",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Tax",
+  "attribute": "Scope",
+  "odoo": "account.tax.type_tax_use",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Tax",
+  "attribute": "Computation",
+  "odoo": "account.tax.amount_type",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Tax",
+  "attribute": "Amount",
+  "odoo": "account.tax.amount",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Tax",
+  "attribute": "IncludedInPrice",
+  "odoo": "account.tax.price_include_override",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Tax",
+  "attribute": "LabelOnInvoice",
+  "odoo": "account.tax.invoice_label",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Tax",
+  "attribute": "Sequence",
+  "odoo": "account.tax.sequence",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.PaymentTerm",
+  "attribute": "Name",
+  "odoo": "account.payment.term.name",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.PaymentTerm",
+  "attribute": "Note",
+  "odoo": "account.payment.term.note",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.PaymentTerm",
+  "attribute": "Sequence",
+  "odoo": "account.payment.term.sequence",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.PaymentTermLine",
+  "attribute": "Value",
+  "odoo": "account.payment.term.line.value",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.PaymentTermLine",
+  "attribute": "ValueAmount",
+  "odoo": "account.payment.term.line.value_amount",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.PaymentTermLine",
+  "attribute": "Days",
+  "odoo": "account.payment.term.line.nb_days",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.PaymentTermLine",
+  "attribute": "DelayType",
+  "odoo": "account.payment.term.line.delay_type",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.PaymentTermLine",
+  "association": "PaymentTermLine_PaymentTerm",
+  "odoo": "account.payment.term.line.payment_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Payment",
+  "attribute": "Number",
+  "odoo": "account.payment.name",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Payment",
+  "attribute": "Direction",
+  "odoo": "account.payment.payment_type",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Payment",
+  "attribute": "PartnerKind",
+  "odoo": "account.payment.partner_type",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Payment",
+  "attribute": "Amount",
+  "odoo": "account.payment.amount",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Payment",
+  "attribute": "PaymentDate",
+  "odoo": "account.payment.date",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Payment",
+  "attribute": "Memo",
+  "odoo": "account.payment.memo",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Payment",
+  "attribute": "Status",
+  "odoo": "account.payment.state",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Payment",
+  "attribute": "Method",
+  "odoo": "account.payment (framework, not extracted field-level)",
+  "new": true
+ },
+ {
+  "entity": "Invoicing.Payment",
+  "association": "Payment_Partner",
+  "odoo": "account.payment.partner_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Payment",
+  "association": "Payment_Currency",
+  "odoo": "account.payment.currency_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Payment",
+  "association": "Payment_BankAccount",
+  "odoo": "account.payment.partner_bank_id",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.Payment",
+  "association": "Payment_Invoices",
+  "odoo": "account.payment.invoice_ids",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.PaymentAllocation",
+  "attribute": "Amount",
+  "odoo": null,
+  "new": true
+ },
+ {
+  "entity": "Invoicing.PaymentAllocation",
+  "association": "PaymentAllocation_Payment",
+  "odoo": null,
+  "new": true
+ },
+ {
+  "entity": "Invoicing.PaymentAllocation",
+  "association": "PaymentAllocation_Invoice",
+  "odoo": null,
+  "new": true
+ },
+ {
+  "entity": "Invoicing.RegisterPaymentRequest",
+  "attribute": "Amount",
+  "odoo": "account.payment.register.amount",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.RegisterPaymentRequest",
+  "attribute": "PaymentDate",
+  "odoo": "account.payment.register.payment_date",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.RegisterPaymentRequest",
+  "attribute": "Memo",
+  "odoo": "account.payment.register.communication",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.RegisterPaymentRequest",
+  "attribute": "Method",
+  "odoo": "account.payment.register (framework, not extracted field-level)",
+  "new": true
+ },
+ {
+  "entity": "Invoicing.RegisterPaymentRequest",
+  "association": "RegisterPaymentRequest_Invoices",
+  "odoo": "account.payment.register.line_ids",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.CreditNoteRequest",
+  "attribute": "Reason",
+  "odoo": "account.move.reversal.reason",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.CreditNoteRequest",
+  "attribute": "ReversalDate",
+  "odoo": "account.move.reversal.date",
+  "new": false
+ },
+ {
+  "entity": "Invoicing.CreditNoteRequest",
+  "association": "CreditNoteRequest_Invoice",
+  "odoo": "account.move.reversal.move_ids",
+  "new": false
+ }
+]

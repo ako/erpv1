@@ -1,0 +1,1415 @@
+{
+ "id": "F001",
+ "title": "Contacts, company & users",
+ "modules": [
+  "Core",
+  "Partners"
+ ],
+ "actors": [
+  "SalesUser",
+  "SalesManager",
+  "Purchaser",
+  "Billing",
+  "Administrator"
+ ],
+ "capability": "C1",
+ "summary": "One address book for customers, vendors and their contact persons/addresses; the single company record with its defaults; app users with a business profile; document numbering.",
+ "provenance": "code-extracted",
+ "generatedAt": "2026-10-14",
+ "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
+ "actorRoleMapping": {
+  "SalesUser": [
+   "sales_team.group_sale_salesman"
+  ],
+  "SalesManager": [
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman_all_leads"
+  ],
+  "Purchaser": [
+   "purchase.group_purchase_user"
+  ],
+  "Billing": [
+   "account.group_account_invoice"
+  ],
+  "Administrator": [
+   "base.group_system"
+  ]
+ },
+ "useCases": [
+  {
+   "id": "UC001",
+   "title": "Maintain a company contact",
+   "actors": [
+    "SalesUser",
+    "Purchaser",
+    "Billing"
+   ],
+   "preconditions": [
+    "User has a sales, purchase or billing role"
+   ],
+   "postconditions": [
+    "Partner saved; visible in customer/vendor pickers"
+   ],
+   "mainFlow": [
+    "1. User opens Contacts and clicks New",
+    "2. User chooses Company or Individual and enters name, address, email, phone, VAT",
+    "3. User marks it as Customer and/or Vendor, sets tags, salesperson, payment terms and pricelist",
+    "4. System validates the email format and that a name is given",
+    "5. System saves the partner"
+   ],
+   "alternativeFlows": [
+    "3a. VAT number already used by another partner: system warns (same_vat_partner_id), save still allowed"
+   ],
+   "screens": [
+    "Partner_Overview",
+    "Partner_NewEdit"
+   ],
+   "odooRefs": [
+    "base.view_partner_form",
+    "base.view_partner_tree",
+    "res.partner.create"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC002",
+   "title": "Add a contact person or address to a company",
+   "actors": [
+    "SalesUser",
+    "Purchaser",
+    "Billing"
+   ],
+   "preconditions": [
+    "A company partner exists"
+   ],
+   "postconditions": [
+    "Child partner linked to the company"
+   ],
+   "mainFlow": [
+    "1. On the company form user adds a line under Contacts & Addresses",
+    "2. User picks the type: Contact, Invoice address, Delivery address or Other",
+    "3. User enters name and (for addresses) the address",
+    "4. System links the child to the company (Partner_ParentCompany)"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Partner_NewEdit",
+    "PartnerChild_NewEdit"
+   ],
+   "odooRefs": [
+    "res.partner._compute_commercial_partner"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC003",
+   "title": "Archive a partner",
+   "actors": [
+    "SalesManager",
+    "Administrator"
+   ],
+   "preconditions": [
+    "Partner exists"
+   ],
+   "postconditions": [
+    "Partner hidden from pickers, history kept"
+   ],
+   "mainFlow": [
+    "1. User opens the partner and clicks Archive",
+    "2. System sets Active = false; existing documents keep their reference"
+   ],
+   "alternativeFlows": [
+    "Archiving is the generic ORM toggle_active (odoo/models.py, framework, not imported)"
+   ],
+   "screens": [
+    "Partner_NewEdit"
+   ],
+   "odooRefs": [
+    "base.view_partner_form"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC004",
+   "title": "Configure the company",
+   "actors": [
+    "Administrator"
+   ],
+   "preconditions": [
+    "App installed"
+   ],
+   "postconditions": [
+    "Company defaults used by all documents"
+   ],
+   "mainFlow": [
+    "1. Administrator opens Settings > Company",
+    "2. Enters name, address, VAT, currency, default sales/purchase tax",
+    "3. Sets quotation validity days, PO approval (on/off + threshold) and purchase lead days",
+    "4. System saves the singleton"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Company_Edit"
+   ],
+   "odooRefs": [
+    "base.view_company_form",
+    "res.company.write"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC005",
+   "title": "Manage app users",
+   "actors": [
+    "Administrator"
+   ],
+   "preconditions": [
+    "Administrator logged in"
+   ],
+   "postconditions": [
+    "User can log in with the given roles"
+   ],
+   "mainFlow": [
+    "1. Administrator creates a Mendix account (Administration module) and assigns user roles",
+    "2. System creates the Core.UserProfile with display name and links it to a partner (created if missing)",
+    "3. Optionally sets the default sales team"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Account_Overview",
+    "UserProfile_Edit"
+   ],
+   "odooRefs": [
+    "base.view_users_form",
+    "res.users.create"
+   ],
+   "status": "proposed",
+   "reviewStatus": "pending",
+   "signOff": "Q-F001-3"
+  },
+  {
+   "id": "UC006",
+   "title": "Maintain document numbering",
+   "actors": [
+    "Administrator"
+   ],
+   "preconditions": [
+    "Sequences seeded at startup"
+   ],
+   "postconditions": [
+    "Next documents use the new prefix/number"
+   ],
+   "mainFlow": [
+    "1. Administrator opens Settings > Numbering",
+    "2. Edits prefix, padding or next number of a sequence"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Sequence_Overview"
+   ],
+   "odooRefs": [
+    "base.ir_sequence_form"
+   ],
+   "status": "proposed",
+   "reviewStatus": "pending",
+   "signOff": "Q-F001-3"
+  }
+ ],
+ "domainEntities": [
+  {
+   "name": "Core.Company",
+   "module": "Core",
+   "persistent": true,
+   "purpose": "The single company operating the app: identity, currency and document defaults.",
+   "sourceOdoo": "res.company",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "res.company.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Company Name",
+     "odooComputedBy": "related: partner_id.name",
+     "length": 200
+    },
+    {
+     "name": "Email",
+     "type": "String",
+     "sourceOdoo": "res.company.email",
+     "odooType": "Char",
+     "mandatory": false,
+     "odooComputedBy": "related: partner_id.email",
+     "length": 200
+    },
+    {
+     "name": "Phone",
+     "type": "String",
+     "sourceOdoo": "res.company.phone",
+     "odooType": "Char",
+     "mandatory": false,
+     "odooComputedBy": "related: partner_id.phone",
+     "length": 200
+    },
+    {
+     "name": "Street",
+     "type": "String",
+     "sourceOdoo": "res.company.street",
+     "odooType": "Char",
+     "mandatory": false,
+     "odooComputedNotStored": true,
+     "odooComputedBy": "_compute_address",
+     "length": 200
+    },
+    {
+     "name": "Street2",
+     "type": "String",
+     "sourceOdoo": "res.company.street2",
+     "odooType": "Char",
+     "mandatory": false,
+     "odooComputedNotStored": true,
+     "odooComputedBy": "_compute_address",
+     "length": 200
+    },
+    {
+     "name": "Zip",
+     "type": "String",
+     "sourceOdoo": "res.company.zip",
+     "odooType": "Char",
+     "mandatory": false,
+     "odooComputedNotStored": true,
+     "odooComputedBy": "_compute_address",
+     "length": 200
+    },
+    {
+     "name": "City",
+     "type": "String",
+     "sourceOdoo": "res.company.city",
+     "odooType": "Char",
+     "mandatory": false,
+     "odooComputedNotStored": true,
+     "odooComputedBy": "_compute_address",
+     "length": 200
+    },
+    {
+     "name": "VATNumber",
+     "type": "String",
+     "sourceOdoo": "res.company.vat",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Tax ID",
+     "odooComputedNotStored": true,
+     "odooComputedBy": "related: partner_id.vat",
+     "length": 200
+    },
+    {
+     "name": "Website",
+     "type": "String",
+     "sourceOdoo": "res.company.website",
+     "odooType": "Char",
+     "mandatory": false,
+     "odooComputedNotStored": true,
+     "odooComputedBy": "related: partner_id.website",
+     "length": 200
+    },
+    {
+     "name": "QuotationValidityDays",
+     "type": "Integer",
+     "sourceOdoo": "res.company.quotation_validity_days",
+     "odooType": "Integer",
+     "mandatory": false,
+     "label": "Default Quotation Validity",
+     "default": "30"
+    },
+    {
+     "name": "POApprovalEnabled",
+     "type": "Boolean",
+     "sourceOdoo": "res.company.po_double_validation",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Levels of Approvals",
+     "odooDefault": "'one_step'",
+     "note": "Odoo selection one_step/two_step -> boolean"
+    },
+    {
+     "name": "POApprovalThreshold",
+     "type": "Decimal",
+     "sourceOdoo": "res.company.po_double_validation_amount",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Double validation amount",
+     "odooDefault": "5000"
+    },
+    {
+     "name": "PurchaseLeadDays",
+     "type": "Decimal",
+     "sourceOdoo": "res.company.po_lead",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Purchase Lead Time",
+     "odooDefault": "0.0"
+    },
+    {
+     "name": "InvoiceTerms",
+     "type": "String",
+     "sourceOdoo": "res.company.invoice_terms",
+     "odooType": "Html",
+     "mandatory": false,
+     "label": "Default Terms and Conditions",
+     "length": "unlimited"
+    }
+   ],
+   "associations": [
+    {
+     "name": "Company_Country",
+     "owner": "Core.Company",
+     "target": "Core.Country",
+     "type": "Reference",
+     "sourceOdoo": "res.company.country_id",
+     "odooTarget": "res.country",
+     "mandatory": false
+    },
+    {
+     "name": "Company_Currency",
+     "owner": "Core.Company",
+     "target": "Core.Currency",
+     "type": "Reference",
+     "sourceOdoo": "res.company.currency_id",
+     "odooTarget": "res.currency",
+     "mandatory": true
+    },
+    {
+     "name": "Company_DefaultSalesTax",
+     "owner": "Core.Company",
+     "target": "Invoicing.Tax",
+     "type": "Reference",
+     "sourceOdoo": "res.company.account_sale_tax_id",
+     "odooTarget": "account.tax",
+     "mandatory": false
+    },
+    {
+     "name": "Company_DefaultPurchaseTax",
+     "owner": "Core.Company",
+     "target": "Invoicing.Tax",
+     "type": "Reference",
+     "sourceOdoo": "res.company.account_purchase_tax_id",
+     "odooTarget": "account.tax",
+     "mandatory": false
+    }
+   ],
+   "note": "Singleton (multi-company out of scope). Odoo keeps the address on a linked res.partner; flattened here.",
+   "brd": "F001"
+  },
+  {
+   "name": "Core.Country",
+   "module": "Core",
+   "persistent": true,
+   "purpose": "Countries for addresses.",
+   "sourceOdoo": "res.country",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "res.country.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Country Name",
+     "length": 200
+    },
+    {
+     "name": "Code",
+     "type": "String",
+     "sourceOdoo": "res.country.code",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Country Code",
+     "length": 2
+    }
+   ],
+   "associations": [],
+   "note": null,
+   "brd": "F001"
+  },
+  {
+   "name": "Core.Currency",
+   "module": "Core",
+   "persistent": true,
+   "purpose": "Currency of the company and its documents.",
+   "sourceOdoo": "res.currency",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "res.currency.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Currency",
+     "length": 3,
+     "note": "ISO code, e.g. EUR"
+    },
+    {
+     "name": "Symbol",
+     "type": "String",
+     "sourceOdoo": "res.currency.symbol",
+     "odooType": "Char",
+     "mandatory": true,
+     "length": 200
+    },
+    {
+     "name": "Rounding",
+     "type": "Decimal",
+     "sourceOdoo": "res.currency.rounding",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Rounding Factor",
+     "odooDefault": "0.01"
+    },
+    {
+     "name": "DecimalPlaces",
+     "type": "Integer",
+     "sourceOdoo": "res.currency.decimal_places",
+     "odooType": "Integer",
+     "mandatory": false,
+     "odooComputedBy": "_compute_decimal_places"
+    },
+    {
+     "name": "SymbolPosition",
+     "type": "String",
+     "sourceOdoo": "res.currency.position",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Symbol Position",
+     "odooDefault": "'after'",
+     "length": 10,
+     "note": "before/after"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "res.currency.active"
+    }
+   ],
+   "associations": [],
+   "note": null,
+   "brd": "F001"
+  },
+  {
+   "name": "Core.Sequence",
+   "module": "Core",
+   "persistent": true,
+   "purpose": "Document numbering per document type (S00001, P00001, WH/IN/00001, INV/2026/00001, ...).",
+   "sourceOdoo": "ir.sequence",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Code",
+     "type": "String",
+     "sourceOdoo": "ir.sequence (framework, not extracted field-level)",
+     "mandatory": true,
+     "new": true,
+     "length": 50,
+     "note": "ir.sequence.code, e.g. sale.order"
+    },
+    {
+     "name": "Prefix",
+     "type": "String",
+     "sourceOdoo": "ir.sequence (framework, not extracted field-level)",
+     "mandatory": false,
+     "new": true,
+     "length": 30,
+     "note": "ir.sequence.prefix; %(year)s supported"
+    },
+    {
+     "name": "Padding",
+     "type": "Integer",
+     "sourceOdoo": "ir.sequence (framework, not extracted field-level)",
+     "mandatory": false,
+     "new": true,
+     "default": "5"
+    },
+    {
+     "name": "NextNumber",
+     "type": "Integer",
+     "sourceOdoo": "ir.sequence (framework, not extracted field-level)",
+     "mandatory": false,
+     "new": true,
+     "default": "1"
+    }
+   ],
+   "associations": [],
+   "note": "ir.sequence is a framework model (C12); kept as a tiny Mendix entity because every document needs a readable number.",
+   "brd": "F001"
+  },
+  {
+   "name": "Core.UserProfile",
+   "module": "Core",
+   "persistent": true,
+   "purpose": "Business data of an app user (Mendix account): display name and linked partner. Team membership lives on Sales.SalesTeam.",
+   "sourceOdoo": "res.users",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "DisplayName",
+     "type": "String",
+     "sourceOdoo": "res.users (framework, not extracted field-level)",
+     "mandatory": false,
+     "new": true,
+     "length": 200,
+     "note": "shown on documents; Odoo takes it from the linked partner"
+    }
+   ],
+   "associations": [
+    {
+     "name": "UserProfile_Account",
+     "owner": "Core.UserProfile",
+     "target": "Administration.Account",
+     "type": "Reference",
+     "new": true,
+     "note": "Mendix account (System.User) — replaces res.users login/groups"
+    },
+    {
+     "name": "UserProfile_Partner",
+     "owner": "Core.UserProfile",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "res.users.partner_id",
+     "odooTarget": "res.partner",
+     "mandatory": true,
+     "note": "res.users _inherits res.partner -> association, not generalization"
+    }
+   ],
+   "note": "Odoo res.users delegates to res.partner (_inherits). Mendix: Administration.Account for login/roles + this profile.",
+   "brd": "F001"
+  },
+  {
+   "name": "Partners.Partner",
+   "module": "Partners",
+   "persistent": true,
+   "purpose": "Any customer, vendor or contact person — companies and their contacts/addresses.",
+   "sourceOdoo": "res.partner",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "res.partner.name",
+     "odooType": "Char",
+     "mandatory": false,
+     "length": 200
+    },
+    {
+     "name": "IsCompany",
+     "type": "Boolean",
+     "sourceOdoo": "res.partner.is_company",
+     "odooType": "Boolean",
+     "mandatory": false,
+     "label": "Is a Company",
+     "odooDefault": "False"
+    },
+    {
+     "name": "AddressType",
+     "type": "Enumeration",
+     "sourceOdoo": "res.partner.type",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Address Type",
+     "odooDefault": "'contact'",
+     "enumeration": "Partners.ENUM_AddressType"
+    },
+    {
+     "name": "Email",
+     "type": "String",
+     "sourceOdoo": "res.partner.email",
+     "odooType": "Char",
+     "mandatory": false,
+     "length": 200
+    },
+    {
+     "name": "Phone",
+     "type": "String",
+     "sourceOdoo": "res.partner.phone",
+     "odooType": "Char",
+     "mandatory": false,
+     "length": 200
+    },
+    {
+     "name": "Mobile",
+     "type": "String",
+     "sourceOdoo": "res.partner.mobile",
+     "odooType": "Char",
+     "mandatory": false,
+     "length": 200
+    },
+    {
+     "name": "JobPosition",
+     "type": "String",
+     "sourceOdoo": "res.partner.function",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Job Position",
+     "length": 200
+    },
+    {
+     "name": "Street",
+     "type": "String",
+     "sourceOdoo": "res.partner.street",
+     "odooType": "Char",
+     "mandatory": false,
+     "length": 200
+    },
+    {
+     "name": "Street2",
+     "type": "String",
+     "sourceOdoo": "res.partner.street2",
+     "odooType": "Char",
+     "mandatory": false,
+     "length": 200
+    },
+    {
+     "name": "Zip",
+     "type": "String",
+     "sourceOdoo": "res.partner.zip",
+     "odooType": "Char",
+     "mandatory": false,
+     "length": 200
+    },
+    {
+     "name": "City",
+     "type": "String",
+     "sourceOdoo": "res.partner.city",
+     "odooType": "Char",
+     "mandatory": false,
+     "length": 200
+    },
+    {
+     "name": "VATNumber",
+     "type": "String",
+     "sourceOdoo": "res.partner.vat",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Tax ID",
+     "length": 200
+    },
+    {
+     "name": "Website",
+     "type": "String",
+     "sourceOdoo": "res.partner.website",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Website Link",
+     "length": 200
+    },
+    {
+     "name": "Reference",
+     "type": "String",
+     "sourceOdoo": "res.partner.ref",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Reference",
+     "length": 200
+    },
+    {
+     "name": "Notes",
+     "type": "String",
+     "sourceOdoo": "res.partner.comment",
+     "odooType": "Html",
+     "mandatory": false,
+     "label": "Notes",
+     "length": "unlimited"
+    },
+    {
+     "name": "IsCustomer",
+     "type": "Boolean",
+     "sourceOdoo": "res.partner.customer_rank",
+     "odooType": "Integer",
+     "mandatory": false,
+     "odooDefault": "0",
+     "note": "Odoo integer rank (>0 = customer) -> explicit flag"
+    },
+    {
+     "name": "IsVendor",
+     "type": "Boolean",
+     "sourceOdoo": "res.partner.supplier_rank",
+     "odooType": "Integer",
+     "mandatory": false,
+     "odooDefault": "0",
+     "note": "Odoo integer rank (>0 = vendor) -> explicit flag"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "res.partner.active"
+    }
+   ],
+   "associations": [
+    {
+     "name": "Partner_ParentCompany",
+     "owner": "Partners.Partner",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "res.partner.parent_id",
+     "odooTarget": "res.partner",
+     "mandatory": false,
+     "note": "contacts and addresses belong to a company"
+    },
+    {
+     "name": "Partner_Country",
+     "owner": "Partners.Partner",
+     "target": "Core.Country",
+     "type": "Reference",
+     "sourceOdoo": "res.partner.country_id",
+     "odooTarget": "res.country",
+     "mandatory": false
+    },
+    {
+     "name": "Partner_Tags",
+     "owner": "Partners.Partner",
+     "target": "Partners.PartnerTag",
+     "type": "ReferenceSet",
+     "sourceOdoo": "res.partner.category_id",
+     "odooTarget": "res.partner.category",
+     "mandatory": false
+    },
+    {
+     "name": "Partner_Salesperson",
+     "owner": "Partners.Partner",
+     "target": "Administration.Account",
+     "type": "Reference",
+     "sourceOdoo": "res.partner.user_id",
+     "odooTarget": "res.users",
+     "mandatory": false
+    },
+    {
+     "name": "Partner_CustomerPaymentTerm",
+     "owner": "Partners.Partner",
+     "target": "Invoicing.PaymentTerm",
+     "type": "Reference",
+     "sourceOdoo": "res.partner.property_payment_term_id",
+     "odooTarget": "account.payment.term",
+     "mandatory": false,
+     "note": "company-dependent in Odoo; single company here"
+    },
+    {
+     "name": "Partner_VendorPaymentTerm",
+     "owner": "Partners.Partner",
+     "target": "Invoicing.PaymentTerm",
+     "type": "Reference",
+     "sourceOdoo": "res.partner.property_supplier_payment_term_id",
+     "odooTarget": "account.payment.term",
+     "mandatory": false
+    },
+    {
+     "name": "Partner_Pricelist",
+     "owner": "Partners.Partner",
+     "target": "Products.Pricelist",
+     "type": "Reference",
+     "sourceOdoo": "res.partner.property_product_pricelist",
+     "odooTarget": "product.pricelist",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F001"
+  },
+  {
+   "name": "Partners.PartnerTag",
+   "module": "Partners",
+   "persistent": true,
+   "purpose": "Free tags to classify partners.",
+   "sourceOdoo": "res.partner.category",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "res.partner.category.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Name",
+     "length": 200
+    },
+    {
+     "name": "Color",
+     "type": "Integer",
+     "sourceOdoo": "res.partner.category.color",
+     "odooType": "Integer",
+     "mandatory": false,
+     "label": "Color",
+     "odooDefault": "_get_default_color"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "res.partner.category.active"
+    }
+   ],
+   "associations": [],
+   "note": null,
+   "brd": "F001"
+  },
+  {
+   "name": "Partners.BankAccount",
+   "module": "Partners",
+   "persistent": true,
+   "purpose": "Bank account of a partner (shown on vendor bills / customer payments).",
+   "sourceOdoo": "res.partner.bank",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "AccountNumber",
+     "type": "String",
+     "sourceOdoo": "res.partner.bank.acc_number",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Account Number",
+     "length": 200
+    },
+    {
+     "name": "HolderName",
+     "type": "String",
+     "sourceOdoo": "res.partner.bank.acc_holder_name",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Account Holder Name",
+     "odooComputedBy": "_compute_account_holder_name",
+     "length": 200
+    },
+    {
+     "name": "BankName",
+     "type": "String",
+     "sourceOdoo": "res.partner.bank.bank_name",
+     "odooType": "Char",
+     "mandatory": false,
+     "odooComputedNotStored": true,
+     "odooComputedBy": "related: bank_id.name",
+     "length": 200,
+     "note": "flattened from res.bank"
+    },
+    {
+     "name": "BIC",
+     "type": "String",
+     "sourceOdoo": "res.partner.bank.bank_bic",
+     "odooType": "Char",
+     "mandatory": false,
+     "odooComputedNotStored": true,
+     "odooComputedBy": "related: bank_id.bic",
+     "length": 20,
+     "note": "flattened from res.bank"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "res.partner.bank.active"
+    }
+   ],
+   "associations": [
+    {
+     "name": "BankAccount_Partner",
+     "owner": "Partners.BankAccount",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "res.partner.bank.partner_id",
+     "odooTarget": "res.partner",
+     "mandatory": true
+    }
+   ],
+   "note": null,
+   "brd": "F001"
+  }
+ ],
+ "enumerations": [
+  {
+   "name": "Partners.ENUM_AddressType",
+   "module": "Partners",
+   "sourceOdoo": "res.partner.type",
+   "values": [
+    {
+     "name": "Contact",
+     "caption": "Contact",
+     "odooValue": "contact"
+    },
+    {
+     "name": "Invoice",
+     "caption": "Invoice address",
+     "odooValue": "invoice"
+    },
+    {
+     "name": "Delivery",
+     "caption": "Delivery address",
+     "odooValue": "delivery"
+    },
+    {
+     "name": "Other",
+     "caption": "Other address",
+     "odooValue": "other"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": null
+  }
+ ],
+ "viewEntities": [],
+ "microflows": [
+  {
+   "name": "ACT_Partner_Save",
+   "kind": "Microflow",
+   "purpose": "Validate and commit a partner; normalise IsCustomer/IsVendor.",
+   "params": [
+    {
+     "name": "Partner",
+     "type": "Partners.Partner"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "validate-then-save",
+   "calls": [
+    "VAL_Partner"
+   ],
+   "validations": [
+    "Name is required unless AddressType <> Contact",
+    "Email matches the email regex",
+    "A partner cannot be its own parent (recursion check)"
+   ],
+   "hiddenRules": [],
+   "odooRefs": [
+    "res.partner.create",
+    "res.partner.write",
+    "res.partner._check_parent_id"
+   ]
+  },
+  {
+   "name": "VAL_Partner",
+   "kind": "Microflow",
+   "purpose": "Validation messages for the partner form.",
+   "params": [
+    {
+     "name": "Partner",
+     "type": "Partners.Partner"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "validation",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [
+    "Child contacts inherit the commercial partner (company) for invoicing"
+   ],
+   "odooRefs": [
+    "res.partner._check_parent_id"
+   ]
+  },
+  {
+   "name": "SUB_Partner_GetCommercialPartner",
+   "kind": "Microflow",
+   "purpose": "Return the company a contact belongs to (or itself) — invoices and orders are booked on it.",
+   "params": [
+    {
+     "name": "Partner",
+     "type": "Partners.Partner"
+    }
+   ],
+   "returns": "Partners.Partner",
+   "pattern": "retrieve",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "res.partner._compute_commercial_partner"
+   ]
+  },
+  {
+   "name": "SUB_Partner_GetAddress",
+   "kind": "Microflow",
+   "purpose": "Return the child address of a type (Invoice/Delivery) or the partner itself.",
+   "params": [
+    {
+     "name": "Partner",
+     "type": "Partners.Partner"
+    },
+    {
+     "name": "AddressType",
+     "type": "Partners.ENUM_AddressType"
+    }
+   ],
+   "returns": "Partners.Partner",
+   "pattern": "retrieve",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "res.partner.address_get"
+   ]
+  },
+  {
+   "name": "SUB_Sequence_NextNumber",
+   "kind": "Microflow",
+   "purpose": "Lock the sequence row, format prefix (year substitution) + zero-padded number, increment.",
+   "params": [
+    {
+     "name": "Code",
+     "type": "String"
+    }
+   ],
+   "returns": "String",
+   "pattern": "sub-routine",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [
+    "Prefix supports %(year)s like Odoo; numbering is gap-free per code"
+   ],
+   "odooRefs": [
+    "ir.sequence.next_by_code"
+   ]
+  },
+  {
+   "name": "ASU_Core_SeedData",
+   "kind": "Microflow",
+   "purpose": "After-startup: create company, currency, countries, sequences, UoMs, locations, operation types if missing.",
+   "params": [],
+   "returns": "Boolean",
+   "pattern": "startup",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [
+    "Seed values from analysis/odoo/knowledge-base/seedData.json"
+   ],
+   "odooRefs": [
+    "res.company.create"
+   ]
+  },
+  {
+   "name": "ACT_UserProfile_Create",
+   "kind": "Microflow",
+   "purpose": "On account creation: create the profile and its partner.",
+   "params": [
+    {
+     "name": "Account",
+     "type": "Administration.Account"
+    }
+   ],
+   "returns": "Core.UserProfile",
+   "pattern": "create",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "res.users.create"
+   ]
+  }
+ ],
+ "workflows": [],
+ "pages": [
+  {
+   "name": "Partner_Overview",
+   "purpose": "Searchable list of partners with Customer/Vendor/Tag filters.",
+   "dataContext": "Partners.Partner",
+   "pattern": "list",
+   "sections": [
+    "Search",
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Edit",
+    "Archive"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "base.view_partner_tree",
+    "base.view_res_partner_filter"
+   ]
+  },
+  {
+   "name": "Partner_NewEdit",
+   "purpose": "Partner form: identity, address, sales & purchase tab, contacts & addresses tab.",
+   "dataContext": "Partners.Partner",
+   "pattern": "form",
+   "sections": [
+    "Identity",
+    "Address",
+    "Sales & Purchase",
+    "Contacts & Addresses",
+    "Notes"
+   ],
+   "actions": [
+    "ACT_Partner_Save",
+    "Cancel",
+    "Archive"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "base.view_partner_form"
+   ]
+  },
+  {
+   "name": "PartnerChild_NewEdit",
+   "purpose": "Popup for a contact person or address of a company.",
+   "dataContext": "Partners.Partner",
+   "pattern": "form",
+   "sections": [
+    "Type",
+    "Contact",
+    "Address"
+   ],
+   "actions": [
+    "Save",
+    "Cancel"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "base.view_partner_form"
+   ]
+  },
+  {
+   "name": "Company_Edit",
+   "purpose": "Company settings singleton.",
+   "dataContext": "Core.Company",
+   "pattern": "form",
+   "sections": [
+    "Identity",
+    "Address",
+    "Sales",
+    "Purchase",
+    "Invoicing"
+   ],
+   "actions": [
+    "Save"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "base.view_company_form"
+   ]
+  },
+  {
+   "name": "UserProfile_Edit",
+   "purpose": "Business profile of a user.",
+   "dataContext": "Core.UserProfile",
+   "pattern": "form",
+   "sections": [
+    "Profile"
+   ],
+   "actions": [
+    "Save"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "base.view_users_form"
+   ]
+  },
+  {
+   "name": "Sequence_Overview",
+   "purpose": "Editable list of document sequences.",
+   "dataContext": "Core.Sequence",
+   "pattern": "list",
+   "sections": [
+    "Grid"
+   ],
+   "actions": [
+    "Edit"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "base.sequence_view_tree"
+   ]
+  }
+ ],
+ "timers": [],
+ "integrations": [],
+ "simplifications": [
+  "Single company; res.company address flattened onto Core.Company (Odoo stores it on a linked partner).",
+  "res.users replaced by Administration.Account + Core.UserProfile (association, not generalization — Stage 3 inheritance rule).",
+  "customer_rank/supplier_rank integers replaced by IsCustomer/IsVendor booleans.",
+  "States, titles, industries, country groups dropped.",
+  "Company-dependent properties (payment terms, pricelist) become plain associations (single company)."
+ ],
+ "odooModelsInCapability": [
+  "res.bank",
+  "res.company",
+  "res.country",
+  "res.country.group",
+  "res.country.state",
+  "res.currency",
+  "res.currency.rate",
+  "res.partner",
+  "res.partner.bank",
+  "res.partner.category",
+  "res.partner.industry",
+  "res.partner.title",
+  "res.users",
+  "res.users.apikeys",
+  "res.users.deletion",
+  "res.users.log",
+  "res.users.settings"
+ ],
+ "droppedOdooModels": [
+  {
+   "odooModel": "res.bank",
+   "reason": "flattened into Partners.BankAccount (BankName, BIC)"
+  },
+  {
+   "odooModel": "res.country.group",
+   "reason": "only used for pricelist/fiscal-position country filters — both dropped"
+  },
+  {
+   "odooModel": "res.country.state",
+   "reason": "states not needed for the POC address (Street/Zip/City/Country)"
+  },
+  {
+   "odooModel": "res.currency.rate",
+   "reason": "single currency (F001 open question Q-F001-1)"
+  },
+  {
+   "odooModel": "res.partner.title",
+   "reason": "salutations (Mr/Ms) — cosmetic"
+  },
+  {
+   "odooModel": "res.partner.industry",
+   "reason": "not used by any in-scope flow"
+  },
+  {
+   "odooModel": "res.users.log",
+   "reason": "login log — Mendix platform (System.Session / audit)"
+  },
+  {
+   "odooModel": "res.users.apikeys",
+   "reason": "API keys — Mendix platform security"
+  },
+  {
+   "odooModel": "res.users.deletion",
+   "reason": "GDPR self-deletion requests — framework"
+  },
+  {
+   "odooModel": "res.users.settings",
+   "reason": "per-user UI preferences — framework"
+  },
+  {
+   "odooModel": "format.vat.label.mixin",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "format.address.mixin",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "res.users.identitycheck",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "res.users.apikeys.description",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "res.users.apikeys.show",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  }
+ ],
+ "openQuestions": [
+  {
+   "id": "Q-F001-1",
+   "question": "Single currency: the POC uses only the company currency (no exchange rates, no foreign-currency documents). OK?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": false,
+   "kind": "DECISION",
+   "proposed": "Yes — single currency"
+  },
+  {
+   "id": "Q-F001-2",
+   "question": "User roles: map Odoo groups to 9 Mendix user roles (Administrator, SalesUser, SalesManager, Purchaser, PurchaseManager, InventoryUser, InventoryManager, Billing, InvoicingManager). SalesUser sees only own orders (Odoo \"Own Documents Only\"). OK?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": false,
+   "kind": "DECISION",
+   "proposed": "Yes"
+  },
+  {
+   "id": "Q-F001-3",
+   "question": "Mendix-native admin: users are Mendix accounts (Administration module) with a business profile, and document numbering is a small editable Sequence table. OK?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": false,
+   "kind": "DECISION",
+   "proposed": "Yes"
+  }
+ ],
+ "sourceKB": [
+  "analysis/odoo/knowledge-base/entities.json",
+  "analysis/odoo/knowledge-base/structures.json",
+  "analysis/odoo/knowledge-base/staticEntities.json",
+  "analysis/odoo/knowledge-base/logics.json",
+  "analysis/odoo/knowledge-base/screens.json",
+  "analysis/odoo/knowledge-base/workflows.json",
+  "analysis/odoo/knowledge-base/roles.json",
+  "analysis/odoo/non-code-sources.md"
+ ],
+ "confidence": "high",
+ "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 3 gap(s) point at not-implemented addons (mail/portal/utm/...)",
+ "summaryCounts": {
+  "useCases": 6,
+  "entities": 8,
+  "enumerations": 1,
+  "microflows": 7,
+  "pages": 6,
+  "openQuestions": 3
+ }
+}

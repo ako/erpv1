@@ -1,0 +1,527 @@
+{
+ "id": "F007",
+ "title": "Order fulfilment: sales -> delivery, purchase -> receipt",
+ "modules": [
+  "Inventory",
+  "Sales",
+  "Purchasing"
+ ],
+ "actors": [
+  "SalesUser",
+  "Purchaser",
+  "InventoryUser"
+ ],
+ "capability": "C7",
+ "summary": "The links Odoo makes in sale_stock and purchase_stock: confirming an order creates a delivery/receipt, validating it updates delivered/received quantities and order delivery/receipt status.",
+ "provenance": "code-extracted",
+ "generatedAt": "2026-10-14",
+ "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
+ "actorRoleMapping": {
+  "SalesUser": [
+   "sales_team.group_sale_salesman"
+  ],
+  "Purchaser": [
+   "purchase.group_purchase_user"
+  ],
+  "InventoryUser": [
+   "stock.group_stock_user"
+  ]
+ },
+ "useCases": [
+  {
+   "id": "UC001",
+   "title": "Sales order creates a delivery",
+   "actors": [
+    "SalesUser"
+   ],
+   "preconditions": [
+    "Sales order confirmed with storable/consumable goods lines"
+   ],
+   "postconditions": [
+    "One delivery transfer (WH/OUT) with a move per goods line, linked to the order"
+   ],
+   "mainFlow": [
+    "1. On confirm (F004 UC003) system creates a delivery from WH/Stock to Customers for the delivery address",
+    "2. One move per product line of type Goods (services skipped), scheduled = order date + customer lead time",
+    "3. System confirms the delivery and checks availability"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "SalesOrder_NewEdit",
+    "Transfer_NewEdit"
+   ],
+   "odooRefs": [
+    "sale.order.line._action_launch_stock_rule",
+    "sale.order.line._prepare_procurement_values",
+    "sale.order._compute_picking_ids"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC002",
+   "title": "Delivery updates the sales order",
+   "actors": [
+    "InventoryUser"
+   ],
+   "preconditions": [
+    "Delivery validated"
+   ],
+   "postconditions": [
+    "Order lines QuantityDelivered and order DeliveryStatus updated; invoice status recomputed"
+   ],
+   "mainFlow": [
+    "1. On transfer done, system adds done quantities (converted to the line unit) to QuantityDelivered",
+    "2. Order DeliveryStatus: NotDelivered / Started / PartiallyDelivered / FullyDelivered",
+    "3. Invoice status recomputed for delivered-quantity products"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "SalesOrder_NewEdit"
+   ],
+   "odooRefs": [
+    "sale.order.line._compute_qty_delivered",
+    "sale.order._compute_delivery_status"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC003",
+   "title": "Changing quantities on a confirmed sales order",
+   "actors": [
+    "SalesUser"
+   ],
+   "preconditions": [
+    "Order confirmed, not locked"
+   ],
+   "postconditions": [
+    "Open delivery adjusted"
+   ],
+   "mainFlow": [
+    "1. User increases a line quantity: system adds the difference to the open delivery (or a new one)",
+    "2. Decreasing below delivered quantity is refused"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "SalesOrder_NewEdit"
+   ],
+   "odooRefs": [
+    "sale.order.line.write"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC004",
+   "title": "Purchase order creates a receipt",
+   "actors": [
+    "Purchaser"
+   ],
+   "preconditions": [
+    "PO confirmed/approved"
+   ],
+   "postconditions": [
+    "One receipt (WH/IN) linked to the PO"
+   ],
+   "mainFlow": [
+    "1. On approval (F005) system creates a receipt from Vendors to WH/Stock with a move per goods line, scheduled = expected arrival"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "PurchaseOrder_NewEdit",
+    "Transfer_NewEdit"
+   ],
+   "odooRefs": [
+    "purchase.order._create_picking",
+    "purchase.order.line._prepare_stock_moves"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC005",
+   "title": "Receipt updates the purchase order",
+   "actors": [
+    "InventoryUser"
+   ],
+   "preconditions": [
+    "Receipt validated"
+   ],
+   "postconditions": [
+    "QuantityReceived and ReceiptStatus updated; billing status recomputed"
+   ],
+   "mainFlow": [
+    "1. On transfer done, system adds done quantities to QuantityReceived",
+    "2. ReceiptStatus NotReceived / PartiallyReceived / FullyReceived"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "PurchaseOrder_NewEdit"
+   ],
+   "odooRefs": [
+    "purchase.order.line._compute_qty_received",
+    "purchase.order._compute_receipt_status"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  }
+ ],
+ "domainEntities": [
+  {
+   "name": "Inventory.Transfer",
+   "module": "Inventory",
+   "extensionOf": "Inventory.Transfer",
+   "definedInBrd": "F006",
+   "persistent": true,
+   "purpose": "Members this capability adds to Inventory.Transfer (Odoo _inherit in the bridge addon); the entity itself is specified in F006",
+   "sourceOdoo": "stock.picking",
+   "attributes": [],
+   "associations": [
+    {
+     "name": "Transfer_SalesOrder",
+     "owner": "Inventory.Transfer",
+     "target": "Sales.SalesOrder",
+     "type": "Reference",
+     "sourceOdoo": "stock.picking.sale_id",
+     "odooTarget": "sale.order",
+     "mandatory": false,
+     "note": "sale_stock"
+    },
+    {
+     "name": "Transfer_PurchaseOrder",
+     "owner": "Inventory.Transfer",
+     "target": "Purchasing.PurchaseOrder",
+     "type": "Reference",
+     "sourceOdoo": "stock.picking.purchase_id",
+     "odooTarget": "purchase.order",
+     "mandatory": false,
+     "note": "purchase_stock (computed in Odoo via moves; stored here)"
+    }
+   ]
+  },
+  {
+   "name": "Inventory.StockMove",
+   "module": "Inventory",
+   "extensionOf": "Inventory.StockMove",
+   "definedInBrd": "F006",
+   "persistent": true,
+   "purpose": "Members this capability adds to Inventory.StockMove (Odoo _inherit in the bridge addon); the entity itself is specified in F006",
+   "sourceOdoo": "stock.move",
+   "attributes": [],
+   "associations": [
+    {
+     "name": "StockMove_SalesOrderLine",
+     "owner": "Inventory.StockMove",
+     "target": "Sales.SalesOrderLine",
+     "type": "Reference",
+     "sourceOdoo": "stock.move.sale_line_id",
+     "odooTarget": "sale.order.line",
+     "mandatory": false
+    },
+    {
+     "name": "StockMove_PurchaseOrderLine",
+     "owner": "Inventory.StockMove",
+     "target": "Purchasing.PurchaseOrderLine",
+     "type": "Reference",
+     "sourceOdoo": "stock.move.purchase_line_id",
+     "odooTarget": "purchase.order.line",
+     "mandatory": false
+    }
+   ]
+  },
+  {
+   "name": "Sales.SalesOrder",
+   "module": "Sales",
+   "extensionOf": "Sales.SalesOrder",
+   "definedInBrd": "F004",
+   "persistent": true,
+   "purpose": "Members this capability adds to Sales.SalesOrder (Odoo _inherit in the bridge addon); the entity itself is specified in F004",
+   "sourceOdoo": "sale.order",
+   "attributes": [
+    {
+     "name": "DeliveryStatus",
+     "type": "Enumeration",
+     "sourceOdoo": "sale.order.delivery_status",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Delivery Status",
+     "odooComputedBy": "_compute_delivery_status",
+     "enumeration": "Sales.ENUM_DeliveryStatus"
+    }
+   ],
+   "associations": []
+  },
+  {
+   "name": "Sales.SalesOrderLine",
+   "module": "Sales",
+   "extensionOf": "Sales.SalesOrderLine",
+   "definedInBrd": "F004",
+   "persistent": true,
+   "purpose": "Members this capability adds to Sales.SalesOrderLine (Odoo _inherit in the bridge addon); the entity itself is specified in F004",
+   "sourceOdoo": "sale.order.line",
+   "attributes": [
+    {
+     "name": "QuantityDelivered",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.line.qty_delivered",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Delivery Quantity",
+     "odooComputedBy": "_compute_qty_delivered",
+     "odooDefault": "0.0"
+    },
+    {
+     "name": "LeadTimeDays",
+     "type": "Decimal",
+     "sourceOdoo": "sale.order.line.customer_lead",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Lead Time",
+     "odooComputedBy": "_compute_customer_lead"
+    }
+   ],
+   "associations": []
+  },
+  {
+   "name": "Purchasing.PurchaseOrder",
+   "module": "Purchasing",
+   "extensionOf": "Purchasing.PurchaseOrder",
+   "definedInBrd": "F005",
+   "persistent": true,
+   "purpose": "Members this capability adds to Purchasing.PurchaseOrder (Odoo _inherit in the bridge addon); the entity itself is specified in F005",
+   "sourceOdoo": "purchase.order",
+   "attributes": [
+    {
+     "name": "ReceiptStatus",
+     "type": "Enumeration",
+     "sourceOdoo": "purchase.order.receipt_status",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Receipt Status",
+     "odooComputedBy": "_compute_receipt_status",
+     "enumeration": "Purchasing.ENUM_ReceiptStatus"
+    }
+   ],
+   "associations": [
+    {
+     "name": "PurchaseOrder_DeliverTo",
+     "owner": "Purchasing.PurchaseOrder",
+     "target": "Inventory.OperationType",
+     "type": "Reference",
+     "sourceOdoo": "purchase.order.picking_type_id",
+     "odooTarget": "stock.picking.type",
+     "mandatory": true,
+     "note": "receipt operation of the warehouse"
+    }
+   ]
+  },
+  {
+   "name": "Purchasing.PurchaseOrderLine",
+   "module": "Purchasing",
+   "extensionOf": "Purchasing.PurchaseOrderLine",
+   "definedInBrd": "F005",
+   "persistent": true,
+   "purpose": "Members this capability adds to Purchasing.PurchaseOrderLine (Odoo _inherit in the bridge addon); the entity itself is specified in F005",
+   "sourceOdoo": "purchase.order.line",
+   "attributes": [
+    {
+     "name": "QuantityReceived",
+     "type": "Decimal",
+     "sourceOdoo": "purchase.order.line.qty_received",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Received Qty",
+     "odooComputedBy": "_compute_qty_received"
+    }
+   ],
+   "associations": []
+  }
+ ],
+ "enumerations": [],
+ "viewEntities": [],
+ "microflows": [
+  {
+   "name": "SUB_SalesOrder_CreateDelivery",
+   "kind": "Microflow",
+   "purpose": "Create and confirm the delivery for goods lines not yet covered by moves.",
+   "params": [
+    {
+     "name": "SalesOrder",
+     "type": "Sales.SalesOrder"
+    }
+   ],
+   "returns": "Inventory.Transfer",
+   "pattern": "create",
+   "calls": [
+    "SUB_Sequence_NextNumber",
+    "ACT_Transfer_Confirm"
+   ],
+   "validations": [],
+   "hiddenRules": [
+    "Quantity per line = ordered - already in non-cancelled moves (supports UC003)"
+   ],
+   "odooRefs": [
+    "sale.order.line._action_launch_stock_rule",
+    "sale.order.line._prepare_procurement_values"
+   ]
+  },
+  {
+   "name": "SUB_SalesOrder_UpdateDelivered",
+   "kind": "Microflow",
+   "purpose": "Recompute delivered quantities and delivery status from done moves.",
+   "params": [
+    {
+     "name": "SalesOrder",
+     "type": "Sales.SalesOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "calculation",
+   "calls": [
+    "SUB_UoM_ConvertQuantity",
+    "SUB_SalesOrder_UpdateInvoiceStatus"
+   ],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "sale.order.line._compute_qty_delivered",
+    "sale.order._compute_delivery_status"
+   ]
+  },
+  {
+   "name": "SUB_PurchaseOrder_CreateReceipt",
+   "kind": "Microflow",
+   "purpose": "Create the receipt for goods lines.",
+   "params": [
+    {
+     "name": "PurchaseOrder",
+     "type": "Purchasing.PurchaseOrder"
+    }
+   ],
+   "returns": "Inventory.Transfer",
+   "pattern": "create",
+   "calls": [
+    "SUB_Sequence_NextNumber",
+    "ACT_Transfer_Confirm"
+   ],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "purchase.order._create_picking",
+    "purchase.order.line._prepare_stock_moves"
+   ]
+  },
+  {
+   "name": "SUB_PurchaseOrder_UpdateReceived",
+   "kind": "Microflow",
+   "purpose": "Recompute received quantities and receipt status.",
+   "params": [
+    {
+     "name": "PurchaseOrder",
+     "type": "Purchasing.PurchaseOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "calculation",
+   "calls": [
+    "SUB_UoM_ConvertQuantity",
+    "SUB_PurchaseOrder_UpdateBillingStatus"
+   ],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "purchase.order.line._compute_qty_received",
+    "purchase.order._compute_receipt_status"
+   ]
+  }
+ ],
+ "workflows": [],
+ "pages": [
+  {
+   "name": "SalesOrder_NewEdit",
+   "purpose": "Extension: Delivery smart button (count of transfers), delivery status badge, expected date.",
+   "dataContext": "Sales.SalesOrder",
+   "pattern": "extension",
+   "sections": [
+    "SmartButtons",
+    "OtherInfo"
+   ],
+   "actions": [
+    "Open deliveries"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "sale_stock.view_order_form_inherit_sale_stock"
+   ]
+  },
+  {
+   "name": "PurchaseOrder_NewEdit",
+   "purpose": "Extension: Receipt smart button, receipt status, deliver-to operation type.",
+   "dataContext": "Purchasing.PurchaseOrder",
+   "pattern": "extension",
+   "sections": [
+    "SmartButtons",
+    "OtherInfo"
+   ],
+   "actions": [
+    "Open receipts"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "purchase_stock.purchase_order_view_form_inherit"
+   ]
+  },
+  {
+   "name": "Transfer_NewEdit",
+   "purpose": "Extension: link to the source sales/purchase order.",
+   "dataContext": "Inventory.Transfer",
+   "pattern": "extension",
+   "sections": [
+    "Header"
+   ],
+   "actions": [
+    "Open order"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "stock.view_picking_form"
+   ]
+  }
+ ],
+ "timers": [],
+ "integrations": [],
+ "simplifications": [
+  "Procurement (stock.rule / procurement.group / route MTO-MTS) replaced by two explicit microflows."
+ ],
+ "odooModelsInCapability": [
+  "vendor.delay.report"
+ ],
+ "droppedOdooModels": [
+  {
+   "odooModel": "vendor.delay.report",
+   "reason": "vendor on-time statistics — could be a view entity later; not in POC"
+  }
+ ],
+ "openQuestions": [],
+ "sourceKB": [
+  "analysis/odoo/knowledge-base/entities.json",
+  "analysis/odoo/knowledge-base/structures.json",
+  "analysis/odoo/knowledge-base/staticEntities.json",
+  "analysis/odoo/knowledge-base/logics.json",
+  "analysis/odoo/knowledge-base/screens.json",
+  "analysis/odoo/knowledge-base/workflows.json",
+  "analysis/odoo/knowledge-base/roles.json",
+  "analysis/odoo/non-code-sources.md"
+ ],
+ "confidence": "high",
+ "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 0 gap(s) point at not-implemented addons (mail/portal/utm/...)",
+ "summaryCounts": {
+  "useCases": 5,
+  "entities": 6,
+  "enumerations": 0,
+  "microflows": 4,
+  "pages": 3,
+  "openQuestions": 0
+ }
+}

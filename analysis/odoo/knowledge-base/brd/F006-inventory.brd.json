@@ -1,0 +1,1704 @@
+{
+ "id": "F006",
+ "title": "Inventory: locations, transfers, stock levels, replenishment",
+ "modules": [
+  "Inventory"
+ ],
+ "actors": [
+  "InventoryUser",
+  "InventoryManager"
+ ],
+ "capability": "C6",
+ "summary": "One warehouse with one-step receipts and deliveries; transfers with stock moves; check availability and reserve; validate with or without backorder; stock levels and counts; min/max reorder rules generating RFQs.",
+ "provenance": "code-extracted",
+ "generatedAt": "2026-10-14",
+ "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
+ "actorRoleMapping": {
+  "InventoryUser": [
+   "stock.group_stock_user"
+  ],
+  "InventoryManager": [
+   "stock.group_stock_manager"
+  ]
+ },
+ "useCases": [
+  {
+   "id": "UC001",
+   "title": "Process a receipt",
+   "actors": [
+    "InventoryUser"
+   ],
+   "preconditions": [
+    "Receipt Ready (from a PO, F007, or manual)"
+   ],
+   "postconditions": [
+    "Stock increased; PO received quantities updated"
+   ],
+   "mainFlow": [
+    "1. User opens Inventory > Receipts and a Ready receipt",
+    "2. Enters received quantities per move (default = demand)",
+    "3. Clicks Validate",
+    "4. If less than demand: system asks Create backorder? (UC004)",
+    "5. System moves stock Vendors -> WH/Stock, status Done, date done"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Transfer_Overview",
+    "Transfer_NewEdit"
+   ],
+   "odooRefs": [
+    "stock.view_picking_form",
+    "stock.picking.button_validate",
+    "stock.picking._action_done",
+    "stock.move._action_done"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC002",
+   "title": "Process a delivery",
+   "actors": [
+    "InventoryUser"
+   ],
+   "preconditions": [
+    "Delivery confirmed (from a SO, F007)"
+   ],
+   "postconditions": [
+    "Stock decreased; SO delivered quantities updated"
+   ],
+   "mainFlow": [
+    "1. User opens a delivery; clicks Check availability",
+    "2. System reserves on-hand stock (Ready if fully reserved, else stays Waiting)",
+    "3. User sets picked quantities and validates (backorder per UC004)",
+    "4. System moves stock WH/Stock -> Customers"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Transfer_NewEdit"
+   ],
+   "odooRefs": [
+    "stock.picking.action_assign",
+    "stock.move._action_assign",
+    "stock.picking.button_validate"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC003",
+   "title": "Create a manual transfer",
+   "actors": [
+    "InventoryUser"
+   ],
+   "preconditions": [
+    "—"
+   ],
+   "postconditions": [
+    "Transfer in Draft/Ready"
+   ],
+   "mainFlow": [
+    "1. User creates a transfer: operation type, partner, locations, products and quantities",
+    "2. Clicks Mark as todo (confirm) and continues as UC001/UC002"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Transfer_NewEdit"
+   ],
+   "odooRefs": [
+    "stock.picking.action_confirm"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC004",
+   "title": "Validate with less than the demand (backorder)",
+   "actors": [
+    "InventoryUser"
+   ],
+   "preconditions": [
+    "Some moves have quantity < demand"
+   ],
+   "postconditions": [
+    "Done transfer for the processed quantity; new Waiting/Ready backorder for the rest, or rest cancelled"
+   ],
+   "mainFlow": [
+    "1. System shows the backorder dialog",
+    "2. User chooses Create backorder or No backorder",
+    "3. System splits moves: done part + remaining part into a new transfer linked via Transfer_Backorder, or cancels the remainder"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "ValidateTransfer_Popup"
+   ],
+   "odooRefs": [
+    "stock.backorder.confirmation.process",
+    "stock.backorder.confirmation.process_cancel_backorder",
+    "stock.picking._create_backorder"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC005",
+   "title": "Cancel a transfer",
+   "actors": [
+    "InventoryUser"
+   ],
+   "preconditions": [
+    "Not Done"
+   ],
+   "postconditions": [
+    "Status Cancelled, reservations released"
+   ],
+   "mainFlow": [
+    "1. User clicks Cancel",
+    "2. System unreserves and cancels the moves"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Transfer_NewEdit"
+   ],
+   "odooRefs": [
+    "stock.picking.action_cancel"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC006",
+   "title": "Check stock and count inventory",
+   "actors": [
+    "InventoryUser",
+    "InventoryManager"
+   ],
+   "preconditions": [
+    "Products tracked"
+   ],
+   "postconditions": [
+    "Stock levels corrected with an adjustment move"
+   ],
+   "mainFlow": [
+    "1. User opens Stock (per product/location) from the StockOnHand view",
+    "2. Enters counted quantities",
+    "3. Clicks Apply: system creates a done move from/to Inventory adjustment for the difference and clears the count"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "StockLevel_Overview"
+   ],
+   "odooRefs": [
+    "stock.view_stock_quant_tree_inventory_editable",
+    "stock.quant.action_apply_inventory",
+    "stock.quant._apply_inventory"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC007",
+   "title": "Replenish with reorder rules",
+   "actors": [
+    "InventoryManager",
+    "Purchaser"
+   ],
+   "preconditions": [
+    "Rule min/max with vendor"
+   ],
+   "postconditions": [
+    "RFQ created or increased for the vendor"
+   ],
+   "mainFlow": [
+    "1. Scheduled event (daily) or user clicks Order once / Run scheduler",
+    "2. For each rule: forecast = on hand + incoming - outgoing",
+    "3. If forecast < min: quantity = max - forecast rounded up to the multiple",
+    "4. System adds a line to an open RFQ for the vendor or creates a new RFQ (source = rule name)"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "ReorderRule_Overview"
+   ],
+   "odooRefs": [
+    "stock.warehouse.orderpoint.action_replenish",
+    "stock.warehouse.orderpoint._procure_orderpoint_confirm",
+    "stock.warehouse.orderpoint._compute_qty_to_order_computed"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  }
+ ],
+ "domainEntities": [
+  {
+   "name": "Inventory.Warehouse",
+   "module": "Inventory",
+   "persistent": true,
+   "purpose": "The (single) warehouse: its stock location and operation types.",
+   "sourceOdoo": "stock.warehouse",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "stock.warehouse.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Warehouse",
+     "odooDefault": "_default_name",
+     "length": 200
+    },
+    {
+     "name": "ShortName",
+     "type": "String",
+     "sourceOdoo": "stock.warehouse.code",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Short Name",
+     "length": 5
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "stock.warehouse.active"
+    }
+   ],
+   "associations": [
+    {
+     "name": "Warehouse_StockLocation",
+     "owner": "Inventory.Warehouse",
+     "target": "Inventory.Location",
+     "type": "Reference",
+     "sourceOdoo": "stock.warehouse.lot_stock_id",
+     "odooTarget": "stock.location",
+     "mandatory": true
+    },
+    {
+     "name": "Warehouse_Address",
+     "owner": "Inventory.Warehouse",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "stock.warehouse.partner_id",
+     "odooTarget": "res.partner",
+     "mandatory": false
+    }
+   ],
+   "note": "reception_steps / delivery_steps fixed to one step; no routes/rules.",
+   "brd": "F006"
+  },
+  {
+   "name": "Inventory.Location",
+   "module": "Inventory",
+   "persistent": true,
+   "purpose": "A physical or virtual place stock moves from/to (WH/Stock, Vendors, Customers, Inventory adjustment).",
+   "sourceOdoo": "stock.location",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "stock.location.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Location Name",
+     "length": 200
+    },
+    {
+     "name": "FullName",
+     "type": "String",
+     "sourceOdoo": "stock.location.complete_name",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Full Location Name",
+     "odooComputedBy": "_compute_complete_name",
+     "length": 200
+    },
+    {
+     "name": "LocationType",
+     "type": "Enumeration",
+     "sourceOdoo": "stock.location.usage",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Location Type",
+     "odooDefault": "'internal'",
+     "enumeration": "Inventory.ENUM_LocationType"
+    },
+    {
+     "name": "Barcode",
+     "type": "String",
+     "sourceOdoo": "stock.location.barcode",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Barcode",
+     "length": 200
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "stock.location.active"
+    }
+   ],
+   "associations": [
+    {
+     "name": "Location_Parent",
+     "owner": "Inventory.Location",
+     "target": "Inventory.Location",
+     "type": "Reference",
+     "sourceOdoo": "stock.location.location_id",
+     "odooTarget": "stock.location",
+     "mandatory": false
+    },
+    {
+     "name": "Location_Warehouse",
+     "owner": "Inventory.Location",
+     "target": "Inventory.Warehouse",
+     "type": "Reference",
+     "sourceOdoo": "stock.location.warehouse_id",
+     "odooTarget": "stock.warehouse",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F006"
+  },
+  {
+   "name": "Inventory.OperationType",
+   "module": "Inventory",
+   "persistent": true,
+   "purpose": "Receipts, Delivery orders, Internal transfers: numbering and default locations.",
+   "sourceOdoo": "stock.picking.type",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "stock.picking.type.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Operation Type",
+     "length": 200
+    },
+    {
+     "name": "Kind",
+     "type": "Enumeration",
+     "sourceOdoo": "stock.picking.type.code",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Type of Operation",
+     "odooDefault": "'incoming'",
+     "enumeration": "Inventory.ENUM_OperationKind"
+    },
+    {
+     "name": "SequenceCode",
+     "type": "String",
+     "sourceOdoo": "stock.picking.type.sequence_code",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Sequence Prefix",
+     "length": 200
+    },
+    {
+     "name": "CreateBackorder",
+     "type": "Boolean",
+     "sourceOdoo": "stock.picking.type.create_backorder",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Create Backorder",
+     "odooDefault": "'ask'",
+     "note": "Odoo ask/always/never -> 'always ask' dropped: true=create"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "stock.picking.type.active"
+    }
+   ],
+   "associations": [
+    {
+     "name": "OperationType_Warehouse",
+     "owner": "Inventory.OperationType",
+     "target": "Inventory.Warehouse",
+     "type": "Reference",
+     "sourceOdoo": "stock.picking.type.warehouse_id",
+     "odooTarget": "stock.warehouse",
+     "mandatory": false
+    },
+    {
+     "name": "OperationType_DefaultSource",
+     "owner": "Inventory.OperationType",
+     "target": "Inventory.Location",
+     "type": "Reference",
+     "sourceOdoo": "stock.picking.type.default_location_src_id",
+     "odooTarget": "stock.location",
+     "mandatory": true
+    },
+    {
+     "name": "OperationType_DefaultDestination",
+     "owner": "Inventory.OperationType",
+     "target": "Inventory.Location",
+     "type": "Reference",
+     "sourceOdoo": "stock.picking.type.default_location_dest_id",
+     "odooTarget": "stock.location",
+     "mandatory": true
+    }
+   ],
+   "note": null,
+   "brd": "F006"
+  },
+  {
+   "name": "Inventory.Transfer",
+   "module": "Inventory",
+   "persistent": true,
+   "purpose": "A receipt, delivery or internal transfer grouping stock moves.",
+   "sourceOdoo": "stock.picking",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Number",
+     "type": "String",
+     "sourceOdoo": "stock.picking.name",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Reference",
+     "odooDefault": "'/'",
+     "length": 200,
+     "note": "WH/IN/00001, WH/OUT/00001, WH/INT/00001"
+    },
+    {
+     "name": "Status",
+     "type": "Enumeration",
+     "sourceOdoo": "stock.picking.state",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Status",
+     "odooComputedBy": "_compute_state",
+     "enumeration": "Inventory.ENUM_TransferStatus"
+    },
+    {
+     "name": "ScheduledDate",
+     "type": "DateTime",
+     "sourceOdoo": "stock.picking.scheduled_date",
+     "odooType": "Datetime",
+     "mandatory": false,
+     "label": "Scheduled Date",
+     "odooComputedBy": "_compute_scheduled_date",
+     "odooDefault": "fields.Datetime.now"
+    },
+    {
+     "name": "DateDone",
+     "type": "DateTime",
+     "sourceOdoo": "stock.picking.date_done",
+     "odooType": "Datetime",
+     "mandatory": false,
+     "label": "Date of Transfer"
+    },
+    {
+     "name": "Deadline",
+     "type": "DateTime",
+     "sourceOdoo": "stock.picking.date_deadline",
+     "odooType": "Datetime",
+     "mandatory": false,
+     "label": "Deadline",
+     "odooComputedBy": "_compute_date_deadline"
+    },
+    {
+     "name": "SourceDocument",
+     "type": "String",
+     "sourceOdoo": "stock.picking.origin",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Source Document",
+     "length": 200
+    },
+    {
+     "name": "Notes",
+     "type": "String",
+     "sourceOdoo": "stock.picking.note",
+     "odooType": "Html",
+     "mandatory": false,
+     "label": "Notes",
+     "length": "unlimited"
+    }
+   ],
+   "associations": [
+    {
+     "name": "Transfer_OperationType",
+     "owner": "Inventory.Transfer",
+     "target": "Inventory.OperationType",
+     "type": "Reference",
+     "sourceOdoo": "stock.picking.picking_type_id",
+     "odooTarget": "stock.picking.type",
+     "mandatory": true
+    },
+    {
+     "name": "Transfer_Partner",
+     "owner": "Inventory.Transfer",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "stock.picking.partner_id",
+     "odooTarget": "res.partner",
+     "mandatory": false
+    },
+    {
+     "name": "Transfer_SourceLocation",
+     "owner": "Inventory.Transfer",
+     "target": "Inventory.Location",
+     "type": "Reference",
+     "sourceOdoo": "stock.picking.location_id",
+     "odooTarget": "stock.location",
+     "mandatory": true
+    },
+    {
+     "name": "Transfer_DestinationLocation",
+     "owner": "Inventory.Transfer",
+     "target": "Inventory.Location",
+     "type": "Reference",
+     "sourceOdoo": "stock.picking.location_dest_id",
+     "odooTarget": "stock.location",
+     "mandatory": true
+    },
+    {
+     "name": "Transfer_Backorder",
+     "owner": "Inventory.Transfer",
+     "target": "Inventory.Transfer",
+     "type": "Reference",
+     "sourceOdoo": "stock.picking.backorder_id",
+     "odooTarget": "stock.picking",
+     "mandatory": false,
+     "note": "the transfer this one is the backorder of"
+    },
+    {
+     "name": "Transfer_SalesOrder",
+     "owner": "Inventory.Transfer",
+     "target": "Sales.SalesOrder",
+     "type": "Reference",
+     "sourceOdoo": "stock.picking.sale_id",
+     "odooTarget": "sale.order",
+     "mandatory": false,
+     "note": "sale_stock"
+    },
+    {
+     "name": "Transfer_PurchaseOrder",
+     "owner": "Inventory.Transfer",
+     "target": "Purchasing.PurchaseOrder",
+     "type": "Reference",
+     "sourceOdoo": "stock.picking.purchase_id",
+     "odooTarget": "purchase.order",
+     "mandatory": false,
+     "note": "purchase_stock (computed in Odoo via moves; stored here)"
+    },
+    {
+     "name": "Transfer_Responsible",
+     "owner": "Inventory.Transfer",
+     "target": "Administration.Account",
+     "type": "Reference",
+     "sourceOdoo": "stock.picking.user_id",
+     "odooTarget": "res.users",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F006"
+  },
+  {
+   "name": "Inventory.StockMove",
+   "module": "Inventory",
+   "persistent": true,
+   "purpose": "Movement of one product quantity between two locations (stock.move.line merged in).",
+   "sourceOdoo": "stock.move",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Description",
+     "type": "String",
+     "sourceOdoo": "stock.move.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Description",
+     "length": 200
+    },
+    {
+     "name": "Status",
+     "type": "Enumeration",
+     "sourceOdoo": "stock.move.state",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Status",
+     "odooDefault": "'draft'",
+     "enumeration": "Inventory.ENUM_TransferStatus"
+    },
+    {
+     "name": "Date",
+     "type": "DateTime",
+     "sourceOdoo": "stock.move.date",
+     "odooType": "Datetime",
+     "mandatory": true,
+     "label": "Date Scheduled",
+     "odooDefault": "fields.Datetime.now"
+    },
+    {
+     "name": "DemandQuantity",
+     "type": "Decimal",
+     "sourceOdoo": "stock.move.product_uom_qty",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Demand",
+     "odooDefault": "0"
+    },
+    {
+     "name": "Quantity",
+     "type": "Decimal",
+     "sourceOdoo": "stock.move.quantity",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Quantity",
+     "odooComputedBy": "_compute_quantity",
+     "note": "quantity actually moved"
+    },
+    {
+     "name": "Picked",
+     "type": "Boolean",
+     "sourceOdoo": "stock.move.picked",
+     "odooType": "Boolean",
+     "mandatory": false,
+     "label": "Picked",
+     "odooComputedBy": "_compute_picked",
+     "odooDefault": "False"
+    },
+    {
+     "name": "SourceDocument",
+     "type": "String",
+     "sourceOdoo": "stock.move.origin",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Source Document",
+     "length": 200
+    },
+    {
+     "name": "IsInventoryAdjustment",
+     "type": "Boolean",
+     "sourceOdoo": "stock.move.is_inventory",
+     "odooType": "Boolean",
+     "mandatory": false,
+     "label": "Inventory"
+    }
+   ],
+   "associations": [
+    {
+     "name": "StockMove_Transfer",
+     "owner": "Inventory.StockMove",
+     "target": "Inventory.Transfer",
+     "type": "Reference",
+     "sourceOdoo": "stock.move.picking_id",
+     "odooTarget": "stock.picking",
+     "mandatory": false
+    },
+    {
+     "name": "StockMove_Product",
+     "owner": "Inventory.StockMove",
+     "target": "Products.Product",
+     "type": "Reference",
+     "sourceOdoo": "stock.move.product_id",
+     "odooTarget": "product.product",
+     "mandatory": true
+    },
+    {
+     "name": "StockMove_UoM",
+     "owner": "Inventory.StockMove",
+     "target": "Products.UoM",
+     "type": "Reference",
+     "sourceOdoo": "stock.move.product_uom",
+     "odooTarget": "uom.uom",
+     "mandatory": true
+    },
+    {
+     "name": "StockMove_SourceLocation",
+     "owner": "Inventory.StockMove",
+     "target": "Inventory.Location",
+     "type": "Reference",
+     "sourceOdoo": "stock.move.location_id",
+     "odooTarget": "stock.location",
+     "mandatory": true
+    },
+    {
+     "name": "StockMove_DestinationLocation",
+     "owner": "Inventory.StockMove",
+     "target": "Inventory.Location",
+     "type": "Reference",
+     "sourceOdoo": "stock.move.location_dest_id",
+     "odooTarget": "stock.location",
+     "mandatory": true
+    },
+    {
+     "name": "StockMove_SalesOrderLine",
+     "owner": "Inventory.StockMove",
+     "target": "Sales.SalesOrderLine",
+     "type": "Reference",
+     "sourceOdoo": "stock.move.sale_line_id",
+     "odooTarget": "sale.order.line",
+     "mandatory": false
+    },
+    {
+     "name": "StockMove_PurchaseOrderLine",
+     "owner": "Inventory.StockMove",
+     "target": "Purchasing.PurchaseOrderLine",
+     "type": "Reference",
+     "sourceOdoo": "stock.move.purchase_line_id",
+     "odooTarget": "purchase.order.line",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F006"
+  },
+  {
+   "name": "Inventory.StockLevel",
+   "module": "Inventory",
+   "persistent": true,
+   "purpose": "Quantity of a product in an internal location (on hand, reserved, counted).",
+   "sourceOdoo": "stock.quant",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Quantity",
+     "type": "Decimal",
+     "sourceOdoo": "stock.quant.quantity",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Quantity"
+    },
+    {
+     "name": "ReservedQuantity",
+     "type": "Decimal",
+     "sourceOdoo": "stock.quant.reserved_quantity",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Reserved Quantity",
+     "odooDefault": "0.0"
+    },
+    {
+     "name": "CountedQuantity",
+     "type": "Decimal",
+     "sourceOdoo": "stock.quant.inventory_quantity",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Counted Quantity"
+    },
+    {
+     "name": "CountSet",
+     "type": "Boolean",
+     "sourceOdoo": "stock.quant.inventory_quantity_set",
+     "odooType": "Boolean",
+     "mandatory": false,
+     "odooComputedBy": "_compute_inventory_quantity_set",
+     "odooDefault": "False"
+    },
+    {
+     "name": "ScheduledCountDate",
+     "type": "DateTime",
+     "sourceOdoo": "stock.quant.inventory_date",
+     "odooType": "Date",
+     "mandatory": false,
+     "label": "Scheduled Date",
+     "odooComputedBy": "_compute_inventory_date"
+    },
+    {
+     "name": "IncomingDate",
+     "type": "DateTime",
+     "sourceOdoo": "stock.quant.in_date",
+     "odooType": "Datetime",
+     "mandatory": true,
+     "label": "Incoming Date",
+     "odooDefault": "fields.Datetime.now"
+    }
+   ],
+   "associations": [
+    {
+     "name": "StockLevel_Product",
+     "owner": "Inventory.StockLevel",
+     "target": "Products.Product",
+     "type": "Reference",
+     "sourceOdoo": "stock.quant.product_id",
+     "odooTarget": "product.product",
+     "mandatory": true
+    },
+    {
+     "name": "StockLevel_Location",
+     "owner": "Inventory.StockLevel",
+     "target": "Inventory.Location",
+     "type": "Reference",
+     "sourceOdoo": "stock.quant.location_id",
+     "odooTarget": "stock.location",
+     "mandatory": true
+    }
+   ],
+   "note": "No lots, packages or owners: one row per product × location.",
+   "brd": "F006"
+  },
+  {
+   "name": "Inventory.ReorderRule",
+   "module": "Inventory",
+   "persistent": true,
+   "purpose": "Min/max replenishment rule: below minimum, create an RFQ up to maximum.",
+   "sourceOdoo": "stock.warehouse.orderpoint",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "stock.warehouse.orderpoint.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Name",
+     "odooDefault": "lambda self: self.env['ir.sequence'].next_by_code('stock.orderpoint')",
+     "length": 200
+    },
+    {
+     "name": "MinQuantity",
+     "type": "Decimal",
+     "sourceOdoo": "stock.warehouse.orderpoint.product_min_qty",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Min Quantity",
+     "odooComputedBy": "_compute_product_min_qty",
+     "odooDefault": "0.0"
+    },
+    {
+     "name": "MaxQuantity",
+     "type": "Decimal",
+     "sourceOdoo": "stock.warehouse.orderpoint.product_max_qty",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Max Quantity",
+     "odooComputedBy": "_compute_product_max_qty",
+     "odooDefault": "0.0"
+    },
+    {
+     "name": "QuantityMultiple",
+     "type": "Decimal",
+     "sourceOdoo": "stock.warehouse.orderpoint.qty_multiple",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Multiple Quantity",
+     "odooDefault": "1"
+    },
+    {
+     "name": "Automatic",
+     "type": "Boolean",
+     "sourceOdoo": "stock.warehouse.orderpoint.trigger",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Trigger",
+     "odooDefault": "'auto'",
+     "note": "Odoo trigger auto/manual -> boolean"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "stock.warehouse.orderpoint.active"
+    }
+   ],
+   "associations": [
+    {
+     "name": "ReorderRule_Product",
+     "owner": "Inventory.ReorderRule",
+     "target": "Products.Product",
+     "type": "Reference",
+     "sourceOdoo": "stock.warehouse.orderpoint.product_id",
+     "odooTarget": "product.product",
+     "mandatory": true
+    },
+    {
+     "name": "ReorderRule_Location",
+     "owner": "Inventory.ReorderRule",
+     "target": "Inventory.Location",
+     "type": "Reference",
+     "sourceOdoo": "stock.warehouse.orderpoint.location_id",
+     "odooTarget": "stock.location",
+     "mandatory": true
+    },
+    {
+     "name": "ReorderRule_Vendor",
+     "owner": "Inventory.ReorderRule",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "stock.warehouse.orderpoint.vendor_id",
+     "odooTarget": "res.partner",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F006"
+  },
+  {
+   "name": "Inventory.ValidateTransferRequest",
+   "module": "Inventory",
+   "persistent": false,
+   "purpose": "Wizard data: validate a transfer with less than the demand — create a backorder or not.",
+   "sourceOdoo": "stock.backorder.confirmation",
+   "generalization": null,
+   "systemMembers": [],
+   "attributes": [
+    {
+     "name": "CreateBackorder",
+     "type": "Boolean",
+     "sourceOdoo": "stock.backorder.confirmation (framework, not extracted field-level)",
+     "mandatory": false,
+     "new": true,
+     "default": "true",
+     "note": "Odoo: two buttons process / process_cancel_backorder"
+    }
+   ],
+   "associations": [
+    {
+     "name": "ValidateTransferRequest_Transfer",
+     "owner": "Inventory.ValidateTransferRequest",
+     "target": "Inventory.Transfer",
+     "type": "Reference",
+     "sourceOdoo": "stock.backorder.confirmation.pick_ids",
+     "odooTarget": "stock.picking",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F006"
+  }
+ ],
+ "enumerations": [
+  {
+   "name": "Inventory.ENUM_LocationType",
+   "module": "Inventory",
+   "sourceOdoo": "stock.location.usage",
+   "values": [
+    {
+     "name": "Vendor",
+     "caption": "Vendor location",
+     "odooValue": "supplier"
+    },
+    {
+     "name": "View",
+     "caption": "View",
+     "odooValue": "view"
+    },
+    {
+     "name": "Internal",
+     "caption": "Internal location",
+     "odooValue": "internal"
+    },
+    {
+     "name": "Customer",
+     "caption": "Customer location",
+     "odooValue": "customer"
+    },
+    {
+     "name": "InventoryLoss",
+     "caption": "Inventory loss / adjustment",
+     "odooValue": "inventory"
+    }
+   ],
+   "droppedOdooValues": [
+    "production",
+    "transit"
+   ],
+   "note": "'production' (MRP) and 'transit' (inter-warehouse) dropped"
+  },
+  {
+   "name": "Inventory.ENUM_OperationKind",
+   "module": "Inventory",
+   "sourceOdoo": "stock.picking.type.code",
+   "values": [
+    {
+     "name": "Receipt",
+     "caption": "Receipt",
+     "odooValue": "incoming"
+    },
+    {
+     "name": "Delivery",
+     "caption": "Delivery",
+     "odooValue": "outgoing"
+    },
+    {
+     "name": "Internal",
+     "caption": "Internal transfer",
+     "odooValue": "internal"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": null
+  },
+  {
+   "name": "Inventory.ENUM_TransferStatus",
+   "module": "Inventory",
+   "sourceOdoo": "stock.picking.state",
+   "values": [
+    {
+     "name": "Draft",
+     "caption": "Draft",
+     "odooValue": "draft"
+    },
+    {
+     "name": "Waiting",
+     "caption": "Waiting",
+     "odooValue": "confirmed"
+    },
+    {
+     "name": "Ready",
+     "caption": "Ready",
+     "odooValue": "assigned"
+    },
+    {
+     "name": "Done",
+     "caption": "Done",
+     "odooValue": "done"
+    },
+    {
+     "name": "Cancelled",
+     "caption": "Cancelled",
+     "odooValue": "cancel"
+    }
+   ],
+   "droppedOdooValues": [
+    "waiting"
+   ],
+   "note": "'waiting' (waiting another operation) dropped: no chained multi-step routes. Also used for stock moves"
+  }
+ ],
+ "viewEntities": [
+  {
+   "name": "Inventory.StockOnHand",
+   "odoo": "report.stock.quantity",
+   "brd": "F006",
+   "purpose": "Per product: on hand, reserved, incoming and outgoing quantities (forecast)."
+  }
+ ],
+ "microflows": [
+  {
+   "name": "ACT_Transfer_Confirm",
+   "kind": "Microflow",
+   "purpose": "Draft -> Waiting; try to reserve.",
+   "params": [
+    {
+     "name": "Transfer",
+     "type": "Inventory.Transfer"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [
+    "ACT_Transfer_CheckAvailability"
+   ],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "stock.picking.action_confirm",
+    "stock.move._action_confirm"
+   ]
+  },
+  {
+   "name": "ACT_Transfer_CheckAvailability",
+   "kind": "Microflow",
+   "purpose": "Reserve stock for outgoing moves from internal locations; incoming moves are always Ready.",
+   "params": [
+    {
+     "name": "Transfer",
+     "type": "Inventory.Transfer"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "action",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [
+    "Reserve from StockLevel of the source location; transfer Ready only when all moves reserved (move_type direct=partial allowed in Odoo; here: Ready when anything reserved, shown per move)"
+   ],
+   "odooRefs": [
+    "stock.picking.action_assign",
+    "stock.move._action_assign",
+    "stock.quant._update_reserved_quantity"
+   ]
+  },
+  {
+   "name": "ACT_Transfer_Validate",
+   "kind": "Microflow",
+   "purpose": "Validate: if any move short -> open backorder popup; else complete.",
+   "params": [
+    {
+     "name": "Transfer",
+     "type": "Inventory.Transfer"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [
+    "SUB_Transfer_Done"
+   ],
+   "validations": [
+    "At least one move with quantity > 0",
+    "Not already done/cancelled"
+   ],
+   "hiddenRules": [],
+   "odooRefs": [
+    "stock.picking.button_validate",
+    "stock.picking._pre_action_done_hook"
+   ]
+  },
+  {
+   "name": "SUB_Transfer_Done",
+   "kind": "Microflow",
+   "purpose": "Apply moves to StockLevel (source -, destination +), set Done and date; optional backorder; update order quantities.",
+   "params": [
+    {
+     "name": "Transfer",
+     "type": "Inventory.Transfer"
+    },
+    {
+     "name": "CreateBackorder",
+     "type": "Boolean"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [
+    "SUB_SalesOrder_UpdateDelivered",
+    "SUB_PurchaseOrder_UpdateReceived"
+   ],
+   "validations": [],
+   "hiddenRules": [
+    "Stock only tracked for internal locations (Vendor/Customer/InventoryLoss are virtual)"
+   ],
+   "odooRefs": [
+    "stock.picking._action_done",
+    "stock.move._action_done",
+    "stock.picking._create_backorder",
+    "stock.quant._update_available_quantity"
+   ]
+  },
+  {
+   "name": "ACT_Transfer_Cancel",
+   "kind": "Microflow",
+   "purpose": "Unreserve and cancel.",
+   "params": [
+    {
+     "name": "Transfer",
+     "type": "Inventory.Transfer"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "stock.picking.action_cancel",
+    "stock.move._action_cancel"
+   ]
+  },
+  {
+   "name": "ACT_StockLevel_ApplyCount",
+   "kind": "Microflow",
+   "purpose": "Create adjustment moves for counted quantities and clear the count.",
+   "params": [
+    {
+     "name": "StockLevelList",
+     "type": "List of Inventory.StockLevel"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "action",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "stock.quant.action_apply_inventory",
+    "stock.quant._apply_inventory"
+   ]
+  },
+  {
+   "name": "SCE_ReorderRules_Run",
+   "kind": "Microflow",
+   "purpose": "Scheduled: evaluate automatic rules and create/extend RFQs.",
+   "params": [],
+   "returns": "Boolean",
+   "pattern": "scheduled",
+   "calls": [
+    "SUB_ReorderRule_Replenish"
+   ],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "stock.warehouse.orderpoint._procure_orderpoint_confirm",
+    "stock.warehouse.orderpoint._compute_qty_to_order_computed"
+   ]
+  },
+  {
+   "name": "SUB_ReorderRule_Replenish",
+   "kind": "Microflow",
+   "purpose": "One rule: compute qty to order and add it to an RFQ for the vendor.",
+   "params": [
+    {
+     "name": "ReorderRule",
+     "type": "Inventory.ReorderRule"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "action",
+   "calls": [
+    "ACT_PurchaseOrder_New",
+    "SUB_Product_GetVendorPrice"
+   ],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "stock.warehouse.orderpoint.action_replenish"
+   ]
+  }
+ ],
+ "workflows": [],
+ "pages": [
+  {
+   "name": "Inventory_Dashboard",
+   "purpose": "Operation type tiles: receipts/deliveries ready, waiting, late.",
+   "dataContext": "Inventory.OperationType",
+   "pattern": "dashboard",
+   "sections": [
+    "Tiles"
+   ],
+   "actions": [
+    "Open list"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "stock.stock_picking_type_kanban"
+   ]
+  },
+  {
+   "name": "Transfer_Overview",
+   "purpose": "Receipts / Deliveries / All transfers.",
+   "dataContext": "Inventory.Transfer",
+   "pattern": "list",
+   "sections": [
+    "Tabs",
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Open"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "stock.vpicktree",
+    "stock.view_picking_internal_search"
+   ]
+  },
+  {
+   "name": "Transfer_NewEdit",
+   "purpose": "Transfer form: status bar, partner, locations, scheduled date, source document, editable moves.",
+   "dataContext": "Inventory.Transfer",
+   "pattern": "form",
+   "sections": [
+    "StatusBar",
+    "Header",
+    "Moves",
+    "Notes"
+   ],
+   "actions": [
+    "ACT_Transfer_Confirm",
+    "ACT_Transfer_CheckAvailability",
+    "ACT_Transfer_Validate",
+    "ACT_Transfer_Cancel"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "stock.view_picking_form"
+   ]
+  },
+  {
+   "name": "ValidateTransfer_Popup",
+   "purpose": "Backorder question.",
+   "dataContext": "Inventory.ValidateTransferRequest",
+   "pattern": "form",
+   "sections": [
+    "Message"
+   ],
+   "actions": [
+    "Create backorder",
+    "No backorder",
+    "Discard"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "stock.view_backorder_confirmation"
+   ]
+  },
+  {
+   "name": "StockLevel_Overview",
+   "purpose": "Stock per product/location with editable counted quantity.",
+   "dataContext": "Inventory.StockLevel",
+   "pattern": "list",
+   "sections": [
+    "Filters",
+    "Grid"
+   ],
+   "actions": [
+    "ACT_StockLevel_ApplyCount"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "stock.view_stock_quant_tree_inventory_editable"
+   ]
+  },
+  {
+   "name": "ReorderRule_Overview",
+   "purpose": "Editable reorder rules with forecast and qty to order.",
+   "dataContext": "Inventory.ReorderRule",
+   "pattern": "list",
+   "sections": [
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Order once",
+    "Run scheduler"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "stock.view_warehouse_orderpoint_tree_editable"
+   ]
+  },
+  {
+   "name": "Warehouse_Edit",
+   "purpose": "Warehouse, locations and operation types configuration.",
+   "dataContext": "Inventory.Warehouse",
+   "pattern": "form",
+   "sections": [
+    "Warehouse",
+    "Locations",
+    "OperationTypes"
+   ],
+   "actions": [
+    "Save"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "stock.view_warehouse"
+   ]
+  }
+ ],
+ "timers": [
+  {
+   "name": "SCE_ReorderRules_Run",
+   "interval": "daily",
+   "purpose": "Scheduled: evaluate automatic rules and create/extend RFQs."
+  }
+ ],
+ "integrations": [],
+ "simplifications": [
+  "One warehouse, one-step receipt and delivery; routes, rules, procurement groups and multi-step flows dropped.",
+  "stock.move.line merged into StockMove: no lots/serials, packages, owners or putaway.",
+  "Reservation simplified to on-hand minus reserved per location; no removal strategy.",
+  "Stock valuation (stock_account) deferred — no accounting entries on moves.",
+  "Returns (stock.return.picking) and scrap not in the first version."
+ ],
+ "odooModelsInCapability": [
+  "procurement.group",
+  "product.removal",
+  "report.stock.quantity",
+  "stock.location",
+  "stock.lot",
+  "stock.lot.report",
+  "stock.move",
+  "stock.move.line",
+  "stock.package.type",
+  "stock.package_level",
+  "stock.picking",
+  "stock.picking.type",
+  "stock.putaway.rule",
+  "stock.quant",
+  "stock.quant.package",
+  "stock.route",
+  "stock.rule",
+  "stock.scrap",
+  "stock.scrap.reason.tag",
+  "stock.storage.category",
+  "stock.storage.category.capacity",
+  "stock.warehouse",
+  "stock.warehouse.orderpoint"
+ ],
+ "droppedOdooModels": [
+  {
+   "odooModel": "product.removal",
+   "reason": "removal strategies (FIFO/LIFO picking order) — no lots/locations hierarchy"
+  },
+  {
+   "odooModel": "stock.putaway.rule",
+   "reason": "putaway rules — single stock location"
+  },
+  {
+   "odooModel": "stock.route",
+   "reason": "routes — fixed one-step receipt and delivery"
+  },
+  {
+   "odooModel": "stock.rule",
+   "reason": "stock rules — replaced by explicit microflows (confirm order -> transfer)"
+  },
+  {
+   "odooModel": "procurement.group",
+   "reason": "procurement grouping — transfers link directly to the sales/purchase order"
+  },
+  {
+   "odooModel": "stock.lot",
+   "reason": "lots/serial numbers out of scope (Q-F006-1)"
+  },
+  {
+   "odooModel": "stock.lot.report",
+   "reason": "lots out of scope"
+  },
+  {
+   "odooModel": "stock.move.line",
+   "reason": "merged into Inventory.StockMove (no lots/packages, one line per move)"
+  },
+  {
+   "odooModel": "stock.package_level",
+   "reason": "packages out of scope"
+  },
+  {
+   "odooModel": "stock.package.type",
+   "reason": "packages out of scope"
+  },
+  {
+   "odooModel": "stock.quant.package",
+   "reason": "packages out of scope"
+  },
+  {
+   "odooModel": "stock.scrap",
+   "reason": "scrapping — not in the demo flows (Q-F006-2)"
+  },
+  {
+   "odooModel": "stock.scrap.reason.tag",
+   "reason": "scrapping dropped"
+  },
+  {
+   "odooModel": "stock.storage.category",
+   "reason": "storage capacity rules — single location"
+  },
+  {
+   "odooModel": "stock.storage.category.capacity",
+   "reason": "storage capacity rules — single location"
+  },
+  {
+   "odooModel": "stock.replenish.mixin",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "report.stock.label_product_product_view",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "report.stock.label_lot_template_view",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "report.stock.report_reception",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "report.stock.report_stock_rule",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.forecasted_product_product",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.forecasted_product_template",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.traceability.report",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "product.replenish",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.backorder.confirmation.line",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.change.product.qty",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.inventory.adjustment.name",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.inventory.conflict",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.inventory.warning",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "picking.label.type",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "lot.label.layout",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.orderpoint.snooze",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.package.destination",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.return.picking.line",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.return.picking",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.quant.relocate",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.quantity.history",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.replenishment.info",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.replenishment.option",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.request.count",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.rules.report",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.track.confirmation",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.track.line",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.warn.insufficient.qty",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "stock.warn.insufficient.qty.scrap",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  }
+ ],
+ "openQuestions": [
+  {
+   "id": "Q-F006-1",
+   "question": "Lots/serial numbers, packages and multi-step (pick-pack-ship) flows are dropped: one warehouse, one-step receipts and deliveries. OK?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": true,
+   "kind": "DECISION",
+   "proposed": "Yes"
+  },
+  {
+   "id": "Q-F006-2",
+   "question": "Returns and scrap are left out of the first version (can be added later as transfers). OK?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": false,
+   "kind": "DECISION",
+   "proposed": "Yes"
+  },
+  {
+   "id": "Q-F006-3",
+   "question": "Reorder rules (min/max -> automatic RFQ) included as a wave-3 stretch item?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": false,
+   "kind": "DECISION",
+   "proposed": "Yes"
+  }
+ ],
+ "sourceKB": [
+  "analysis/odoo/knowledge-base/entities.json",
+  "analysis/odoo/knowledge-base/structures.json",
+  "analysis/odoo/knowledge-base/staticEntities.json",
+  "analysis/odoo/knowledge-base/logics.json",
+  "analysis/odoo/knowledge-base/screens.json",
+  "analysis/odoo/knowledge-base/workflows.json",
+  "analysis/odoo/knowledge-base/roles.json",
+  "analysis/odoo/non-code-sources.md"
+ ],
+ "confidence": "high",
+ "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 2 gap(s) point at not-implemented addons (mail/portal/utm/...)",
+ "summaryCounts": {
+  "useCases": 7,
+  "entities": 8,
+  "enumerations": 3,
+  "microflows": 8,
+  "pages": 7,
+  "openQuestions": 3
+ }
+}

@@ -1,0 +1,1279 @@
+{
+ "id": "F003",
+ "title": "Product catalogue & pricing",
+ "modules": [
+  "Products"
+ ],
+ "actors": [
+  "SalesManager",
+  "PurchaseManager",
+  "InventoryManager",
+  "SalesUser",
+  "Purchaser"
+ ],
+ "capability": "C3",
+ "summary": "Products (goods or services) with category, units, prices, taxes and tags; vendor prices; customer pricelists with fixed-price or discount rules.",
+ "provenance": "code-extracted",
+ "generatedAt": "2026-10-14",
+ "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
+ "actorRoleMapping": {
+  "SalesManager": [
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman_all_leads"
+  ],
+  "PurchaseManager": [
+   "purchase.group_purchase_manager"
+  ],
+  "InventoryManager": [
+   "stock.group_stock_manager"
+  ],
+  "SalesUser": [
+   "sales_team.group_sale_salesman"
+  ],
+  "Purchaser": [
+   "purchase.group_purchase_user"
+  ]
+ },
+ "useCases": [
+  {
+   "id": "UC001",
+   "title": "Create a product",
+   "actors": [
+    "SalesManager",
+    "PurchaseManager",
+    "InventoryManager"
+   ],
+   "preconditions": [
+    "Categories and units exist"
+   ],
+   "postconditions": [
+    "Product sellable/purchasable as flagged"
+   ],
+   "mainFlow": [
+    "1. User opens Products and clicks New",
+    "2. Enters name, internal reference, type (Goods/Service), Track inventory flag",
+    "3. Sets sales price, cost, units, category, customer and vendor taxes, invoicing and bill policies",
+    "4. Optionally uploads a picture",
+    "5. System validates and saves"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Product_Overview",
+    "Product_NewEdit"
+   ],
+   "odooRefs": [
+    "product.product_template_form_view",
+    "product.product_template_tree_view",
+    "product.template._check_uom"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC002",
+   "title": "Record vendor prices",
+   "actors": [
+    "PurchaseManager",
+    "Purchaser"
+   ],
+   "preconditions": [
+    "Product and vendor exist"
+   ],
+   "postconditions": [
+    "RFQ lines default to this price and lead time"
+   ],
+   "mainFlow": [
+    "1. On the product Purchase tab, user adds a vendor line: vendor, min quantity, price, discount, lead time, validity",
+    "2. System uses the first valid line (sequence, min qty, dates) when a purchase line is created"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Product_NewEdit"
+   ],
+   "odooRefs": [
+    "product.product_supplierinfo_form_view",
+    "product.product._select_seller"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC003",
+   "title": "Maintain a pricelist",
+   "actors": [
+    "SalesManager"
+   ],
+   "preconditions": [
+    "Products exist"
+   ],
+   "postconditions": [
+    "Customers on this pricelist get its prices"
+   ],
+   "mainFlow": [
+    "1. User opens Pricelists and creates one",
+    "2. Adds rules: applies to all / a category / a product, fixed price or % discount, min quantity, validity",
+    "3. Assigns the pricelist to customers (partner form)"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Pricelist_Overview",
+    "Pricelist_NewEdit"
+   ],
+   "odooRefs": [
+    "product.product_pricelist_view",
+    "product.pricelist._compute_price_rule"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC004",
+   "title": "Get the price for a customer",
+   "actors": [
+    "SalesUser"
+   ],
+   "preconditions": [
+    "Order has a pricelist"
+   ],
+   "postconditions": [
+    "Line unit price set"
+   ],
+   "mainFlow": [
+    "1. When a product/quantity is set on a sales line, system finds the best rule: product rule, else category (incl. parents), else global",
+    "2. Rule must match min quantity and date window",
+    "3. Fixed price -> price; Discount -> sales price * (1 - %)",
+    "4. No rule -> product sales price"
+   ],
+   "alternativeFlows": [],
+   "screens": [],
+   "odooRefs": [
+    "product.pricelist._compute_price_rule",
+    "product.pricelist.item._compute_price",
+    "product.pricelist.item._is_applicable_for"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC005",
+   "title": "Archive a product",
+   "actors": [
+    "SalesManager",
+    "InventoryManager"
+   ],
+   "preconditions": [
+    "Product exists"
+   ],
+   "postconditions": [
+    "Product hidden from pickers"
+   ],
+   "mainFlow": [
+    "1. User archives the product; documents keep the reference"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Product_NewEdit"
+   ],
+   "odooRefs": [
+    "product.product_template_form_view"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  }
+ ],
+ "domainEntities": [
+  {
+   "name": "Products.ProductCategory",
+   "module": "Products",
+   "persistent": true,
+   "purpose": "Hierarchical product grouping (used by price rules and reporting).",
+   "sourceOdoo": "product.category",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "product.category.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Name",
+     "length": 200
+    },
+    {
+     "name": "FullName",
+     "type": "String",
+     "sourceOdoo": "product.category.complete_name",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Complete Name",
+     "odooComputedBy": "_compute_complete_name",
+     "length": 200,
+     "note": "stored path \"All / Saleable\""
+    }
+   ],
+   "associations": [
+    {
+     "name": "ProductCategory_Parent",
+     "owner": "Products.ProductCategory",
+     "target": "Products.ProductCategory",
+     "type": "Reference",
+     "sourceOdoo": "product.category.parent_id",
+     "odooTarget": "product.category",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F003"
+  },
+  {
+   "name": "Products.Product",
+   "module": "Products",
+   "persistent": true,
+   "purpose": "A sellable and/or purchasable product or service (variants merged in).",
+   "sourceOdoo": "product.template",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "product.template.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Name",
+     "length": 200
+    },
+    {
+     "name": "InternalReference",
+     "type": "String",
+     "sourceOdoo": "product.template.default_code",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Internal Reference",
+     "odooComputedBy": "_compute_default_code",
+     "length": 200
+    },
+    {
+     "name": "Barcode",
+     "type": "String",
+     "sourceOdoo": "product.template.barcode",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Barcode",
+     "odooComputedNotStored": true,
+     "odooComputedBy": "_compute_barcode",
+     "length": 50
+    },
+    {
+     "name": "ProductType",
+     "type": "Enumeration",
+     "sourceOdoo": "product.template.type",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Product Type",
+     "odooDefault": "'consu'",
+     "enumeration": "Products.ENUM_ProductType"
+    },
+    {
+     "name": "TrackInventory",
+     "type": "Boolean",
+     "sourceOdoo": "product.template.is_storable",
+     "odooType": "Boolean",
+     "mandatory": false,
+     "label": "Track Inventory",
+     "odooComputedBy": "compute_is_storable",
+     "odooDefault": "False"
+    },
+    {
+     "name": "SalesPrice",
+     "type": "Decimal",
+     "sourceOdoo": "product.template.list_price",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Sales Price",
+     "odooDefault": "1.0"
+    },
+    {
+     "name": "Cost",
+     "type": "Decimal",
+     "sourceOdoo": "product.template.standard_price",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Cost",
+     "odooComputedNotStored": true,
+     "odooComputedBy": "_compute_standard_price",
+     "note": "company-dependent on product.product in Odoo"
+    },
+    {
+     "name": "CanBeSold",
+     "type": "Boolean",
+     "sourceOdoo": "product.template.sale_ok",
+     "odooType": "Boolean",
+     "mandatory": false,
+     "label": "Sales",
+     "odooDefault": "True"
+    },
+    {
+     "name": "CanBePurchased",
+     "type": "Boolean",
+     "sourceOdoo": "product.template.purchase_ok",
+     "odooType": "Boolean",
+     "mandatory": false,
+     "label": "Purchase",
+     "odooComputedBy": "_compute_purchase_ok",
+     "odooDefault": "True"
+    },
+    {
+     "name": "InvoicePolicy",
+     "type": "Enumeration",
+     "sourceOdoo": "product.template.invoice_policy",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Invoicing Policy",
+     "odooComputedBy": "_compute_invoice_policy",
+     "enumeration": "Products.ENUM_InvoicePolicy"
+    },
+    {
+     "name": "BillPolicy",
+     "type": "Enumeration",
+     "sourceOdoo": "product.template.purchase_method",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Control Policy",
+     "odooComputedBy": "_compute_purchase_method",
+     "enumeration": "Products.ENUM_BillPolicy"
+    },
+    {
+     "name": "SalesDescription",
+     "type": "String",
+     "sourceOdoo": "product.template.description_sale",
+     "odooType": "Text",
+     "mandatory": false,
+     "label": "Sales Description",
+     "length": "unlimited"
+    },
+    {
+     "name": "PurchaseDescription",
+     "type": "String",
+     "sourceOdoo": "product.template.description_purchase",
+     "odooType": "Text",
+     "mandatory": false,
+     "label": "Purchase Description",
+     "length": "unlimited"
+    },
+    {
+     "name": "InternalNotes",
+     "type": "String",
+     "sourceOdoo": "product.template.description",
+     "odooType": "Html",
+     "mandatory": false,
+     "label": "Description",
+     "length": "unlimited"
+    },
+    {
+     "name": "Weight",
+     "type": "Decimal",
+     "sourceOdoo": "product.template.weight",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Weight",
+     "odooComputedBy": "_compute_weight"
+    },
+    {
+     "name": "Volume",
+     "type": "Decimal",
+     "sourceOdoo": "product.template.volume",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Volume",
+     "odooComputedBy": "_compute_volume"
+    },
+    {
+     "name": "CustomerLeadDays",
+     "type": "Integer",
+     "sourceOdoo": "product.template.sale_delay",
+     "odooType": "Integer",
+     "mandatory": false,
+     "label": "Customer Lead Time",
+     "odooDefault": "0"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "product.template.active"
+    }
+   ],
+   "associations": [
+    {
+     "name": "Product_Category",
+     "owner": "Products.Product",
+     "target": "Products.ProductCategory",
+     "type": "Reference",
+     "sourceOdoo": "product.template.categ_id",
+     "odooTarget": "product.category",
+     "mandatory": true
+    },
+    {
+     "name": "Product_UoM",
+     "owner": "Products.Product",
+     "target": "Products.UoM",
+     "type": "Reference",
+     "sourceOdoo": "product.template.uom_id",
+     "odooTarget": "uom.uom",
+     "mandatory": true,
+     "note": "sales and stock unit"
+    },
+    {
+     "name": "Product_PurchaseUoM",
+     "owner": "Products.Product",
+     "target": "Products.UoM",
+     "type": "Reference",
+     "sourceOdoo": "product.template.uom_po_id",
+     "odooTarget": "uom.uom",
+     "mandatory": true
+    },
+    {
+     "name": "Product_CustomerTaxes",
+     "owner": "Products.Product",
+     "target": "Invoicing.Tax",
+     "type": "ReferenceSet",
+     "sourceOdoo": "product.template.taxes_id",
+     "odooTarget": "account.tax",
+     "mandatory": false
+    },
+    {
+     "name": "Product_VendorTaxes",
+     "owner": "Products.Product",
+     "target": "Invoicing.Tax",
+     "type": "ReferenceSet",
+     "sourceOdoo": "product.template.supplier_taxes_id",
+     "odooTarget": "account.tax",
+     "mandatory": false
+    },
+    {
+     "name": "Product_Tags",
+     "owner": "Products.Product",
+     "target": "Products.ProductTag",
+     "type": "ReferenceSet",
+     "sourceOdoo": "product.template.product_tag_ids",
+     "odooTarget": "product.tag",
+     "mandatory": false
+    }
+   ],
+   "note": "product.template and product.product merged: variants out of scope. Image via a ProductImage specialization of System.Image.",
+   "brd": "F003"
+  },
+  {
+   "name": "Products.ProductImage",
+   "module": "Products",
+   "persistent": true,
+   "purpose": "Product picture.",
+   "sourceOdoo": null,
+   "generalization": "System.Image",
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [],
+   "associations": [
+    {
+     "name": "ProductImage_Product",
+     "owner": "Products.ProductImage",
+     "target": "Products.Product",
+     "type": "Reference",
+     "new": true,
+     "note": "Odoo image.mixin image_1920"
+    }
+   ],
+   "note": "new: Mendix-native file storage for image.mixin",
+   "brd": "F003"
+  },
+  {
+   "name": "Products.ProductTag",
+   "module": "Products",
+   "persistent": true,
+   "purpose": "Free tags on products.",
+   "sourceOdoo": "product.tag",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "product.tag.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Name",
+     "length": 200
+    },
+    {
+     "name": "Color",
+     "type": "String",
+     "sourceOdoo": "product.tag.color",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Color",
+     "odooDefault": "'#3C3C3C'",
+     "length": 200
+    }
+   ],
+   "associations": [],
+   "note": null,
+   "brd": "F003"
+  },
+  {
+   "name": "Products.VendorPrice",
+   "module": "Products",
+   "persistent": true,
+   "purpose": "A vendor's price and lead time for a product (drives RFQ prices).",
+   "sourceOdoo": "product.supplierinfo",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "MinQuantity",
+     "type": "Decimal",
+     "sourceOdoo": "product.supplierinfo.min_qty",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Quantity",
+     "odooDefault": "0.0"
+    },
+    {
+     "name": "Price",
+     "type": "Decimal",
+     "sourceOdoo": "product.supplierinfo.price",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Price",
+     "odooDefault": "0.0"
+    },
+    {
+     "name": "Discount",
+     "type": "Decimal",
+     "sourceOdoo": "product.supplierinfo.discount",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Discount (%)"
+    },
+    {
+     "name": "LeadTimeDays",
+     "type": "Integer",
+     "sourceOdoo": "product.supplierinfo.delay",
+     "odooType": "Integer",
+     "mandatory": true,
+     "label": "Delivery Lead Time",
+     "odooDefault": "1"
+    },
+    {
+     "name": "VendorProductCode",
+     "type": "String",
+     "sourceOdoo": "product.supplierinfo.product_code",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Vendor Product Code",
+     "length": 200
+    },
+    {
+     "name": "VendorProductName",
+     "type": "String",
+     "sourceOdoo": "product.supplierinfo.product_name",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Vendor Product Name",
+     "length": 200
+    },
+    {
+     "name": "ValidFrom",
+     "type": "DateTime",
+     "sourceOdoo": "product.supplierinfo.date_start",
+     "odooType": "Date",
+     "mandatory": false,
+     "label": "Start Date"
+    },
+    {
+     "name": "ValidTo",
+     "type": "DateTime",
+     "sourceOdoo": "product.supplierinfo.date_end",
+     "odooType": "Date",
+     "mandatory": false,
+     "label": "End Date"
+    },
+    {
+     "name": "Sequence",
+     "type": "Integer",
+     "sourceOdoo": "product.supplierinfo.sequence",
+     "odooType": "Integer",
+     "mandatory": false,
+     "label": "Sequence",
+     "odooDefault": "1"
+    }
+   ],
+   "associations": [
+    {
+     "name": "VendorPrice_Vendor",
+     "owner": "Products.VendorPrice",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "product.supplierinfo.partner_id",
+     "odooTarget": "res.partner",
+     "mandatory": true
+    },
+    {
+     "name": "VendorPrice_Product",
+     "owner": "Products.VendorPrice",
+     "target": "Products.Product",
+     "type": "Reference",
+     "sourceOdoo": "product.supplierinfo.product_tmpl_id",
+     "odooTarget": "product.template",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F003"
+  },
+  {
+   "name": "Products.Pricelist",
+   "module": "Products",
+   "persistent": true,
+   "purpose": "A named set of price rules assigned to customers.",
+   "sourceOdoo": "product.pricelist",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "product.pricelist.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Pricelist Name",
+     "length": 200
+    },
+    {
+     "name": "Sequence",
+     "type": "Integer",
+     "sourceOdoo": "product.pricelist.sequence",
+     "odooType": "Integer",
+     "mandatory": false,
+     "odooDefault": "16"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "product.pricelist.active"
+    }
+   ],
+   "associations": [
+    {
+     "name": "Pricelist_Currency",
+     "owner": "Products.Pricelist",
+     "target": "Core.Currency",
+     "type": "Reference",
+     "sourceOdoo": "product.pricelist.currency_id",
+     "odooTarget": "res.currency",
+     "mandatory": true
+    }
+   ],
+   "note": null,
+   "brd": "F003"
+  },
+  {
+   "name": "Products.PriceRule",
+   "module": "Products",
+   "persistent": true,
+   "purpose": "One pricelist rule: fixed price or % discount, for all/category/product, from a minimum quantity.",
+   "sourceOdoo": "product.pricelist.item",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "AppliesTo",
+     "type": "Enumeration",
+     "sourceOdoo": "product.pricelist.item.applied_on",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Apply On",
+     "odooDefault": "'3_global'",
+     "enumeration": "Products.ENUM_PriceRuleScope"
+    },
+    {
+     "name": "Computation",
+     "type": "Enumeration",
+     "sourceOdoo": "product.pricelist.item.compute_price",
+     "odooType": "Selection",
+     "mandatory": true,
+     "odooDefault": "'fixed'",
+     "enumeration": "Products.ENUM_PriceComputation"
+    },
+    {
+     "name": "FixedPrice",
+     "type": "Decimal",
+     "sourceOdoo": "product.pricelist.item.fixed_price",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Fixed Price"
+    },
+    {
+     "name": "DiscountPercent",
+     "type": "Decimal",
+     "sourceOdoo": "product.pricelist.item.percent_price",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Percentage Price"
+    },
+    {
+     "name": "MinQuantity",
+     "type": "Decimal",
+     "sourceOdoo": "product.pricelist.item.min_quantity",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Min. Quantity",
+     "odooDefault": "0"
+    },
+    {
+     "name": "ValidFrom",
+     "type": "DateTime",
+     "sourceOdoo": "product.pricelist.item.date_start",
+     "odooType": "Datetime",
+     "mandatory": false,
+     "label": "Start Date"
+    },
+    {
+     "name": "ValidTo",
+     "type": "DateTime",
+     "sourceOdoo": "product.pricelist.item.date_end",
+     "odooType": "Datetime",
+     "mandatory": false,
+     "label": "End Date"
+    }
+   ],
+   "associations": [
+    {
+     "name": "PriceRule_Pricelist",
+     "owner": "Products.PriceRule",
+     "target": "Products.Pricelist",
+     "type": "Reference",
+     "sourceOdoo": "product.pricelist.item.pricelist_id",
+     "odooTarget": "product.pricelist",
+     "mandatory": true
+    },
+    {
+     "name": "PriceRule_Product",
+     "owner": "Products.PriceRule",
+     "target": "Products.Product",
+     "type": "Reference",
+     "sourceOdoo": "product.pricelist.item.product_tmpl_id",
+     "odooTarget": "product.template",
+     "mandatory": false
+    },
+    {
+     "name": "PriceRule_Category",
+     "owner": "Products.PriceRule",
+     "target": "Products.ProductCategory",
+     "type": "Reference",
+     "sourceOdoo": "product.pricelist.item.categ_id",
+     "odooTarget": "product.category",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F003"
+  }
+ ],
+ "enumerations": [
+  {
+   "name": "Products.ENUM_BillPolicy",
+   "module": "Products",
+   "sourceOdoo": "product.template.purchase_method",
+   "values": [
+    {
+     "name": "OrderedQuantities",
+     "caption": "On ordered quantities",
+     "odooValue": "purchase"
+    },
+    {
+     "name": "ReceivedQuantities",
+     "caption": "On received quantities",
+     "odooValue": "receive"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": null
+  },
+  {
+   "name": "Products.ENUM_InvoicePolicy",
+   "module": "Products",
+   "sourceOdoo": "product.template.invoice_policy",
+   "values": [
+    {
+     "name": "OrderedQuantities",
+     "caption": "Ordered quantities",
+     "odooValue": "order"
+    },
+    {
+     "name": "DeliveredQuantities",
+     "caption": "Delivered quantities",
+     "odooValue": "delivery"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": null
+  },
+  {
+   "name": "Products.ENUM_PriceComputation",
+   "module": "Products",
+   "sourceOdoo": "product.pricelist.item.compute_price",
+   "values": [
+    {
+     "name": "FixedPrice",
+     "caption": "Fixed price",
+     "odooValue": "fixed"
+    },
+    {
+     "name": "Discount",
+     "caption": "Discount (%)",
+     "odooValue": "percentage"
+    }
+   ],
+   "droppedOdooValues": [
+    "formula"
+   ],
+   "note": "'formula' (margins, rounding, surcharge) dropped"
+  },
+  {
+   "name": "Products.ENUM_PriceRuleScope",
+   "module": "Products",
+   "sourceOdoo": "product.pricelist.item.applied_on",
+   "values": [
+    {
+     "name": "AllProducts",
+     "caption": "All products",
+     "odooValue": "3_global"
+    },
+    {
+     "name": "ProductCategory",
+     "caption": "Product category",
+     "odooValue": "2_product_category"
+    },
+    {
+     "name": "Product",
+     "caption": "Product",
+     "odooValue": "1_product"
+    }
+   ],
+   "droppedOdooValues": [
+    "0_product_variant"
+   ],
+   "note": "'0_product_variant' dropped with variants"
+  },
+  {
+   "name": "Products.ENUM_ProductType",
+   "module": "Products",
+   "sourceOdoo": "product.template.type",
+   "values": [
+    {
+     "name": "Goods",
+     "caption": "Goods",
+     "odooValue": "consu"
+    },
+    {
+     "name": "Service",
+     "caption": "Service",
+     "odooValue": "service"
+    }
+   ],
+   "droppedOdooValues": [
+    "combo"
+   ],
+   "note": "Odoo 'combo' dropped (combo products out of scope)"
+  }
+ ],
+ "viewEntities": [],
+ "microflows": [
+  {
+   "name": "ACT_Product_Save",
+   "kind": "Microflow",
+   "purpose": "Validate and commit a product.",
+   "params": [
+    {
+     "name": "Product",
+     "type": "Products.Product"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "validate-then-save",
+   "calls": [
+    "VAL_Product"
+   ],
+   "validations": [
+    "Name required",
+    "Unit and purchase unit in the same category",
+    "Services cannot track inventory"
+   ],
+   "hiddenRules": [],
+   "odooRefs": [
+    "product.template.create",
+    "product.template._check_uom"
+   ]
+  },
+  {
+   "name": "VAL_Product",
+   "kind": "Microflow",
+   "purpose": "Validation messages for the product form.",
+   "params": [
+    {
+     "name": "Product",
+     "type": "Products.Product"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "validation",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "product.template._check_uom"
+   ]
+  },
+  {
+   "name": "SUB_Pricelist_GetPrice",
+   "kind": "Microflow",
+   "purpose": "Unit price of a product for a quantity on a pricelist (rule matching per UC004).",
+   "params": [
+    {
+     "name": "Pricelist",
+     "type": "Products.Pricelist"
+    },
+    {
+     "name": "Product",
+     "type": "Products.Product"
+    },
+    {
+     "name": "Quantity",
+     "type": "Decimal"
+    },
+    {
+     "name": "Date",
+     "type": "DateTime"
+    }
+   ],
+   "returns": "Decimal",
+   "pattern": "calculation",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [
+    "Rule order: product, then category walking up the parent chain, then global; first by Odoo order (applied_on, min_quantity desc)"
+   ],
+   "odooRefs": [
+    "product.pricelist._compute_price_rule",
+    "product.pricelist.item._compute_price"
+   ]
+  },
+  {
+   "name": "SUB_Product_GetVendorPrice",
+   "kind": "Microflow",
+   "purpose": "Best vendor price line for vendor/product/quantity/date.",
+   "params": [
+    {
+     "name": "Vendor",
+     "type": "Partners.Partner"
+    },
+    {
+     "name": "Product",
+     "type": "Products.Product"
+    },
+    {
+     "name": "Quantity",
+     "type": "Decimal"
+    }
+   ],
+   "returns": "Products.VendorPrice",
+   "pattern": "retrieve",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "product.product._select_seller"
+   ]
+  }
+ ],
+ "workflows": [],
+ "pages": [
+  {
+   "name": "Product_Overview",
+   "purpose": "Product list/gallery with category, type and can-be-sold/purchased filters.",
+   "dataContext": "Products.Product",
+   "pattern": "list",
+   "sections": [
+    "Search",
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Edit"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "product.product_template_tree_view",
+    "product.product_template_kanban_view"
+   ]
+  },
+  {
+   "name": "Product_NewEdit",
+   "purpose": "Product form: general info, sales, purchase (vendor prices), inventory tabs.",
+   "dataContext": "Products.Product",
+   "pattern": "form",
+   "sections": [
+    "General",
+    "Sales",
+    "Purchase",
+    "Inventory"
+   ],
+   "actions": [
+    "ACT_Product_Save",
+    "Cancel",
+    "Archive"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "product.product_template_form_view"
+   ]
+  },
+  {
+   "name": "ProductCategory_Overview",
+   "purpose": "Category list.",
+   "dataContext": "Products.ProductCategory",
+   "pattern": "list",
+   "sections": [
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Edit"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "product.product_category_list_view"
+   ]
+  },
+  {
+   "name": "Pricelist_Overview",
+   "purpose": "Pricelists.",
+   "dataContext": "Products.Pricelist",
+   "pattern": "list",
+   "sections": [
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Edit"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "product.product_pricelist_view_tree"
+   ]
+  },
+  {
+   "name": "Pricelist_NewEdit",
+   "purpose": "Pricelist with editable rules.",
+   "dataContext": "Products.Pricelist",
+   "pattern": "form",
+   "sections": [
+    "Pricelist",
+    "Rules"
+   ],
+   "actions": [
+    "Save",
+    "Cancel"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "product.product_pricelist_view"
+   ]
+  }
+ ],
+ "timers": [],
+ "integrations": [],
+ "simplifications": [
+  "product.template + product.product merged into Products.Product (no variants, no attributes, no combos).",
+  "Pricelist rules: fixed price or % discount only; formula rules (margins, surcharge, rounding, based-on-other-pricelist) dropped.",
+  "Packagings, product documents and product properties dropped."
+ ],
+ "odooModelsInCapability": [
+  "product.attribute",
+  "product.attribute.custom.value",
+  "product.attribute.value",
+  "product.category",
+  "product.combo",
+  "product.combo.item",
+  "product.document",
+  "product.packaging",
+  "product.pricelist",
+  "product.pricelist.item",
+  "product.product",
+  "product.supplierinfo",
+  "product.tag",
+  "product.template",
+  "product.template.attribute.exclusion",
+  "product.template.attribute.line",
+  "product.template.attribute.value"
+ ],
+ "droppedOdooModels": [
+  {
+   "odooModel": "product.product",
+   "reason": "merged into Products.Product (no variants)"
+  },
+  {
+   "odooModel": "product.attribute",
+   "reason": "variants/configurator out of scope (Q-F003-1)"
+  },
+  {
+   "odooModel": "product.attribute.value",
+   "reason": "variants out of scope (Q-F003-1)"
+  },
+  {
+   "odooModel": "product.attribute.custom.value",
+   "reason": "variants out of scope (Q-F003-1)"
+  },
+  {
+   "odooModel": "product.template.attribute.line",
+   "reason": "variants out of scope (Q-F003-1)"
+  },
+  {
+   "odooModel": "product.template.attribute.value",
+   "reason": "variants out of scope (Q-F003-1)"
+  },
+  {
+   "odooModel": "product.template.attribute.exclusion",
+   "reason": "variants out of scope (Q-F003-1)"
+  },
+  {
+   "odooModel": "product.combo",
+   "reason": "combo products out of scope"
+  },
+  {
+   "odooModel": "product.combo.item",
+   "reason": "combo products out of scope"
+  },
+  {
+   "odooModel": "product.document",
+   "reason": "product attachments — ir.attachment based; not needed for the demo"
+  },
+  {
+   "odooModel": "product.packaging",
+   "reason": "packagings out of scope (no packages)"
+  },
+  {
+   "odooModel": "product.catalog.mixin",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "report.product.report_producttemplatelabel2x7",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "report.product.report_producttemplatelabel4x7",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "report.product.report_producttemplatelabel4x12",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "report.product.report_producttemplatelabel4x12noprice",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "report.product.report_producttemplatelabel_dymo",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "report.product.report_pricelist",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "product.label.layout",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "update.product.attribute.value",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  }
+ ],
+ "openQuestions": [
+  {
+   "id": "Q-F003-1",
+   "question": "Product variants (attributes like size/colour generating variants) are dropped — every product is one sellable item. OK for the demo?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": true,
+   "kind": "DECISION",
+   "proposed": "Yes — no variants"
+  },
+  {
+   "id": "Q-F003-2",
+   "question": "Pricelists simplified to fixed-price and %-discount rules. OK?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": false,
+   "kind": "DECISION",
+   "proposed": "Yes"
+  }
+ ],
+ "sourceKB": [
+  "analysis/odoo/knowledge-base/entities.json",
+  "analysis/odoo/knowledge-base/structures.json",
+  "analysis/odoo/knowledge-base/staticEntities.json",
+  "analysis/odoo/knowledge-base/logics.json",
+  "analysis/odoo/knowledge-base/screens.json",
+  "analysis/odoo/knowledge-base/workflows.json",
+  "analysis/odoo/knowledge-base/roles.json",
+  "analysis/odoo/non-code-sources.md"
+ ],
+ "confidence": "high",
+ "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 5 gap(s) point at not-implemented addons (mail/portal/utm/...)",
+ "summaryCounts": {
+  "useCases": 5,
+  "entities": 7,
+  "enumerations": 5,
+  "microflows": 4,
+  "pages": 5,
+  "openQuestions": 2
+ }
+}

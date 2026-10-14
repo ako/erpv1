@@ -1,0 +1,61 @@
+{
+ "generated": "2026-10-14",
+ "brds": [
+  {
+   "id": "F001",
+   "title": "Contacts, company & users",
+   "file": "F001-contacts-company-users.brd.json",
+   "status": "draft",
+   "capability": "C1"
+  },
+  {
+   "id": "F002",
+   "title": "Units of measure",
+   "file": "F002-units-of-measure.brd.json",
+   "status": "draft",
+   "capability": "C2"
+  },
+  {
+   "id": "F003",
+   "title": "Product catalogue & pricing",
+   "file": "F003-product-catalogue-pricing.brd.json",
+   "status": "draft",
+   "capability": "C3"
+  },
+  {
+   "id": "F004",
+   "title": "Sales: quotations to sales orders",
+   "file": "F004-sales.brd.json",
+   "status": "draft",
+   "capability": "C4"
+  },
+  {
+   "id": "F005",
+   "title": "Purchasing: RFQs to purchase orders with approval",
+   "file": "F005-purchasing.brd.json",
+   "status": "draft",
+   "capability": "C5"
+  },
+  {
+   "id": "F006",
+   "title": "Inventory: locations, transfers, stock levels, replenishment",
+   "file": "F006-inventory.brd.json",
+   "status": "draft",
+   "capability": "C6"
+  },
+  {
+   "id": "F007",
+   "title": "Order fulfilment: sales -> delivery, purchase -> receipt",
+   "file": "F007-order-fulfilment.brd.json",
+   "status": "draft",
+   "capability": "C7"
+  },
+  {
+   "id": "F008",
+   "title": "Invoices, bills, credit notes & payments",
+   "file": "F008-invoicing-payments.brd.json",
+   "status": "draft",
+   "capability": "C8"
+  }
+ ]
+}

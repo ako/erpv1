@@ -1,0 +1,2128 @@
+{
+ "id": "F008",
+ "title": "Invoices, bills, credit notes & payments",
+ "modules": [
+  "Invoicing",
+  "Sales",
+  "Purchasing"
+ ],
+ "actors": [
+  "Billing",
+  "InvoicingManager",
+  "SalesUser",
+  "Purchaser"
+ ],
+ "capability": "C8",
+ "summary": "Customer invoices from sales orders, vendor bills from purchase orders, manual invoices/bills, posting with numbering and due dates from payment terms, taxes, credit notes, payment registration with partial payments.",
+ "provenance": "code-extracted",
+ "generatedAt": "2026-10-14",
+ "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
+ "actorRoleMapping": {
+  "Billing": [
+   "account.group_account_invoice"
+  ],
+  "InvoicingManager": [
+   "account.group_account_manager"
+  ],
+  "SalesUser": [
+   "sales_team.group_sale_salesman"
+  ],
+  "Purchaser": [
+   "purchase.group_purchase_user"
+  ]
+ },
+ "useCases": [
+  {
+   "id": "UC001",
+   "title": "Invoice sales orders",
+   "actors": [
+    "SalesUser",
+    "Billing"
+   ],
+   "preconditions": [
+    "Orders with InvoiceStatus ToInvoice"
+   ],
+   "postconditions": [
+    "Draft customer invoice(s) with lines for the quantities to invoice"
+   ],
+   "mainFlow": [
+    "1. User clicks Create invoice on an order (or selects several in the To invoice list)",
+    "2. System creates one draft invoice per customer (optionally consolidated) with a line per order line to invoice, plus sections/notes",
+    "3. Copies payment term, salesperson, references; links order lines",
+    "4. Order invoice status recomputed"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "SalesOrder_NewEdit",
+    "CreateInvoice_Popup"
+   ],
+   "odooRefs": [
+    "sale.advance.payment.inv.create_invoices",
+    "sale.order._create_invoices",
+    "sale.order._prepare_invoice",
+    "sale.order.line._prepare_invoice_line"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC002",
+   "title": "Create a vendor bill from a purchase order",
+   "actors": [
+    "Purchaser",
+    "Billing"
+   ],
+   "preconditions": [
+    "PO with quantities to bill"
+   ],
+   "postconditions": [
+    "Draft vendor bill linked to the PO"
+   ],
+   "mainFlow": [
+    "1. User clicks Create bill on the PO",
+    "2. System creates a draft bill with lines for the quantities to bill (ordered or received per bill policy)",
+    "3. User enters the vendor bill reference and bill date"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "PurchaseOrder_NewEdit",
+    "Invoice_NewEdit"
+   ],
+   "odooRefs": [
+    "purchase.order.action_create_invoice",
+    "purchase.order._prepare_invoice",
+    "purchase.order.line._prepare_account_move_line"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC003",
+   "title": "Create a manual invoice or bill",
+   "actors": [
+    "Billing"
+   ],
+   "preconditions": [
+    "—"
+   ],
+   "postconditions": [
+    "Draft invoice/bill"
+   ],
+   "mainFlow": [
+    "1. User opens Customers > Invoices (or Vendors > Bills) > New",
+    "2. Enters partner, dates, lines (product, qty, price, taxes)",
+    "3. System recomputes totals and due date"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Invoice_Overview",
+    "Invoice_NewEdit"
+   ],
+   "odooRefs": [
+    "account.view_move_form",
+    "account.view_out_invoice_tree",
+    "account.view_in_invoice_bill_tree"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC004",
+   "title": "Post an invoice",
+   "actors": [
+    "Billing"
+   ],
+   "preconditions": [
+    "Draft with at least one line, partner and (for bills) bill date"
+   ],
+   "postconditions": [
+    "Posted, numbered, due date set, amount due = total; order invoiced quantities updated"
+   ],
+   "mainFlow": [
+    "1. User clicks Confirm",
+    "2. System validates (partner, lines, positive total; bill date for vendor bills)",
+    "3. Sets invoice date = today if empty; due date from payment term",
+    "4. Assigns the number (INV/BILL/RINV/RBILL + year)",
+    "5. Status Posted, payment status NotPaid; updates sales/purchase invoiced quantities"
+   ],
+   "alternativeFlows": [
+    "2a. Validation fails: message, stays Draft"
+   ],
+   "screens": [
+    "Invoice_NewEdit"
+   ],
+   "odooRefs": [
+    "account.move.action_post",
+    "account.move._post",
+    "account.move._compute_invoice_date_due",
+    "account.move._check_balanced"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC005",
+   "title": "Reset to draft or cancel",
+   "actors": [
+    "Billing"
+   ],
+   "preconditions": [
+    "Posted and not paid (reset) / Draft (cancel)"
+   ],
+   "postconditions": [
+    "Draft / Cancelled"
+   ],
+   "mainFlow": [
+    "1. Reset to draft: Posted -> Draft (number kept)",
+    "2. Cancel: Draft -> Cancelled"
+   ],
+   "alternativeFlows": [
+    "1a. Payments allocated: reset refused"
+   ],
+   "screens": [
+    "Invoice_NewEdit"
+   ],
+   "odooRefs": [
+    "account.move.button_draft",
+    "account.move.button_cancel"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC006",
+   "title": "Issue a credit note",
+   "actors": [
+    "Billing"
+   ],
+   "preconditions": [
+    "Posted invoice/bill"
+   ],
+   "postconditions": [
+    "Credit note linked to the original; optionally reconciled"
+   ],
+   "mainFlow": [
+    "1. User clicks Credit note and enters reason and date",
+    "2. System creates a draft credit note (CustomerCreditNote/VendorCreditNote) copying the lines",
+    "3. Posting the credit note reduces the amount due of the original (allocation), marking it Reversed when fully offset"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "CreditNote_Popup"
+   ],
+   "odooRefs": [
+    "account.move.reversal.reverse_moves",
+    "account.move._reverse_moves"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC007",
+   "title": "Register a payment",
+   "actors": [
+    "Billing"
+   ],
+   "preconditions": [
+    "Posted invoice(s) with amount due"
+   ],
+   "postconditions": [
+    "Payment Paid; invoices PartiallyPaid/Paid; amount due reduced"
+   ],
+   "mainFlow": [
+    "1. User clicks Register payment on one or more invoices of one partner",
+    "2. System proposes amount = total due, date = today, method Bank transfer",
+    "3. User may lower the amount (partial payment) and sets memo",
+    "4. System creates the payment with allocations to invoices (oldest due first) and recomputes payment status"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "RegisterPayment_Popup"
+   ],
+   "odooRefs": [
+    "account.payment.register.action_create_payments",
+    "account.payment.register._create_payments",
+    "account.move._compute_payment_state"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC008",
+   "title": "Follow up receivables and payables",
+   "actors": [
+    "Billing",
+    "InvoicingManager"
+   ],
+   "preconditions": [
+    "Posted invoices"
+   ],
+   "postconditions": [
+    "—"
+   ],
+   "mainFlow": [
+    "1. User filters invoices on payment status and overdue (due date < today)",
+    "2. Opens Reporting > Invoices for totals per partner/period"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Invoice_Overview",
+    "InvoiceAnalysis_Report"
+   ],
+   "odooRefs": [
+    "account.view_account_invoice_filter",
+    "account.view_account_invoice_report_pivot"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC009",
+   "title": "Maintain taxes and payment terms",
+   "actors": [
+    "InvoicingManager"
+   ],
+   "preconditions": [
+    "—"
+   ],
+   "postconditions": [
+    "Taxes/terms usable on products, partners and documents"
+   ],
+   "mainFlow": [
+    "1. Manager maintains taxes (name, scope, percentage/fixed, amount, included in price)",
+    "2. Maintains payment terms with instalment lines"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Tax_Overview",
+    "PaymentTerm_NewEdit"
+   ],
+   "odooRefs": [
+    "account.view_tax_form",
+    "account.view_payment_term_form"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  }
+ ],
+ "domainEntities": [
+  {
+   "name": "Core.LineAmounts",
+   "module": "Core",
+   "persistent": false,
+   "purpose": "Result of a line amount computation (subtotal, tax, total) passed between microflows.",
+   "sourceOdoo": null,
+   "generalization": null,
+   "systemMembers": [],
+   "attributes": [
+    {
+     "name": "Subtotal",
+     "type": "Decimal",
+     "sourceOdoo": null,
+     "mandatory": false,
+     "new": true
+    },
+    {
+     "name": "TaxAmount",
+     "type": "Decimal",
+     "sourceOdoo": null,
+     "mandatory": false,
+     "new": true
+    },
+    {
+     "name": "Total",
+     "type": "Decimal",
+     "sourceOdoo": null,
+     "mandatory": false,
+     "new": true
+    }
+   ],
+   "associations": [],
+   "note": "new: helper for SUB_Tax_ComputeLine",
+   "brd": "F008"
+  },
+  {
+   "name": "Sales.CreateInvoiceRequest",
+   "module": "Sales",
+   "persistent": false,
+   "purpose": "Wizard data: create the invoice(s) for selected sales orders.",
+   "sourceOdoo": "sale.advance.payment.inv",
+   "generalization": null,
+   "systemMembers": [],
+   "attributes": [
+    {
+     "name": "ConsolidatePerCustomer",
+     "type": "Boolean",
+     "sourceOdoo": "sale.advance.payment.inv (framework, not extracted field-level)",
+     "mandatory": false,
+     "new": true,
+     "note": "new: Odoo groups by partner/currency automatically"
+    }
+   ],
+   "associations": [
+    {
+     "name": "CreateInvoiceRequest_SalesOrders",
+     "owner": "Sales.CreateInvoiceRequest",
+     "target": "Sales.SalesOrder",
+     "type": "ReferenceSet",
+     "sourceOdoo": "sale.advance.payment.inv.sale_order_ids",
+     "odooTarget": "sale.order",
+     "mandatory": false
+    }
+   ],
+   "note": "Regular invoices only; down payments (advance_payment_method=percentage/fixed) dropped.",
+   "brd": "F008"
+  },
+  {
+   "name": "Invoicing.Invoice",
+   "module": "Invoicing",
+   "persistent": true,
+   "purpose": "Customer invoice / credit note or vendor bill / credit note (no journal entries).",
+   "sourceOdoo": "account.move",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Number",
+     "type": "String",
+     "sourceOdoo": "account.move.name",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Number",
+     "odooComputedBy": "_compute_name",
+     "length": 200,
+     "note": "INV/2026/00001, RINV/..., BILL/..., RBILL/... via Core.Sequence; empty while draft"
+    },
+    {
+     "name": "InvoiceType",
+     "type": "Enumeration",
+     "sourceOdoo": "account.move.move_type",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Type",
+     "odooDefault": "'entry'",
+     "enumeration": "Invoicing.ENUM_InvoiceType"
+    },
+    {
+     "name": "Status",
+     "type": "Enumeration",
+     "sourceOdoo": "account.move.state",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Status",
+     "odooDefault": "'draft'",
+     "enumeration": "Invoicing.ENUM_InvoiceStatus"
+    },
+    {
+     "name": "PaymentStatus",
+     "type": "Enumeration",
+     "sourceOdoo": "account.move.payment_state",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Payment Status",
+     "odooComputedBy": "_compute_payment_state",
+     "enumeration": "Invoicing.ENUM_PaymentStatus"
+    },
+    {
+     "name": "InvoiceDate",
+     "type": "DateTime",
+     "sourceOdoo": "account.move.invoice_date",
+     "odooType": "Date",
+     "mandatory": false,
+     "label": "Invoice/Bill Date"
+    },
+    {
+     "name": "DueDate",
+     "type": "DateTime",
+     "sourceOdoo": "account.move.invoice_date_due",
+     "odooType": "Date",
+     "mandatory": false,
+     "label": "Due Date",
+     "odooComputedBy": "_compute_invoice_date_due"
+    },
+    {
+     "name": "Reference",
+     "type": "String",
+     "sourceOdoo": "account.move.ref",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Reference",
+     "length": 200,
+     "note": "vendor bill reference"
+    },
+    {
+     "name": "PaymentReference",
+     "type": "String",
+     "sourceOdoo": "account.move.payment_reference",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Payment Reference",
+     "odooComputedBy": "_compute_payment_reference",
+     "length": 200
+    },
+    {
+     "name": "SourceDocument",
+     "type": "String",
+     "sourceOdoo": "account.move.invoice_origin",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Origin",
+     "length": 200
+    },
+    {
+     "name": "Notes",
+     "type": "String",
+     "sourceOdoo": "account.move.narration",
+     "odooType": "Html",
+     "mandatory": false,
+     "label": "Terms and Conditions",
+     "odooComputedBy": "_compute_narration",
+     "length": "unlimited"
+    },
+    {
+     "name": "AmountUntaxed",
+     "type": "Decimal",
+     "sourceOdoo": "account.move.amount_untaxed",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Untaxed Amount",
+     "odooComputedBy": "_compute_amount"
+    },
+    {
+     "name": "AmountTax",
+     "type": "Decimal",
+     "sourceOdoo": "account.move.amount_tax",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Tax",
+     "odooComputedBy": "_compute_amount"
+    },
+    {
+     "name": "AmountTotal",
+     "type": "Decimal",
+     "sourceOdoo": "account.move.amount_total",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Total",
+     "odooComputedBy": "_compute_amount"
+    },
+    {
+     "name": "AmountDue",
+     "type": "Decimal",
+     "sourceOdoo": "account.move.amount_residual",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Amount Due",
+     "odooComputedBy": "_compute_amount"
+    }
+   ],
+   "associations": [
+    {
+     "name": "Invoice_Partner",
+     "owner": "Invoicing.Invoice",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "account.move.partner_id",
+     "odooTarget": "res.partner",
+     "mandatory": false
+    },
+    {
+     "name": "Invoice_DeliveryAddress",
+     "owner": "Invoicing.Invoice",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "account.move.partner_shipping_id",
+     "odooTarget": "res.partner",
+     "mandatory": false
+    },
+    {
+     "name": "Invoice_Salesperson",
+     "owner": "Invoicing.Invoice",
+     "target": "Administration.Account",
+     "type": "Reference",
+     "sourceOdoo": "account.move.invoice_user_id",
+     "odooTarget": "res.users",
+     "mandatory": false
+    },
+    {
+     "name": "Invoice_PaymentTerm",
+     "owner": "Invoicing.Invoice",
+     "target": "Invoicing.PaymentTerm",
+     "type": "Reference",
+     "sourceOdoo": "account.move.invoice_payment_term_id",
+     "odooTarget": "account.payment.term",
+     "mandatory": false
+    },
+    {
+     "name": "Invoice_Currency",
+     "owner": "Invoicing.Invoice",
+     "target": "Core.Currency",
+     "type": "Reference",
+     "sourceOdoo": "account.move.currency_id",
+     "odooTarget": "res.currency",
+     "mandatory": true
+    },
+    {
+     "name": "Invoice_ReversalOf",
+     "owner": "Invoicing.Invoice",
+     "target": "Invoicing.Invoice",
+     "type": "Reference",
+     "sourceOdoo": "account.move.reversed_entry_id",
+     "odooTarget": "account.move",
+     "mandatory": false,
+     "note": "credit note -> original invoice"
+    },
+    {
+     "name": "Invoice_BankAccount",
+     "owner": "Invoicing.Invoice",
+     "target": "Partners.BankAccount",
+     "type": "Reference",
+     "sourceOdoo": "account.move.partner_bank_id",
+     "odooTarget": "res.partner.bank",
+     "mandatory": false,
+     "note": "where the money goes"
+    },
+    {
+     "name": "Invoice_SalesOrders",
+     "owner": "Invoicing.Invoice",
+     "target": "Sales.SalesOrder",
+     "type": "ReferenceSet",
+     "new": true,
+     "note": "new: Odoo links through invoice lines (sale_line_ids); kept at header for navigation"
+    },
+    {
+     "name": "Invoice_PurchaseOrder",
+     "owner": "Invoicing.Invoice",
+     "target": "Purchasing.PurchaseOrder",
+     "type": "Reference",
+     "sourceOdoo": "account.move.purchase_id",
+     "odooTarget": "purchase.order",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F008"
+  },
+  {
+   "name": "Invoicing.InvoiceLine",
+   "module": "Invoicing",
+   "persistent": true,
+   "purpose": "A product, section or note line of an invoice (no tax/receivable/payable journal items).",
+   "sourceOdoo": "account.move.line",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Sequence",
+     "type": "Integer",
+     "sourceOdoo": "account.move.line.sequence",
+     "odooType": "Integer",
+     "mandatory": false,
+     "odooComputedBy": "_compute_sequence"
+    },
+    {
+     "name": "LineType",
+     "type": "Enumeration",
+     "sourceOdoo": "account.move.line.display_type",
+     "odooType": "Selection",
+     "mandatory": true,
+     "odooComputedBy": "_compute_display_type",
+     "enumeration": "Core.ENUM_LineType",
+     "note": "Odoo 'product'/'line_section'/'line_note'; tax/payment_term/rounding lines dropped"
+    },
+    {
+     "name": "Description",
+     "type": "String",
+     "sourceOdoo": "account.move.line.name",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Label",
+     "odooComputedBy": "_compute_name",
+     "length": 200
+    },
+    {
+     "name": "Quantity",
+     "type": "Decimal",
+     "sourceOdoo": "account.move.line.quantity",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Quantity",
+     "odooComputedBy": "_compute_quantity"
+    },
+    {
+     "name": "UnitPrice",
+     "type": "Decimal",
+     "sourceOdoo": "account.move.line.price_unit",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Unit Price",
+     "odooComputedBy": "_compute_price_unit"
+    },
+    {
+     "name": "DiscountPercent",
+     "type": "Decimal",
+     "sourceOdoo": "account.move.line.discount",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Discount (%)",
+     "odooDefault": "0.0"
+    },
+    {
+     "name": "Subtotal",
+     "type": "Decimal",
+     "sourceOdoo": "account.move.line.price_subtotal",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Subtotal",
+     "odooComputedBy": "_compute_totals"
+    },
+    {
+     "name": "Total",
+     "type": "Decimal",
+     "sourceOdoo": "account.move.line.price_total",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Total",
+     "odooComputedBy": "_compute_totals"
+    }
+   ],
+   "associations": [
+    {
+     "name": "InvoiceLine_Invoice",
+     "owner": "Invoicing.InvoiceLine",
+     "target": "Invoicing.Invoice",
+     "type": "Reference",
+     "sourceOdoo": "account.move.line.move_id",
+     "odooTarget": "account.move",
+     "mandatory": true,
+     "note": "delete lines with the invoice"
+    },
+    {
+     "name": "InvoiceLine_Product",
+     "owner": "Invoicing.InvoiceLine",
+     "target": "Products.Product",
+     "type": "Reference",
+     "sourceOdoo": "account.move.line.product_id",
+     "odooTarget": "product.product",
+     "mandatory": false
+    },
+    {
+     "name": "InvoiceLine_UoM",
+     "owner": "Invoicing.InvoiceLine",
+     "target": "Products.UoM",
+     "type": "Reference",
+     "sourceOdoo": "account.move.line.product_uom_id",
+     "odooTarget": "uom.uom",
+     "mandatory": false
+    },
+    {
+     "name": "InvoiceLine_Taxes",
+     "owner": "Invoicing.InvoiceLine",
+     "target": "Invoicing.Tax",
+     "type": "ReferenceSet",
+     "sourceOdoo": "account.move.line.tax_ids",
+     "odooTarget": "account.tax",
+     "mandatory": false
+    },
+    {
+     "name": "InvoiceLine_SalesOrderLines",
+     "owner": "Invoicing.InvoiceLine",
+     "target": "Sales.SalesOrderLine",
+     "type": "ReferenceSet",
+     "sourceOdoo": "account.move.line.sale_line_ids",
+     "odooTarget": "sale.order.line",
+     "mandatory": false
+    },
+    {
+     "name": "InvoiceLine_PurchaseOrderLine",
+     "owner": "Invoicing.InvoiceLine",
+     "target": "Purchasing.PurchaseOrderLine",
+     "type": "Reference",
+     "sourceOdoo": "account.move.line.purchase_line_id",
+     "odooTarget": "purchase.order.line",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F008"
+  },
+  {
+   "name": "Invoicing.Tax",
+   "module": "Invoicing",
+   "persistent": true,
+   "purpose": "A sales or purchase tax: percentage or fixed amount, price-included or not.",
+   "sourceOdoo": "account.tax",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "account.tax.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Tax Name",
+     "length": 200
+    },
+    {
+     "name": "Scope",
+     "type": "Enumeration",
+     "sourceOdoo": "account.tax.type_tax_use",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Tax Type",
+     "odooDefault": "'sale'",
+     "enumeration": "Invoicing.ENUM_TaxScope"
+    },
+    {
+     "name": "Computation",
+     "type": "Enumeration",
+     "sourceOdoo": "account.tax.amount_type",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Tax Computation",
+     "odooDefault": "'percent'",
+     "enumeration": "Invoicing.ENUM_TaxComputation"
+    },
+    {
+     "name": "Amount",
+     "type": "Decimal",
+     "sourceOdoo": "account.tax.amount",
+     "odooType": "Float",
+     "mandatory": true,
+     "odooDefault": "0.0"
+    },
+    {
+     "name": "IncludedInPrice",
+     "type": "Boolean",
+     "sourceOdoo": "account.tax.price_include_override",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Included in Price",
+     "note": "Odoo tax_included/tax_excluded/company default -> boolean"
+    },
+    {
+     "name": "LabelOnInvoice",
+     "type": "String",
+     "sourceOdoo": "account.tax.invoice_label",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Label on Invoices",
+     "length": 200
+    },
+    {
+     "name": "Sequence",
+     "type": "Integer",
+     "sourceOdoo": "account.tax.sequence",
+     "odooType": "Integer",
+     "mandatory": true,
+     "odooDefault": "1"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "account.tax.active"
+    }
+   ],
+   "associations": [],
+   "note": "No tax groups, repartition lines, fiscal positions or cash basis.",
+   "brd": "F008"
+  },
+  {
+   "name": "Invoicing.PaymentTerm",
+   "module": "Invoicing",
+   "persistent": true,
+   "purpose": "When an invoice must be paid: one or more instalments.",
+   "sourceOdoo": "account.payment.term",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Name",
+     "type": "String",
+     "sourceOdoo": "account.payment.term.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Payment Terms",
+     "length": 200
+    },
+    {
+     "name": "Note",
+     "type": "String",
+     "sourceOdoo": "account.payment.term.note",
+     "odooType": "Html",
+     "mandatory": false,
+     "label": "Description on the Invoice",
+     "length": "unlimited"
+    },
+    {
+     "name": "Sequence",
+     "type": "Integer",
+     "sourceOdoo": "account.payment.term.sequence",
+     "odooType": "Integer",
+     "mandatory": true,
+     "odooDefault": "10"
+    },
+    {
+     "name": "Active",
+     "type": "Boolean",
+     "default": "true",
+     "mandatory": false,
+     "sourceOdoo": "account.payment.term.active"
+    }
+   ],
+   "associations": [],
+   "note": "Early-payment discounts dropped.",
+   "brd": "F008"
+  },
+  {
+   "name": "Invoicing.PaymentTermLine",
+   "module": "Invoicing",
+   "persistent": true,
+   "purpose": "One instalment: percent or fixed amount, due N days after a reference date.",
+   "sourceOdoo": "account.payment.term.line",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Value",
+     "type": "Enumeration",
+     "sourceOdoo": "account.payment.term.line.value",
+     "odooType": "Selection",
+     "mandatory": true,
+     "odooDefault": "'percent'",
+     "enumeration": "Invoicing.ENUM_PaymentTermValue"
+    },
+    {
+     "name": "ValueAmount",
+     "type": "Decimal",
+     "sourceOdoo": "account.payment.term.line.value_amount",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Due",
+     "odooComputedBy": "_compute_value_amount"
+    },
+    {
+     "name": "Days",
+     "type": "Integer",
+     "sourceOdoo": "account.payment.term.line.nb_days",
+     "odooType": "Integer",
+     "mandatory": false,
+     "label": "Days",
+     "odooComputedBy": "_compute_days"
+    },
+    {
+     "name": "DelayType",
+     "type": "Enumeration",
+     "sourceOdoo": "account.payment.term.line.delay_type",
+     "odooType": "Selection",
+     "mandatory": true,
+     "odooDefault": "'days_after'",
+     "enumeration": "Invoicing.ENUM_PaymentTermDelay"
+    }
+   ],
+   "associations": [
+    {
+     "name": "PaymentTermLine_PaymentTerm",
+     "owner": "Invoicing.PaymentTermLine",
+     "target": "Invoicing.PaymentTerm",
+     "type": "Reference",
+     "sourceOdoo": "account.payment.term.line.payment_id",
+     "odooTarget": "account.payment.term",
+     "mandatory": true
+    }
+   ],
+   "note": null,
+   "brd": "F008"
+  },
+  {
+   "name": "Invoicing.Payment",
+   "module": "Invoicing",
+   "persistent": true,
+   "purpose": "Money received from a customer or paid to a vendor, allocated to invoices.",
+   "sourceOdoo": "account.payment",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Number",
+     "type": "String",
+     "sourceOdoo": "account.payment.name",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Number",
+     "odooComputedBy": "_compute_name",
+     "length": 200,
+     "note": "PAY/2026/00001"
+    },
+    {
+     "name": "Direction",
+     "type": "Enumeration",
+     "sourceOdoo": "account.payment.payment_type",
+     "odooType": "Selection",
+     "mandatory": true,
+     "label": "Payment Type",
+     "odooDefault": "'inbound'",
+     "enumeration": "Invoicing.ENUM_PaymentDirection"
+    },
+    {
+     "name": "PartnerKind",
+     "type": "Enumeration",
+     "sourceOdoo": "account.payment.partner_type",
+     "odooType": "Selection",
+     "mandatory": true,
+     "odooDefault": "'customer'",
+     "enumeration": "Invoicing.ENUM_PartnerKind"
+    },
+    {
+     "name": "Amount",
+     "type": "Decimal",
+     "sourceOdoo": "account.payment.amount",
+     "odooType": "Monetary",
+     "mandatory": false
+    },
+    {
+     "name": "PaymentDate",
+     "type": "DateTime",
+     "sourceOdoo": "account.payment.date",
+     "odooType": "Date",
+     "mandatory": true,
+     "odooDefault": "fields.Date.context_today"
+    },
+    {
+     "name": "Memo",
+     "type": "String",
+     "sourceOdoo": "account.payment.memo",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Memo",
+     "length": 200
+    },
+    {
+     "name": "Status",
+     "type": "Enumeration",
+     "sourceOdoo": "account.payment.state",
+     "odooType": "Selection",
+     "mandatory": true,
+     "odooComputedBy": "_compute_state",
+     "odooDefault": "'draft'",
+     "enumeration": "Invoicing.ENUM_PaymentState"
+    },
+    {
+     "name": "Method",
+     "type": "Enumeration",
+     "sourceOdoo": "account.payment (framework, not extracted field-level)",
+     "mandatory": false,
+     "new": true,
+     "enumeration": "Invoicing.ENUM_PaymentMethod",
+     "note": "replaces journal_id + payment_method_line_id"
+    }
+   ],
+   "associations": [
+    {
+     "name": "Payment_Partner",
+     "owner": "Invoicing.Payment",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "account.payment.partner_id",
+     "odooTarget": "res.partner",
+     "mandatory": false
+    },
+    {
+     "name": "Payment_Currency",
+     "owner": "Invoicing.Payment",
+     "target": "Core.Currency",
+     "type": "Reference",
+     "sourceOdoo": "account.payment.currency_id",
+     "odooTarget": "res.currency",
+     "mandatory": false
+    },
+    {
+     "name": "Payment_BankAccount",
+     "owner": "Invoicing.Payment",
+     "target": "Partners.BankAccount",
+     "type": "Reference",
+     "sourceOdoo": "account.payment.partner_bank_id",
+     "odooTarget": "res.partner.bank",
+     "mandatory": false
+    },
+    {
+     "name": "Payment_Invoices",
+     "owner": "Invoicing.Payment",
+     "target": "Invoicing.Invoice",
+     "type": "ReferenceSet",
+     "sourceOdoo": "account.payment.invoice_ids",
+     "odooTarget": "account.move",
+     "mandatory": false,
+     "note": "replaces reconciliation (account.partial.reconcile)"
+    }
+   ],
+   "note": null,
+   "brd": "F008"
+  },
+  {
+   "name": "Invoicing.PaymentAllocation",
+   "module": "Invoicing",
+   "persistent": true,
+   "purpose": "Amount of a payment applied to one invoice (makes partial payments explicit).",
+   "sourceOdoo": null,
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Amount",
+     "type": "Decimal",
+     "sourceOdoo": null,
+     "mandatory": true,
+     "new": true
+    }
+   ],
+   "associations": [
+    {
+     "name": "PaymentAllocation_Payment",
+     "owner": "Invoicing.PaymentAllocation",
+     "target": "Invoicing.Payment",
+     "type": "Reference",
+     "new": true
+    },
+    {
+     "name": "PaymentAllocation_Invoice",
+     "owner": "Invoicing.PaymentAllocation",
+     "target": "Invoicing.Invoice",
+     "type": "Reference",
+     "new": true
+    }
+   ],
+   "note": "new: Mendix-native replacement of account.partial.reconcile / matching numbers.",
+   "brd": "F008"
+  },
+  {
+   "name": "Invoicing.RegisterPaymentRequest",
+   "module": "Invoicing",
+   "persistent": false,
+   "purpose": "Wizard data: register a payment for one or more posted invoices.",
+   "sourceOdoo": "account.payment.register",
+   "generalization": null,
+   "systemMembers": [],
+   "attributes": [
+    {
+     "name": "Amount",
+     "type": "Decimal",
+     "sourceOdoo": "account.payment.register.amount",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "odooComputedBy": "_compute_amount"
+    },
+    {
+     "name": "PaymentDate",
+     "type": "DateTime",
+     "sourceOdoo": "account.payment.register.payment_date",
+     "odooType": "Date",
+     "mandatory": true,
+     "label": "Payment Date",
+     "odooDefault": "fields.Date.context_today"
+    },
+    {
+     "name": "Memo",
+     "type": "String",
+     "sourceOdoo": "account.payment.register.communication",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Memo",
+     "odooComputedBy": "_compute_communication",
+     "length": 200
+    },
+    {
+     "name": "Method",
+     "type": "Enumeration",
+     "sourceOdoo": "account.payment.register (framework, not extracted field-level)",
+     "mandatory": false,
+     "new": true,
+     "enumeration": "Invoicing.ENUM_PaymentMethod"
+    }
+   ],
+   "associations": [
+    {
+     "name": "RegisterPaymentRequest_Invoices",
+     "owner": "Invoicing.RegisterPaymentRequest",
+     "target": "Invoicing.Invoice",
+     "type": "ReferenceSet",
+     "sourceOdoo": "account.payment.register.line_ids",
+     "odooTarget": "account.move.line",
+     "mandatory": false,
+     "note": "Odoo selects journal items; here invoices"
+    }
+   ],
+   "note": null,
+   "brd": "F008"
+  },
+  {
+   "name": "Invoicing.CreditNoteRequest",
+   "module": "Invoicing",
+   "persistent": false,
+   "purpose": "Wizard data: reverse a posted invoice into a credit note.",
+   "sourceOdoo": "account.move.reversal",
+   "generalization": null,
+   "systemMembers": [],
+   "attributes": [
+    {
+     "name": "Reason",
+     "type": "String",
+     "sourceOdoo": "account.move.reversal.reason",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Reason displayed on Credit Note",
+     "length": 200
+    },
+    {
+     "name": "ReversalDate",
+     "type": "DateTime",
+     "sourceOdoo": "account.move.reversal.date",
+     "odooType": "Date",
+     "mandatory": false,
+     "label": "Reversal date",
+     "odooDefault": "fields.Date.context_today"
+    }
+   ],
+   "associations": [
+    {
+     "name": "CreditNoteRequest_Invoice",
+     "owner": "Invoicing.CreditNoteRequest",
+     "target": "Invoicing.Invoice",
+     "type": "Reference",
+     "sourceOdoo": "account.move.reversal.move_ids",
+     "odooTarget": "account.move",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F008"
+  }
+ ],
+ "enumerations": [
+  {
+   "name": "Core.ENUM_LineType",
+   "module": "Core",
+   "sourceOdoo": "sale.order.line.display_type",
+   "values": [
+    {
+     "name": "Product",
+     "caption": "Product line",
+     "odooValue": null
+    },
+    {
+     "name": "Section",
+     "caption": "Section",
+     "odooValue": "line_section"
+    },
+    {
+     "name": "Note",
+     "caption": "Note",
+     "odooValue": "line_note"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": "Odoo uses display_type=False for product lines; made explicit. Shared by sales, purchase and invoice lines"
+  },
+  {
+   "name": "Invoicing.ENUM_InvoiceStatus",
+   "module": "Invoicing",
+   "sourceOdoo": "account.move.state",
+   "values": [
+    {
+     "name": "Draft",
+     "caption": "Draft",
+     "odooValue": "draft"
+    },
+    {
+     "name": "Posted",
+     "caption": "Posted",
+     "odooValue": "posted"
+    },
+    {
+     "name": "Cancelled",
+     "caption": "Cancelled",
+     "odooValue": "cancel"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": null
+  },
+  {
+   "name": "Invoicing.ENUM_InvoiceType",
+   "module": "Invoicing",
+   "sourceOdoo": "account.move.move_type",
+   "values": [
+    {
+     "name": "CustomerInvoice",
+     "caption": "Customer invoice",
+     "odooValue": "out_invoice"
+    },
+    {
+     "name": "CustomerCreditNote",
+     "caption": "Customer credit note",
+     "odooValue": "out_refund"
+    },
+    {
+     "name": "VendorBill",
+     "caption": "Vendor bill",
+     "odooValue": "in_invoice"
+    },
+    {
+     "name": "VendorCreditNote",
+     "caption": "Vendor credit note",
+     "odooValue": "in_refund"
+    }
+   ],
+   "droppedOdooValues": [
+    "entry",
+    "in_receipt",
+    "out_receipt"
+   ],
+   "note": "'entry' (journal entries) and receipts dropped: no general ledger in scope"
+  },
+  {
+   "name": "Invoicing.ENUM_PartnerKind",
+   "module": "Invoicing",
+   "sourceOdoo": "account.payment.partner_type",
+   "values": [
+    {
+     "name": "Customer",
+     "caption": "Customer",
+     "odooValue": "customer"
+    },
+    {
+     "name": "Vendor",
+     "caption": "Vendor",
+     "odooValue": "supplier"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": null
+  },
+  {
+   "name": "Invoicing.ENUM_PaymentDirection",
+   "module": "Invoicing",
+   "sourceOdoo": "account.payment.payment_type",
+   "values": [
+    {
+     "name": "Inbound",
+     "caption": "Receive money",
+     "odooValue": "inbound"
+    },
+    {
+     "name": "Outbound",
+     "caption": "Send money",
+     "odooValue": "outbound"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": null
+  },
+  {
+   "name": "Invoicing.ENUM_PaymentMethod",
+   "module": "Invoicing",
+   "sourceOdoo": null,
+   "values": [
+    {
+     "name": "BankTransfer",
+     "caption": "Bank transfer",
+     "odooValue": null
+    },
+    {
+     "name": "Cash",
+     "caption": "Cash",
+     "odooValue": null
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": "new: replaces account.journal (bank/cash journals) + account.payment.method.line"
+  },
+  {
+   "name": "Invoicing.ENUM_PaymentState",
+   "module": "Invoicing",
+   "sourceOdoo": "account.payment.state",
+   "values": [
+    {
+     "name": "Draft",
+     "caption": "Draft",
+     "odooValue": "draft"
+    },
+    {
+     "name": "Paid",
+     "caption": "Paid",
+     "odooValue": "paid"
+    },
+    {
+     "name": "Cancelled",
+     "caption": "Cancelled",
+     "odooValue": "canceled"
+    }
+   ],
+   "droppedOdooValues": [
+    "in_process",
+    "rejected"
+   ],
+   "note": "'in_process' and 'rejected' are bank-reconciliation states; dropped"
+  },
+  {
+   "name": "Invoicing.ENUM_PaymentStatus",
+   "module": "Invoicing",
+   "sourceOdoo": "account.move.payment_state",
+   "values": [
+    {
+     "name": "NotPaid",
+     "caption": "Not paid",
+     "odooValue": "not_paid"
+    },
+    {
+     "name": "PartiallyPaid",
+     "caption": "Partially paid",
+     "odooValue": "partial"
+    },
+    {
+     "name": "Paid",
+     "caption": "Paid",
+     "odooValue": "paid"
+    },
+    {
+     "name": "Reversed",
+     "caption": "Reversed",
+     "odooValue": "reversed"
+    }
+   ],
+   "droppedOdooValues": [
+    "blocked",
+    "in_payment",
+    "invoicing_legacy"
+   ],
+   "note": "'in_payment' (bank reconciliation pending), 'blocked', 'invoicing_legacy' dropped"
+  },
+  {
+   "name": "Invoicing.ENUM_PaymentTermDelay",
+   "module": "Invoicing",
+   "sourceOdoo": "account.payment.term.line.delay_type",
+   "values": [
+    {
+     "name": "DaysAfterInvoiceDate",
+     "caption": "Days after invoice date",
+     "odooValue": "days_after"
+    },
+    {
+     "name": "DaysAfterEndOfMonth",
+     "caption": "Days after end of month",
+     "odooValue": "days_after_end_of_month"
+    }
+   ],
+   "droppedOdooValues": [
+    "days_after_end_of_next_month",
+    "days_end_of_month_on_the"
+   ],
+   "note": "two rarer delay types dropped"
+  },
+  {
+   "name": "Invoicing.ENUM_PaymentTermValue",
+   "module": "Invoicing",
+   "sourceOdoo": "account.payment.term.line.value",
+   "values": [
+    {
+     "name": "Percent",
+     "caption": "Percent",
+     "odooValue": "percent"
+    },
+    {
+     "name": "Fixed",
+     "caption": "Fixed amount",
+     "odooValue": "fixed"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": null
+  },
+  {
+   "name": "Invoicing.ENUM_TaxComputation",
+   "module": "Invoicing",
+   "sourceOdoo": "account.tax.amount_type",
+   "values": [
+    {
+     "name": "Percentage",
+     "caption": "Percentage of price",
+     "odooValue": "percent"
+    },
+    {
+     "name": "Fixed",
+     "caption": "Fixed amount per unit",
+     "odooValue": "fixed"
+    }
+   ],
+   "droppedOdooValues": [
+    "division",
+    "group"
+   ],
+   "note": "'group' and 'division' dropped"
+  },
+  {
+   "name": "Invoicing.ENUM_TaxScope",
+   "module": "Invoicing",
+   "sourceOdoo": "account.tax.type_tax_use",
+   "values": [
+    {
+     "name": "Sales",
+     "caption": "Sales",
+     "odooValue": "sale"
+    },
+    {
+     "name": "Purchases",
+     "caption": "Purchases",
+     "odooValue": "purchase"
+    }
+   ],
+   "droppedOdooValues": [
+    "none"
+   ],
+   "note": "'none' (tax groups children) dropped"
+  }
+ ],
+ "viewEntities": [
+  {
+   "name": "Invoicing.InvoiceAnalysis",
+   "odoo": "account.invoice.report",
+   "brd": "F008",
+   "purpose": "Posted invoice lines with untaxed/total amounts and residual per partner/product/period."
+  }
+ ],
+ "microflows": [
+  {
+   "name": "ACT_SalesOrder_CreateInvoice",
+   "kind": "Microflow",
+   "purpose": "Open the create-invoice popup for one or more orders.",
+   "params": [
+    {
+     "name": "SalesOrder",
+     "type": "Sales.SalesOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "action",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "sale.order.action_view_invoice"
+   ]
+  },
+  {
+   "name": "SUB_SalesOrders_CreateInvoices",
+   "kind": "Microflow",
+   "purpose": "Group orders per customer, create draft invoices and lines for qty to invoice, link order lines.",
+   "params": [
+    {
+     "name": "CreateInvoiceRequest",
+     "type": "Sales.CreateInvoiceRequest"
+    }
+   ],
+   "returns": "List of Invoicing.Invoice",
+   "pattern": "create",
+   "calls": [
+    "SUB_Invoice_RecomputeTotals",
+    "SUB_SalesOrder_UpdateInvoiceStatus"
+   ],
+   "validations": [
+    "Something to invoice, else message"
+   ],
+   "hiddenRules": [],
+   "odooRefs": [
+    "sale.order._create_invoices",
+    "sale.order._prepare_invoice",
+    "sale.order.line._prepare_invoice_line"
+   ]
+  },
+  {
+   "name": "ACT_PurchaseOrder_CreateBill",
+   "kind": "Microflow",
+   "purpose": "Create a draft vendor bill for qty to bill.",
+   "params": [
+    {
+     "name": "PurchaseOrder",
+     "type": "Purchasing.PurchaseOrder"
+    }
+   ],
+   "returns": "Invoicing.Invoice",
+   "pattern": "create",
+   "calls": [
+    "SUB_Invoice_RecomputeTotals",
+    "SUB_PurchaseOrder_UpdateBillingStatus"
+   ],
+   "validations": [
+    "Something to bill"
+   ],
+   "hiddenRules": [],
+   "odooRefs": [
+    "purchase.order.action_create_invoice",
+    "purchase.order._prepare_invoice"
+   ]
+  },
+  {
+   "name": "SUB_Tax_ComputeLine",
+   "kind": "Microflow",
+   "purpose": "For a price, quantity, discount and taxes: base, tax amount, total (price-included taxes extracted first).",
+   "params": [
+    {
+     "name": "UnitPrice",
+     "type": "Decimal"
+    },
+    {
+     "name": "Quantity",
+     "type": "Decimal"
+    },
+    {
+     "name": "DiscountPercent",
+     "type": "Decimal"
+    },
+    {
+     "name": "Taxes",
+     "type": "List of Invoicing.Tax"
+    }
+   ],
+   "returns": "Core.LineAmounts (non-persistent)",
+   "pattern": "calculation",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [
+    "Percentage excl.: tax = base * rate; incl.: base = price / (1 + rate)",
+    "Fixed: tax = amount * quantity",
+    "Rounded to currency rounding per line"
+   ],
+   "odooRefs": [
+    "account.tax._get_tax_details",
+    "account.tax.compute_all"
+   ]
+  },
+  {
+   "name": "SUB_Invoice_RecomputeTotals",
+   "kind": "Microflow",
+   "purpose": "Line amounts and invoice totals; amount due = total - allocated payments/credits.",
+   "params": [
+    {
+     "name": "Invoice",
+     "type": "Invoicing.Invoice"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "calculation",
+   "calls": [
+    "SUB_Tax_ComputeLine"
+   ],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "account.move._compute_amount",
+    "account.move.line._compute_totals"
+   ]
+  },
+  {
+   "name": "SUB_PaymentTerm_ComputeDueDate",
+   "kind": "Microflow",
+   "purpose": "Due date of the last instalment from invoice date and term lines.",
+   "params": [
+    {
+     "name": "PaymentTerm",
+     "type": "Invoicing.PaymentTerm"
+    },
+    {
+     "name": "InvoiceDate",
+     "type": "DateTime"
+    }
+   ],
+   "returns": "DateTime",
+   "pattern": "calculation",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "account.payment.term._compute_terms",
+    "account.payment.term.line._get_due_date"
+   ]
+  },
+  {
+   "name": "ACT_Invoice_Post",
+   "kind": "Microflow",
+   "purpose": "Validate, date, due date, number, post; update order invoiced quantities.",
+   "params": [
+    {
+     "name": "Invoice",
+     "type": "Invoicing.Invoice"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [
+    "SUB_PaymentTerm_ComputeDueDate",
+    "SUB_Sequence_NextNumber",
+    "SUB_SalesOrder_UpdateInvoiceStatus",
+    "SUB_PurchaseOrder_UpdateBillingStatus"
+   ],
+   "validations": [
+    "Partner set",
+    "At least one line (account_move.py: You need to add a line before posting)",
+    "Total not negative (account_move.py: negative total)",
+    "Vendor bill/refund: bill date set (account_move.py)"
+   ],
+   "hiddenRules": [],
+   "odooRefs": [
+    "account.move.action_post",
+    "account.move._post"
+   ]
+  },
+  {
+   "name": "ACT_Invoice_ResetToDraft",
+   "kind": "Microflow",
+   "purpose": "Posted -> Draft when no allocation.",
+   "params": [
+    {
+     "name": "Invoice",
+     "type": "Invoicing.Invoice"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [],
+   "validations": [
+    "No payment allocated"
+   ],
+   "hiddenRules": [],
+   "odooRefs": [
+    "account.move.button_draft"
+   ]
+  },
+  {
+   "name": "ACT_Invoice_Cancel",
+   "kind": "Microflow",
+   "purpose": "Draft -> Cancelled.",
+   "params": [
+    {
+     "name": "Invoice",
+     "type": "Invoicing.Invoice"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "account.move.button_cancel"
+   ]
+  },
+  {
+   "name": "ACT_Invoice_CreateCreditNote",
+   "kind": "Microflow",
+   "purpose": "Copy the invoice into a draft credit note linked by Invoice_ReversalOf.",
+   "params": [
+    {
+     "name": "CreditNoteRequest",
+     "type": "Invoicing.CreditNoteRequest"
+    }
+   ],
+   "returns": "Invoicing.Invoice",
+   "pattern": "create",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "account.move.reversal.reverse_moves",
+    "account.move._reverse_moves"
+   ]
+  },
+  {
+   "name": "ACT_Invoice_RegisterPayment",
+   "kind": "Microflow",
+   "purpose": "Open the register-payment popup with defaults.",
+   "params": [
+    {
+     "name": "InvoiceList",
+     "type": "List of Invoicing.Invoice"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "action",
+   "calls": [],
+   "validations": [
+    "All posted, same partner, same direction, amount due > 0"
+   ],
+   "hiddenRules": [],
+   "odooRefs": [
+    "account.move.action_register_payment"
+   ]
+  },
+  {
+   "name": "SUB_Payment_Create",
+   "kind": "Microflow",
+   "purpose": "Create a Paid payment and allocations (oldest due first) and recompute payment status.",
+   "params": [
+    {
+     "name": "RegisterPaymentRequest",
+     "type": "Invoicing.RegisterPaymentRequest"
+    }
+   ],
+   "returns": "Invoicing.Payment",
+   "pattern": "create",
+   "calls": [
+    "SUB_Sequence_NextNumber",
+    "SUB_Invoice_UpdatePaymentStatus"
+   ],
+   "validations": [
+    "Amount > 0 and <= total due"
+   ],
+   "hiddenRules": [],
+   "odooRefs": [
+    "account.payment.register._create_payments",
+    "account.payment.register._create_payment_vals_from_wizard"
+   ]
+  },
+  {
+   "name": "SUB_Invoice_UpdatePaymentStatus",
+   "kind": "Microflow",
+   "purpose": "Amount due from allocations; NotPaid / PartiallyPaid / Paid / Reversed.",
+   "params": [
+    {
+     "name": "Invoice",
+     "type": "Invoicing.Invoice"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "calculation",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "account.move._compute_payment_state"
+   ]
+  }
+ ],
+ "workflows": [],
+ "pages": [
+  {
+   "name": "Invoice_Overview",
+   "purpose": "Customer invoices / Vendor bills / Credit notes lists with status and payment status.",
+   "dataContext": "Invoicing.Invoice",
+   "pattern": "list",
+   "sections": [
+    "Tabs",
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Open",
+    "Register payment"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "account.view_out_invoice_tree",
+    "account.view_in_invoice_bill_tree",
+    "account.view_account_invoice_filter"
+   ]
+  },
+  {
+   "name": "Invoice_NewEdit",
+   "purpose": "Invoice/bill form: status bar, partner, dates, payment term, lines, totals, payments, link to orders.",
+   "dataContext": "Invoicing.Invoice",
+   "pattern": "form",
+   "sections": [
+    "StatusBar",
+    "Header",
+    "Lines",
+    "Totals",
+    "Payments",
+    "OtherInfo"
+   ],
+   "actions": [
+    "ACT_Invoice_Post",
+    "ACT_Invoice_ResetToDraft",
+    "ACT_Invoice_Cancel",
+    "ACT_Invoice_RegisterPayment",
+    "Credit note"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "account.view_move_form"
+   ]
+  },
+  {
+   "name": "CreateInvoice_Popup",
+   "purpose": "Create invoice(s) from sales orders.",
+   "dataContext": "Sales.CreateInvoiceRequest",
+   "pattern": "form",
+   "sections": [
+    "Options"
+   ],
+   "actions": [
+    "Create",
+    "Cancel"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "sale.view_sale_advance_payment_inv"
+   ]
+  },
+  {
+   "name": "RegisterPayment_Popup",
+   "purpose": "Register payment.",
+   "dataContext": "Invoicing.RegisterPaymentRequest",
+   "pattern": "form",
+   "sections": [
+    "Payment"
+   ],
+   "actions": [
+    "Create payment",
+    "Cancel"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "account.view_account_payment_register_form"
+   ]
+  },
+  {
+   "name": "CreditNote_Popup",
+   "purpose": "Reason and date for a credit note.",
+   "dataContext": "Invoicing.CreditNoteRequest",
+   "pattern": "form",
+   "sections": [
+    "Reversal"
+   ],
+   "actions": [
+    "Reverse",
+    "Cancel"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "account.view_account_move_reversal"
+   ]
+  },
+  {
+   "name": "Payment_Overview",
+   "purpose": "Customer and vendor payments.",
+   "dataContext": "Invoicing.Payment",
+   "pattern": "list",
+   "sections": [
+    "Grid"
+   ],
+   "actions": [
+    "Open"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "account.view_account_payment_tree"
+   ]
+  },
+  {
+   "name": "Tax_Overview",
+   "purpose": "Taxes.",
+   "dataContext": "Invoicing.Tax",
+   "pattern": "list",
+   "sections": [
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Edit"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "account.view_tax_tree"
+   ]
+  },
+  {
+   "name": "PaymentTerm_NewEdit",
+   "purpose": "Payment term with instalment lines.",
+   "dataContext": "Invoicing.PaymentTerm",
+   "pattern": "form",
+   "sections": [
+    "Term",
+    "Lines"
+   ],
+   "actions": [
+    "Save"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "account.view_payment_term_form"
+   ]
+  },
+  {
+   "name": "InvoiceAnalysis_Report",
+   "purpose": "Charts and grid over Invoicing.InvoiceAnalysis.",
+   "dataContext": "Invoicing.InvoiceAnalysis",
+   "pattern": "report",
+   "sections": [
+    "Filters",
+    "Charts",
+    "Grid"
+   ],
+   "actions": [],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "account.view_account_invoice_report_pivot"
+   ]
+  }
+ ],
+ "timers": [],
+ "integrations": [
+  {
+   "name": "Send invoice by email / e-invoicing",
+   "type": "Email/EDI",
+   "stubName": "—",
+   "stubBehaviour": "Not implemented",
+   "realTarget": "account.move.send",
+   "apiDoc": "Stage 0: mail declared not implemented"
+  }
+ ],
+ "simplifications": [
+  "No general ledger: no chart of accounts, journal items for receivable/payable/tax, journals, reconciliation or bank statements.",
+  "account.move restricted to invoices, bills and credit notes; journal sequences replaced by Core.Sequence per invoice type.",
+  "Payments allocated to invoices through Invoicing.PaymentAllocation instead of reconciliation of journal items.",
+  "Taxes: percentage or fixed, included or excluded; no groups, repartition, fiscal positions, cash basis.",
+  "Down payments, early-payment discounts, cash rounding, EDI/e-invoicing and sending by email dropped."
+ ],
+ "odooModelsInCapability": [
+  "account.cash.rounding",
+  "account.incoterms",
+  "account.invoice.report",
+  "account.journal",
+  "account.move",
+  "account.move.line",
+  "account.payment",
+  "account.payment.method",
+  "account.payment.method.line",
+  "account.payment.term",
+  "account.payment.term.line",
+  "account.tax",
+  "account.tax.group",
+  "account.tax.repartition.line"
+ ],
+ "droppedOdooModels": [
+  {
+   "odooModel": "account.cash.rounding",
+   "reason": "cash rounding — not needed"
+  },
+  {
+   "odooModel": "account.incoterms",
+   "reason": "incoterms — not needed for the demo"
+  },
+  {
+   "odooModel": "account.journal",
+   "reason": "no ledger: sales/purchase journals become invoice types, bank/cash journals become ENUM_PaymentMethod"
+  },
+  {
+   "odooModel": "account.payment.method",
+   "reason": "replaced by ENUM_PaymentMethod"
+  },
+  {
+   "odooModel": "account.payment.method.line",
+   "reason": "replaced by ENUM_PaymentMethod"
+  },
+  {
+   "odooModel": "account.tax.group",
+   "reason": "tax groups (subtotal grouping) — dropped; taxes summed per tax"
+  },
+  {
+   "odooModel": "account.tax.repartition.line",
+   "reason": "tax repartition to accounts — no ledger"
+  },
+  {
+   "odooModel": "account.move.send",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "account.move.send.batch.wizard",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  },
+  {
+   "odooModel": "account.move.send.wizard",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  }
+ ],
+ "openQuestions": [
+  {
+   "id": "Q-F008-1",
+   "question": "No general ledger: invoices, bills, credit notes and payments without journal entries or chart of accounts. Confirms the Stage 0 C9 deferral at the data-model level. OK?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": true,
+   "kind": "DECISION",
+   "proposed": "Yes"
+  },
+  {
+   "id": "Q-F008-2",
+   "question": "Down payments on sales orders are dropped (regular invoices only). OK?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": false,
+   "kind": "DECISION",
+   "proposed": "Yes"
+  },
+  {
+   "id": "Q-F008-3",
+   "question": "Invoice PDF: same question as Q-F004-1 — on-screen only for the POC?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": false,
+   "kind": "DECISION",
+   "proposed": "On-screen only"
+  }
+ ],
+ "sourceKB": [
+  "analysis/odoo/knowledge-base/entities.json",
+  "analysis/odoo/knowledge-base/structures.json",
+  "analysis/odoo/knowledge-base/staticEntities.json",
+  "analysis/odoo/knowledge-base/logics.json",
+  "analysis/odoo/knowledge-base/screens.json",
+  "analysis/odoo/knowledge-base/workflows.json",
+  "analysis/odoo/knowledge-base/roles.json",
+  "analysis/odoo/non-code-sources.md"
+ ],
+ "confidence": "high",
+ "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 7 gap(s) point at not-implemented addons (mail/portal/utm/...)",
+ "summaryCounts": {
+  "useCases": 9,
+  "entities": 11,
+  "enumerations": 12,
+  "microflows": 13,
+  "pages": 9,
+  "openQuestions": 3
+ }
+}

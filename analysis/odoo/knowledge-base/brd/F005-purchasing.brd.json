@@ -1,0 +1,1102 @@
+{
+ "id": "F005",
+ "title": "Purchasing: RFQs to purchase orders with approval",
+ "modules": [
+  "Purchasing"
+ ],
+ "actors": [
+  "Purchaser",
+  "PurchaseManager"
+ ],
+ "capability": "C5",
+ "summary": "Create RFQs (manually or from reorder rules), price them from vendor prices, send, confirm — with a manager approval workflow above the company threshold — cancel or lock; purchase analysis.",
+ "provenance": "code-extracted",
+ "generatedAt": "2026-10-14",
+ "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
+ "actorRoleMapping": {
+  "Purchaser": [
+   "purchase.group_purchase_user"
+  ],
+  "PurchaseManager": [
+   "purchase.group_purchase_manager"
+  ]
+ },
+ "useCases": [
+  {
+   "id": "UC001",
+   "title": "Create a request for quotation",
+   "actors": [
+    "Purchaser"
+   ],
+   "preconditions": [
+    "Vendor and products exist"
+   ],
+   "postconditions": [
+    "RFQ with number P000nn"
+   ],
+   "mainFlow": [
+    "1. User opens Purchase > RFQs > New and picks the vendor; system fills payment term and currency",
+    "2. Adds product lines: system fills description, purchase unit, vendor price (or cost) and vendor taxes, expected arrival = today + lead time",
+    "3. System recomputes totals",
+    "4. User saves"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "PurchaseOrder_Overview",
+    "PurchaseOrder_NewEdit"
+   ],
+   "odooRefs": [
+    "purchase.purchase_order_form",
+    "purchase.purchase_order_kpis_tree",
+    "purchase.order.line._compute_price_unit_and_date_planned_and_name",
+    "purchase.order._amount_all"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC002",
+   "title": "Mark an RFQ as sent",
+   "actors": [
+    "Purchaser"
+   ],
+   "preconditions": [
+    "Status RFQ"
+   ],
+   "postconditions": [
+    "Status RFQSent"
+   ],
+   "mainFlow": [
+    "1. User clicks Mark as sent (no email)",
+    "2. System sets RFQSent"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "PurchaseOrder_NewEdit"
+   ],
+   "odooRefs": [
+    "purchase.order.action_rfq_send"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC003",
+   "title": "Confirm an RFQ",
+   "actors": [
+    "Purchaser"
+   ],
+   "preconditions": [
+    "Status RFQ or RFQSent"
+   ],
+   "postconditions": [
+    "PurchaseOrder, or ToApprove when approval is needed"
+   ],
+   "mainFlow": [
+    "1. User clicks Confirm order",
+    "2. If company PO approval is on and total >= threshold and the user is not a PurchaseManager: status ToApprove and the approval workflow starts (UC004)",
+    "3. Otherwise status PurchaseOrder, confirmation date = now, receipt created (F007)"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "PurchaseOrder_NewEdit"
+   ],
+   "odooRefs": [
+    "purchase.order.button_confirm",
+    "purchase.order._approval_allowed",
+    "purchase.order.button_approve",
+    "purchase.order._add_supplier_to_product"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC004",
+   "title": "Approve or reject a purchase order",
+   "actors": [
+    "PurchaseManager"
+   ],
+   "preconditions": [
+    "Status ToApprove; workflow task in the manager inbox"
+   ],
+   "postconditions": [
+    "Approved: PurchaseOrder + receipt; Rejected: back to RFQ with a reason"
+   ],
+   "mainFlow": [
+    "1. Manager opens the task from the inbox",
+    "2. Reviews the order and clicks Approve or Reject (reason mandatory)",
+    "3. Approve: system confirms the order (as UC003 step 3)",
+    "4. Reject: system sets status RFQ and notifies the purchaser in the task history"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "PurchaseApproval_Task"
+   ],
+   "odooRefs": [
+    "purchase.order.button_approve"
+   ],
+   "status": "proposed",
+   "reviewStatus": "pending",
+   "signOff": "Q-F005-1"
+  },
+  {
+   "id": "UC005",
+   "title": "Cancel, reset or lock a purchase order",
+   "actors": [
+    "Purchaser",
+    "PurchaseManager"
+   ],
+   "preconditions": [
+    "No receipt done and no bill posted for cancel"
+   ],
+   "postconditions": [
+    "Cancelled / RFQ / Locked"
+   ],
+   "mainFlow": [
+    "1. Cancel: system cancels open receipts and sets Cancelled",
+    "2. Set to draft: Cancelled -> RFQ",
+    "3. Lock/Unlock: toggles Locked (Odoo state done)"
+   ],
+   "alternativeFlows": [
+    "1a. A related bill is not draft/cancelled: refused, cancel the bill first (purchase_order.py button_cancel); a done receipt also blocks (purchase_stock)"
+   ],
+   "screens": [
+    "PurchaseOrder_NewEdit"
+   ],
+   "odooRefs": [
+    "purchase.order.button_cancel",
+    "purchase.order.button_draft",
+    "purchase.order.button_done",
+    "purchase.order.button_unlock"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending"
+  },
+  {
+   "id": "UC006",
+   "title": "Analyse purchases",
+   "actors": [
+    "PurchaseManager"
+   ],
+   "preconditions": [
+    "Orders exist"
+   ],
+   "postconditions": [
+    "—"
+   ],
+   "mainFlow": [
+    "1. Manager opens Reporting > Purchase: amounts and received/billed quantities per vendor/product/period"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "PurchaseAnalysis_Report"
+   ],
+   "odooRefs": [
+    "purchase.view_purchase_order_pivot"
+   ],
+   "status": "proposed",
+   "reviewStatus": "pending",
+   "signOff": "Q-F004-3"
+  }
+ ],
+ "domainEntities": [
+  {
+   "name": "Purchasing.PurchaseOrder",
+   "module": "Purchasing",
+   "persistent": true,
+   "purpose": "A request for quotation that becomes a (possibly approved) purchase order.",
+   "sourceOdoo": "purchase.order",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Number",
+     "type": "String",
+     "sourceOdoo": "purchase.order.name",
+     "odooType": "Char",
+     "mandatory": true,
+     "label": "Order Reference",
+     "odooDefault": "lambda self: _('New')",
+     "length": 200,
+     "note": "Core.Sequence code purchase.order, prefix P"
+    },
+    {
+     "name": "Status",
+     "type": "Enumeration",
+     "sourceOdoo": "purchase.order.state",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Status",
+     "odooDefault": "'draft'",
+     "enumeration": "Purchasing.ENUM_PurchaseOrderStatus"
+    },
+    {
+     "name": "Locked",
+     "type": "Boolean",
+     "sourceOdoo": "purchase.order (framework, not extracted field-level)",
+     "mandatory": false,
+     "new": true,
+     "note": "replaces Odoo state 'done'"
+    },
+    {
+     "name": "OrderDeadline",
+     "type": "DateTime",
+     "sourceOdoo": "purchase.order.date_order",
+     "odooType": "Datetime",
+     "mandatory": true,
+     "label": "Order Deadline",
+     "odooDefault": "fields.Datetime.now"
+    },
+    {
+     "name": "ConfirmationDate",
+     "type": "DateTime",
+     "sourceOdoo": "purchase.order.date_approve",
+     "odooType": "Datetime",
+     "mandatory": false,
+     "label": "Confirmation Date"
+    },
+    {
+     "name": "ExpectedArrival",
+     "type": "DateTime",
+     "sourceOdoo": "purchase.order.date_planned",
+     "odooType": "Datetime",
+     "mandatory": false,
+     "label": "Expected Arrival",
+     "odooComputedBy": "_compute_date_planned"
+    },
+    {
+     "name": "VendorReference",
+     "type": "String",
+     "sourceOdoo": "purchase.order.partner_ref",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Vendor Reference",
+     "length": 200
+    },
+    {
+     "name": "Source",
+     "type": "String",
+     "sourceOdoo": "purchase.order.origin",
+     "odooType": "Char",
+     "mandatory": false,
+     "label": "Source Document",
+     "length": 200
+    },
+    {
+     "name": "Notes",
+     "type": "String",
+     "sourceOdoo": "purchase.order.notes",
+     "odooType": "Html",
+     "mandatory": false,
+     "label": "Terms and Conditions",
+     "length": "unlimited"
+    },
+    {
+     "name": "AmountUntaxed",
+     "type": "Decimal",
+     "sourceOdoo": "purchase.order.amount_untaxed",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Untaxed Amount",
+     "odooComputedBy": "_amount_all"
+    },
+    {
+     "name": "AmountTax",
+     "type": "Decimal",
+     "sourceOdoo": "purchase.order.amount_tax",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Taxes",
+     "odooComputedBy": "_amount_all"
+    },
+    {
+     "name": "AmountTotal",
+     "type": "Decimal",
+     "sourceOdoo": "purchase.order.amount_total",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Total",
+     "odooComputedBy": "_amount_all"
+    },
+    {
+     "name": "BillingStatus",
+     "type": "Enumeration",
+     "sourceOdoo": "purchase.order.invoice_status",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Billing Status",
+     "odooComputedBy": "_get_invoiced",
+     "odooDefault": "'no'",
+     "enumeration": "Core.ENUM_InvoiceStatus"
+    },
+    {
+     "name": "ReceiptStatus",
+     "type": "Enumeration",
+     "sourceOdoo": "purchase.order.receipt_status",
+     "odooType": "Selection",
+     "mandatory": false,
+     "label": "Receipt Status",
+     "odooComputedBy": "_compute_receipt_status",
+     "enumeration": "Purchasing.ENUM_ReceiptStatus"
+    }
+   ],
+   "associations": [
+    {
+     "name": "PurchaseOrder_Vendor",
+     "owner": "Purchasing.PurchaseOrder",
+     "target": "Partners.Partner",
+     "type": "Reference",
+     "sourceOdoo": "purchase.order.partner_id",
+     "odooTarget": "res.partner",
+     "mandatory": true
+    },
+    {
+     "name": "PurchaseOrder_Buyer",
+     "owner": "Purchasing.PurchaseOrder",
+     "target": "Administration.Account",
+     "type": "Reference",
+     "sourceOdoo": "purchase.order.user_id",
+     "odooTarget": "res.users",
+     "mandatory": false
+    },
+    {
+     "name": "PurchaseOrder_PaymentTerm",
+     "owner": "Purchasing.PurchaseOrder",
+     "target": "Invoicing.PaymentTerm",
+     "type": "Reference",
+     "sourceOdoo": "purchase.order.payment_term_id",
+     "odooTarget": "account.payment.term",
+     "mandatory": false
+    },
+    {
+     "name": "PurchaseOrder_Currency",
+     "owner": "Purchasing.PurchaseOrder",
+     "target": "Core.Currency",
+     "type": "Reference",
+     "sourceOdoo": "purchase.order.currency_id",
+     "odooTarget": "res.currency",
+     "mandatory": true
+    },
+    {
+     "name": "PurchaseOrder_DeliverTo",
+     "owner": "Purchasing.PurchaseOrder",
+     "target": "Inventory.OperationType",
+     "type": "Reference",
+     "sourceOdoo": "purchase.order.picking_type_id",
+     "odooTarget": "stock.picking.type",
+     "mandatory": true,
+     "note": "receipt operation of the warehouse"
+    },
+    {
+     "name": "PurchaseOrder_ReorderRule",
+     "owner": "Purchasing.PurchaseOrder",
+     "target": "Inventory.ReorderRule",
+     "type": "Reference",
+     "new": true,
+     "note": "new: which replenishment rule created this RFQ"
+    }
+   ],
+   "note": null,
+   "brd": "F005"
+  },
+  {
+   "name": "Purchasing.PurchaseOrderLine",
+   "module": "Purchasing",
+   "persistent": true,
+   "purpose": "A product, section or note line of a purchase order.",
+   "sourceOdoo": "purchase.order.line",
+   "generalization": null,
+   "systemMembers": [
+    "createdDate",
+    "changedDate",
+    "owner",
+    "changedBy"
+   ],
+   "attributes": [
+    {
+     "name": "Sequence",
+     "type": "Integer",
+     "sourceOdoo": "purchase.order.line.sequence",
+     "odooType": "Integer",
+     "mandatory": false,
+     "label": "Sequence",
+     "odooDefault": "10"
+    },
+    {
+     "name": "LineType",
+     "type": "Enumeration",
+     "sourceOdoo": "purchase.order.line.display_type",
+     "odooType": "Selection",
+     "mandatory": false,
+     "odooDefault": "False",
+     "enumeration": "Core.ENUM_LineType"
+    },
+    {
+     "name": "Description",
+     "type": "String",
+     "sourceOdoo": "purchase.order.line.name",
+     "odooType": "Text",
+     "mandatory": true,
+     "label": "Description",
+     "odooComputedBy": "_compute_price_unit_and_date_planned_and_name",
+     "length": "unlimited"
+    },
+    {
+     "name": "Quantity",
+     "type": "Decimal",
+     "sourceOdoo": "purchase.order.line.product_qty",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Quantity",
+     "odooComputedBy": "_compute_product_qty"
+    },
+    {
+     "name": "UnitPrice",
+     "type": "Decimal",
+     "sourceOdoo": "purchase.order.line.price_unit",
+     "odooType": "Float",
+     "mandatory": true,
+     "label": "Unit Price",
+     "odooComputedBy": "_compute_price_unit_and_date_planned_and_name"
+    },
+    {
+     "name": "DiscountPercent",
+     "type": "Decimal",
+     "sourceOdoo": "purchase.order.line.discount",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Discount (%)",
+     "odooComputedBy": "_compute_price_unit_and_date_planned_and_name"
+    },
+    {
+     "name": "ExpectedArrival",
+     "type": "DateTime",
+     "sourceOdoo": "purchase.order.line.date_planned",
+     "odooType": "Datetime",
+     "mandatory": false,
+     "label": "Expected Arrival",
+     "odooComputedBy": "_compute_price_unit_and_date_planned_and_name"
+    },
+    {
+     "name": "Subtotal",
+     "type": "Decimal",
+     "sourceOdoo": "purchase.order.line.price_subtotal",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Subtotal",
+     "odooComputedBy": "_compute_amount"
+    },
+    {
+     "name": "TaxAmount",
+     "type": "Decimal",
+     "sourceOdoo": "purchase.order.line.price_tax",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Tax",
+     "odooComputedBy": "_compute_amount"
+    },
+    {
+     "name": "Total",
+     "type": "Decimal",
+     "sourceOdoo": "purchase.order.line.price_total",
+     "odooType": "Monetary",
+     "mandatory": false,
+     "label": "Total",
+     "odooComputedBy": "_compute_amount"
+    },
+    {
+     "name": "QuantityReceived",
+     "type": "Decimal",
+     "sourceOdoo": "purchase.order.line.qty_received",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Received Qty",
+     "odooComputedBy": "_compute_qty_received"
+    },
+    {
+     "name": "QuantityBilled",
+     "type": "Decimal",
+     "sourceOdoo": "purchase.order.line.qty_invoiced",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "Billed Qty",
+     "odooComputedBy": "_compute_qty_invoiced"
+    },
+    {
+     "name": "QuantityToBill",
+     "type": "Decimal",
+     "sourceOdoo": "purchase.order.line.qty_to_invoice",
+     "odooType": "Float",
+     "mandatory": false,
+     "label": "To Invoice Quantity",
+     "odooComputedBy": "_compute_qty_invoiced"
+    }
+   ],
+   "associations": [
+    {
+     "name": "PurchaseOrderLine_PurchaseOrder",
+     "owner": "Purchasing.PurchaseOrderLine",
+     "target": "Purchasing.PurchaseOrder",
+     "type": "Reference",
+     "sourceOdoo": "purchase.order.line.order_id",
+     "odooTarget": "purchase.order",
+     "mandatory": true,
+     "note": "delete lines with the order"
+    },
+    {
+     "name": "PurchaseOrderLine_Product",
+     "owner": "Purchasing.PurchaseOrderLine",
+     "target": "Products.Product",
+     "type": "Reference",
+     "sourceOdoo": "purchase.order.line.product_id",
+     "odooTarget": "product.product",
+     "mandatory": false
+    },
+    {
+     "name": "PurchaseOrderLine_UoM",
+     "owner": "Purchasing.PurchaseOrderLine",
+     "target": "Products.UoM",
+     "type": "Reference",
+     "sourceOdoo": "purchase.order.line.product_uom",
+     "odooTarget": "uom.uom",
+     "mandatory": false
+    },
+    {
+     "name": "PurchaseOrderLine_Taxes",
+     "owner": "Purchasing.PurchaseOrderLine",
+     "target": "Invoicing.Tax",
+     "type": "ReferenceSet",
+     "sourceOdoo": "purchase.order.line.taxes_id",
+     "odooTarget": "account.tax",
+     "mandatory": false
+    }
+   ],
+   "note": null,
+   "brd": "F005"
+  }
+ ],
+ "enumerations": [
+  {
+   "name": "Core.ENUM_InvoiceStatus",
+   "module": "Core",
+   "sourceOdoo": "sale.order.invoice_status",
+   "values": [
+    {
+     "name": "NothingToInvoice",
+     "caption": "Nothing to invoice",
+     "odooValue": "no"
+    },
+    {
+     "name": "ToInvoice",
+     "caption": "To invoice",
+     "odooValue": "to invoice"
+    },
+    {
+     "name": "FullyInvoiced",
+     "caption": "Fully invoiced",
+     "odooValue": "invoiced"
+    }
+   ],
+   "droppedOdooValues": [
+    "upselling"
+   ],
+   "note": "sale 'upselling' dropped; shared by sales and purchase orders (purchase.order.invoice_status has the same 3 values)"
+  },
+  {
+   "name": "Core.ENUM_LineType",
+   "module": "Core",
+   "sourceOdoo": "sale.order.line.display_type",
+   "values": [
+    {
+     "name": "Product",
+     "caption": "Product line",
+     "odooValue": null
+    },
+    {
+     "name": "Section",
+     "caption": "Section",
+     "odooValue": "line_section"
+    },
+    {
+     "name": "Note",
+     "caption": "Note",
+     "odooValue": "line_note"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": "Odoo uses display_type=False for product lines; made explicit. Shared by sales, purchase and invoice lines"
+  },
+  {
+   "name": "Purchasing.ENUM_PurchaseOrderStatus",
+   "module": "Purchasing",
+   "sourceOdoo": "purchase.order.state",
+   "values": [
+    {
+     "name": "RFQ",
+     "caption": "Request for quotation",
+     "odooValue": "draft"
+    },
+    {
+     "name": "RFQSent",
+     "caption": "RFQ sent",
+     "odooValue": "sent"
+    },
+    {
+     "name": "ToApprove",
+     "caption": "To approve",
+     "odooValue": "to approve"
+    },
+    {
+     "name": "PurchaseOrder",
+     "caption": "Purchase order",
+     "odooValue": "purchase"
+    },
+    {
+     "name": "Cancelled",
+     "caption": "Cancelled",
+     "odooValue": "cancel"
+    }
+   ],
+   "droppedOdooValues": [
+    "done"
+   ],
+   "note": "'done' (locked) replaced by the Locked boolean, as Odoo 18 itself does for sales orders"
+  },
+  {
+   "name": "Purchasing.ENUM_ReceiptStatus",
+   "module": "Purchasing",
+   "sourceOdoo": "purchase.order.receipt_status",
+   "values": [
+    {
+     "name": "NotReceived",
+     "caption": "Not received",
+     "odooValue": "pending"
+    },
+    {
+     "name": "PartiallyReceived",
+     "caption": "Partially received",
+     "odooValue": "partial"
+    },
+    {
+     "name": "FullyReceived",
+     "caption": "Fully received",
+     "odooValue": "full"
+    }
+   ],
+   "droppedOdooValues": [],
+   "note": null
+  }
+ ],
+ "viewEntities": [
+  {
+   "name": "Purchasing.PurchaseAnalysis",
+   "odoo": "purchase.report",
+   "brd": "F005",
+   "purpose": "Purchase lines with ordered/received/billed quantities and amounts per vendor/product."
+  }
+ ],
+ "microflows": [
+  {
+   "name": "ACT_PurchaseOrder_New",
+   "kind": "Microflow",
+   "purpose": "Create an RFQ; on vendor change fill payment term and currency.",
+   "params": [
+    {
+     "name": "Vendor",
+     "type": "Partners.Partner"
+    }
+   ],
+   "returns": "Purchasing.PurchaseOrder",
+   "pattern": "create",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "purchase.order.onchange_partner_id"
+   ]
+  },
+  {
+   "name": "ACT_PurchaseOrderLine_ChangeProduct",
+   "kind": "Microflow",
+   "purpose": "Default description, unit, taxes, vendor price and planned date.",
+   "params": [
+    {
+     "name": "PurchaseOrderLine",
+     "type": "Purchasing.PurchaseOrderLine"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "onchange",
+   "calls": [
+    "SUB_Product_GetVendorPrice"
+   ],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "purchase.order.line._compute_price_unit_and_date_planned_and_name",
+    "purchase.order.line._compute_tax_id"
+   ]
+  },
+  {
+   "name": "SUB_PurchaseOrder_RecomputeTotals",
+   "kind": "Microflow",
+   "purpose": "Line and order totals with discount and taxes.",
+   "params": [
+    {
+     "name": "PurchaseOrder",
+     "type": "Purchasing.PurchaseOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "calculation",
+   "calls": [
+    "SUB_Tax_ComputeLine"
+   ],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "purchase.order.line._compute_amount",
+    "purchase.order._amount_all"
+   ]
+  },
+  {
+   "name": "ACT_PurchaseOrder_MarkSent",
+   "kind": "Microflow",
+   "purpose": "RFQ -> RFQSent.",
+   "params": [
+    {
+     "name": "PurchaseOrder",
+     "type": "Purchasing.PurchaseOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "purchase.order.action_rfq_send"
+   ]
+  },
+  {
+   "name": "ACT_PurchaseOrder_Confirm",
+   "kind": "Microflow",
+   "purpose": "Confirm or route to approval (threshold rule).",
+   "params": [
+    {
+     "name": "PurchaseOrder",
+     "type": "Purchasing.PurchaseOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [
+    "SUB_PurchaseOrder_Approve",
+    "WF_PurchaseOrderApproval"
+   ],
+   "validations": [
+    "Status RFQ or RFQSent (purchase_order.py button_confirm skips others)"
+   ],
+   "hiddenRules": [
+    "Approval needed when company.POApprovalEnabled and AmountTotal >= POApprovalThreshold and user is not PurchaseManager (_approval_allowed)",
+    "On confirm the vendor is added to the product vendor prices when missing (_add_supplier_to_product)"
+   ],
+   "odooRefs": [
+    "purchase.order.button_confirm",
+    "purchase.order._approval_allowed",
+    "purchase.order._add_supplier_to_product"
+   ]
+  },
+  {
+   "name": "SUB_PurchaseOrder_Approve",
+   "kind": "Microflow",
+   "purpose": "Status PurchaseOrder, confirmation date, create receipt (F007).",
+   "params": [
+    {
+     "name": "PurchaseOrder",
+     "type": "Purchasing.PurchaseOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [
+    "SUB_PurchaseOrder_CreateReceipt"
+   ],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "purchase.order.button_approve",
+    "purchase.order._create_picking"
+   ]
+  },
+  {
+   "name": "ACT_PurchaseOrder_Reject",
+   "kind": "Microflow",
+   "purpose": "Approval rejected: back to RFQ with reason.",
+   "params": [
+    {
+     "name": "PurchaseOrder",
+     "type": "Purchasing.PurchaseOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [],
+   "validations": [
+    "Reason not empty"
+   ],
+   "hiddenRules": [],
+   "odooRefs": []
+  },
+  {
+   "name": "ACT_PurchaseOrder_Cancel",
+   "kind": "Microflow",
+   "purpose": "Cancel receipts and order.",
+   "params": [
+    {
+     "name": "PurchaseOrder",
+     "type": "Purchasing.PurchaseOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [],
+   "validations": [
+    "No bill other than draft/cancelled",
+    "No done receipt (purchase_stock)"
+   ],
+   "hiddenRules": [],
+   "odooRefs": [
+    "purchase.order.button_cancel"
+   ]
+  },
+  {
+   "name": "ACT_PurchaseOrder_SetToDraft",
+   "kind": "Microflow",
+   "purpose": "Cancelled -> RFQ.",
+   "params": [
+    {
+     "name": "PurchaseOrder",
+     "type": "Purchasing.PurchaseOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "purchase.order.button_draft"
+   ]
+  },
+  {
+   "name": "ACT_PurchaseOrder_ToggleLock",
+   "kind": "Microflow",
+   "purpose": "Lock/unlock.",
+   "params": [
+    {
+     "name": "PurchaseOrder",
+     "type": "Purchasing.PurchaseOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "state-change",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "purchase.order.button_done",
+    "purchase.order.button_unlock"
+   ]
+  },
+  {
+   "name": "SUB_PurchaseOrder_UpdateBillingStatus",
+   "kind": "Microflow",
+   "purpose": "Qty to bill per line (bill policy) -> BillingStatus.",
+   "params": [
+    {
+     "name": "PurchaseOrder",
+     "type": "Purchasing.PurchaseOrder"
+    }
+   ],
+   "returns": "Boolean",
+   "pattern": "calculation",
+   "calls": [],
+   "validations": [],
+   "hiddenRules": [],
+   "odooRefs": [
+    "purchase.order.line._compute_qty_invoiced",
+    "purchase.order._get_invoiced"
+   ]
+  }
+ ],
+ "workflows": [
+  {
+   "name": "WF_PurchaseOrderApproval",
+   "module": "Purchasing",
+   "context": "Purchasing.PurchaseOrder",
+   "purpose": "Manager approval of purchase orders above the company threshold (Odoo state 'to approve' + button_approve).",
+   "steps": [
+    "User task \"Approve purchase order\" assigned to role PurchaseManager (outcomes Approve / Reject)",
+    "Approve -> call SUB_PurchaseOrder_Approve",
+    "Reject -> call ACT_PurchaseOrder_Reject"
+   ],
+   "odooRefs": [
+    "purchase.order.button_approve",
+    "purchase.order._approval_allowed"
+   ]
+  }
+ ],
+ "pages": [
+  {
+   "name": "PurchaseOrder_Overview",
+   "purpose": "RFQs / Purchase orders / To approve lists.",
+   "dataContext": "Purchasing.PurchaseOrder",
+   "pattern": "list",
+   "sections": [
+    "Tabs",
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Open"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "purchase.purchase_order_kpis_tree",
+    "purchase.purchase_order_view_tree",
+    "purchase.view_purchase_order_filter"
+   ]
+  },
+  {
+   "name": "PurchaseOrder_NewEdit",
+   "purpose": "RFQ/PO form: status bar, header, lines, totals, smart buttons to receipts and bills.",
+   "dataContext": "Purchasing.PurchaseOrder",
+   "pattern": "form",
+   "sections": [
+    "StatusBar",
+    "Header",
+    "Lines",
+    "Totals",
+    "OtherInfo"
+   ],
+   "actions": [
+    "ACT_PurchaseOrder_MarkSent",
+    "ACT_PurchaseOrder_Confirm",
+    "ACT_PurchaseOrder_Cancel",
+    "ACT_PurchaseOrder_SetToDraft",
+    "ACT_PurchaseOrder_ToggleLock",
+    "ACT_PurchaseOrder_CreateBill"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "purchase.purchase_order_form"
+   ]
+  },
+  {
+   "name": "PurchaseApproval_Task",
+   "purpose": "Workflow user-task page: order summary + Approve / Reject with reason.",
+   "dataContext": "Purchasing.PurchaseOrder",
+   "pattern": "task",
+   "sections": [
+    "Summary",
+    "Lines",
+    "Decision"
+   ],
+   "actions": [
+    "Approve",
+    "Reject"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": []
+  },
+  {
+   "name": "PurchaseAnalysis_Report",
+   "purpose": "Charts and grid over Purchasing.PurchaseAnalysis.",
+   "dataContext": "Purchasing.PurchaseAnalysis",
+   "pattern": "report",
+   "sections": [
+    "Filters",
+    "Charts",
+    "Grid"
+   ],
+   "actions": [],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "purchase.view_purchase_order_pivot"
+   ]
+  }
+ ],
+ "timers": [],
+ "integrations": [
+  {
+   "name": "Send RFQ by email",
+   "type": "Email",
+   "stubName": "—",
+   "stubBehaviour": "Not implemented: Mark as sent only",
+   "realTarget": "Odoo mail.template purchase.email_template_edi_purchase",
+   "apiDoc": "Stage 0: mail declared not implemented"
+  }
+ ],
+ "simplifications": [
+  "Approval implemented as a Mendix workflow (user task) instead of state 'to approve' + button.",
+  "State 'done' replaced by Locked; RFQ email, portal and EDI dropped; purchase agreements (tenders) not in Odoo Community 18 core.",
+  "Bill matching (purchase.bill.union / bill.line.match) replaced by \"Create bill\" from the PO (F008)."
+ ],
+ "odooModelsInCapability": [
+  "purchase.bill.line.match",
+  "purchase.bill.union",
+  "purchase.order",
+  "purchase.order.line",
+  "purchase.report"
+ ],
+ "droppedOdooModels": [
+  {
+   "odooModel": "purchase.bill.union",
+   "reason": "bills-and-POs union list for bill matching — replaced by \"create bill from PO\""
+  },
+  {
+   "odooModel": "purchase.bill.line.match",
+   "reason": "bill line matching UI — replaced by \"create bill from PO\""
+  },
+  {
+   "odooModel": "bill.to.po.wizard",
+   "reason": "wizard or mixin not needed in the Mendix design: its job is done by a page + microflow, or it belongs to a dropped feature (variants, lots, packages, portal, EDI, mail)"
+  }
+ ],
+ "openQuestions": [
+  {
+   "id": "Q-F005-1",
+   "question": "PO approval as a Mendix workflow with a manager inbox (instead of Odoo's button). OK?",
+   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "blocking": false,
+   "kind": "DECISION",
+   "proposed": "Yes — showcases Mendix workflows"
+  }
+ ],
+ "sourceKB": [
+  "analysis/odoo/knowledge-base/entities.json",
+  "analysis/odoo/knowledge-base/structures.json",
+  "analysis/odoo/knowledge-base/staticEntities.json",
+  "analysis/odoo/knowledge-base/logics.json",
+  "analysis/odoo/knowledge-base/screens.json",
+  "analysis/odoo/knowledge-base/workflows.json",
+  "analysis/odoo/knowledge-base/roles.json",
+  "analysis/odoo/non-code-sources.md"
+ ],
+ "confidence": "high",
+ "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 3 gap(s) point at not-implemented addons (mail/portal/utm/...)",
+ "summaryCounts": {
+  "useCases": 6,
+  "entities": 2,
+  "enumerations": 4,
+  "microflows": 11,
+  "pages": 4,
+  "openQuestions": 1
+ }
+}
