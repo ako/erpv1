@@ -1,4 +1,158 @@
 mdl 1;
 -- One-off: ACT_Partner_Save changed shape (validation moved to VAL_/SUB_); create or modify
--- refuses a reshaping splice (MDL-V1-REBUILD), so drop it once; 00-skeleton.mdl recreates it.
+-- refuses a reshaping splice (MDL-V1-REBUILD), so drop it and replay 00-skeleton.mdl in the same script
+-- (a drop alone fails the gate: CE1613, the page still calls it).
 drop microflow Partners.ACT_Partner_Save;
+-- 00-skeleton.mdl — walking skeleton (walking-skeleton.md): one entity, one state-changing
+-- microflow, overview + form, one nav item, one module role, one user role, one demo user.
+-- Central noun: Partners.Partner (BRD F001). Absorbed later by 1-domain/130-partners-domain.mdl
+-- (create or modify) and the Partners page scripts; never deleted.
+
+create module Partners;
+
+create or modify module role Partners.Editor description 'Create and edit contacts';
+
+/** A contact: a company or a person (Odoo res.partner). Skeleton subset of F001. */
+create or modify persistent entity Partners.Partner (
+  Name: String(200),
+  Email: String(200),
+  IsCompany: Boolean default false
+);
+
+-- Create and delete go through ACT_/SUB_ microflows (CONV006); roles get read/write only.
+grant read *, write * on entity Partners.Partner to Partners.Editor;
+
+/**
+ * Validate a contact before save; flags every invalid field on the same submit.
+ *
+ * @param $Partner the contact being saved
+ * @returns true when every field is valid
+ */
+create or modify microflow Partners.VAL_Partner ($Partner: Partners.Partner)
+returns Boolean as $IsValid
+folder 'Contacts/Microflows'
+begin
+  declare $IsValid Boolean = true;
+  if trim($Partner/Name) = '' then
+    validation feedback $Partner/Name message 'Name is required.';
+    set $IsValid = false;
+  end if;
+  return $IsValid;
+end;
+
+/**
+ * Create a new, uncommitted contact.
+ *
+ * @returns the new contact
+ */
+create or modify microflow Partners.SUB_Partner_Create ()
+returns Partners.Partner as $Partner
+folder 'Contacts/Microflows'
+begin
+  $Partner = create Partners.Partner (IsCompany = false);
+  return $Partner;
+end;
+
+/**
+ * Persist a validated contact.
+ *
+ * @param $Partner the contact to commit
+ */
+create or modify microflow Partners.SUB_Partner_Save ($Partner: Partners.Partner)
+folder 'Contacts/Microflows'
+begin
+  commit $Partner with events refresh;
+end;
+
+/**
+ * New button on Contacts: create a contact and open its form.
+ */
+create or modify microflow Partners.ACT_Partner_New ()
+folder 'Contacts/Microflows'
+begin
+  $Partner = call microflow Partners.SUB_Partner_Create();
+  show page Partners.Partner_NewEdit(Partner = $Partner);
+end;
+
+/**
+ * Save button on the contact form: validate, persist, close.
+ *
+ * @param $Partner the contact being edited
+ */
+create or modify microflow Partners.ACT_Partner_Save ($Partner: Partners.Partner)
+folder 'Contacts/Microflows'
+begin
+  $IsValid = call microflow Partners.VAL_Partner(Partner = $Partner);
+  if $IsValid then
+    call microflow Partners.SUB_Partner_Save(Partner = $Partner);
+    close page;
+  end if;
+end;
+
+/** Contact form (full page in the app shell, per design/wireframes/Partner_NewEdit.html). */
+create or modify page Partners.Partner_NewEdit folder 'Contacts/Pages'
+(
+  params: ( $Partner: Partners.Partner ),
+  title: 'Contact',
+  layout: Core.App_Default
+)
+{
+  layoutgrid gridPage {
+    row {
+      column (desktopwidth: 12) {
+        dataview dvPartner (datasource: $Partner) {
+          container pageHead (Class: 'spacing-outer-bottom-large') {
+            dynamictext crumb (content: 'Contact', rendermode: Text)
+            dynamictext heading (content: '{1}', ContentParams: ({1} = Name), rendermode: H1)
+            actionbutton btnSave (caption: 'Save', action: call microflow Partners.ACT_Partner_Save(Partner = $Partner), buttonstyle: primary)
+            actionbutton btnCancel (caption: 'Cancel', action: cancel changes)
+          }
+          layoutgrid gridForm {
+            row {
+              column (desktopwidth: 6) {
+                textbox txtName (label: 'Name', attribute: Name)
+                checkbox cbIsCompany (label: 'Is company', attribute: IsCompany)
+                textbox txtEmail (label: 'Email', attribute: Email)
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
+grant view on page Partners.Partner_NewEdit to Partners.Editor;
+
+/** Contacts list. */
+create or modify page Partners.Partner_Overview folder 'Contacts/Pages'
+(
+  title: 'Contacts',
+  layout: Core.App_Default
+)
+{
+  container pageHead (Class: 'spacing-outer-bottom-large') {
+    dynamictext heading (content: 'Contacts', rendermode: H1)
+    actionbutton btnNew (caption: 'New', action: call microflow Partners.ACT_Partner_New, buttonstyle: primary)
+  }
+  datagrid gridPartners (datasource: database Partners.Partner sort by Name asc) {
+    column (attribute: Name, caption: 'Name')
+    column (attribute: Email, caption: 'Email')
+    column (attribute: IsCompany, caption: 'Is a company')
+    column (caption: '') {
+      actionbutton btnEdit (caption: 'Edit', action: show page Partners.Partner_NewEdit(Partner = $currentObject))
+    }
+  }
+};
+
+grant view on page Partners.Partner_Overview to Partners.Editor;
+
+grant execute on microflow Partners.ACT_Partner_New to Partners.Editor;
+grant execute on microflow Partners.ACT_Partner_Save to Partners.Editor;
+
+create or modify user role SalesUser (
+  ModuleRoles: (System.User, Administration.User, Core.User, Partners.Editor),
+  CheckSecurity: true
+);
+
+create or modify demo user 'sales.user' ( Password: 'Erpv1-Demo-2026!', UserRoles: (SalesUser) );

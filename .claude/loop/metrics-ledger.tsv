@@ -3,3 +3,6 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-14T20:49:32Z	00-skeleton.mdl	pass	applied-lint-rose	71	0	1	19	0	93.8	86	94	91	100	99	100	99	19	333c5c8
 2026-10-14T20:50:37Z	2026-10-14-drop-partner-save.mdl	not-run	blocked	0	?			0										333c5c8
 2026-10-14T20:50:40Z	00-skeleton.mdl	not-run	blocked	1	?			0										333c5c8
+2026-10-14T20:51:42Z	2026-10-14-drop-partner-save.mdl	fail	gate-failed	55	?			1										372f339
+2026-10-14T20:51:45Z	00-skeleton.mdl	not-run	blocked	3	?			0										372f339
+2026-10-14T20:53:46Z	2026-10-14-drop-partner-save.mdl	pass	applied-lint-rose	102	0	1	16	0	94.9	86	95	97	100	99	100	99	16	372f339

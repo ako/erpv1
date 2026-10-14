@@ -1,12 +1,12 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-14 20:49:31",
-  "overallScore": 93.8,
+  "date": "2026-10-14 20:53:46",
+  "overallScore": 94.9,
   "summary": {
-    "total": 19,
+    "total": 16,
     "errors": 0,
-    "warnings": 6,
-    "infos": 13
+    "warnings": 4,
+    "infos": 12
   },
   "categories": [
     {
@@ -19,34 +19,32 @@
       "topActions": [
         "Review the user role assignments for 'Core.User' and ensure a 1:1 mapping",
         "Add an XPath constraint to limit which rows 'Partners.Editor' can READ on 'Partner'",
-        "Add XPath constraints to scope access to the current user's own data, e.g. [Sales.Order_Customer/Sales.Customer/id = '[%CurrentUser%]']",
         "ALTER APP SECURITY ( EnableDemoUsers: FALSE )",
-        "Remove the CREATE and DELETE rights and implement a microflow (ACT_) with security checks"
+        "Remove the CREATE and DELETE rights and implement a microflow (ACT_) with security checks",
+        "Add XPath constraints to scope access to the current user's own data, e.g. [Sales.Order_Customer/Sales.Customer/id = '[%CurrentUser%]']"
       ]
     },
     {
       "name": "Quality",
-      "score": 94,
-      "total": 6,
+      "score": 95,
+      "total": 5,
       "errors": 0,
       "warnings": 0,
-      "infos": 6,
+      "infos": 5,
       "topActions": [
         "Describe what the page shows and who reaches it.",
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
-        "Replace entity validation rules with a VAL_Partner microflow for explicit, testable validation",
         "Give the page a URL \u2014 `Url: 'home_web'` on CREATE PAGE, or the URL property in Studio Pro \u2014 so it is reachable at /p/home_web. Disable CONV019 in .claude/lint-config.yaml if this app deliberately has no deep links."
       ]
     },
     {
       "name": "Architecture",
-      "score": 91,
-      "total": 3,
+      "score": 97,
+      "total": 1,
       "errors": 0,
-      "warnings": 3,
+      "warnings": 1,
       "infos": 0,
       "topActions": [
-        "Move the 'ValidationFeedbackAction' action to a SUB_ microflow and call it from 'ACT_Partner_Save'",
         "Add an attribute like 'PartnerCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE"
       ]
     },

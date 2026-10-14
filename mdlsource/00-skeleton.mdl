@@ -16,6 +16,7 @@ create or modify persistent entity Partners.Partner (
 );
 
 -- Create and delete go through ACT_/SUB_ microflows (CONV006); roles get read/write only.
+revoke create, delete on entity Partners.Partner from Partners.Editor;
 grant read *, write * on entity Partners.Partner to Partners.Editor;
 
 /**
