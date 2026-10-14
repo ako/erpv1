@@ -4,20 +4,20 @@
 
 ## Where we are
 
-Stage 3 (Architecture & Design) gate PASSES — 2026-10-14; awaiting the user's ✋ sign-off (close-out pasted in chat).
+Stage 4 (Build Plan) built — 2026-10-14; gate FAILS only on the missing ✋ sign-off (PD-1..PD-6 asked in chat). build-ready PASS.
 
-- Architecture (generated): `pipelines/odoo/arch_render.py` → module-design.html + erd.md; `arch_blueprint.py` → modules/*/definition.md,
-  blueprint.md/.html, fit-gap.md. Design: `design/ds.css` (ledger tokens), design-system.html, brand.md;
-  `pipelines/odoo/wf_render.py` (from `ui_spec.py`) → 46 wireframes + Home, target-ui.md, interaction-model.md;
-  `node bin/assemble-prototype.js` → design/prototype.html; `node bin/check-prototype-links.js --brd analysis/odoo/knowledge-base/brd/` = 0 failures.
-- Regenerate order after a design change: brd_generator.py → wf_render.py → assemble-prototype.js → check-prototype-links.js → arch_render.py → arch_blueprint.py.
-- Open ASSUMED: navigation layout (side rail), OI-6 (no SCSS port; theme = mxcli ledger).
+- Plan (generated): `python3 -I pipelines/odoo/plan_render.py` → architecture/build-plan.md (95 rows, 66 BUILD / 49 use cases = 1.35,
+  10 phases), per-BRD ledgers `architecture/modules/<Home>/coverage-ledger/<F>.md` + index, 7 module-brief.md, design/wireframes/PAGE-MAP.tsv.
+  `bin/build-plan-status.sh . --html` → build-plan.html; toolkit `project-bin/build-plan-status.sh . --json` → build-plan.json (gitignored).
+- Coverage: all 8 BRDs 0 UNCLAIMED / 0 PHANTOM / 0 DOUBLE / 0 COUNT-MISMATCH (`~/Mendix/mxcli-project-toolkit/bin/coverage-check.sh --summary`).
+- Regenerate order: brd_generator → wf_render → assemble-prototype → check-prototype-links → arch_render → arch_blueprint → plan_render.
+- Model will live at `app/erpv1.mpr` (two-tree; ASSUMED row). .claude/agents/* completed.
 
 ## Next actions, in order
 
-1. On sign-off: flip Stage 3 ASSUMED rows the user accepts to CONFIRMED.
-2. Stage 4 (build plan): `skills/brd-to-build-plan.md` + `skills/module-brief.md` — Step 0 marketplace installs,
-   `mxcli new` with Mendix 11.15.0, `mxcli theme apply ledger`, module briefs in architecture/modules/<M>/.
+1. On sign-off: add Stage 4 CONFIRMED rows (sign-off + PD-1..PD-6), close open question 4, re-run `gate-check.sh . 4`.
+2. Stage 5 phase 0: `./mxcli new erpv1 --version 11.15.0 --output-dir app`, theme ledger, marketplace modules, verify + boot
+   (walking-skeleton.md), then phase 1 domain scripts via `./bin/exec.sh`.
 
 ## Do not lose
 

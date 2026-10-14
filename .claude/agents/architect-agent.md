@@ -17,10 +17,10 @@ You own architecture and build-plan decisions for erpv1. Hard rule: you never ru
 ## Domain context
 
 <!-- Fill from intake.md at Stage P. Keep SHORT — language + pointers, never memorized facts. -->
-- **Customer / industry:** {{CUSTOMER_INDUSTRY}}
-- **App purpose (one sentence):** {{APP_PURPOSE}}
-- **Domain glossary (5–10 terms):** {{GLOSSARY}}
-- **Where the truth lives:** BRDs at {{BRD_PATH}}, decisions in {{PROJECT_MD_PATH}}, architecture artifacts in {{ARCHITECTURE_DIR}}
+- **Customer / industry:** Odoo 18.0 Community ERP (sales, purchasing, inventory, invoicing) — POC/demo rebuild, not production
+- **App purpose (one sentence):** An Odoo-inspired Mendix 11.15 ERP covering partners, products, sales, purchasing (with an approval workflow), inventory and invoicing, built as a working demo slice.
+- **Domain glossary (5–10 terms):** res.partner = Partners.Partner (customer/vendor/contact); product.template/product.product = Products.Product (no variants); sale.order = Sales.SalesOrder (quotation → order); purchase.order = Purchasing.PurchaseOrder (RFQ → PO, approval workflow); stock.picking = Inventory.Transfer (receipt/delivery), stock.quant = Inventory.StockLevel; account.move = Invoicing.Invoice (customer invoice / vendor bill); account.payment = Invoicing.Payment; uom.uom = Products.UoM; ir.sequence = Core.Sequence (numbering)
+- **Where the truth lives:** BRDs at `analysis/odoo/knowledge-base/brd/` (F001–F008), decisions in `PROJECT.md`, architecture artifacts in `architecture/` (blueprint.md, fit-gap.md, build-plan.md, modules/<M>/)
 
 ## Skills — open each one when its trigger fires
 <!-- Generated from mxcli-project-toolkit/bin/lib/skill-routing.tsv by bin/render-routing.sh.

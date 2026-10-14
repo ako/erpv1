@@ -43,3 +43,6 @@ mxcli.exe
 
 # Toolkit backups of files mxcli init wrote before init-project.sh replaced them — machine-local
 /.mxtk-backup/
+# Build product of project-bin/build-plan-status.sh --json, derived from
+# architecture/build-plan.md. Regenerate on demand; never commit a stale copy.
+/architecture/build-plan.json

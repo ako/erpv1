@@ -277,6 +277,7 @@ entity('Purchasing.PurchaseOrder', 'purchase.order', 'A request for quotation th
     ('Status', 'state', {'enum': 'Purchasing.ENUM_PurchaseOrderStatus'}), ('Locked', None, {'type': 'Boolean', 'note': "replaces Odoo state 'done'"}),
     ('OrderDeadline', 'date_order', {}), ('ConfirmationDate', 'date_approve', {}), ('ExpectedArrival', 'date_planned', {}),
     ('VendorReference', 'partner_ref', {}), ('Source', 'origin', {}), ('Notes', 'notes', {}),
+    ('ApprovalComment', None, {'type': 'String', 'length': 'unlimited', 'note': 'new: reason given on Reject in WF_PurchaseOrderApproval (required for Reject)'}),
     ('AmountUntaxed', 'amount_untaxed', {}), ('AmountTax', 'amount_tax', {}), ('AmountTotal', 'amount_total', {}),
     ('BillingStatus', 'invoice_status', {'enum': 'Core.ENUM_InvoiceStatus'}),
     ('ReceiptStatus', 'receipt_status', {'enum': 'Purchasing.ENUM_ReceiptStatus'})], [

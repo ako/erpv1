@@ -396,7 +396,7 @@ BRDS['F005'] = dict(
         mf('SUB_PurchaseOrder_Approve', 'Status PurchaseOrder, confirmation date, create receipt (F007).', [{'name': 'PurchaseOrder', 'type': 'Purchasing.PurchaseOrder'}],
            'Boolean', 'state-change', ['purchase.order.button_approve', 'purchase.order._create_picking'], calls=['SUB_PurchaseOrder_CreateReceipt']),
         mf('ACT_PurchaseOrder_Reject', 'Approval rejected: back to RFQ with reason.', [{'name': 'PurchaseOrder', 'type': 'Purchasing.PurchaseOrder'}],
-           'Boolean', 'state-change', [], validations=['Reason not empty']),
+           'Boolean', 'state-change', [], validations=['ApprovalComment not empty (reason stored on the order)']),
         mf('ACT_PurchaseOrder_Cancel', 'Cancel receipts and order.', [{'name': 'PurchaseOrder', 'type': 'Purchasing.PurchaseOrder'}], 'Boolean', 'state-change',
            ['purchase.order.button_cancel'], validations=['No bill other than draft/cancelled', 'No done receipt (purchase_stock)']),
         mf('ACT_PurchaseOrder_SetToDraft', 'Cancelled -> RFQ.', [{'name': 'PurchaseOrder', 'type': 'Purchasing.PurchaseOrder'}], 'Boolean', 'state-change',

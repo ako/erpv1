@@ -1,0 +1,462 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- generated-by: mxcli-project-toolkit/project-bin/build-plan-status.sh -->
+<title>Build Plan</title>
+<style>
+:root{--ink:#1c1f24;--muted:#646b75;--line:#e3e6ea;--bg:#fff;--ok:#0a7d2c;--warn:#a66a00;--bad:#b3261e;--person:#6a3fb5}
+@media (prefers-color-scheme:dark){:root{--ink:#e6e8eb;--muted:#9aa1ab;--line:#2f343b;--bg:#16181c;--ok:#5cc27a;--warn:#e0a640;--bad:#f07167;--person:#b49af0}}
+body{font:14px/1.5 -apple-system,Segoe UI,sans-serif;margin:0;padding:2rem 16px;color:var(--ink);background:var(--bg)}
+main{max-width:1200px;margin:0 auto}
+h1{font-size:1.35rem;margin:0} h2{font-size:1.1rem;margin-top:2.2rem;border-bottom:1px solid var(--line);padding-bottom:.3rem}
+h3{font-size:1rem;margin:1.6rem 0 .2rem}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;margin-top:.5rem}
+th,td{text-align:left;vertical-align:top;padding:.4rem .6rem;border-bottom:1px solid var(--line);font-size:.88rem}
+th{color:var(--muted);font-weight:600;white-space:nowrap}
+code{font-size:.85em}
+.badge{font-size:.75rem;font-weight:600;padding:.1rem .5rem;border:1px solid currentColor;border-radius:999px;margin-left:.4rem;vertical-align:middle}
+.st-built,.done,.CLEAN{color:var(--ok)} .st-progress,.in-progress,.INCOMPLETE{color:var(--warn)}
+.st-todo,.pending{color:var(--muted)} .st-person{color:var(--person)} .st-unknown{color:var(--muted);font-style:italic}
+.FINDINGS,.drift{color:var(--bad)} .drift{font-size:.8rem;margin-top:.15rem}
+.note,.empty{color:var(--muted);font-size:.85rem} .lede{font-size:.95rem}
+details{margin:.5rem 0} summary{cursor:pointer;color:var(--muted);font-size:.85rem}
+.claims{font-size:.82rem} .warn summary{color:var(--warn)}
+</style></head><body><main>
+<h1>Build Plan</h1><p class=note id=stamp>Generated 2026-10-14T20:06:49Z by project-bin/build-plan-status.sh from architecture/build-plan.md, mdlsource/ and the module review files. exec.sh and gate-check.sh regenerate it; never hand-edit.</p>
+<h2>The plan</h2>
+<p class=lede>From <code>architecture/build-plan.md</code>: 10 phases, 95 rows: <b class=st-built>0 built</b>, <b class=st-todo>95 not built</b>, <b class=st-person>0 pending a person</b>.</p>
+<p class=note>Scripts named in the plan: 115, of which 0 are renamed <code>done-</code> under <code>mdlsource/</code>.</p>
+<section class=phase><h3>Phase 0 &mdash; Project scaffold <span class="badge st-todo">not built</span></h3>
+<p class=note>0 of 4 rows built</p>
+<div class=scroll><table><tr><th>#</th><th>Kind</th><th>Step</th><th>Produces / Proves</th><th>Depends on</th><th>State</th><th>Scripts</th></tr>
+<tr><td>1</td><td>BRIEF</td><td>Check the briefs exist for every module (Phase 0/1 content: domain, access, folders)&lt;br&gt;<code>architecture/modules/*/module-brief.md</code></td><td>7 briefs present with domain + access sections</td><td></td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>2</td><td>BUILD</td><td>Project scaffold&lt;br&gt;<code>./mxcli new erpv1 --version 11.15.0 --output-dir app (then bin/doctor.sh --install . --yes)</code>&lt;br&gt;<code>mdlsource/0-scaffold/000-scaffold.mdl</code></td><td>app/erpv1.mpr (Mendix 11.15.0); theme ledger (<code>./mxcli theme apply ledger</code>); project security production, demo users on, guest off; layout erpv1 App_Default with side rail; Responsive navigation shell with the 8 groups of ui_spec.NAV</td><td>1</td><td class="st-todo">not built</td><td><span class="st-todo" title="000-scaffold.mdl: missing">not written yet</span></td></tr>
+<tr><td>3</td><td>BUILD</td><td>Marketplace imports (Step 0, CONFIRMED Buy)&lt;br&gt;<code>./mxcli marketplace install &lt;id&gt; -p app/erpv1.mpr for: Administration, Data Widgets, Charts, Workflow Commons (Atlas Core ships with mxcli new)</code></td><td>Administration, DataWidgets, Charts, WorkflowCommons modules in the model</td><td>2</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>4</td><td>PROVE</td><td>Scaffold builds and boots&lt;br&gt;<code>./bin/verify-model.sh</code>&lt;br&gt;<code>./mxcli run --local --setup --ensure-db -p app/erpv1.mpr (snapshot first)</code></td><td>mxbuild 0 errors; app boots; MxAdmin can log in; ledger paints</td><td>3</td><td class="st-todo">not built</td><td></td></tr>
+</table></div>
+</section>
+<section class=phase><h3>Phase 1 &mdash; Domain models, all modules <span class="badge st-todo">not built</span></h3>
+<p class=note>0 of 11 rows built</p>
+<div class=scroll><table><tr><th>#</th><th>Kind</th><th>Step</th><th>Produces / Proves</th><th>Depends on</th><th>State</th><th>Scripts</th></tr>
+<tr><td>5</td><td>BRIEF</td><td>Check every module brief covers its entities, enumerations, entity access and folder plan&lt;br&gt;<code>architecture/modules/*/module-brief.md</code></td><td>domain + access + validation sections per module</td><td>4</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>6</td><td>BUILD</td><td>Module roles and the 9 user roles&lt;br&gt;<code>mdlsource/1-domain/100-security-roles.mdl</code></td><td>module roles per MODULE_ROLES (7 modules) + user roles Administrator, SalesUser, SalesManager, Purchaser, PurchaseManager, InventoryUser, InventoryManager, Billing, InvoicingManager composed of them (+ Administration/Workflow Commons roles)</td><td>5</td><td class="st-todo">not built</td><td><span class="st-todo" title="100-security-roles.mdl: missing">not written yet</span></td></tr>
+<tr><td>7</td><td>BUILD</td><td>Core domain model + entity access&lt;br&gt;<code>mdlsource/1-domain/110-core-domain.mdl</code></td><td>8 entities, 6 enumerations, 5 associations owned by Core; entity access grants per module role at the end of the script</td><td>6</td><td class="st-todo">not built</td><td><span class="st-todo" title="110-core-domain.mdl: missing">not written yet</span></td></tr>
+<tr><td>8</td><td>BUILD</td><td>Products domain model + entity access&lt;br&gt;<code>mdlsource/1-domain/120-products-domain.mdl</code></td><td>8 entities, 6 enumerations, 13 associations owned by Products; entity access grants per module role at the end of the script</td><td>7</td><td class="st-todo">not built</td><td><span class="st-todo" title="120-products-domain.mdl: missing">not written yet</span></td></tr>
+<tr><td>9</td><td>BUILD</td><td>Partners domain model + entity access&lt;br&gt;<code>mdlsource/1-domain/130-partners-domain.mdl</code></td><td>4 entities, 1 enumerations, 10 associations owned by Partners; entity access grants per module role at the end of the script</td><td>8</td><td class="st-todo">not built</td><td><span class="st-todo" title="130-partners-domain.mdl: missing">not written yet</span></td></tr>
+<tr><td>10</td><td>BUILD</td><td>Sales domain model + entity access&lt;br&gt;<code>mdlsource/1-domain/140-sales-domain.mdl</code></td><td>6 entities, 2 enumerations, 19 associations owned by Sales; entity access grants per module role at the end of the script</td><td>9</td><td class="st-todo">not built</td><td><span class="st-todo" title="140-sales-domain.mdl: missing">not written yet</span></td></tr>
+<tr><td>11</td><td>BUILD</td><td>Purchasing domain model + entity access&lt;br&gt;<code>mdlsource/1-domain/150-purchasing-domain.mdl</code></td><td>3 entities, 2 enumerations, 10 associations owned by Purchasing; entity access grants per module role at the end of the script</td><td>10</td><td class="st-todo">not built</td><td><span class="st-todo" title="150-purchasing-domain.mdl: missing">not written yet</span></td></tr>
+<tr><td>12</td><td>BUILD</td><td>Inventory domain model + entity access&lt;br&gt;<code>mdlsource/1-domain/160-inventory-domain.mdl</code></td><td>8 entities, 3 enumerations, 29 associations owned by Inventory; entity access grants per module role at the end of the script</td><td>11</td><td class="st-todo">not built</td><td><span class="st-todo" title="160-inventory-domain.mdl: missing">not written yet</span></td></tr>
+<tr><td>13</td><td>BUILD</td><td>Invoicing domain model + entity access&lt;br&gt;<code>mdlsource/1-domain/170-invoicing-domain.mdl</code></td><td>6 entities, 7 enumerations, 23 associations owned by Invoicing; entity access grants per module role at the end of the script</td><td>12</td><td class="st-todo">not built</td><td><span class="st-todo" title="170-invoicing-domain.mdl: missing">not written yet</span></td></tr>
+<tr><td>14</td><td>BUILD</td><td>Demo users, one per user role&lt;br&gt;<code>mdlsource/1-domain/190-security-demo-users.mdl</code></td><td>demo users sales.user, sales.manager, purchaser, purchase.manager, warehouse.user, inventory.manager, billing, invoicing.manager, admin.user — password &#x27;Erpv1-Demo-2026!&#x27; (throwaway, recorded here; MxAdmin untouched)</td><td>13</td><td class="st-todo">not built</td><td><span class="st-todo" title="190-security-demo-users.mdl: missing">not written yet</span></td></tr>
+<tr><td>15</td><td>PROVE</td><td>Domain skeleton read-back&lt;br&gt;<code>./bin/verify-model.sh</code>&lt;br&gt;<code>./mxcli -p app/erpv1.mpr -c &quot;DESCRIBE STRUCTURE&quot;</code></td><td>mxbuild 0 errors; 43 entities, 27 enumerations, 53 cross-module associations present; no association cycle</td><td>14</td><td class="st-todo">not built</td><td></td></tr>
+</table></div>
+<details><summary>Claims (95)</summary><ul class=claims>
+<li><code>/actorRoleMapping/*</code> (6) [F001]</li>
+<li><code>/actors/*</code> (5) [F001]</li>
+<li><code>/actorRoleMapping/*</code> (4) [F002]</li>
+<li><code>/actors/*</code> (3) [F002]</li>
+<li><code>/actorRoleMapping/*</code> (5) [F003]</li>
+<li><code>/actors/*</code> (4) [F003]</li>
+<li><code>/actorRoleMapping/*</code> (3) [F004]</li>
+<li><code>/actors/*</code> (2) [F004]</li>
+<li><code>/actorRoleMapping/*</code> (2) [F005]</li>
+<li><code>/actors/*</code> (2) [F005]</li>
+<li><code>/actorRoleMapping/*</code> (2) [F006]</li>
+<li><code>/actors/*</code> (2) [F006]</li>
+<li><code>/actorRoleMapping/*</code> (3) [F007]</li>
+<li><code>/actors/*</code> (3) [F007]</li>
+<li><code>/actorRoleMapping/*</code> (4) [F008]</li>
+<li><code>/actors/*</code> (4) [F008]</li>
+<li><code>/domainEntities/0/*</code> (147) [F001]</li>
+<li><code>/domainEntities/1/*</code> (26) [F001]</li>
+<li><code>/domainEntities/2/*</code> (53) [F001]</li>
+<li><code>/domainEntities/3/*</code> (38) [F001]</li>
+<li><code>/domainEntities/8/*</code> (66) [F001]</li>
+<li><code>/domainEntities/9/*</code> (37) [F001]</li>
+<li><code>/domainEntities/10/*</code> (47) [F001]</li>
+<li><code>/domainEntities/0/*</code> (23) [F008]</li>
+<li><code>/enumerations/0/*</code> (12) [F001]</li>
+<li><code>/enumerations/1/*</code> (10) [F001]</li>
+<li><code>/enumerations/2/*</code> (12) [F001]</li>
+<li><code>/enumerations/3/*</code> (11) [F001]</li>
+<li><code>/enumerations/0/*</code> (14) [F004]</li>
+<li><code>/enumerations/1/*</code> (13) [F004]</li>
+<li><code>/enumerations/0/*</code> (14) [F005]</li>
+<li><code>/enumerations/1/*</code> (13) [F005]</li>
+<li><code>/enumerations/0/*</code> (13) [F008]</li>
+<li><code>/domainEntities/0/*</code> (19) [F002]</li>
+<li><code>/domainEntities/1/*</code> (54) [F002]</li>
+<li><code>/domainEntities/0/*</code> (35) [F003]</li>
+<li><code>/domainEntities/1/*</code> (189) [F003]</li>
+<li><code>/domainEntities/2/*</code> (18) [F003]</li>
+<li><code>/domainEntities/3/*</code> (27) [F003]</li>
+<li><code>/domainEntities/4/*</code> (37) [F003]</li>
+<li><code>/domainEntities/5/*</code> (79) [F003]</li>
+<li><code>/enumerations/0/*</code> (13) [F002]</li>
+<li><code>/enumerations/0/*</code> (10) [F003]</li>
+<li><code>/enumerations/1/*</code> (10) [F003]</li>
+<li><code>/enumerations/2/*</code> (11) [F003]</li>
+<li><code>/enumerations/3/*</code> (14) [F003]</li>
+<li><code>/enumerations/4/*</code> (11) [F003]</li>
+<li><code>/domainEntities/4/*</code> (33) [F001]</li>
+<li><code>/domainEntities/5/*</code> (180) [F001]</li>
+<li><code>/domainEntities/6/*</code> (31) [F001]</li>
+<li><code>/domainEntities/7/*</code> (57) [F001]</li>
+<li><code>/enumerations/4/*</code> (16) [F001]</li>
+<li><code>/domainEntities/0/*</code> (45) [F004]</li>
+<li><code>/domainEntities/1/*</code> (178) [F004]</li>
+<li><code>/domainEntities/2/*</code> (135) [F004]</li>
+<li><code>/domainEntities/3/*</code> (37) [F004]</li>
+<li><code>/domainEntities/4/*</code> (61) [F004]</li>
+<li><code>/domainEntities/2/*</code> (15) [F007]</li>
+<li><code>/domainEntities/3/*</code> (22) [F007]</li>
+<li><code>/domainEntities/1/*</code> (21) [F008]</li>
+<li><code>/enumerations/2/*</code> (16) [F004]</li>
+<li><code>/enumerations/3/*</code> (16) [F004]</li>
+<li><code>/domainEntities/0/*</code> (86) [F005]</li>
+<li><code>/domainEntities/1/*</code> (149) [F005]</li>
+<li><code>/domainEntities/2/*</code> (133) [F005]</li>
+<li><code>/domainEntities/4/*</code> (15) [F007]</li>
+<li><code>/domainEntities/5/*</code> (14) [F007]</li>
+<li><code>/enumerations/2/*</code> (20) [F005]</li>
+<li><code>/enumerations/3/*</code> (13) [F005]</li>
+<li><code>/domainEntities/0/*</code> (46) [F006]</li>
+<li><code>/domainEntities/1/*</code> (61) [F006]</li>
+<li><code>/domainEntities/2/*</code> (68) [F006]</li>
+<li><code>/domainEntities/3/*</code> (123) [F006]</li>
+<li><code>/domainEntities/4/*</code> (119) [F006]</li>
+<li><code>/domainEntities/5/*</code> (66) [F006]</li>
+<li><code>/domainEntities/6/*</code> (83) [F006]</li>
+<li><code>/domainEntities/7/*</code> (22) [F006]</li>
+<li><code>/domainEntities/0/*</code> (23) [F007]</li>
+<li><code>/domainEntities/1/*</code> (21) [F007]</li>
+<li><code>/enumerations/0/*</code> (21) [F006]</li>
+<li><code>/enumerations/1/*</code> (13) [F006]</li>
+<li><code>/enumerations/2/*</code> (20) [F006]</li>
+<li><code>/domainEntities/2/*</code> (181) [F008]</li>
+<li><code>/domainEntities/3/*</code> (112) [F008]</li>
+<li><code>/domainEntities/4/*</code> (98) [F008]</li>
+<li><code>/domainEntities/5/*</code> (27) [F008]</li>
+<li><code>/domainEntities/6/*</code> (43) [F008]</li>
+<li><code>/domainEntities/7/*</code> (29) [F008]</li>
+<li><code>/enumerations/1/*</code> (13) [F008]</li>
+<li><code>/enumerations/2/*</code> (19) [F008]</li>
+<li><code>/enumerations/3/*</code> (10) [F008]</li>
+<li><code>/enumerations/4/*</code> (10) [F008]</li>
+<li><code>/enumerations/5/*</code> (10) [F008]</li>
+<li><code>/enumerations/6/*</code> (15) [F008]</li>
+<li><code>/enumerations/7/*</code> (19) [F008]</li>
+</ul></details>
+</section>
+<section class=phase><h3>Phase 3 &mdash; Core (3-core) <span class="badge st-todo">not built</span></h3>
+<p class=note>0 of 8 rows built</p>
+<div class=scroll><table><tr><th>#</th><th>Kind</th><th>Step</th><th>Produces / Proves</th><th>Depends on</th><th>State</th><th>Scripts</th></tr>
+<tr><td>16</td><td>BRIEF</td><td>Check <code>architecture/modules/Core/module-brief.md</code> covers this phase (screens, access, validation, test plan, build steps)&lt;br&gt;<code>architecture/modules/Core/module-brief.md</code></td><td>brief extended for phase 3</td><td>15</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>17</td><td>BUILD</td><td>Core shared logic (F001)&lt;br&gt;<code>mdlsource/3-core/301-core-mf-sequence-next-number.mdl</code>&lt;br&gt;<code>mdlsource/3-core/302-core-mf-core-seed-data.mdl</code></td><td>Core.SUB_Sequence_NextNumber (+ grant execute); Core.ASU_Core_SeedData (+ grant execute)</td><td>16</td><td class="st-todo">not built</td><td><span class="st-todo" title="301-core-mf-sequence-next-number.mdl: missing; 302-core-mf-core-seed-data.mdl: missing">not written yet</span></td></tr>
+<tr><td>18</td><td>BUILD</td><td>Core shared logic (F008)&lt;br&gt;<code>mdlsource/3-core/303-core-mf-tax-compute-line.mdl</code>&lt;br&gt;<code>mdlsource/3-core/304-core-mf-payment-term-compute-due-date.mdl</code></td><td>Core.SUB_Tax_ComputeLine (+ grant execute); Core.SUB_PaymentTerm_ComputeDueDate (+ grant execute)</td><td>17</td><td class="st-todo">not built</td><td><span class="st-todo" title="303-core-mf-tax-compute-line.mdl: missing; 304-core-mf-payment-term-compute-due-date.mdl: missing">not written yet</span></td></tr>
+<tr><td>19</td><td>BUILD</td><td>F001-UC004 Configure the company&lt;br&gt;<code>mdlsource/3-core/305-core-page-company-edit.mdl</code></td><td>Core.Company_Edit (+ grant view) — wireframe design/wireframes/Company_Edit.html</td><td>18</td><td class="st-todo">not built</td><td><span class="st-todo" title="305-core-page-company-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>20</td><td>BUILD</td><td>F001-UC006 Maintain document numbering&lt;br&gt;<code>mdlsource/3-core/306-core-page-sequence-overview.mdl</code></td><td>Core.Sequence_Overview (+ grant view) — wireframe design/wireframes/Sequence_Overview.html</td><td>19</td><td class="st-todo">not built</td><td><span class="st-todo" title="306-core-page-sequence-overview.mdl: missing">not written yet</span></td></tr>
+<tr><td>21</td><td>BUILD</td><td>F008-UC009 Maintain taxes and payment terms&lt;br&gt;<code>mdlsource/3-core/307-core-page-tax-overview.mdl</code>&lt;br&gt;<code>mdlsource/3-core/308-core-page-payment-term-new-edit.mdl</code>&lt;br&gt;<code>mdlsource/3-core/309-core-page-tax-new-edit.mdl</code>&lt;br&gt;<code>mdlsource/3-core/310-core-page-payment-term-overview.mdl</code></td><td>Core.Tax_Overview (+ grant view) — wireframe design/wireframes/Tax_Overview.html; Core.PaymentTerm_NewEdit (+ grant view) — wireframe design/wireframes/PaymentTerm_NewEdit.html; Core.Tax_NewEdit (+ grant view) — wireframe design/wireframes/Tax_NewEdit.html; Core.PaymentTerm_Overview (+ grant view) — wireframe design/wireframes/PaymentTerm_Overview.html</td><td>20</td><td class="st-todo">not built</td><td><span class="st-todo" title="307-core-page-tax-overview.mdl: missing; 308-core-page-payment-term-new-edit.mdl: missing; 309-core-page-tax-new-edit.mdl: missing; 310-core-page-payment-term-overview.mdl: missing">not written yet</span></td></tr>
+<tr><td>22</td><td>PROVE</td><td>Core unit tests&lt;br&gt;<code>tests/Core/*.test.mdl via ./mxcli test tests/Core -p app/erpv1.mpr --local</code></td><td>every SUB_/ACT_ microflow with calculation or state change in Core has a .test.mdl with @verify; all pass</td><td>21</td><td class="st-todo">not built</td><td><span class="st-todo" title="*.test.mdl: missing; .test.mdl: missing">not written yet</span></td></tr>
+<tr><td>23</td><td>HARNESS</td><td>Core module close&lt;br&gt;<code>bin/verify-module.sh Core</code>&lt;br&gt;<code>LOOK + CONFIRM per module-review.md</code></td><td>verify-module summary has no FAULT; review states N of N pages reviewed</td><td>22</td><td class="st-todo">not built</td><td></td></tr>
+</table></div>
+<details><summary>Claims (13)</summary><ul class=claims>
+<li><code>/microflows/4/*</code> (10) [F001]</li>
+<li><code>/microflows/5/*</code> (8) [F001]</li>
+<li><code>/microflows/3/*</code> (19) [F008]</li>
+<li><code>/microflows/5/*</code> (12) [F008]</li>
+<li><code>/useCases/3/*</code> (15) [F001]</li>
+<li><code>/pages/3/*</code> (13) [F001]</li>
+<li><code>/useCases/5/*</code> (13) [F001]</li>
+<li><code>/pages/5/*</code> (9) [F001]</li>
+<li><code>/useCases/8/*</code> (19) [F008]</li>
+<li><code>/pages/6/*</code> (10) [F008]</li>
+<li><code>/pages/7/*</code> (10) [F008]</li>
+<li><code>/pages/10/*</code> (10) [F008]</li>
+<li><code>/pages/11/*</code> (10) [F008]</li>
+</ul></details>
+</section>
+<section class=phase><h3>Phase 4 &mdash; Products (4-products) <span class="badge st-todo">not built</span></h3>
+<p class=note>0 of 9 rows built</p>
+<div class=scroll><table><tr><th>#</th><th>Kind</th><th>Step</th><th>Produces / Proves</th><th>Depends on</th><th>State</th><th>Scripts</th></tr>
+<tr><td>24</td><td>BRIEF</td><td>Check <code>architecture/modules/Products/module-brief.md</code> covers this phase (screens, access, validation, test plan, build steps)&lt;br&gt;<code>architecture/modules/Products/module-brief.md</code></td><td>brief extended for phase 4</td><td>23</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>25</td><td>BUILD</td><td>F002-UC001 Maintain units of measure&lt;br&gt;<code>mdlsource/4-products/401-products-mf-uo-m-category.mdl</code>&lt;br&gt;<code>mdlsource/4-products/402-products-page-uo-m-category-overview.mdl</code>&lt;br&gt;<code>mdlsource/4-products/403-products-page-uo-m-category-new-edit.mdl</code></td><td>Products.VAL_UoMCategory (+ grant execute); Products.UoMCategory_Overview (+ grant view) — wireframe design/wireframes/UoMCategory_Overview.html; Products.UoMCategory_NewEdit (+ grant view) — wireframe design/wireframes/UoMCategory_NewEdit.html</td><td>24</td><td class="st-todo">not built</td><td><span class="st-todo" title="401-products-mf-uo-m-category.mdl: missing; 402-products-page-uo-m-category-overview.mdl: missing; 403-products-page-uo-m-category-new-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>26</td><td>BUILD</td><td>F002-UC002 Convert quantities between units&lt;br&gt;<code>mdlsource/4-products/404-products-mf-uo-m-convert-quantity.mdl</code></td><td>Products.SUB_UoM_ConvertQuantity (+ grant execute); Products.SUB_UoM_ConvertPrice (+ grant execute)</td><td>25</td><td class="st-todo">not built</td><td><span class="st-todo" title="404-products-mf-uo-m-convert-quantity.mdl: missing">not written yet</span></td></tr>
+<tr><td>27</td><td>BUILD</td><td>F003-UC001 Create a product&lt;br&gt;<code>mdlsource/4-products/405-products-mf-product-save.mdl</code>&lt;br&gt;<code>mdlsource/4-products/406-products-page-product-overview.mdl</code>&lt;br&gt;<code>mdlsource/4-products/407-products-page-product-new-edit.mdl</code>&lt;br&gt;<code>mdlsource/4-products/408-products-page-product-category-overview.mdl</code>&lt;br&gt;<code>mdlsource/4-products/409-products-page-product-category-new-edit.mdl</code></td><td>Products.ACT_Product_Save (+ grant execute); Products.VAL_Product (+ grant execute); Products.Product_Overview (+ grant view) — wireframe design/wireframes/Product_Overview.html; Products.Product_NewEdit (+ grant view) — wireframe design/wireframes/Product_NewEdit.html; Products.ProductCategory_Overview (+ grant view) — wireframe design/wireframes/ProductCategory_Overview.html; Products.ProductCategory_NewEdit (+ grant view) — wireframe design/wireframes/ProductCategory_NewEdit.html</td><td>26</td><td class="st-todo">not built</td><td><span class="st-todo" title="405-products-mf-product-save.mdl: missing; 406-products-page-product-overview.mdl: missing; 407-products-page-product-new-edit.mdl: missing; 408-products-page-product-category-overview.mdl: missing; 409-products-page-product-category-new-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>28</td><td>BUILD</td><td>F003-UC002 Maintain a pricelist&lt;br&gt;<code>mdlsource/4-products/410-products-mf-pricelist-get-price.mdl</code>&lt;br&gt;<code>mdlsource/4-products/411-products-page-pricelist-overview.mdl</code>&lt;br&gt;<code>mdlsource/4-products/412-products-page-pricelist-new-edit.mdl</code></td><td>Products.SUB_Pricelist_GetPrice (+ grant execute); Products.Pricelist_Overview (+ grant view) — wireframe design/wireframes/Pricelist_Overview.html; Products.Pricelist_NewEdit (+ grant view) — wireframe design/wireframes/Pricelist_NewEdit.html</td><td>27</td><td class="st-todo">not built</td><td><span class="st-todo" title="410-products-mf-pricelist-get-price.mdl: missing; 411-products-page-pricelist-overview.mdl: missing; 412-products-page-pricelist-new-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>29</td><td>BUILD</td><td>F003-UC003 Get the price for a customer&lt;br&gt;(no new document — use case is carried by the documents of rows )</td><td>behaviour only (see scripts of the rows it depends on)</td><td>28</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>30</td><td>BUILD</td><td>F003-UC004 Archive a product&lt;br&gt;(no new document — use case is carried by the documents of rows 27)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>29</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>31</td><td>PROVE</td><td>Products unit tests&lt;br&gt;<code>tests/Products/*.test.mdl via ./mxcli test tests/Products -p app/erpv1.mpr --local</code></td><td>every SUB_/ACT_ microflow with calculation or state change in Products has a .test.mdl with @verify; all pass</td><td>30</td><td class="st-todo">not built</td><td><span class="st-todo" title="*.test.mdl: missing; .test.mdl: missing">not written yet</span></td></tr>
+<tr><td>32</td><td>HARNESS</td><td>Products module close&lt;br&gt;<code>bin/verify-module.sh Products</code>&lt;br&gt;<code>LOOK + CONFIRM per module-review.md</code></td><td>verify-module summary has no FAULT; review states N of N pages reviewed</td><td>31</td><td class="st-todo">not built</td><td></td></tr>
+</table></div>
+<details><summary>Claims (20)</summary><ul class=claims>
+<li><code>/useCases/0/*</code> (18) [F002]</li>
+<li><code>/microflows/2/*</code> (9) [F002]</li>
+<li><code>/pages/0/*</code> (10) [F002]</li>
+<li><code>/pages/1/*</code> (11) [F002]</li>
+<li><code>/useCases/1/*</code> (14) [F002]</li>
+<li><code>/microflows/0/*</code> (15) [F002]</li>
+<li><code>/microflows/1/*</code> (13) [F002]</li>
+<li><code>/useCases/0/*</code> (25) [F003]</li>
+<li><code>/microflows/0/*</code> (14) [F003]</li>
+<li><code>/microflows/1/*</code> (9) [F003]</li>
+<li><code>/pages/0/*</code> (12) [F003]</li>
+<li><code>/pages/1/*</code> (14) [F003]</li>
+<li><code>/pages/2/*</code> (10) [F003]</li>
+<li><code>/pages/5/*</code> (10) [F003]</li>
+<li><code>/useCases/1/*</code> (16) [F003]</li>
+<li><code>/microflows/2/*</code> (17) [F003]</li>
+<li><code>/pages/3/*</code> (10) [F003]</li>
+<li><code>/pages/4/*</code> (11) [F003]</li>
+<li><code>/useCases/2/*</code> (14) [F003]</li>
+<li><code>/useCases/3/*</code> (12) [F003]</li>
+</ul></details>
+</section>
+<section class=phase><h3>Phase 5 &mdash; Partners (5-partners) <span class="badge st-todo">not built</span></h3>
+<p class=note>0 of 9 rows built</p>
+<div class=scroll><table><tr><th>#</th><th>Kind</th><th>Step</th><th>Produces / Proves</th><th>Depends on</th><th>State</th><th>Scripts</th></tr>
+<tr><td>33</td><td>BRIEF</td><td>Check <code>architecture/modules/Partners/module-brief.md</code> covers this phase (screens, access, validation, test plan, build steps)&lt;br&gt;<code>architecture/modules/Partners/module-brief.md</code></td><td>brief extended for phase 5</td><td>32</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>34</td><td>BUILD</td><td>Partners shared logic (F001)&lt;br&gt;<code>mdlsource/5-partners/501-partners-mf-partner.mdl</code>&lt;br&gt;<code>mdlsource/5-partners/502-partners-mf-partner-get-address.mdl</code></td><td>Partners.VAL_Partner (+ grant execute); Partners.SUB_Partner_GetAddress (+ grant execute)</td><td>33</td><td class="st-todo">not built</td><td><span class="st-todo" title="501-partners-mf-partner.mdl: missing; 502-partners-mf-partner-get-address.mdl: missing">not written yet</span></td></tr>
+<tr><td>35</td><td>BUILD</td><td>F001-UC001 Maintain a company contact&lt;br&gt;<code>mdlsource/5-partners/503-partners-mf-partner-save.mdl</code>&lt;br&gt;<code>mdlsource/5-partners/504-partners-page-partner-overview.mdl</code>&lt;br&gt;<code>mdlsource/5-partners/505-partners-page-partner-new-edit.mdl</code></td><td>Partners.ACT_Partner_Save (+ grant execute); Partners.Partner_Overview (+ grant view) — wireframe design/wireframes/Partner_Overview.html; Partners.Partner_NewEdit (+ grant view) — wireframe design/wireframes/Partner_NewEdit.html</td><td>34</td><td class="st-todo">not built</td><td><span class="st-todo" title="503-partners-mf-partner-save.mdl: missing; 504-partners-page-partner-overview.mdl: missing; 505-partners-page-partner-new-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>36</td><td>BUILD</td><td>F001-UC002 Add a contact person or address to a company&lt;br&gt;<code>mdlsource/5-partners/506-partners-mf-partner-get-commercial-partner.mdl</code>&lt;br&gt;<code>mdlsource/5-partners/507-partners-page-partner-child-new-edit.mdl</code></td><td>Partners.SUB_Partner_GetCommercialPartner (+ grant execute); Partners.PartnerChild_NewEdit (+ grant view) — wireframe design/wireframes/PartnerChild_NewEdit.html</td><td>35</td><td class="st-todo">not built</td><td><span class="st-todo" title="506-partners-mf-partner-get-commercial-partner.mdl: missing; 507-partners-page-partner-child-new-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>37</td><td>BUILD</td><td>F001-UC003 Archive a partner&lt;br&gt;(no new document — use case is carried by the documents of rows 35)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>36</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>38</td><td>BUILD</td><td>F001-UC005 Manage app users&lt;br&gt;<code>mdlsource/5-partners/508-partners-mf-user-profile-create.mdl</code>&lt;br&gt;<code>mdlsource/5-partners/509-partners-page-user-profile-edit.mdl</code></td><td>Partners.ACT_UserProfile_Create (+ grant execute); Partners.UserProfile_Edit (+ grant view) — wireframe design/wireframes/UserProfile_Edit.html</td><td>37</td><td class="st-todo">not built</td><td><span class="st-todo" title="508-partners-mf-user-profile-create.mdl: missing; 509-partners-page-user-profile-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>39</td><td>PROVE</td><td>Partners unit tests&lt;br&gt;<code>tests/Partners/*.test.mdl via ./mxcli test tests/Partners -p app/erpv1.mpr --local</code></td><td>every SUB_/ACT_ microflow with calculation or state change in Partners has a .test.mdl with @verify; all pass</td><td>38</td><td class="st-todo">not built</td><td><span class="st-todo" title="*.test.mdl: missing; .test.mdl: missing">not written yet</span></td></tr>
+<tr><td>40</td><td>HARNESS</td><td>Partners module close&lt;br&gt;<code>bin/verify-module.sh Partners</code>&lt;br&gt;<code>LOOK + CONFIRM per module-review.md</code></td><td>verify-module summary has no FAULT; review states N of N pages reviewed</td><td>39</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>41</td><td>HARNESS</td><td>process-coherence-pass on Core, Products, Partners&lt;br&gt;<code>skills/process-coherence-pass.md over Core, Products, Partners</code></td><td>cluster journeys chain (master data → orders)</td><td>40</td><td class="st-todo">not built</td><td></td></tr>
+</table></div>
+<details><summary>Claims (13)</summary><ul class=claims>
+<li><code>/microflows/1/*</code> (10) [F001]</li>
+<li><code>/microflows/3/*</code> (11) [F001]</li>
+<li><code>/useCases/0/*</code> (22) [F001]</li>
+<li><code>/microflows/0/*</code> (15) [F001]</li>
+<li><code>/pages/0/*</code> (13) [F001]</li>
+<li><code>/pages/1/*</code> (15) [F001]</li>
+<li><code>/useCases/1/*</code> (18) [F001]</li>
+<li><code>/microflows/2/*</code> (9) [F001]</li>
+<li><code>/pages/2/*</code> (12) [F001]</li>
+<li><code>/useCases/2/*</code> (14) [F001]</li>
+<li><code>/useCases/4/*</code> (16) [F001]</li>
+<li><code>/microflows/6/*</code> (9) [F001]</li>
+<li><code>/pages/4/*</code> (9) [F001]</li>
+</ul></details>
+</section>
+<section class=phase><h3>Phase 6 &mdash; Sales (6-sales) <span class="badge st-todo">not built</span></h3>
+<p class=note>0 of 13 rows built</p>
+<div class=scroll><table><tr><th>#</th><th>Kind</th><th>Step</th><th>Produces / Proves</th><th>Depends on</th><th>State</th><th>Scripts</th></tr>
+<tr><td>42</td><td>BRIEF</td><td>Check <code>architecture/modules/Sales/module-brief.md</code> covers this phase (screens, access, validation, test plan, build steps)&lt;br&gt;<code>architecture/modules/Sales/module-brief.md</code></td><td>brief extended for phase 6</td><td>41</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>43</td><td>BUILD</td><td>Sales shared logic (F004)&lt;br&gt;<code>mdlsource/6-sales/601-sales-mf-sales-order-apply-template.mdl</code>&lt;br&gt;<code>mdlsource/6-sales/602-sales-mf-sales-order-update-invoice-status.mdl</code></td><td>Sales.ACT_SalesOrder_ApplyTemplate (+ grant execute); Sales.SUB_SalesOrder_UpdateInvoiceStatus (+ grant execute)</td><td>42</td><td class="st-todo">not built</td><td><span class="st-todo" title="601-sales-mf-sales-order-apply-template.mdl: missing; 602-sales-mf-sales-order-update-invoice-status.mdl: missing">not written yet</span></td></tr>
+<tr><td>44</td><td>BUILD</td><td>F004-UC001 Create a quotation&lt;br&gt;<code>mdlsource/6-sales/603-sales-mf-sales-order-new.mdl</code>&lt;br&gt;<code>mdlsource/6-sales/604-sales-mf-sales-order-set-to-quotation.mdl</code>&lt;br&gt;<code>mdlsource/6-sales/605-sales-page-sales-order-overview.mdl</code>&lt;br&gt;<code>mdlsource/6-sales/606-sales-page-sales-order-new-edit.mdl</code></td><td>Sales.ACT_SalesOrder_New (+ grant execute); Sales.ACT_SalesOrderLine_ChangeProduct (+ grant execute); Sales.SUB_SalesOrder_RecomputeTotals (+ grant execute); Sales.ACT_SalesOrder_MarkSent (+ grant execute); Sales.ACT_SalesOrder_Confirm (+ grant execute); Sales.ACT_SalesOrder_Cancel (+ grant execute); Sales.ACT_SalesOrder_SetToQuotation (+ grant execute); Sales.ACT_SalesOrder_ToggleLock (+ grant execute); Sales.SalesOrder_Overview (+ grant view) — wireframe design/wireframes/SalesOrder_Overview.html; Sales.SalesOrder_NewEdit (+ grant view) — wireframe design/wireframes/SalesOrder_NewEdit.html</td><td>43</td><td class="st-todo">not built</td><td><span class="st-todo" title="603-sales-mf-sales-order-new.mdl: missing; 604-sales-mf-sales-order-set-to-quotation.mdl: missing; 605-sales-page-sales-order-overview.mdl: missing; 606-sales-page-sales-order-new-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>45</td><td>BUILD</td><td>F004-UC002 Mark a quotation as sent&lt;br&gt;(no new document — use case is carried by the documents of rows 44)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>44</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>46</td><td>BUILD</td><td>F004-UC003 Confirm a quotation into a sales order&lt;br&gt;(no new document — use case is carried by the documents of rows 44)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>45</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>47</td><td>BUILD</td><td>F004-UC004 Cancel and reset a sales document&lt;br&gt;(no new document — use case is carried by the documents of rows 44)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>46</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>48</td><td>BUILD</td><td>F004-UC005 Lock / unlock a confirmed order&lt;br&gt;(no new document — use case is carried by the documents of rows 44)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>47</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>49</td><td>BUILD</td><td>F004-UC006 Follow up orders to invoice and deliver&lt;br&gt;(no new document — use case is carried by the documents of rows 44)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>48</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>50</td><td>BUILD</td><td>F004-UC007 Analyse sales&lt;br&gt;<code>mdlsource/6-sales/608-sales-view-sales-analysis.mdl</code>&lt;br&gt;<code>mdlsource/6-sales/607-sales-page-sales-analysis-report.mdl</code></td><td>Sales.SalesAnalysis (OQL view entity, replaces sale.report); Sales.SalesAnalysis_Report (+ grant view) — wireframe design/wireframes/SalesAnalysis_Report.html</td><td>49</td><td class="st-todo">not built</td><td><span class="st-todo" title="608-sales-view-sales-analysis.mdl: missing; 607-sales-page-sales-analysis-report.mdl: missing">not written yet</span></td></tr>
+<tr><td>51</td><td>BUILD</td><td>F004-UC008 Maintain quotation templates and sales teams&lt;br&gt;<code>mdlsource/6-sales/609-sales-page-quotation-template-new-edit.mdl</code>&lt;br&gt;<code>mdlsource/6-sales/610-sales-page-sales-team-new-edit.mdl</code>&lt;br&gt;<code>mdlsource/6-sales/611-sales-page-quotation-template-overview.mdl</code>&lt;br&gt;<code>mdlsource/6-sales/612-sales-page-sales-team-overview.mdl</code></td><td>Sales.QuotationTemplate_NewEdit (+ grant view) — wireframe design/wireframes/QuotationTemplate_NewEdit.html; Sales.SalesTeam_NewEdit (+ grant view) — wireframe design/wireframes/SalesTeam_NewEdit.html; Sales.QuotationTemplate_Overview (+ grant view) — wireframe design/wireframes/QuotationTemplate_Overview.html; Sales.SalesTeam_Overview (+ grant view) — wireframe design/wireframes/SalesTeam_Overview.html</td><td>50</td><td class="st-todo">not built</td><td><span class="st-todo" title="609-sales-page-quotation-template-new-edit.mdl: missing; 610-sales-page-sales-team-new-edit.mdl: missing; 611-sales-page-quotation-template-overview.mdl: missing; 612-sales-page-sales-team-overview.mdl: missing">not written yet</span></td></tr>
+<tr><td>52</td><td>BUILD</td><td>F008-UC001 Invoice sales orders&lt;br&gt;<code>mdlsource/6-sales/613-sales-mf-sales-orders-create-invoices.mdl</code>&lt;br&gt;<code>mdlsource/6-sales/614-sales-page-create-invoice-popup.mdl</code></td><td>Invoicing.SUB_SalesOrders_CreateInvoices (+ grant execute); Sales.CreateInvoice_Popup (+ grant view) — wireframe design/wireframes/CreateInvoice_Popup.html</td><td>51</td><td class="st-todo">not built</td><td><span class="st-todo" title="613-sales-mf-sales-orders-create-invoices.mdl: missing; 614-sales-page-create-invoice-popup.mdl: missing">not written yet</span></td></tr>
+<tr><td>53</td><td>PROVE</td><td>Sales unit tests&lt;br&gt;<code>tests/Sales/*.test.mdl via ./mxcli test tests/Sales -p app/erpv1.mpr --local</code></td><td>every SUB_/ACT_ microflow with calculation or state change in Sales has a .test.mdl with @verify; all pass</td><td>52</td><td class="st-todo">not built</td><td><span class="st-todo" title="*.test.mdl: missing; .test.mdl: missing">not written yet</span></td></tr>
+<tr><td>54</td><td>HARNESS</td><td>Sales module close&lt;br&gt;<code>bin/verify-module.sh Sales</code>&lt;br&gt;<code>LOOK + CONFIRM per module-review.md</code></td><td>verify-module summary has no FAULT; review states N of N pages reviewed</td><td>53</td><td class="st-todo">not built</td><td></td></tr>
+</table></div>
+<details><summary>Claims (29)</summary><ul class=claims>
+<li><code>/microflows/1/*</code> (9) [F004]</li>
+<li><code>/microflows/9/*</code> (12) [F004]</li>
+<li><code>/useCases/0/*</code> (24) [F004]</li>
+<li><code>/microflows/0/*</code> (14) [F004]</li>
+<li><code>/microflows/2/*</code> (13) [F004]</li>
+<li><code>/microflows/3/*</code> (13) [F004]</li>
+<li><code>/microflows/4/*</code> (9) [F004]</li>
+<li><code>/microflows/5/*</code> (16) [F004]</li>
+<li><code>/microflows/6/*</code> (11) [F004]</li>
+<li><code>/microflows/7/*</code> (9) [F004]</li>
+<li><code>/microflows/8/*</code> (10) [F004]</li>
+<li><code>/pages/0/*</code> (13) [F004]</li>
+<li><code>/pages/1/*</code> (18) [F004]</li>
+<li><code>/useCases/1/*</code> (13) [F004]</li>
+<li><code>/useCases/2/*</code> (17) [F004]</li>
+<li><code>/useCases/3/*</code> (16) [F004]</li>
+<li><code>/useCases/4/*</code> (13) [F004]</li>
+<li><code>/useCases/5/*</code> (13) [F004]</li>
+<li><code>/useCases/6/*</code> (13) [F004]</li>
+<li><code>/pages/4/*</code> (11) [F004]</li>
+<li><code>/viewEntities/0/*</code> (4) [F004]</li>
+<li><code>/useCases/7/*</code> (18) [F004]</li>
+<li><code>/pages/2/*</code> (11) [F004]</li>
+<li><code>/pages/3/*</code> (11) [F004]</li>
+<li><code>/pages/5/*</code> (10) [F004]</li>
+<li><code>/pages/6/*</code> (10) [F004]</li>
+<li><code>/useCases/0/*</code> (20) [F008]</li>
+<li><code>/microflows/1/*</code> (14) [F008]</li>
+<li><code>/pages/2/*</code> (10) [F008]</li>
+</ul></details>
+</section>
+<section class=phase><h3>Phase 7 &mdash; Purchasing (7-purchasing) <span class="badge st-todo">not built</span></h3>
+<p class=note>0 of 13 rows built</p>
+<div class=scroll><table><tr><th>#</th><th>Kind</th><th>Step</th><th>Produces / Proves</th><th>Depends on</th><th>State</th><th>Scripts</th></tr>
+<tr><td>55</td><td>BRIEF</td><td>Check <code>architecture/modules/Purchasing/module-brief.md</code> covers this phase (screens, access, validation, test plan, build steps)&lt;br&gt;<code>architecture/modules/Purchasing/module-brief.md</code></td><td>brief extended for phase 7</td><td>54</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>56</td><td>BUILD</td><td>Purchasing shared logic (F005)&lt;br&gt;<code>mdlsource/7-purchasing/701-purchasing-mf-purchase-order-new.mdl</code>&lt;br&gt;<code>mdlsource/7-purchasing/702-purchasing-mf-purchase-order-reject.mdl</code>&lt;br&gt;<code>mdlsource/7-purchasing/703-purchasing-mf-purchase-order-update-billing-status.mdl</code></td><td>Purchasing.ACT_PurchaseOrder_New (+ grant execute); Purchasing.ACT_PurchaseOrder_Reject (+ grant execute); Purchasing.SUB_PurchaseOrder_UpdateBillingStatus (+ grant execute)</td><td>55</td><td class="st-todo">not built</td><td><span class="st-todo" title="701-purchasing-mf-purchase-order-new.mdl: missing; 702-purchasing-mf-purchase-order-reject.mdl: missing; 703-purchasing-mf-purchase-order-update-billing-status.mdl: missing">not written yet</span></td></tr>
+<tr><td>57</td><td>BUILD</td><td>F005-UC001 Create a request for quotation&lt;br&gt;<code>mdlsource/7-purchasing/704-purchasing-mf-purchase-order-line-change-product.mdl</code>&lt;br&gt;<code>mdlsource/7-purchasing/705-purchasing-mf-purchase-order-toggle-lock.mdl</code>&lt;br&gt;<code>mdlsource/7-purchasing/706-purchasing-page-purchase-order-overview.mdl</code>&lt;br&gt;<code>mdlsource/7-purchasing/707-purchasing-page-purchase-order-new-edit.mdl</code></td><td>Purchasing.ACT_PurchaseOrderLine_ChangeProduct (+ grant execute); Purchasing.SUB_PurchaseOrder_RecomputeTotals (+ grant execute); Purchasing.ACT_PurchaseOrder_MarkSent (+ grant execute); Purchasing.ACT_PurchaseOrder_Confirm (+ grant execute); Purchasing.ACT_PurchaseOrder_Cancel (+ grant execute); Purchasing.ACT_PurchaseOrder_SetToDraft (+ grant execute); Purchasing.ACT_PurchaseOrder_ToggleLock (+ grant execute); Purchasing.PurchaseOrder_Overview (+ grant view) — wireframe design/wireframes/PurchaseOrder_Overview.html; Purchasing.PurchaseOrder_NewEdit (+ grant view) — wireframe design/wireframes/PurchaseOrder_NewEdit.html</td><td>56</td><td class="st-todo">not built</td><td><span class="st-todo" title="704-purchasing-mf-purchase-order-line-change-product.mdl: missing; 705-purchasing-mf-purchase-order-toggle-lock.mdl: missing; 706-purchasing-page-purchase-order-overview.mdl: missing; 707-purchasing-page-purchase-order-new-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>58</td><td>BUILD</td><td>F005-UC002 Mark an RFQ as sent&lt;br&gt;(no new document — use case is carried by the documents of rows 57)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>57</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>59</td><td>BUILD</td><td>F005-UC003 Confirm an RFQ&lt;br&gt;<code>mdlsource/7-purchasing/708-purchasing-mf-purchase-order-approve.mdl</code>&lt;br&gt;<code>mdlsource/7-purchasing/709-purchasing-workflow-purchase-order-approval.mdl</code></td><td>Purchasing.SUB_PurchaseOrder_Approve (+ grant execute); Purchasing.WF_PurchaseOrderApproval (workflow; task page first; native mx check after write)</td><td>58</td><td class="st-todo">not built</td><td><span class="st-todo" title="708-purchasing-mf-purchase-order-approve.mdl: missing; 709-purchasing-workflow-purchase-order-approval.mdl: missing">not written yet</span></td></tr>
+<tr><td>60</td><td>BUILD</td><td>F005-UC004 Approve or reject a purchase order&lt;br&gt;<code>mdlsource/7-purchasing/710-purchasing-page-purchase-approval-task.mdl</code>&lt;br&gt;<code>mdlsource/7-purchasing/711-purchasing-page-purchase-approval-inbox.mdl</code></td><td>Purchasing.PurchaseApproval_Task (+ grant view) — wireframe design/wireframes/PurchaseApproval_Task.html; Purchasing.PurchaseApproval_Inbox (+ grant view) — wireframe design/wireframes/PurchaseApproval_Inbox.html</td><td>59</td><td class="st-todo">not built</td><td><span class="st-todo" title="710-purchasing-page-purchase-approval-task.mdl: missing; 711-purchasing-page-purchase-approval-inbox.mdl: missing">not written yet</span></td></tr>
+<tr><td>61</td><td>BUILD</td><td>F005-UC005 Cancel, reset or lock a purchase order&lt;br&gt;(no new document — use case is carried by the documents of rows 57)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>60</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>62</td><td>BUILD</td><td>F005-UC006 Analyse purchases&lt;br&gt;<code>mdlsource/7-purchasing/713-purchasing-view-purchase-analysis.mdl</code>&lt;br&gt;<code>mdlsource/7-purchasing/712-purchasing-page-purchase-analysis-report.mdl</code></td><td>Purchasing.PurchaseAnalysis (OQL view entity, replaces purchase.report); Purchasing.PurchaseAnalysis_Report (+ grant view) — wireframe design/wireframes/PurchaseAnalysis_Report.html</td><td>61</td><td class="st-todo">not built</td><td><span class="st-todo" title="713-purchasing-view-purchase-analysis.mdl: missing; 712-purchasing-page-purchase-analysis-report.mdl: missing">not written yet</span></td></tr>
+<tr><td>63</td><td>BUILD</td><td>F005-UC007 Record vendor prices&lt;br&gt;<code>mdlsource/7-purchasing/714-purchasing-mf-vendor-price-get-best.mdl</code>&lt;br&gt;<code>mdlsource/7-purchasing/715-purchasing-page-vendor-price-overview.mdl</code></td><td>Purchasing.SUB_VendorPrice_GetBest (+ grant execute); Purchasing.VendorPrice_Overview (+ grant view) — wireframe design/wireframes/VendorPrice_Overview.html</td><td>62</td><td class="st-todo">not built</td><td><span class="st-todo" title="714-purchasing-mf-vendor-price-get-best.mdl: missing; 715-purchasing-page-vendor-price-overview.mdl: missing">not written yet</span></td></tr>
+<tr><td>64</td><td>BUILD</td><td>F008-UC002 Create a vendor bill from a purchase order&lt;br&gt;<code>mdlsource/7-purchasing/716-purchasing-mf-purchase-order-create-bill.mdl</code>&lt;br&gt;<code>mdlsource/7-purchasing/717-purchasing-page-invoice-new-edit.mdl</code></td><td>Invoicing.ACT_PurchaseOrder_CreateBill (+ grant execute); Invoicing.ACT_Invoice_Post (+ grant execute); Invoicing.ACT_Invoice_ResetToDraft (+ grant execute); Invoicing.ACT_Invoice_Cancel (+ grant execute); Invoicing.ACT_Invoice_RegisterPayment (+ grant execute); Invoicing.Invoice_NewEdit (+ grant view) — wireframe design/wireframes/Invoice_NewEdit.html</td><td>63</td><td class="st-todo">not built</td><td><span class="st-todo" title="716-purchasing-mf-purchase-order-create-bill.mdl: missing; 717-purchasing-page-invoice-new-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>65</td><td>PROVE</td><td>Purchasing unit tests&lt;br&gt;<code>tests/Purchasing/*.test.mdl via ./mxcli test tests/Purchasing -p app/erpv1.mpr --local</code></td><td>every SUB_/ACT_ microflow with calculation or state change in Purchasing has a .test.mdl with @verify; all pass</td><td>64</td><td class="st-todo">not built</td><td><span class="st-todo" title="*.test.mdl: missing; .test.mdl: missing">not written yet</span></td></tr>
+<tr><td>66</td><td>HARNESS</td><td>Purchasing module close&lt;br&gt;<code>bin/verify-module.sh Purchasing</code>&lt;br&gt;<code>LOOK + CONFIRM per module-review.md</code></td><td>verify-module summary has no FAULT; review states N of N pages reviewed</td><td>65</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>67</td><td>HARNESS</td><td>process-coherence-pass on Sales, Purchasing&lt;br&gt;<code>skills/process-coherence-pass.md over Sales, Purchasing</code></td><td>cluster journeys chain (master data → orders)</td><td>66</td><td class="st-todo">not built</td><td></td></tr>
+</table></div>
+<details><summary>Claims (34)</summary><ul class=claims>
+<li><code>/microflows/0/*</code> (9) [F005]</li>
+<li><code>/microflows/6/*</code> (9) [F005]</li>
+<li><code>/microflows/11/*</code> (10) [F005]</li>
+<li><code>/useCases/0/*</code> (19) [F005]</li>
+<li><code>/microflows/1/*</code> (11) [F005]</li>
+<li><code>/microflows/2/*</code> (11) [F005]</li>
+<li><code>/microflows/3/*</code> (9) [F005]</li>
+<li><code>/microflows/4/*</code> (16) [F005]</li>
+<li><code>/microflows/7/*</code> (11) [F005]</li>
+<li><code>/microflows/8/*</code> (9) [F005]</li>
+<li><code>/microflows/9/*</code> (10) [F005]</li>
+<li><code>/pages/0/*</code> (13) [F005]</li>
+<li><code>/pages/1/*</code> (18) [F005]</li>
+<li><code>/useCases/1/*</code> (12) [F005]</li>
+<li><code>/useCases/2/*</code> (16) [F005]</li>
+<li><code>/microflows/5/*</code> (11) [F005]</li>
+<li><code>/workflows/0/*</code> (9) [F005]</li>
+<li><code>/useCases/3/*</code> (17) [F005]</li>
+<li><code>/pages/2/*</code> (11) [F005]</li>
+<li><code>/pages/5/*</code> (9) [F005]</li>
+<li><code>/useCases/4/*</code> (18) [F005]</li>
+<li><code>/useCases/5/*</code> (12) [F005]</li>
+<li><code>/pages/4/*</code> (10) [F005]</li>
+<li><code>/viewEntities/0/*</code> (4) [F005]</li>
+<li><code>/useCases/6/*</code> (14) [F005]</li>
+<li><code>/microflows/10/*</code> (13) [F005]</li>
+<li><code>/pages/3/*</code> (11) [F005]</li>
+<li><code>/useCases/1/*</code> (18) [F008]</li>
+<li><code>/microflows/2/*</code> (13) [F008]</li>
+<li><code>/microflows/6/*</code> (18) [F008]</li>
+<li><code>/microflows/7/*</code> (10) [F008]</li>
+<li><code>/microflows/8/*</code> (9) [F008]</li>
+<li><code>/microflows/10/*</code> (10) [F008]</li>
+<li><code>/pages/1/*</code> (18) [F008]</li>
+</ul></details>
+</section>
+<section class=phase><h3>Phase 8 &mdash; Inventory (8-inventory) <span class="badge st-todo">not built</span></h3>
+<p class=note>0 of 16 rows built</p>
+<div class=scroll><table><tr><th>#</th><th>Kind</th><th>Step</th><th>Produces / Proves</th><th>Depends on</th><th>State</th><th>Scripts</th></tr>
+<tr><td>68</td><td>BRIEF</td><td>Check <code>architecture/modules/Inventory/module-brief.md</code> covers this phase (screens, access, validation, test plan, build steps)&lt;br&gt;<code>architecture/modules/Inventory/module-brief.md</code></td><td>brief extended for phase 8</td><td>67</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>69</td><td>BUILD</td><td>F006-UC001 Process a receipt&lt;br&gt;<code>mdlsource/8-inventory/801-inventory-mf-transfer-confirm.mdl</code>&lt;br&gt;<code>mdlsource/8-inventory/802-inventory-page-inventory-dashboard.mdl</code>&lt;br&gt;<code>mdlsource/8-inventory/803-inventory-page-transfer-overview.mdl</code>&lt;br&gt;<code>mdlsource/8-inventory/804-inventory-page-transfer-new-edit.mdl</code></td><td>Inventory.ACT_Transfer_Confirm (+ grant execute); Inventory.ACT_Transfer_CheckAvailability (+ grant execute); Inventory.ACT_Transfer_Validate (+ grant execute); Inventory.SUB_Transfer_Done (+ grant execute); Inventory.ACT_Transfer_Cancel (+ grant execute); Inventory.Inventory_Dashboard (+ grant view) — wireframe design/wireframes/Inventory_Dashboard.html; Inventory.Transfer_Overview (+ grant view) — wireframe design/wireframes/Transfer_Overview.html; Inventory.Transfer_NewEdit (+ grant view) — wireframe design/wireframes/Transfer_NewEdit.html</td><td>68</td><td class="st-todo">not built</td><td><span class="st-todo" title="801-inventory-mf-transfer-confirm.mdl: missing; 802-inventory-page-inventory-dashboard.mdl: missing; 803-inventory-page-transfer-overview.mdl: missing; 804-inventory-page-transfer-new-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>70</td><td>BUILD</td><td>F006-UC002 Process a delivery&lt;br&gt;(no new document — use case is carried by the documents of rows 69)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>69</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>71</td><td>BUILD</td><td>F006-UC003 Create a manual transfer&lt;br&gt;(no new document — use case is carried by the documents of rows 69)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>70</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>72</td><td>BUILD</td><td>F006-UC004 Validate with less than the demand (backorder)&lt;br&gt;<code>mdlsource/8-inventory/805-inventory-page-validate-transfer-popup.mdl</code></td><td>Inventory.ValidateTransfer_Popup (+ grant view) — wireframe design/wireframes/ValidateTransfer_Popup.html</td><td>71</td><td class="st-todo">not built</td><td><span class="st-todo" title="805-inventory-page-validate-transfer-popup.mdl: missing">not written yet</span></td></tr>
+<tr><td>73</td><td>BUILD</td><td>F006-UC005 Cancel a transfer&lt;br&gt;(no new document — use case is carried by the documents of rows 69)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>72</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>74</td><td>BUILD</td><td>F006-UC006 Check stock and count inventory&lt;br&gt;<code>mdlsource/8-inventory/808-inventory-view-stock-on-hand.mdl</code>&lt;br&gt;<code>mdlsource/8-inventory/806-inventory-mf-stock-level-apply-count.mdl</code>&lt;br&gt;<code>mdlsource/8-inventory/807-inventory-page-stock-level-overview.mdl</code></td><td>Inventory.StockOnHand (OQL view entity, replaces report.stock.quantity); Inventory.ACT_StockLevel_ApplyCount (+ grant execute); Inventory.StockLevel_Overview (+ grant view) — wireframe design/wireframes/StockLevel_Overview.html</td><td>73</td><td class="st-todo">not built</td><td><span class="st-todo" title="808-inventory-view-stock-on-hand.mdl: missing; 806-inventory-mf-stock-level-apply-count.mdl: missing; 807-inventory-page-stock-level-overview.mdl: missing">not written yet</span></td></tr>
+<tr><td>75</td><td>BUILD</td><td>F006-UC007 Replenish with reorder rules&lt;br&gt;<code>mdlsource/8-inventory/809-inventory-mf-reorder-rules-run.mdl</code>&lt;br&gt;<code>mdlsource/8-inventory/810-inventory-page-reorder-rule-overview.mdl</code></td><td>Inventory.SCE_ReorderRules_Run (+ grant execute); Inventory.SUB_ReorderRule_Replenish (+ grant execute); Inventory.ReorderRule_Overview (+ grant view) — wireframe design/wireframes/ReorderRule_Overview.html; scheduled event SE_SCE_ReorderRules_Run (daily) → SCE_ReorderRules_Run</td><td>74</td><td class="st-todo">not built</td><td><span class="st-todo" title="809-inventory-mf-reorder-rules-run.mdl: missing; 810-inventory-page-reorder-rule-overview.mdl: missing">not written yet</span></td></tr>
+<tr><td>76</td><td>BUILD</td><td>F006-UC008 Configure the warehouse&lt;br&gt;<code>mdlsource/8-inventory/811-inventory-page-warehouse-edit.mdl</code></td><td>Inventory.Warehouse_Edit (+ grant view) — wireframe design/wireframes/Warehouse_Edit.html</td><td>75</td><td class="st-todo">not built</td><td><span class="st-todo" title="811-inventory-page-warehouse-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>77</td><td>BUILD</td><td>F007-UC001 Sales order creates a delivery&lt;br&gt;<code>mdlsource/8-inventory/812-inventory-mf-sales-order-create-delivery.mdl</code>&lt;br&gt;<code>mdlsource/8-inventory/813-inventory-alter-sales-order-new-edit.mdl</code>&lt;br&gt;<code>mdlsource/8-inventory/814-inventory-alter-transfer-new-edit.mdl</code></td><td>Inventory.SUB_SalesOrder_CreateDelivery (+ grant execute); ALTER PAGE Sales.SalesOrder_NewEdit: Extension: Delivery smart button (count of transfers), delivery status badge, expected date.; ALTER PAGE Inventory.Transfer_NewEdit: Extension: link to the source sales/purchase order.</td><td>76</td><td class="st-todo">not built</td><td><span class="st-todo" title="812-inventory-mf-sales-order-create-delivery.mdl: missing; 813-inventory-alter-sales-order-new-edit.mdl: missing; 814-inventory-alter-transfer-new-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>78</td><td>BUILD</td><td>F007-UC002 Delivery updates the sales order&lt;br&gt;<code>mdlsource/8-inventory/815-inventory-mf-sales-order-update-delivered.mdl</code></td><td>Sales.SUB_SalesOrder_UpdateDelivered (+ grant execute)</td><td>77</td><td class="st-todo">not built</td><td><span class="st-todo" title="815-inventory-mf-sales-order-update-delivered.mdl: missing">not written yet</span></td></tr>
+<tr><td>79</td><td>BUILD</td><td>F007-UC003 Changing quantities on a confirmed sales order&lt;br&gt;(no new document — use case is carried by the documents of rows 44)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>78</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>80</td><td>BUILD</td><td>F007-UC004 Purchase order creates a receipt&lt;br&gt;<code>mdlsource/8-inventory/816-inventory-mf-purchase-order-create-receipt.mdl</code>&lt;br&gt;<code>mdlsource/8-inventory/817-inventory-alter-purchase-order-new-edit.mdl</code></td><td>Inventory.SUB_PurchaseOrder_CreateReceipt (+ grant execute); ALTER PAGE Purchasing.PurchaseOrder_NewEdit: Extension: Receipt smart button and receipt status.</td><td>79</td><td class="st-todo">not built</td><td><span class="st-todo" title="816-inventory-mf-purchase-order-create-receipt.mdl: missing; 817-inventory-alter-purchase-order-new-edit.mdl: missing">not written yet</span></td></tr>
+<tr><td>81</td><td>BUILD</td><td>F007-UC005 Receipt updates the purchase order&lt;br&gt;<code>mdlsource/8-inventory/818-inventory-mf-purchase-order-update-received.mdl</code></td><td>Purchasing.SUB_PurchaseOrder_UpdateReceived (+ grant execute)</td><td>80</td><td class="st-todo">not built</td><td><span class="st-todo" title="818-inventory-mf-purchase-order-update-received.mdl: missing">not written yet</span></td></tr>
+<tr><td>82</td><td>PROVE</td><td>Inventory unit tests&lt;br&gt;<code>tests/Inventory/*.test.mdl via ./mxcli test tests/Inventory -p app/erpv1.mpr --local</code></td><td>every SUB_/ACT_ microflow with calculation or state change in Inventory has a .test.mdl with @verify; all pass</td><td>81</td><td class="st-todo">not built</td><td><span class="st-todo" title="*.test.mdl: missing; .test.mdl: missing">not written yet</span></td></tr>
+<tr><td>83</td><td>HARNESS</td><td>Inventory module close&lt;br&gt;<code>bin/verify-module.sh Inventory</code>&lt;br&gt;<code>LOOK + CONFIRM per module-review.md</code></td><td>verify-module summary has no FAULT; review states N of N pages reviewed</td><td>82</td><td class="st-todo">not built</td><td></td></tr>
+</table></div>
+<details><summary>Claims (37)</summary><ul class=claims>
+<li><code>/useCases/0/*</code> (22) [F006]</li>
+<li><code>/microflows/0/*</code> (11) [F006]</li>
+<li><code>/microflows/1/*</code> (12) [F006]</li>
+<li><code>/microflows/2/*</code> (13) [F006]</li>
+<li><code>/microflows/3/*</code> (17) [F006]</li>
+<li><code>/microflows/4/*</code> (10) [F006]</li>
+<li><code>/pages/0/*</code> (9) [F006]</li>
+<li><code>/pages/1/*</code> (12) [F006]</li>
+<li><code>/pages/2/*</code> (15) [F006]</li>
+<li><code>/useCases/1/*</code> (16) [F006]</li>
+<li><code>/useCases/2/*</code> (12) [F006]</li>
+<li><code>/useCases/3/*</code> (15) [F006]</li>
+<li><code>/pages/3/*</code> (11) [F006]</li>
+<li><code>/useCases/4/*</code> (12) [F006]</li>
+<li><code>/useCases/5/*</code> (16) [F006]</li>
+<li><code>/microflows/5/*</code> (10) [F006]</li>
+<li><code>/pages/4/*</code> (10) [F006]</li>
+<li><code>/viewEntities/0/*</code> (4) [F006]</li>
+<li><code>/useCases/6/*</code> (17) [F006]</li>
+<li><code>/microflows/6/*</code> (9) [F006]</li>
+<li><code>/microflows/7/*</code> (11) [F006]</li>
+<li><code>/pages/5/*</code> (11) [F006]</li>
+<li><code>/timers/0/*</code> (3) [F006]</li>
+<li><code>/useCases/7/*</code> (15) [F006]</li>
+<li><code>/pages/6/*</code> (11) [F006]</li>
+<li><code>/useCases/0/*</code> (17) [F007]</li>
+<li><code>/microflows/0/*</code> (13) [F007]</li>
+<li><code>/pages/0/*</code> (10) [F007]</li>
+<li><code>/pages/2/*</code> (9) [F007]</li>
+<li><code>/useCases/1/*</code> (14) [F007]</li>
+<li><code>/microflows/1/*</code> (12) [F007]</li>
+<li><code>/useCases/2/*</code> (12) [F007]</li>
+<li><code>/useCases/3/*</code> (14) [F007]</li>
+<li><code>/microflows/2/*</code> (12) [F007]</li>
+<li><code>/pages/1/*</code> (10) [F007]</li>
+<li><code>/useCases/4/*</code> (13) [F007]</li>
+<li><code>/microflows/3/*</code> (12) [F007]</li>
+</ul></details>
+</section>
+<section class=phase><h3>Phase 9 &mdash; Invoicing (9-invoicing) <span class="badge st-todo">not built</span></h3>
+<p class=note>0 of 10 rows built</p>
+<div class=scroll><table><tr><th>#</th><th>Kind</th><th>Step</th><th>Produces / Proves</th><th>Depends on</th><th>State</th><th>Scripts</th></tr>
+<tr><td>84</td><td>BRIEF</td><td>Check <code>architecture/modules/Invoicing/module-brief.md</code> covers this phase (screens, access, validation, test plan, build steps)&lt;br&gt;<code>architecture/modules/Invoicing/module-brief.md</code></td><td>brief extended for phase 9</td><td>83</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>85</td><td>BUILD</td><td>Invoicing shared logic (F008)&lt;br&gt;<code>mdlsource/9-invoicing/901-invoicing-mf-sales-order-create-invoice.mdl</code>&lt;br&gt;<code>mdlsource/9-invoicing/902-invoicing-mf-invoice-recompute-totals.mdl</code></td><td>Invoicing.ACT_SalesOrder_CreateInvoice (+ grant execute); Invoicing.SUB_Invoice_RecomputeTotals (+ grant execute)</td><td>84</td><td class="st-todo">not built</td><td><span class="st-todo" title="901-invoicing-mf-sales-order-create-invoice.mdl: missing; 902-invoicing-mf-invoice-recompute-totals.mdl: missing">not written yet</span></td></tr>
+<tr><td>86</td><td>BUILD</td><td>F008-UC003 Create a manual invoice or bill&lt;br&gt;<code>mdlsource/9-invoicing/903-invoicing-page-invoice-overview.mdl</code></td><td>Invoicing.Invoice_Overview (+ grant view) — wireframe design/wireframes/Invoice_Overview.html</td><td>85</td><td class="st-todo">not built</td><td><span class="st-todo" title="903-invoicing-page-invoice-overview.mdl: missing">not written yet</span></td></tr>
+<tr><td>87</td><td>BUILD</td><td>F008-UC004 Post an invoice&lt;br&gt;(no new document — use case is carried by the documents of rows 64)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>86</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>88</td><td>BUILD</td><td>F008-UC005 Reset to draft or cancel&lt;br&gt;(no new document — use case is carried by the documents of rows 64)</td><td>behaviour only (see scripts of the rows it depends on)</td><td>87</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>89</td><td>BUILD</td><td>F008-UC006 Issue a credit note&lt;br&gt;<code>mdlsource/9-invoicing/904-invoicing-mf-invoice-create-credit-note.mdl</code>&lt;br&gt;<code>mdlsource/9-invoicing/905-invoicing-page-credit-note-popup.mdl</code></td><td>Invoicing.ACT_Invoice_CreateCreditNote (+ grant execute); Invoicing.CreditNote_Popup (+ grant view) — wireframe design/wireframes/CreditNote_Popup.html</td><td>88</td><td class="st-todo">not built</td><td><span class="st-todo" title="904-invoicing-mf-invoice-create-credit-note.mdl: missing; 905-invoicing-page-credit-note-popup.mdl: missing">not written yet</span></td></tr>
+<tr><td>90</td><td>BUILD</td><td>F008-UC007 Register a payment&lt;br&gt;<code>mdlsource/9-invoicing/906-invoicing-mf-payment-create.mdl</code>&lt;br&gt;<code>mdlsource/9-invoicing/907-invoicing-page-register-payment-popup.mdl</code></td><td>Invoicing.SUB_Payment_Create (+ grant execute); Invoicing.SUB_Invoice_UpdatePaymentStatus (+ grant execute); Invoicing.RegisterPayment_Popup (+ grant view) — wireframe design/wireframes/RegisterPayment_Popup.html</td><td>89</td><td class="st-todo">not built</td><td><span class="st-todo" title="906-invoicing-mf-payment-create.mdl: missing; 907-invoicing-page-register-payment-popup.mdl: missing">not written yet</span></td></tr>
+<tr><td>91</td><td>BUILD</td><td>F008-UC008 Follow up receivables and payables&lt;br&gt;<code>mdlsource/9-invoicing/911-invoicing-view-invoice-analysis.mdl</code>&lt;br&gt;<code>mdlsource/9-invoicing/908-invoicing-page-payment-overview.mdl</code>&lt;br&gt;<code>mdlsource/9-invoicing/909-invoicing-page-invoice-analysis-report.mdl</code>&lt;br&gt;<code>mdlsource/9-invoicing/910-invoicing-page-payment-view.mdl</code></td><td>Invoicing.InvoiceAnalysis (OQL view entity, replaces account.invoice.report); Invoicing.Payment_Overview (+ grant view) — wireframe design/wireframes/Payment_Overview.html; Invoicing.InvoiceAnalysis_Report (+ grant view) — wireframe design/wireframes/InvoiceAnalysis_Report.html; Invoicing.Payment_View (+ grant view) — wireframe design/wireframes/Payment_View.html</td><td>90</td><td class="st-todo">not built</td><td><span class="st-todo" title="911-invoicing-view-invoice-analysis.mdl: missing; 908-invoicing-page-payment-overview.mdl: missing; 909-invoicing-page-invoice-analysis-report.mdl: missing; 910-invoicing-page-payment-view.mdl: missing">not written yet</span></td></tr>
+<tr><td>92</td><td>PROVE</td><td>Invoicing unit tests&lt;br&gt;<code>tests/Invoicing/*.test.mdl via ./mxcli test tests/Invoicing -p app/erpv1.mpr --local</code></td><td>every SUB_/ACT_ microflow with calculation or state change in Invoicing has a .test.mdl with @verify; all pass</td><td>91</td><td class="st-todo">not built</td><td><span class="st-todo" title="*.test.mdl: missing; .test.mdl: missing">not written yet</span></td></tr>
+<tr><td>93</td><td>HARNESS</td><td>Invoicing module close&lt;br&gt;<code>bin/verify-module.sh Invoicing</code>&lt;br&gt;<code>LOOK + CONFIRM per module-review.md</code></td><td>verify-module summary has no FAULT; review states N of N pages reviewed</td><td>92</td><td class="st-todo">not built</td><td></td></tr>
+</table></div>
+<details><summary>Claims (18)</summary><ul class=claims>
+<li><code>/microflows/0/*</code> (9) [F008]</li>
+<li><code>/microflows/4/*</code> (11) [F008]</li>
+<li><code>/useCases/2/*</code> (17) [F008]</li>
+<li><code>/pages/0/*</code> (14) [F008]</li>
+<li><code>/useCases/3/*</code> (19) [F008]</li>
+<li><code>/useCases/4/*</code> (14) [F008]</li>
+<li><code>/useCases/5/*</code> (14) [F008]</li>
+<li><code>/microflows/9/*</code> (10) [F008]</li>
+<li><code>/pages/4/*</code> (10) [F008]</li>
+<li><code>/useCases/6/*</code> (16) [F008]</li>
+<li><code>/microflows/11/*</code> (13) [F008]</li>
+<li><code>/microflows/12/*</code> (9) [F008]</li>
+<li><code>/pages/3/*</code> (10) [F008]</li>
+<li><code>/useCases/7/*</code> (20) [F008]</li>
+<li><code>/pages/5/*</code> (9) [F008]</li>
+<li><code>/pages/8/*</code> (10) [F008]</li>
+<li><code>/pages/9/*</code> (10) [F008]</li>
+<li><code>/viewEntities/0/*</code> (4) [F008]</li>
+</ul></details>
+</section>
+<section class=phase><h3>Phase 10 &mdash; Close <span class="badge st-todo">not built</span></h3>
+<p class=note>0 of 2 rows built</p>
+<div class=scroll><table><tr><th>#</th><th>Kind</th><th>Step</th><th>Produces / Proves</th><th>Depends on</th><th>State</th><th>Scripts</th></tr>
+<tr><td>94</td><td>HARNESS</td><td>process-coherence-pass on Inventory, Invoicing (+ quote-to-cash and procure-to-pay across all modules)&lt;br&gt;<code>skills/process-coherence-pass.md over Inventory, Invoicing; journeys J-01..J-04 of architecture/blueprint.md</code></td><td>J-01..J-04 chain end to end</td><td>93</td><td class="st-todo">not built</td><td></td></tr>
+<tr><td>95</td><td>RUN</td><td>Stage 5 gate&lt;br&gt;<code>bin/gate-check.sh . 5</code></td><td>every Stage 5 obligation discharged or waived with a reason: 0 PENDING</td><td>94</td><td class="st-todo">not built</td><td></td></tr>
+</table></div>
+</section>
+<h2>A. Script folders: how much is built</h2>
+<p class=empty>No phase folders under <code>mdlsource/</code> yet. They appear as the build starts, one folder per phase (brd-to-build-plan.md); until then the plan above is the whole picture.</p>
+<h2>B. Modules: how much is proven</h2>
+<p class=note>Briefs are written one module at a time, as that module's build starts (module-brief.md), so "no" before then is expected.</p>
+<div class=scroll><table><tr><th>Module</th><th>Briefed</th><th>Reviewed</th><th>Open findings</th></tr>
+<tr><td>Core</td><td>yes</td><td class="pending">not yet</td><td>-</td></tr>
+<tr><td>Inventory</td><td>yes</td><td class="pending">not yet</td><td>-</td></tr>
+<tr><td>Invoicing</td><td>yes</td><td class="pending">not yet</td><td>-</td></tr>
+<tr><td>Partners</td><td>yes</td><td class="pending">not yet</td><td>-</td></tr>
+<tr><td>Products</td><td>yes</td><td class="pending">not yet</td><td>-</td></tr>
+<tr><td>Purchasing</td><td>yes</td><td class="pending">not yet</td><td>-</td></tr>
+<tr><td>Sales</td><td>yes</td><td class="pending">not yet</td><td>-</td></tr>
+</table></div>
+<p class=note>The plan: what build-plan.md says. A: built, from mdlsource/ done- prefixes. B: proven, from verify-module.sh + docs/improvement-register.md. A phase at 100% with no reviewed row in B is built, not proven.</p>
+</main></body></html>

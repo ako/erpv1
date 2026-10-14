@@ -255,7 +255,11 @@ cause rather than the symptom, and never blend them into job 1's numbers.
   gap in your reading of them.
 
 ## Project-specific gotchas
-{{PROJECT_SPECIFIC_GOTCHAS}}
+- The model lives at `app/erpv1.mpr` (two-tree layout: repo at the root, app under `app/`); `./mxcli` is in the repo root.
+- Workflow WF_PurchaseOrderApproval: task page takes `System.WorkflowUserTask` + `$WorkflowContext` (CE7412) and is built before the workflow; no DECISION activities (BUG-76); native `mx check` after every workflow write.
+- Strict layer stack Core → Products → Partners → Sales/Purchasing → Inventory → Invoicing; associations only point downward; the only sanctioned upward calls are the Sales/Purchasing → Inventory/Invoicing bridge microflows.
+- Aggregations are VIEW ENTITYs (4 of them), never counting microflows.
+- Theme is the mxcli built-in `ledger`; no SCSS port of design/ds.css (OI-6).
 
 ## Report back
 

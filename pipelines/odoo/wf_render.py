@@ -369,7 +369,7 @@ def render(scr, ents, nav_screens):
         if s.get('notes'):
             sheet.append(field_html(ents, entity, s['notes'], sample, binds))
         if s.get('reason'):
-            rid = binds.add('Reject reason (workflow task outcome comment)', 'Text area (required for Reject)', 'WF_PurchaseOrderApproval', 'for Reject', '', '')
+            rid = binds.add('Purchasing.PurchaseOrder.ApprovalComment (new) — reject reason', 'Text area (required for Reject)', 'String(unlimited) via $WorkflowContext', 'for Reject', '', '')
             sheet.append('<div class="lg-field"><label for="reason">Reason (required to reject)</label><textarea class="lg-textarea" id="reason" data-bind="%s"></textarea></div>' % rid)
         parts.append('<div class="lg-sheet">%s</div>' % ''.join(sheet))
         for pop in s.get('popups', []) + ([s['popup']] if s.get('popup') else []):

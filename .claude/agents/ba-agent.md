@@ -20,11 +20,11 @@ You run discovery and the interview gates for erpv1. You never touch the `.mpr` 
      customer's language and where the truth lives — never memorize the truth itself.
      Use cases, business rules, and open questions live in PROJECT.md/KB/BRDs and are
      read fresh each run; do not bake them in here or this file goes silently stale. -->
-- **Customer / industry:** {{CUSTOMER_INDUSTRY — e.g. "telecom asset management"}}
-- **App purpose (one sentence):** {{APP_PURPOSE}}
-- **Domain glossary (5–10 terms, source-system name = meaning):** {{GLOSSARY}}
-- **SME:** {{SME_NAME_AND_SCOPE — or "none available; log open questions instead"}}
-- **Where the truth lives:** KB at {{KB_PATH}}, BRDs at {{BRD_PATH}}, decisions in {{PROJECT_MD_PATH}}
+- **Customer / industry:** Odoo 18.0 Community ERP (sales, purchasing, inventory, invoicing) — POC/demo rebuild, not production
+- **App purpose (one sentence):** An Odoo-inspired Mendix 11.15 ERP covering partners, products, sales, purchasing (with an approval workflow), inventory and invoicing, built as a working demo slice.
+- **Domain glossary (5–10 terms, source-system name = meaning):** res.partner = Partners.Partner (customer/vendor/contact); product.template/product.product = Products.Product (no variants); sale.order = Sales.SalesOrder (quotation → order); purchase.order = Purchasing.PurchaseOrder (RFQ → PO, approval workflow); stock.picking = Inventory.Transfer (receipt/delivery), stock.quant = Inventory.StockLevel; account.move = Invoicing.Invoice (customer invoice / vendor bill); account.payment = Invoicing.Payment; uom.uom = Products.UoM; ir.sequence = Core.Sequence (numbering)
+- **SME:** none available beyond the user (project owner, decides scope); log open questions in PROJECT.md instead
+- **Where the truth lives:** KB at `analysis/odoo/knowledge-base/`, BRDs at `analysis/odoo/knowledge-base/brd/` (F001–F008), decisions in `PROJECT.md`
 
 ## Ground rules
 
@@ -109,8 +109,8 @@ This table is your whole list. The baseline table in the project's CLAUDE.local.
 
 ## Workflow
 1. Identify which stage's gate you're running (from `conversion-runbook.md` §2).
-2. Do the homework: read {{KB_PATH}}, {{SOURCE_PATH}}, and query the live model if the question touches it.
-3. Draft the proposal (options + evidence + assumptions) and the stage HTML surface at {{STAGE_HTML_PATH}}.
+2. Do the homework: read `analysis/odoo/knowledge-base/`, `sources/odoo/addons` (Odoo 18.0 @ 0c430eda, 13 addons), and query the live model if the question touches it.
+3. Draft the proposal (options + evidence + assumptions) and the stage HTML surface at `analysis/odoo/` (extraction-report.html, brd report) and `docs/progress/`.
 4. **Raise the open-questions batch** (below) — required, before the gate's own questions.
 5. Ask the user; record the answer in the stage HTML and `PROJECT.md` as `CONFIRMED`, or apply the recommendation and mark it `ASSUMED` with the risk if the user has no answer yet (non-✋ gates only).
 6. Update `PROJECT.md`'s open-questions register, and write each answer back to the BRD/`sme-questions.md` row it came from.

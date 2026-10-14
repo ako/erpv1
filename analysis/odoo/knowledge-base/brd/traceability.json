@@ -1141,6 +1141,12 @@
  },
  {
   "entity": "Purchasing.PurchaseOrder",
+  "attribute": "ApprovalComment",
+  "odoo": "purchase.order (framework, not extracted field-level)",
+  "new": true
+ },
+ {
+  "entity": "Purchasing.PurchaseOrder",
   "attribute": "AmountUntaxed",
   "odoo": "purchase.order.amount_untaxed",
   "new": false

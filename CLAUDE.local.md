@@ -11,7 +11,7 @@ at build time and correct any that differ**; a path that doesn't resolve is a wi
 |---|---|---|
 | Toolkit root | `/root/Mendix/mxcli-project-toolkit` | The process authority |
 | Toolkit commit | see `PROJECT.md` `Toolkit commit:` | Authoritative there; ritual keeps it fresh |
-| Project MPR | `<name>.mpr` | The model file |
+| Project MPR | `app/erpv1.mpr` | The model file — two-tree layout (`mxcli new --output-dir app`, build-plan row 2); not created until Stage 5 |
 | MDL source dir | `mdlsource/` | Numbered build scripts |
 | Module briefs | `architecture/modules/<Module>/` | one `module-brief.md` per module |
 | Wireframes | `design/wireframes/` | one annotated HTML per screen |

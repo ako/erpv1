@@ -91,13 +91,13 @@ This table is your whole list. The baseline table in the project's CLAUDE.local.
 <!-- ROUTING:END -->
 
 ## Gates to run (in order)
-1. **Model check**: {{MODEL_CHECK_COMMAND}}. Expect 0 CE errors.
-2. **Compile gate** (if applicable): {{COMPILE_GATE_COMMAND}}.
+1. **Model check**: `./mxcli check <script>.mdl -p app/erpv1.mpr` then `./bin/verify-model.sh` (mxbuild 11.15.0, the authoritative CE count). Expect 0 CE errors.
+2. **Compile gate** (if applicable): `./mxcli docker check -p app/erpv1.mpr` (native `mx check` after any workflow write: `~/.mxcli/mxbuild/11.15.0/modeler/mx check app/erpv1.mpr`).
 3. **Coverage checklist** (Gate 3, `iterative-build-loop.md`): walk the module's confirmed
    business-rule coverage checklist item by item — CE-error-free ≠ done.
 4. **Lint** (always): `bin/exec.sh` already ran `bin/lint-gate.sh` after the clean mxbuild and
    wrote the verdict into the same BUILD-LOG row (`✅ applied … lint unchanged` or
-   `⚠️ applied, LINT ROSE: CONV011 (+3) …`). Read that row first; re-run {{LINT_COMMAND}} only to
+   `⚠️ applied, LINT ROSE: CONV011 (+3) …`). Read that row first; re-run `./bin/lint-gate.sh` (wraps `./mxcli lint -p app/erpv1.mpr` against the baseline) only to
    get the per-document list behind a rise. Name each rule that rose, the documents behind it,
    and whether the rise belongs to the script under review or to earlier debt. A rise is a FAIL
    for the script even when mxbuild is clean. Never re-baseline to turn a row green — that is
@@ -147,7 +147,11 @@ If the file is absent, the same tables are still inline in `CLAUDE.md`.
   clean gate — some CE codes are a one-click refresh in Studio Pro.
 
 ## Project-specific gotchas
-{{PROJECT_SPECIFIC_GOTCHAS}}
+- The model lives at `app/erpv1.mpr` (two-tree layout: repo at the root, app under `app/`); `./mxcli` is in the repo root.
+- Workflow WF_PurchaseOrderApproval: task page takes `System.WorkflowUserTask` + `$WorkflowContext` (CE7412) and is built before the workflow; no DECISION activities (BUG-76); native `mx check` after every workflow write.
+- Strict layer stack Core → Products → Partners → Sales/Purchasing → Inventory → Invoicing; associations only point downward; the only sanctioned upward calls are the Sales/Purchasing → Inventory/Invoicing bridge microflows.
+- Aggregations are VIEW ENTITYs (4 of them), never counting microflows.
+- Theme is the mxcli built-in `ledger`; no SCSS port of design/ds.css (OI-6).
 
 ## Report back
 Pass/fail per gate, the exact error list if any, and whether failures match a known-gotcha

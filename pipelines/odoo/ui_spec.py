@@ -233,7 +233,8 @@ screen('PurchaseApproval_Inbox', 'inbox', 'Purchase approvals', 'Purchasing.Purc
        rows=[['P00018', 'Wood Corner', 'Marc Demo', '4 871.25', '2026-10-10'], ['P00016', 'Gemini Furniture', 'Marc Demo', '12 400.00', '2026-10-09']],
        source='Workflow Commons task inbox (Buy), filtered to WF_PurchaseOrderApproval user tasks assigned to the current user')
 screen('PurchaseApproval_Task', 'task', 'Approve purchase order', 'Purchasing.PurchaseOrder', ['PurchaseManager'],
-       ['row of PurchaseApproval_Inbox'], param='Purchasing.PurchaseOrder',
+       ['row of PurchaseApproval_Inbox'], param='System.WorkflowUserTask',
+       source='page parameters $WorkflowUserTask (System.WorkflowUserTask) + $WorkflowContext (Purchasing.PurchaseOrder) — workflow-structure-rules.md §11 (CE7412)',
        sections=[('Order', ['Number', 'PurchaseOrder_Vendor', 'PurchaseOrder_Buyer', 'AmountTotal', 'OrderDeadline', 'ExpectedArrival'])],
        lines=dict(PO_LINES, editable=False), reason=True,
        buttons=[('Approve', 'SUB_PurchaseOrder_Approve'), ('Reject', 'ACT_PurchaseOrder_Reject')],

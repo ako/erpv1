@@ -465,6 +465,15 @@
      "length": "unlimited"
     },
     {
+     "name": "ApprovalComment",
+     "type": "String",
+     "sourceOdoo": "purchase.order (framework, not extracted field-level)",
+     "mandatory": false,
+     "new": true,
+     "length": "unlimited",
+     "note": "new: reason given on Reject in WF_PurchaseOrderApproval (required for Reject)"
+    },
+    {
      "name": "AmountUntaxed",
      "type": "Decimal",
      "sourceOdoo": "purchase.order.amount_untaxed",
@@ -1004,7 +1013,7 @@
    "pattern": "state-change",
    "calls": [],
    "validations": [
-    "Reason not empty"
+    "ApprovalComment not empty (reason stored on the order)"
    ],
    "hiddenRules": [],
    "odooRefs": [],

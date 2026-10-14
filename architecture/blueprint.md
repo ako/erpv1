@@ -233,7 +233,7 @@ Project security: production level; no anonymous/guest access; demo users one pe
 | InventoryManager | Reader | Manager | Reader | Reader | Reader | Manager | — |
 | Billing | Reader | Reader | Editor | Reader | Reader | — | Billing |
 | InvoicingManager | Config | Reader | Editor | Reader | Reader | — | Manager |
-| Administrator | Admin | Manager | Admin | — | — | — | — |
+| Administrator | Admin | Manager | Admin | — | — | Manager | — |
 
 Row-level: SalesUser sees own sales orders only (XPath on SalesOrder_Salesperson). Approval task only for PurchaseManager. Configuration pages (Company, Warehouse, Numbering, Taxes, Payment terms, UoM, categories) need the Admin/Manager/Config module roles.
 

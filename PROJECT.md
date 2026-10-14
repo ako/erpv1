@@ -56,12 +56,14 @@ Opt-in artifact erd: user asked for the target-domain ERD at Stage 2 close (chat
 | 3 | Integrations: none live; email, portal, payment providers, EDI and barcodes declared not implemented | CONFIRMED | Stage 0 decision; user 2026-10-14 ("C as proposed") |
 | 3 | Marketplace: Buy Administration, Atlas Core, Data Widgets, Charts, Workflow Commons; build everything else | CONFIRMED | User 2026-10-14 ("D as proposed") |
 | 3 | Branding: no client brand; design direction = mxcli built-in theme **ledger** (warm paper, hairline rules, Source Serif headings / Source Sans body, 2px radius, 30px rows, light + dark) — ideation library not used | CONFIRMED | User 2026-10-14: "use the ledger theme provided by mxcli, no branding" |
-| 3 | Navigation layout: side rail (ledger's --mxt-rail tokens), one menu group per app area (Sales, Purchase, Inventory, Invoicing, Contacts, Products, Reporting, Configuration), filtered by role | ASSUMED | Not asked separately — chosen to match the ledger theme's rail and Odoo's app menus; reported in chat 2026-10-14 for veto |
+| 3 | Navigation layout: side rail (ledger's --mxt-rail tokens), one menu group per app area (Sales, Purchase, Inventory, Invoicing, Contacts, Products, Reporting, Configuration), filtered by role | CONFIRMED | User 2026-10-14 (Stage 3 sign-off, "all as proposed") |
+| 3 | Stage 3 ✋ sign-off: blueprint, fit-gap, ledger design system, 46 wireframes + prototype, interaction model approved | CONFIRMED | User 2026-10-14: "all as proposed" |
 | P | Source is committed to git (`sources/` tracked) | ASSUMED | LGPL-3.0 public code; container is ephemeral so an ignored copy would be lost (cloud-dev-environment.md step 5) |
-| 3 | Odoo in-place extension (`_inherit` without new `_name`): fields go into the owning Mendix entity; 1–1 extension entity only where the module must stay optional; method overrides → explicit sub-microflow hooks | ASSUMED | Discussed in chat 2026-10-14, to confirm at Stage 3 |
-| 3 | Odoo mixins (`_inherit` with new `_name`, e.g. `mail.thread`): no multiple inheritance in Mendix; at most one shared generalization (e.g. `Core.BusinessDocument`), otherwise associations; chatter out of scope | ASSUMED | Chat 2026-10-14 |
-| 3 | Odoo delegation (`_inherits`): always an **association**, never a Mendix generalization (e.g. product.product → product.template is 1–n; res.users → res.partner can be created later) | ASSUMED | Chat 2026-10-14 |
-| 3 | Mendix generalization only for true, fixed-at-creation is-a (e.g. account → `System.User`, attachments → `System.FileDocument`) | ASSUMED | Chat 2026-10-14 |
+| 3 | Odoo in-place extension (`_inherit` without new `_name`): fields go into the owning Mendix entity; 1–1 extension entity only where the module must stay optional; method overrides → explicit sub-microflow hooks | CONFIRMED | User 2026-10-14 (Stage 3 sign-off, \"all as proposed\") |
+| 3 | Odoo mixins (`_inherit` with new `_name`, e.g. `mail.thread`): no multiple inheritance in Mendix; at most one shared generalization (e.g. `Core.BusinessDocument`), otherwise associations; chatter out of scope | CONFIRMED | User 2026-10-14 (Stage 3 sign-off, \"all as proposed\") |
+| 3 | Odoo delegation (`_inherits`): always an **association**, never a Mendix generalization (e.g. product.product → product.template is 1–n; res.users → res.partner can be created later) | CONFIRMED | User 2026-10-14 (Stage 3 sign-off, \"all as proposed\") |
+| 3 | Mendix generalization only for true, fixed-at-creation is-a (e.g. account → `System.User`, attachments → `System.FileDocument`) | CONFIRMED | User 2026-10-14 (Stage 3 sign-off, \"all as proposed\") |
+| 4 | Model location: two-tree layout, app at `app/erpv1.mpr` (`mxcli new --output-dir app`), repo tooling at the root; CLAUDE.local.md Wiring updated; 6 dev-process agents completed (build-ready PASS) | ASSUMED | Agent, Stage 4 2026-10-14 — the layout bin/_common.sh find_mpr() probes; confirm with the plan |
 
 ## Change log
 
@@ -81,7 +83,7 @@ Carried into the build plan (architecture-blueprint.md Step 5). Numbered OI-n on
 | OI-3 | Marketplace Buy: Administration, Atlas Core, Data Widgets, Charts, Workflow Commons | Dependency | CONFIRMED; install at build-plan Step 0, versions matching Mendix 11.15 |
 | OI-4 | mxcli known bugs on this app's shape (workflows, view entities, Data Grid 2 inline edit) | Handoff | check `bin/bug-lookup.sh` per module at Stage 4/5 |
 | OI-5 | Behaviour changes vs Odoo (simplifications listed per BRD; no ledger, no variants, single warehouse one-step, explicit recomputation) | Faithful-rebuild risk | documented in BRDs + fit-gap; signed off via the 15 Stage 2 answers |
-| OI-6 | Theme: no SCSS port of ds.css; app styled by `mxcli theme apply ledger` (portability check findings apply to a port that will not happen) | Decision | ASSUMED, `design/brand.md`; StyleGallery (design-artifacts 5b) to be decided at Stage 4 |
+| OI-6 | Theme: no SCSS port of ds.css; app styled by `mxcli theme apply ledger` (portability check findings apply to a port that will not happen) | Decision | CONFIRMED by user 2026-10-14 (Stage 3 sign-off); StyleGallery (design-artifacts 5b) to be decided at Stage 4 |
 
 ## Open questions
 
@@ -90,6 +92,7 @@ Carried into the build plan (architecture-blueprint.md Step 5). Numbered OI-n on
 | 1 | Goal: faithful port of Odoo's data model, or "Odoo-inspired" Mendix-native design? (intake Q3) | Kickoff 2026-10-14 | answered — Odoo-inspired, Mendix-native (see Decisions) |
 | 3 | Stage 2 BRD questions Q-F001-1..3, Q-F003-1..2, Q-F004-1..3, Q-F005-1, Q-F006-1..3, Q-F008-1..3 (15) | Stage 2, 2026-10-14 | answered — all as proposed (user, 2026-10-14) |
 | 2 | Project driver: POC/demo, or production use? (intake Q2) | Kickoff 2026-10-14 | answered — POC/demo (see Decisions) |
+| 4 | Stage 4 ✋ build-plan sign-off + PD-1..PD-6 (acceptance criteria, environment, StyleGallery, generation strategy/security timing, priority, demo-script opt-in) — proposals in architecture/build-plan.md §Pending decisions | Stage 4, 2026-10-14 | open — asked in chat |
 
 ## Assumptions (ASSUMED, unresolved)
 

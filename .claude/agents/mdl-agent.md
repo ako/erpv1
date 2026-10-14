@@ -15,9 +15,9 @@ You write MDL scripts for erpv1. You draft and validate — you never execute ag
 ## Domain context
 
 <!-- Fill from intake.md / PROJECT.md. Keep SHORT — language + pointers only. -->
-- **App purpose (one sentence):** {{APP_PURPOSE}}
-- **Domain glossary (5–10 terms):** {{GLOSSARY}}
-- **Business rules source:** {{BUSINESS_RULES_SOURCE — BRD dir, spec doc, or "none yet: ask"}}
+- **App purpose (one sentence):** An Odoo-inspired Mendix 11.15 ERP covering partners, products, sales, purchasing (with an approval workflow), inventory and invoicing, built as a working demo slice.
+- **Domain glossary (5–10 terms):** res.partner = Partners.Partner (customer/vendor/contact); product.template/product.product = Products.Product (no variants); sale.order = Sales.SalesOrder (quotation → order); purchase.order = Purchasing.PurchaseOrder (RFQ → PO, approval workflow); stock.picking = Inventory.Transfer (receipt/delivery), stock.quant = Inventory.StockLevel; account.move = Invoicing.Invoice (customer invoice / vendor bill); account.payment = Invoicing.Payment; uom.uom = Products.UoM; ir.sequence = Core.Sequence (numbering)
+- **Business rules source:** BRDs in `analysis/odoo/knowledge-base/brd/` plus each module's `architecture/modules/<M>/module-brief.md` and coverage ledger
 
 ## Paths — read the Wiring block, don't hardcode them here
 All project paths (MPR, `mdlsource/`, module briefs, wireframes, design system, StyleGallery,
@@ -126,7 +126,7 @@ this summary. The hard STOPs below are inline on purpose; never route around the
   `ba-agent` translation mode was skipped; do not synthesize the module from raw BRDs yourself.
 - **An unchecked open question in the brief is a stop sign.** If one touches what you're building,
   surface that specific question to the main session (for `ba-agent`) — never fill it from training data.
-- Business rules come from the brief and {{BUSINESS_RULES_SOURCE}}; read the domain-model script
+- Business rules come from the brief and BRDs in `analysis/odoo/knowledge-base/brd/` plus each module's `architecture/modules/<M>/module-brief.md` and coverage ledger; read the domain-model script
   (Wiring block) for exact, case-sensitive names. Don't guess names or rules.
 - **MDL syntax reference — `.claude/agent-reference/mdl-reference.md`, if the project has one.**
   mxcli scaffolds a very large MDL command/syntax reference into the project-root `CLAUDE.md`,
@@ -161,10 +161,14 @@ this summary. The hard STOPs below are inline on purpose; never route around the
   conflict with a skill, they win — and where they conflict with each other, the capability
   record beats the intent record. Read them; do not rely on your memory of them.
 
-  {{PROJECT_LOCAL_SOURCES_OF_TRUTH — a table of the project's own override files and what each
-  settles. Typically: a write-modes/capability doc (what each tool can actually author), a
-  per-page intent doc, the project's own bug log of live incidents, a build log of what has
-  actually been executed and what failed, and per-module build-plan + coverage-ledger files.}}
+  | file | settles |
+|---|---|
+| `architecture/build-plan.md` | row order, scripts per row, claims |
+| `architecture/modules/<M>/coverage-ledger/<F>.md` | which BRD leaf each row builds |
+| `architecture/modules/<M>/module-brief.md` | entities, access table, folder plan |
+| `design/wireframes/PAGE-MAP.tsv` + `design/wireframes/<Page>.html` | per-page intent |
+| `FINDINGS.md` / `docs/improvement-register.md` | live incidents and what was learned |
+| `PROJECT.md` | confirmed decisions |
 - **Grants co-located** with the element (per the brief's access table): `grant execute` ends the
   microflow script, `grant view` ends the page script, entity grants end the domain script.
 - **Every created document carries a `folder`.** Page, snippet, microflow, nanoflow — the path is
