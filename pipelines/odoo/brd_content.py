@@ -121,12 +121,12 @@ BRDS['F001'] = dict(
     integrations=[],
     openQuestions=[
         dict(id='Q-F001-1', question='Single currency: the POC uses only the company currency (no exchange rates, no foreign-currency documents). OK?',
-             status='Raised in chat 2026-10-14 — awaiting answer', blocking=False, kind='DECISION', proposed='Yes — single currency'),
+             status='Resolved', blocking=False, kind='DECISION', proposed='Yes — single currency', answer='Yes — single currency — user, chat 2026-10-14 ("all as proposed")'),
         dict(id='Q-F001-2', question='User roles: map Odoo groups to 9 Mendix user roles (Administrator, SalesUser, SalesManager, Purchaser, PurchaseManager, '
                                      'InventoryUser, InventoryManager, Billing, InvoicingManager). SalesUser sees only own orders (Odoo "Own Documents Only"). OK?',
-             status='Raised in chat 2026-10-14 — awaiting answer', blocking=False, kind='DECISION', proposed='Yes'),
+             status='Resolved', blocking=False, kind='DECISION', proposed='Yes', answer='Yes — user, chat 2026-10-14 ("all as proposed")'),
         dict(id='Q-F001-3', question='Mendix-native admin: users are Mendix accounts (Administration module) with a business profile, and document numbering is a small editable Sequence table. OK?',
-             status='Raised in chat 2026-10-14 — awaiting answer', blocking=False, kind='DECISION', proposed='Yes'),
+             status='Resolved', blocking=False, kind='DECISION', proposed='Yes', answer='Yes — user, chat 2026-10-14 ("all as proposed")'),
     ],
 )
 
@@ -231,9 +231,9 @@ BRDS['F003'] = dict(
     integrations=[],
     openQuestions=[
         dict(id='Q-F003-1', question='Product variants (attributes like size/colour generating variants) are dropped — every product is one sellable item. OK for the demo?',
-             status='Raised in chat 2026-10-14 — awaiting answer', blocking=True, kind='DECISION', proposed='Yes — no variants'),
-        dict(id='Q-F003-2', question='Pricelists simplified to fixed-price and %-discount rules. OK?', status='Raised in chat 2026-10-14 — awaiting answer', blocking=False,
-             kind='DECISION', proposed='Yes'),
+             status='Resolved', blocking=True, kind='DECISION', proposed='Yes — no variants', answer='Yes — no variants — user, chat 2026-10-14 ("all as proposed")'),
+        dict(id='Q-F003-2', question='Pricelists simplified to fixed-price and %-discount rules. OK?', status='Resolved', blocking=False,
+             kind='DECISION', proposed='Yes', answer='Yes — user, chat 2026-10-14 ("all as proposed")'),
     ],
 )
 
@@ -336,10 +336,10 @@ BRDS['F004'] = dict(
                        realTarget='Odoo mail.template sale.email_template_edi_sale', apiDoc='Stage 0: mail declared not implemented')],
     openQuestions=[
         dict(id='Q-F004-1', question='Quotation PDF: Odoo prints the quotation/order (QWeb). Should the POC produce a PDF (Mendix document template), or is the on-screen document enough?',
-             status='Raised in chat 2026-10-14 — awaiting answer', blocking=False, kind='DECISION', proposed='On-screen only for the POC'),
-        dict(id='Q-F004-2', question='Keep quotation templates (sale_management) in wave 2?', status='Raised in chat 2026-10-14 — awaiting answer', blocking=False, kind='DECISION', proposed='Yes, small'),
+             status='Resolved', blocking=False, kind='DECISION', proposed='On-screen only for the POC', answer='On-screen only for the POC — user, chat 2026-10-14 ("all as proposed")'),
+        dict(id='Q-F004-2', question='Keep quotation templates (sale_management) in wave 2?', status='Resolved', blocking=False, kind='DECISION', proposed='Yes, small', answer='Yes, small — user, chat 2026-10-14 ("all as proposed")'),
         dict(id='Q-F004-3', question="Reporting: Odoo's pivot/graph analyses (sales, purchase, invoices, stock) become Mendix report pages on OQL view entities (charts + grid), not a pivot engine. OK?",
-             status='Raised in chat 2026-10-14 — awaiting answer', blocking=False, kind='DECISION', proposed='Yes'),
+             status='Resolved', blocking=False, kind='DECISION', proposed='Yes', answer='Yes — user, chat 2026-10-14 ("all as proposed")'),
     ],
 )
 
@@ -434,8 +434,8 @@ BRDS['F005'] = dict(
     integrations=[dict(name='Send RFQ by email', type='Email', stubName='—', stubBehaviour='Not implemented: Mark as sent only',
                        realTarget='Odoo mail.template purchase.email_template_edi_purchase', apiDoc='Stage 0: mail declared not implemented')],
     openQuestions=[
-        dict(id='Q-F005-1', question='PO approval as a Mendix workflow with a manager inbox (instead of Odoo\'s button). OK?', status='Raised in chat 2026-10-14 — awaiting answer',
-             blocking=False, kind='DECISION', proposed='Yes — showcases Mendix workflows'),
+        dict(id='Q-F005-1', question='PO approval as a Mendix workflow with a manager inbox (instead of Odoo\'s button). OK?', status='Resolved',
+             blocking=False, kind='DECISION', proposed='Yes — showcases Mendix workflows', answer='Yes — showcases Mendix workflows — user, chat 2026-10-14 ("all as proposed")'),
     ],
 )
 
@@ -535,11 +535,11 @@ BRDS['F006'] = dict(
     integrations=[],
     openQuestions=[
         dict(id='Q-F006-1', question='Lots/serial numbers, packages and multi-step (pick-pack-ship) flows are dropped: one warehouse, one-step receipts and deliveries. OK?',
-             status='Raised in chat 2026-10-14 — awaiting answer', blocking=True, kind='DECISION', proposed='Yes'),
+             status='Resolved', blocking=True, kind='DECISION', proposed='Yes', answer='Yes — user, chat 2026-10-14 ("all as proposed")'),
         dict(id='Q-F006-2', question='Returns and scrap are left out of the first version (can be added later as transfers). OK?',
-             status='Raised in chat 2026-10-14 — awaiting answer', blocking=False, kind='DECISION', proposed='Yes'),
-        dict(id='Q-F006-3', question='Reorder rules (min/max -> automatic RFQ) included as a wave-3 stretch item?', status='Raised in chat 2026-10-14 — awaiting answer', blocking=False,
-             kind='DECISION', proposed='Yes'),
+             status='Resolved', blocking=False, kind='DECISION', proposed='Yes', answer='Yes — user, chat 2026-10-14 ("all as proposed")'),
+        dict(id='Q-F006-3', question='Reorder rules (min/max -> automatic RFQ) included as a wave-3 stretch item?', status='Resolved', blocking=False,
+             kind='DECISION', proposed='Yes', answer='Yes — user, chat 2026-10-14 ("all as proposed")'),
     ],
 )
 
@@ -735,10 +735,10 @@ BRDS['F008'] = dict(
                        realTarget='account.move.send', apiDoc='Stage 0: mail declared not implemented')],
     openQuestions=[
         dict(id='Q-F008-1', question='No general ledger: invoices, bills, credit notes and payments without journal entries or chart of accounts. Confirms the Stage 0 C9 deferral at the data-model level. OK?',
-             status='Raised in chat 2026-10-14 — awaiting answer', blocking=True, kind='DECISION', proposed='Yes'),
-        dict(id='Q-F008-2', question='Down payments on sales orders are dropped (regular invoices only). OK?', status='Raised in chat 2026-10-14 — awaiting answer', blocking=False,
-             kind='DECISION', proposed='Yes'),
-        dict(id='Q-F008-3', question='Invoice PDF: same question as Q-F004-1 — on-screen only for the POC?', status='Raised in chat 2026-10-14 — awaiting answer', blocking=False,
-             kind='DECISION', proposed='On-screen only'),
+             status='Resolved', blocking=True, kind='DECISION', proposed='Yes', answer='Yes — user, chat 2026-10-14 ("all as proposed")'),
+        dict(id='Q-F008-2', question='Down payments on sales orders are dropped (regular invoices only). OK?', status='Resolved', blocking=False,
+             kind='DECISION', proposed='Yes', answer='Yes — user, chat 2026-10-14 ("all as proposed")'),
+        dict(id='Q-F008-3', question='Invoice PDF: same question as Q-F004-1 — on-screen only for the POC?', status='Resolved', blocking=False,
+             kind='DECISION', proposed='On-screen only', answer='On-screen only — user, chat 2026-10-14 ("all as proposed")'),
     ],
 )

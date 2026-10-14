@@ -1242,18 +1242,20 @@
   {
    "id": "Q-F003-1",
    "question": "Product variants (attributes like size/colour generating variants) are dropped — every product is one sellable item. OK for the demo?",
-   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "status": "Resolved",
    "blocking": true,
    "kind": "DECISION",
-   "proposed": "Yes — no variants"
+   "proposed": "Yes — no variants",
+   "answer": "Yes — no variants — user, chat 2026-10-14 (\"all as proposed\")"
   },
   {
    "id": "Q-F003-2",
    "question": "Pricelists simplified to fixed-price and %-discount rules. OK?",
-   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "status": "Resolved",
    "blocking": false,
    "kind": "DECISION",
-   "proposed": "Yes"
+   "proposed": "Yes",
+   "answer": "Yes — user, chat 2026-10-14 (\"all as proposed\")"
   }
  ],
  "sourceKB": [

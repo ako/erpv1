@@ -1370,26 +1370,29 @@
   {
    "id": "Q-F001-1",
    "question": "Single currency: the POC uses only the company currency (no exchange rates, no foreign-currency documents). OK?",
-   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "status": "Resolved",
    "blocking": false,
    "kind": "DECISION",
-   "proposed": "Yes — single currency"
+   "proposed": "Yes — single currency",
+   "answer": "Yes — single currency — user, chat 2026-10-14 (\"all as proposed\")"
   },
   {
    "id": "Q-F001-2",
    "question": "User roles: map Odoo groups to 9 Mendix user roles (Administrator, SalesUser, SalesManager, Purchaser, PurchaseManager, InventoryUser, InventoryManager, Billing, InvoicingManager). SalesUser sees only own orders (Odoo \"Own Documents Only\"). OK?",
-   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "status": "Resolved",
    "blocking": false,
    "kind": "DECISION",
-   "proposed": "Yes"
+   "proposed": "Yes",
+   "answer": "Yes — user, chat 2026-10-14 (\"all as proposed\")"
   },
   {
    "id": "Q-F001-3",
    "question": "Mendix-native admin: users are Mendix accounts (Administration module) with a business profile, and document numbering is a small editable Sequence table. OK?",
-   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "status": "Resolved",
    "blocking": false,
    "kind": "DECISION",
-   "proposed": "Yes"
+   "proposed": "Yes",
+   "answer": "Yes — user, chat 2026-10-14 (\"all as proposed\")"
   }
  ],
  "sourceKB": [

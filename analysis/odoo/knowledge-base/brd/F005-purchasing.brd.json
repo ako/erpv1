@@ -1073,10 +1073,11 @@
   {
    "id": "Q-F005-1",
    "question": "PO approval as a Mendix workflow with a manager inbox (instead of Odoo's button). OK?",
-   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "status": "Resolved",
    "blocking": false,
    "kind": "DECISION",
-   "proposed": "Yes — showcases Mendix workflows"
+   "proposed": "Yes — showcases Mendix workflows",
+   "answer": "Yes — showcases Mendix workflows — user, chat 2026-10-14 (\"all as proposed\")"
   }
  ],
  "sourceKB": [

@@ -1659,26 +1659,29 @@
   {
    "id": "Q-F006-1",
    "question": "Lots/serial numbers, packages and multi-step (pick-pack-ship) flows are dropped: one warehouse, one-step receipts and deliveries. OK?",
-   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "status": "Resolved",
    "blocking": true,
    "kind": "DECISION",
-   "proposed": "Yes"
+   "proposed": "Yes",
+   "answer": "Yes — user, chat 2026-10-14 (\"all as proposed\")"
   },
   {
    "id": "Q-F006-2",
    "question": "Returns and scrap are left out of the first version (can be added later as transfers). OK?",
-   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "status": "Resolved",
    "blocking": false,
    "kind": "DECISION",
-   "proposed": "Yes"
+   "proposed": "Yes",
+   "answer": "Yes — user, chat 2026-10-14 (\"all as proposed\")"
   },
   {
    "id": "Q-F006-3",
    "question": "Reorder rules (min/max -> automatic RFQ) included as a wave-3 stretch item?",
-   "status": "Raised in chat 2026-10-14 — awaiting answer",
+   "status": "Resolved",
    "blocking": false,
    "kind": "DECISION",
-   "proposed": "Yes"
+   "proposed": "Yes",
+   "answer": "Yes — user, chat 2026-10-14 (\"all as proposed\")"
   }
  ],
  "sourceKB": [
