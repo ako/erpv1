@@ -1,0 +1,12 @@
+mdl 1;
+-- 010-navigation.mdl — the ONE owner of the Responsive navigation profile (learned-mdl-preflight
+-- STOP 21: navigation is whole-document restatement). Every page script that adds a menu entry
+-- edits THIS file and re-execs it; never restate navigation elsewhere.
+create or modify navigation Responsive
+  home page Core.Home_Web
+{
+  menu item 'Home' ( OnClick: show page Core.Home_Web, Icon: Atlas_Core.Atlas.home )
+  menu 'Contacts' ( Icon: Atlas_Core.Atlas.contacts ) {
+    menu item 'Contacts' ( OnClick: show page Partners.Partner_Overview, Icon: Atlas_Core.Atlas.contacts )
+  }
+};

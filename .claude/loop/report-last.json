@@ -1,47 +1,54 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-14 20:44:42",
-  "overallScore": 98.1,
+  "date": "2026-10-14 20:49:31",
+  "overallScore": 93.8,
   "summary": {
-    "total": 8,
+    "total": 19,
     "errors": 0,
-    "warnings": 1,
-    "infos": 7
+    "warnings": 6,
+    "infos": 13
   },
   "categories": [
     {
       "name": "Security",
-      "score": 96,
-      "total": 2,
+      "score": 86,
+      "total": 8,
       "errors": 0,
-      "warnings": 1,
-      "infos": 1,
+      "warnings": 3,
+      "infos": 5,
       "topActions": [
+        "Review the user role assignments for 'Core.User' and ensure a 1:1 mapping",
+        "Add an XPath constraint to limit which rows 'Partners.Editor' can READ on 'Partner'",
+        "Add XPath constraints to scope access to the current user's own data, e.g. [Sales.Order_Customer/Sales.Customer/id = '[%CurrentUser%]']",
         "ALTER APP SECURITY ( EnableDemoUsers: FALSE )",
-        "Review the user role assignments for 'Core.User' and ensure a 1:1 mapping"
+        "Remove the CREATE and DELETE rights and implement a microflow (ACT_) with security checks"
       ]
     },
     {
       "name": "Quality",
-      "score": 96,
-      "total": 4,
+      "score": 94,
+      "total": 6,
       "errors": 0,
       "warnings": 0,
-      "infos": 4,
+      "infos": 6,
       "topActions": [
         "Describe what the page shows and who reaches it.",
-        "Give the page a URL \u2014 `Url: 'home_web'` on CREATE PAGE, or the URL property in Studio Pro \u2014 so it is reachable at /p/home_web. Disable CONV019 in .claude/lint-config.yaml if this app deliberately has no deep links.",
-        "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point."
+        "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
+        "Replace entity validation rules with a VAL_Partner microflow for explicit, testable validation",
+        "Give the page a URL \u2014 `Url: 'home_web'` on CREATE PAGE, or the URL property in Studio Pro \u2014 so it is reachable at /p/home_web. Disable CONV019 in .claude/lint-config.yaml if this app deliberately has no deep links."
       ]
     },
     {
       "name": "Architecture",
-      "score": 100,
-      "total": 0,
+      "score": 91,
+      "total": 3,
       "errors": 0,
-      "warnings": 0,
+      "warnings": 3,
       "infos": 0,
-      "topActions": null
+      "topActions": [
+        "Move the 'ValidationFeedbackAction' action to a SUB_ microflow and call it from 'ACT_Partner_Save'",
+        "Add an attribute like 'PartnerCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE"
+      ]
     },
     {
       "name": "Performance",

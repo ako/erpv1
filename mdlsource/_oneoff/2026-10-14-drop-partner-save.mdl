@@ -1,0 +1,4 @@
+mdl 1;
+-- One-off: ACT_Partner_Save changed shape (validation moved to VAL_/SUB_); create or modify
+-- refuses a reshaping splice (MDL-V1-REBUILD), so drop it once; 00-skeleton.mdl recreates it.
+drop microflow Partners.ACT_Partner_Save;

@@ -1,15 +1,21 @@
 {
-  "timestamp": "2026-10-14T20:45:13Z",
-  "verdict": "BASELINE-UPDATED",
-  "total": 8,
-  "rule_count": 7,
+  "timestamp": "2026-10-14T20:49:25Z",
+  "verdict": "FAIL",
+  "total": 19,
+  "rule_count": 13,
   "counts": {
+    "ARCH003": 1,
     "CONV003": 1,
-    "CONV008": 1,
+    "CONV006": 1,
+    "CONV007": 2,
+    "CONV008": 3,
+    "CONV010": 2,
+    "CONV015": 1,
     "CONV019": 1,
     "CUSTOM002": 1,
     "QUAL002": 2,
-    "QUAL004": 1,
-    "SEC003": 1
+    "QUAL004": 2,
+    "SEC003": 1,
+    "SEC008": 1
   }
 }
