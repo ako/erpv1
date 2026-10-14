@@ -14,14 +14,14 @@ reference, not the model to copy). Sizes below are Odoo's; the Mendix model will
 | Decision | Chosen? | Which pipeline / what has to be built |
 |---|---|---|
 | **Reuse existing pipeline** | no | No toolkit pipeline reads Python/Odoo: `pipelines/` has `outsystems`, `java-angular`, `node-express-react` only, and none of their layout assumptions (OML/XML, Java/TS source trees) fit an Odoo addon tree. |
-| **Build new pipeline** | **proposed — awaiting user** | A small `pipelines/odoo/` extractor in this project: Python `ast` over `models/`, `wizard/`, `report/*.py` → models, fields (type, required, relation, compute/depends, selection values), `_inherit`/`_inherits`, `_sql_constraints`, `@api.constrains`, `action_*` methods; XML over `views/` → views per model, menus, actions; `security/` → ACL matrix (model × group × CRUD) and `ir.rule` domains; `__manifest__.py` → dependency graph. Output JSON into `analysis/odoo/knowledge-base/`. Validated against hand-built ground truth for 5 models (`res.partner`, `product.template`, `sale.order`, `sale.order.line`, `stock.picking`) per `qa-loop-goal-pattern.md`. |
+| **Build new pipeline** | **yes** | A small `pipelines/odoo/` extractor in this project: Python `ast` over `models/`, `wizard/`, `report/*.py` → models, fields (type, required, relation, compute/depends, selection values), `_inherit`/`_inherits`, `_sql_constraints`, `@api.constrains`, `action_*` methods; XML over `views/` → views per model, menus, actions; `security/` → ACL matrix (model × group × CRUD) and `ir.rule` domains; `__manifest__.py` → dependency graph. Output JSON into `analysis/odoo/knowledge-base/`. Validated against hand-built ground truth for 5 models (`res.partner`, `product.template`, `sale.order`, `sale.order.line`, `stock.picking`) per `qa-loop-goal-pattern.md`. |
 
 Reasoning: Odoo is unusually extractor-friendly — models, fields, relations, security and menus are
 all declarative, so a few hundred lines of Python cover the structure. What it cannot extract is
 method *behaviour* (what `action_confirm` does); that is read per method at Stage 1/2 for the
 in-scope flows only. ~300 models × ~20 fields each is far beyond a reliable hand read.
 
-Who chose it, and when: _pending — put to the user at the Stage 0 gate, 2026-10-14._
+Who chose it, and when: the user, Stage 0 gate in chat, 2026-10-14 (recorded in PROJECT.md).
 
 ---
 
@@ -69,7 +69,7 @@ moves to Ready or Extract-only). Out-of-scope capabilities are **Defer**.
 
 Each needs a policy — **acquire / stub / declare-not-implemented** — signed off at the gate.
 
-| Missing addon | Needed by | What it provides | Proposed policy |
+| Missing addon | Needed by | What it provides | Policy (CONFIRMED 2026-10-14) |
 |---|---|---|---|
 | `mail` | product, sales_team, analytic (and `mail.thread`/`mail.activity.mixin` on most documents) | Chatter, followers, activities, email templates | **Declare not implemented** (chatter out of scope) |
 | `portal` | account (portal.mixin on sale/purchase/invoices) | Customer/vendor self-service pages | **Declare not implemented** |
@@ -113,4 +113,4 @@ Verdict: **No concern** — one Mendix app.
 
 ## Sign-off
 
-Confirmed by: [user] on [date] — required before Phase 2/3 proceed.
+Confirmed by: user, in chat on 2026-10-14 (extraction approach, missing-dependency policies, interview mode assist, scope).

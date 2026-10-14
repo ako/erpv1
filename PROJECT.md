@@ -5,10 +5,10 @@ Every gate decision lands here as `CONFIRMED` or `ASSUMED`, never silently decid
 
 ## Current stage
 
-**Stage 0 — Triage**, needs attention — gates passed: P (derived by gate-check on 2026-10-14; re-run it rather than editing this line).
+**Stage 1 — Analysis**, in progress — gates passed: P, 0 (derived by gate-check on 2026-10-14; re-run it rather than editing this line).
 
 Toolkit commit: d16f578
-Interview mode: steering
+Interview mode: assist
 Exec approval: auto
 Permission profile: project
 Unit tests default: yes
@@ -36,6 +36,10 @@ Unit tests default: yes
 | P | Fidelity: **Odoo-inspired, Mendix-native** — do what makes most sense in Mendix; Odoo is the functional reference, not the model to copy | CONFIRMED | Intake Q3, chat 2026-10-14. Stage 3 fit-gap findings are opportunities, not gaps to close |
 | P | Interview mode: steering (interactive); SME = the user, in chat; nothing outside scope must stay as-is; starting from scratch (no adopt/waive) | CONFIRMED | Intake Q5, Q7–Q10, chat 2026-10-14 |
 | P | Exec approval auto; permission profile project; unit tests default **yes** | CONFIRMED | Intake Q11–Q13, chat 2026-10-14 |
+| 0 | Extraction approach: **Build new pipeline** — project-local Odoo extractor (Python ast + XML/CSV), validated on 5 ground-truth models | CONFIRMED | Stage 0 gate, chat 2026-10-14 (triage.md) |
+| 0 | Missing dependencies (mail, portal, account_payment/payment, utm, barcodes_gs1_nomenclature, digest, onboarding, base_setup): **declare not implemented**; manual payment registration stays in scope | CONFIRMED | Stage 0 gate, chat 2026-10-14 |
+| 0 | Interview mode switched steering → **assist** (sufficiency report: SPECIFICATION, 0 contradictions) — questions batched at gates, low-consequence ones assumed and reported | CONFIRMED | Stage 0 gate, chat 2026-10-14 |
+| 0 | Scope (CAC-1): C1–C8 in scope in waves 1–4, C9 ledger / C10 analytic / C11 valuation / C12 framework deferred; one Mendix app; size tier full (≈115 in-scope models, far over small-tier bounds) | CONFIRMED | Stage 0 gate, chat 2026-10-14 — user accepted the map without additions |
 | P | Source is committed to git (`sources/` tracked) | ASSUMED | LGPL-3.0 public code; container is ephemeral so an ignored copy would be lost (cloud-dev-environment.md step 5) |
 | 3 | Odoo in-place extension (`_inherit` without new `_name`): fields go into the owning Mendix entity; 1–1 extension entity only where the module must stay optional; method overrides → explicit sub-microflow hooks | ASSUMED | Discussed in chat 2026-10-14, to confirm at Stage 3 |
 | 3 | Odoo mixins (`_inherit` with new `_name`, e.g. `mail.thread`): no multiple inheritance in Mendix; at most one shared generalization (e.g. `Core.BusinessDocument`), otherwise associations; chatter out of scope | ASSUMED | Chat 2026-10-14 |
