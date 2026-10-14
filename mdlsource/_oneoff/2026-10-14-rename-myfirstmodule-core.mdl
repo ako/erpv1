@@ -1,0 +1,4 @@
+mdl 1;
+-- One-off (applied 2026-10-14 inside 000-scaffold.mdl's first run): the mxcli-new scaffold module
+-- becomes Core. Not re-runnable — MyFirstModule no longer exists. Kept as the record.
+rename module MyFirstModule to Core;

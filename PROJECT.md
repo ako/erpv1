@@ -72,6 +72,8 @@ Opt-in artifact erd: user asked for the target-domain ERD at Stage 2 close (chat
 | 4 | PD-6 Demo script: yes, written before phase 3 | CONFIRMED | User 2026-10-14: "all as proposed" |
 | 4 | Stage 4 ✋ sign-off: architecture/build-plan.md (95 rows, 10 phases), per-BRD coverage ledgers (8 clean), 7 module briefs approved | CONFIRMED | User 2026-10-14: "all as proposed, continue with stage 5" |
 
+Skeleton proven 2026-10-14: exec pass, journey pass/fail-control, look done (docs/skeleton-proof.md, 6 of 6 rows)
+
 Opt-in artifact demo-script: PD-6 — the POC ends in a demo (user, 2026-10-14)
 
 ## Change log

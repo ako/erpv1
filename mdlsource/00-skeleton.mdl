@@ -98,11 +98,15 @@ create or modify page Partners.Partner_NewEdit folder 'Contacts/Pages'
     row {
       column (desktopwidth: 12) {
         dataview dvPartner (datasource: $Partner) {
-          container pageHead (Class: 'spacing-outer-bottom-large') {
-            dynamictext crumb (content: 'Contact', rendermode: Text)
-            dynamictext heading (content: '{1}', ContentParams: ({1} = Name), rendermode: H1)
-            actionbutton btnSave (caption: 'Save', action: call microflow Partners.ACT_Partner_Save(Partner = $Partner), buttonstyle: primary)
-            actionbutton btnCancel (caption: 'Cancel', action: cancel changes)
+          container pageHead (Class: 'page-head spacing-outer-bottom-large') {
+            container pageHeadTitle (Class: 'page-head-title') {
+              dynamictext crumb (content: 'Contacts / Contact', rendermode: Text, Class: 'crumb')
+              dynamictext heading (content: '{1}', ContentParams: ({1} = Name), rendermode: H1)
+            }
+            container pageHeadActions (Class: 'page-head-actions') {
+              actionbutton btnSave (caption: 'Save', action: call microflow Partners.ACT_Partner_Save(Partner = $Partner), buttonstyle: primary)
+              actionbutton btnCancel (caption: 'Cancel', action: cancel changes)
+            }
           }
           layoutgrid gridForm {
             row {
@@ -125,12 +129,17 @@ grant view on page Partners.Partner_NewEdit to Partners.Editor;
 create or modify page Partners.Partner_Overview folder 'Contacts/Pages'
 (
   title: 'Contacts',
-  layout: Core.App_Default
+  layout: Core.App_Default,
+  url: 'contacts'
 )
 {
-  container pageHead (Class: 'spacing-outer-bottom-large') {
-    dynamictext heading (content: 'Contacts', rendermode: H1)
-    actionbutton btnNew (caption: 'New', action: call microflow Partners.ACT_Partner_New, buttonstyle: primary)
+  container pageHead (Class: 'page-head spacing-outer-bottom-large') {
+    container pageHeadTitle (Class: 'page-head-title') {
+      dynamictext heading (content: 'Contacts', rendermode: H1)
+    }
+    container pageHeadActions (Class: 'page-head-actions') {
+      actionbutton btnNew (caption: 'New', action: call microflow Partners.ACT_Partner_New, buttonstyle: primary)
+    }
   }
   datagrid gridPartners (datasource: database Partners.Partner sort by Name asc) {
     column (attribute: Name, caption: 'Name')

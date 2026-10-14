@@ -1,2 +1,36 @@
 @import '../../../theme/web/custom-variables';
 
+
+// ---------------------------------------------------------------------------
+// erpv1 promoted classes (design-reaches-app.md: the ONLY classes beyond the ledger
+// recipes and Atlas). Values resolve through --mxt-* tokens so light/dark both hold.
+// ---------------------------------------------------------------------------
+
+// Page header: crumb + H1 on the left, page actions right-aligned on the same row
+// (design-spacing.md §3; wireframes draw .lg-pagehead this way).
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 16px;
+  .page-head-title { flex: 1 1 auto; min-width: 0; }
+  .page-head-title h1 { margin: 0; }
+  .page-head-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+}
+
+// Breadcrumb / kicker above the H1.
+.crumb {
+  display: block;
+  color: var(--mxt-ink-muted);
+  font-size: 0.8125rem;
+  margin-bottom: 4px;
+}
+
+// App name in the top bar: sits on the rail colour, so it takes the rail's active ink.
+.app-name,
+.app-name h4 {
+  color: var(--mxt-rail-ink-active);
+  margin: 0;
+  font-family: var(--mxt-font-heading);
+}

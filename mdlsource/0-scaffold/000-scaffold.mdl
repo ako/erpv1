@@ -1,10 +1,8 @@
 mdl 1;
--- 000-scaffold.mdl — build-plan row 2 (Phase 0). Owns: module rename, Core.App_Default layout,
+-- 000-scaffold.mdl — build-plan row 2 (Phase 0). Owns: Core.App_Default layout,
 -- project security level. Navigation is owned by 010-navigation.mdl (generated, one owner).
 
--- The scaffold's MyFirstModule becomes Core (layer 0), so the owned layout and home page
--- live in a module of the design rather than a throwaway one.
-rename module MyFirstModule to Core;
+-- The scaffold's MyFirstModule became Core (layer 0) once: mdlsource/_oneoff/2026-10-14-rename-myfirstmodule-core.mdl.
 
 /** App shell: ledger side rail (navigation tree) + thin top bar + content. */
 create or modify layout Core.App_Default (
@@ -17,14 +15,16 @@ create or modify layout Core.App_Default (
         Class: 'topbar-content',
         DesignProperties: ('Flex container': 'Horizontal (row)', 'Align items Y': 'Center', 'Disable row wrap': on, 'Grow / shrink (self)': 'Fill container (only grow)')
       ) {
-        dynamictext appName (Content: 'erpv1', RenderMode: H4)
+        dynamictext appName (Content: 'erpv1', RenderMode: H4, Class: 'app-name')
       }
     }
     region left (Size: 232, SizeMode: 'Pixels', Class: 'region-sidebar') {
       navigationtree mainNav (Profile: 'Responsive')
     }
     region center (Class: 'region-content') {
-      placeholder Main
+      container contentGutter (Class: 'spacing-inner-layout') {
+        placeholder Main
+      }
     }
   }
 };
