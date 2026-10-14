@@ -1,0 +1,76 @@
+[
+ {
+  "file": "sources/odoo/addons/base/data/res.country.state.csv",
+  "model": "res.country.state.csv",
+  "columns": [
+   "id",
+   "country_id:id",
+   "name",
+   "code"
+  ],
+  "rows": 1780
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res.lang.csv",
+  "model": "res.lang.csv",
+  "columns": [
+   "id",
+   "name",
+   "code",
+   "iso_code",
+   "direction",
+   "grouping",
+   "decimal_point",
+   "thousands_sep",
+   "date_format",
+   "time_format",
+   "short_time_format",
+   "week_start"
+  ],
+  "rows": 92
+ },
+ {
+  "file": "sources/odoo/addons/account/data/template/account.account-generic_coa.csv",
+  "model": "account.account",
+  "columns": [
+   "id",
+   "name",
+   "code",
+   "account_type",
+   "tag_ids",
+   "reconcile",
+   "non_trade"
+  ],
+  "rows": 44
+ },
+ {
+  "file": "sources/odoo/addons/account/data/template/account.tax-generic_coa.csv",
+  "model": "account.tax",
+  "columns": [
+   "id",
+   "name",
+   "description",
+   "invoice_label",
+   "amount",
+   "type_tax_use",
+   "tax_group_id",
+   "repartition_line_ids/document_type",
+   "repartition_line_ids/factor_percent",
+   "repartition_line_ids/repartition_type",
+   "repartition_line_ids/account_id"
+  ],
+  "rows": 8
+ },
+ {
+  "file": "sources/odoo/addons/account/data/template/account.tax.group-generic_coa.csv",
+  "model": "account.tax.group",
+  "columns": [
+   "id",
+   "name",
+   "country_id",
+   "tax_payable_account_id",
+   "tax_receivable_account_id"
+  ],
+  "rows": 1
+ }
+]

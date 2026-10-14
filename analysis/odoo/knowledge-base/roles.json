@@ -1,0 +1,6546 @@
+[
+ {
+  "type": "role",
+  "linkId": "odoo:role:base.group_erp_manager",
+  "uniqueId": "base.group_erp_manager",
+  "name": "Access Rights",
+  "label": "Access Rights",
+  "module": "base",
+  "category": null,
+  "implies": [
+   "base.group_user"
+  ],
+  "description": "",
+  "acl": [
+   {
+    "model": "ir.model",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_model_group_erp_manager"
+   },
+   {
+    "model": "ir.model.constraint",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_model_constraint_group_erp_manager"
+   },
+   {
+    "model": "ir.model.relation",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_model_relation_group_erp_manager"
+   },
+   {
+    "model": "ir.model.access",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_model_access_group_erp_manager"
+   },
+   {
+    "model": "ir.model.data",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_model_data_group_erp_manager"
+   },
+   {
+    "model": "ir.model.fields",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_model_fields_group_erp_manager"
+   },
+   {
+    "model": "ir.model.fields.selection",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_model_fields_selection_group_erp_manager"
+   },
+   {
+    "model": "ir.module.category",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_ir_module_category_group_user"
+   },
+   {
+    "model": "ir.rule",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_rule_group_erp_manager"
+   },
+   {
+    "model": "res.company",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_company_group_erp_manager"
+   },
+   {
+    "model": "res.groups",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_groups_group_erp_manager"
+   },
+   {
+    "model": "res.users",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_users_group_erp_manager"
+   },
+   {
+    "model": "res.users.deletion",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_users_deletion_group_erp_manager"
+   },
+   {
+    "model": "ir.filters",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_filter_erp_manager"
+   },
+   {
+    "model": "ir.logging",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_logging"
+   },
+   {
+    "model": "reset.view.arch.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_reset_view_arch_wizard"
+   },
+   {
+    "model": "change.password.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_change_password_wizard"
+   },
+   {
+    "model": "change.password.user",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_change_password_user"
+   }
+  ],
+  "recordRules": [
+   {
+    "model": "ir.filters",
+    "name": "ir.filters.admin.all.rights",
+    "domain": "[(1, '=', 1)]",
+    "perms": {
+     "perm_read": "True",
+     "perm_write": "True",
+     "perm_create": "True",
+     "perm_unlink": "True"
+    }
+   },
+   {
+    "model": "res.company",
+    "name": "company rule erp manager",
+    "domain": "[(1,'=',1)]",
+    "perms": {}
+   }
+  ],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/base/security/base_groups.xml",
+  "sourceRef": "sources/odoo/addons/base/security/base_groups.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:base.group_system",
+  "uniqueId": "base.group_system",
+  "name": "base.group_system",
+  "label": "base.group_system",
+  "module": "product",
+  "category": null,
+  "implies": [
+   "product.group_product_manager"
+  ],
+  "description": "",
+  "acl": [
+   {
+    "model": "decimal.precision",
+    "read": true,
+    "write": true,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_decimal_precision_config"
+   },
+   {
+    "model": "ir.cron",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_cron_group_cron"
+   },
+   {
+    "model": "ir.cron.progress",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_cron_progress_group_cron"
+   },
+   {
+    "model": "ir.cron.trigger",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_cron_trigger_group_cron"
+   },
+   {
+    "model": "ir.module.module",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_module_module_group_user"
+   },
+   {
+    "model": "ir.module.module.dependency",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_module_module_dependency_group_system"
+   },
+   {
+    "model": "ir.module.module.exclusion",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_module_module_exclusion_group_system"
+   },
+   {
+    "model": "ir.sequence",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_sequence_group_system"
+   },
+   {
+    "model": "ir.sequence.date_range",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_sequence_date_range_group_system"
+   },
+   {
+    "model": "ir.ui.menu",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_ui_menu_group_system"
+   },
+   {
+    "model": "ir.ui.view",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_ui_view_group_system"
+   },
+   {
+    "model": "reset.view.arch.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_reset_view_arch_wizard_group_system"
+   },
+   {
+    "model": "ir.ui.view.custom",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_ui_view_custom_group_user"
+   },
+   {
+    "model": "ir.default",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_default_group_system"
+   },
+   {
+    "model": "res.country",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_country_group_system"
+   },
+   {
+    "model": "res.currency",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_currency_group_system"
+   },
+   {
+    "model": "res.currency.rate",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_currency_rate_group_system"
+   },
+   {
+    "model": "res.lang",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_lang_group_system"
+   },
+   {
+    "model": "res.partner.industry",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_partner_industry_group_system"
+   },
+   {
+    "model": "res.users.log",
+    "read": true,
+    "write": false,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_res_users_log_system"
+   },
+   {
+    "model": "ir.asset",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_asset_group_system"
+   },
+   {
+    "model": "ir.actions.actions",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_actions_group_system"
+   },
+   {
+    "model": "ir.actions.act_window",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_actions_act_window_system"
+   },
+   {
+    "model": "ir.actions.act_window_close",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_actions_act_window_close_group_system"
+   },
+   {
+    "model": "ir.actions.report",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_actions_report_group_system"
+   },
+   {
+    "model": "ir.actions.todo",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_actions_todo_group_system"
+   },
+   {
+    "model": "ir.actions.act_window.view",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_actions_act_window_view_group_system"
+   },
+   {
+    "model": "ir.actions.act_url",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_actions_act_url_group_system"
+   },
+   {
+    "model": "ir.actions.server",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_actions_server_group_system"
+   },
+   {
+    "model": "ir.actions.client",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_actions_client"
+   },
+   {
+    "model": "res.bank",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_bank_group_system"
+   },
+   {
+    "model": "ir.config_parameter",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_config_parameter_system"
+   },
+   {
+    "model": "ir.mail_server",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_mail_server"
+   },
+   {
+    "model": "report.paperformat",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.paperformat_access_employee"
+   },
+   {
+    "model": "wizard.ir.model.menu.create",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_wizard_ir_model_menu_create"
+   },
+   {
+    "model": "ir.demo",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_ir_demo"
+   },
+   {
+    "model": "ir.demo_failure",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_ir_demo_failure"
+   },
+   {
+    "model": "ir.demo_failure.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_ir_demo_failure_wizard"
+   },
+   {
+    "model": "res.config",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_res_config"
+   },
+   {
+    "model": "res.config.settings",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_res_config_settings"
+   },
+   {
+    "model": "base.module.update",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_base_module_update"
+   },
+   {
+    "model": "base.language.install",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_base_language_install"
+   },
+   {
+    "model": "base.language.import",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_base_language_import"
+   },
+   {
+    "model": "base.module.upgrade",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_base_module_upgrade"
+   },
+   {
+    "model": "base.module.uninstall",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_base_module_uninstall"
+   },
+   {
+    "model": "ir.profile",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_profile"
+   },
+   {
+    "model": "base.enable.profiling.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_base_enable_profiling_wizard"
+   },
+   {
+    "model": "uom.category",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "uom.access_uom_category_manager"
+   },
+   {
+    "model": "uom.uom",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "uom.access_uom_uom_manager"
+   },
+   {
+    "model": "sale.payment.provider.onboarding.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale.access_sale_payment_provider_onboarding_wizard"
+   },
+   {
+    "model": "sale.order.template",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale_management.access_sale_order_template_system"
+   }
+  ],
+  "recordRules": [
+   {
+    "model": "ir.default",
+    "name": "Defaults: alter all defaults",
+    "domain": "[(1,'=',1)]",
+    "perms": {
+     "perm_read": "False"
+    }
+   },
+   {
+    "model": "res.users.settings",
+    "name": "Administrators can access all User Settings.",
+    "domain": "[(1, '=', 1)]",
+    "perms": {
+     "perm_read": "True",
+     "perm_write": "True",
+     "perm_create": "True",
+     "perm_unlink": "True"
+    }
+   },
+   {
+    "model": "res.users.apikeys",
+    "name": "Administrators can view user keys to revoke them",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   },
+   {
+    "model": "ir.embedded.actions",
+    "name": "Admins have all the rights on embedded actions",
+    "domain": "[(1, '=', 1)]",
+    "perms": {
+     "perm_read": "False",
+     "perm_write": "True",
+     "perm_create": "False",
+     "perm_unlink": "True"
+    }
+   },
+   {
+    "model": "res.device",
+    "name": "Administrators can read all devices",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   },
+   {
+    "model": "res.device.log",
+    "name": "Administrators can read all device logs",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   }
+  ],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/product/security/product_security.xml",
+  "sourceRef": "sources/odoo/addons/product/security/product_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:base.group_user",
+  "uniqueId": "base.group_user",
+  "name": "base.group_user",
+  "label": "base.group_user",
+  "module": "sale_management",
+  "category": null,
+  "implies": [
+   "sale_management.group_sale_order_template"
+  ],
+  "description": "",
+  "acl": [
+   {
+    "model": "ir.attachment",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_attachment_group_user"
+   },
+   {
+    "model": "ir.exports.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_exports_line_group_system"
+   },
+   {
+    "model": "ir.model",
+    "read": false,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_ir_model_user"
+   },
+   {
+    "model": "ir.model.data",
+    "read": false,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_ir_model_data_user"
+   },
+   {
+    "model": "ir.model.fields",
+    "read": false,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_ir_model_fields_user"
+   },
+   {
+    "model": "ir.model.fields.selection",
+    "read": false,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_ir_model_fields_selection_user"
+   },
+   {
+    "model": "ir.sequence",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_ir_sequence_group_user"
+   },
+   {
+    "model": "ir.sequence.date_range",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_ir_sequence_date_range_group_user"
+   },
+   {
+    "model": "ir.ui.menu",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_ir_ui_menu_group_user"
+   },
+   {
+    "model": "ir.default",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_default_group_user"
+   },
+   {
+    "model": "res.company",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_company_employee"
+   },
+   {
+    "model": "res.country",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_country_employee"
+   },
+   {
+    "model": "res.country.state",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_country_state_employee"
+   },
+   {
+    "model": "res.country.group",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_country_group_employee"
+   },
+   {
+    "model": "res.currency",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_currency_employee"
+   },
+   {
+    "model": "res.currency.rate",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_currency_rate_employee"
+   },
+   {
+    "model": "res.groups",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_groups_group_user"
+   },
+   {
+    "model": "res.lang",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_lang_employee"
+   },
+   {
+    "model": "res.partner",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_partner_group_user"
+   },
+   {
+    "model": "res.partner.bank",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_partner_bank_group_user"
+   },
+   {
+    "model": "res.partner.category",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_partner_category_group_user"
+   },
+   {
+    "model": "res.partner.industry",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_partner_industry_group_user"
+   },
+   {
+    "model": "res.partner.title",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_partner_title_group_partner_manager"
+   },
+   {
+    "model": "res.users",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_users_employee"
+   },
+   {
+    "model": "res.users.identitycheck",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_res_users_identitycheck_employee"
+   },
+   {
+    "model": "res.users.apikeys",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_users_apikeys_access_employee"
+   },
+   {
+    "model": "res.users.apikeys.description",
+    "read": true,
+    "write": false,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_res_users_apikeys_description_employee"
+   },
+   {
+    "model": "res.users.apikeys.show",
+    "read": true,
+    "write": false,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_res_users_apikeys_show_employee"
+   },
+   {
+    "model": "res.users.settings",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_users_settings_user"
+   },
+   {
+    "model": "ir.embedded.actions",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_embedded_actions_group_user"
+   },
+   {
+    "model": "res.bank",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_bank_user"
+   },
+   {
+    "model": "ir.filters",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_filter_user"
+   },
+   {
+    "model": "report.paperformat",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.paperformat_access_portal"
+   },
+   {
+    "model": "report.layout",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_report_layout"
+   },
+   {
+    "model": "change.password.own",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_change_password_own"
+   },
+   {
+    "model": "base.language.export",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_base_language_export"
+   },
+   {
+    "model": "res.device",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_device"
+   },
+   {
+    "model": "res.device.log",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_device_log"
+   },
+   {
+    "model": "uom.category",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "uom.access_uom_category_user"
+   },
+   {
+    "model": "uom.uom",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "uom.access_uom_uom_user"
+   },
+   {
+    "model": "product.category",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_category_user"
+   },
+   {
+    "model": "product.template",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_template_user"
+   },
+   {
+    "model": "product.packaging",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_packaging_user"
+   },
+   {
+    "model": "product.supplierinfo",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_supplierinfo_user"
+   },
+   {
+    "model": "product.pricelist",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_pricelist_user"
+   },
+   {
+    "model": "product.pricelist.item",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_pricelist_item_user"
+   },
+   {
+    "model": "product.product",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_product_employee"
+   },
+   {
+    "model": "product.attribute",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_attribute"
+   },
+   {
+    "model": "product.attribute.value",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_attribute_value"
+   },
+   {
+    "model": "product.attribute.custom.value",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_attribute_custom_value_user"
+   },
+   {
+    "model": "product.template.attribute.value",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_product_attribute"
+   },
+   {
+    "model": "product.template.attribute.exclusion",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_template_attribute_exclusion"
+   },
+   {
+    "model": "product.template.attribute.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_template_attribute_line"
+   },
+   {
+    "model": "product.tag",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_tag_user"
+   },
+   {
+    "model": "product.combo",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_combo_user"
+   },
+   {
+    "model": "product.combo.item",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_combo_item_user"
+   },
+   {
+    "model": "product.label.layout",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_label_layout_user"
+   },
+   {
+    "model": "product.document",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_document_user"
+   },
+   {
+    "model": "account.incoterms",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_incoterms_all"
+   },
+   {
+    "model": "account.lock_exception",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_lock_exception"
+   },
+   {
+    "model": "account.fiscal.position",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_fiscal_position"
+   },
+   {
+    "model": "account.fiscal.position.tax",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_fiscal_position_tax"
+   },
+   {
+    "model": "account.fiscal.position.account",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_fiscal_position_account"
+   },
+   {
+    "model": "account.analytic.account",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_analytic_account"
+   },
+   {
+    "model": "account.account",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_account_user"
+   },
+   {
+    "model": "account.tax",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_tax_internal_user"
+   },
+   {
+    "model": "account.account.tag",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_tag_internal_user"
+   },
+   {
+    "model": "account.tax.repartition.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_tax_repartition_line_user"
+   },
+   {
+    "model": "account.tax.group",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_tax_group_internal_user"
+   },
+   {
+    "model": "account.payment.term",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_payment_term_partner_manager"
+   },
+   {
+    "model": "account.payment.term.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_payment_term_line_partner_manager"
+   },
+   {
+    "model": "account.payment.method.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_payment_method_line_readonly"
+   },
+   {
+    "model": "account.payment.method",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_payment_method_readonly"
+   },
+   {
+    "model": "procurement.group",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_procurement_group"
+   },
+   {
+    "model": "stock.warehouse",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_warehouse_user"
+   },
+   {
+    "model": "stock.location",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_location_all_user"
+   },
+   {
+    "model": "stock.picking.type",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_picking_type_all"
+   },
+   {
+    "model": "stock.quant",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_quant_all"
+   },
+   {
+    "model": "stock.quant.package",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_quant_package_all"
+   },
+   {
+    "model": "stock.package_level",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_package_level_all"
+   },
+   {
+    "model": "stock.route",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_location_route"
+   },
+   {
+    "model": "stock.rule",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_rule_internal"
+   },
+   {
+    "model": "stock.move.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_move_line_all"
+   },
+   {
+    "model": "stock.putaway.rule",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_putaway_all"
+   },
+   {
+    "model": "product.removal",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_removal_all"
+   },
+   {
+    "model": "report.stock.quantity",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_report_stock_quantity"
+   },
+   {
+    "model": "stock.storage.category",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_storage_category_user"
+   },
+   {
+    "model": "stock.storage.category.capacity",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_storage_category_capacity_user"
+   },
+   {
+    "model": "crm.team",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sales_team.access_crm_team"
+   },
+   {
+    "model": "crm.team.member",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sales_team.access_crm_team_member_user"
+   },
+   {
+    "model": "crm.tag",
+    "read": false,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sales_team.access_crm_tag"
+   }
+  ],
+  "recordRules": [
+   {
+    "model": "ir.default",
+    "name": "Defaults: alter personal defaults",
+    "domain": "[('user_id','=',user.id)]",
+    "perms": {
+     "perm_read": "False"
+    }
+   },
+   {
+    "model": "ir.filters",
+    "name": "ir.filters.owner",
+    "domain": "[('user_id','in',[False,user.id])]",
+    "perms": {
+     "perm_unlink": "False"
+    }
+   },
+   {
+    "model": "ir.filters",
+    "name": "ir.filters.own.rule.delete",
+    "domain": "[('user_id', '=', user.id)]",
+    "perms": {
+     "perm_read": "False",
+     "perm_write": "False",
+     "perm_create": "False"
+    }
+   },
+   {
+    "model": "res.company",
+    "name": "company rule employee",
+    "domain": "[('id','in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "res.users.settings",
+    "name": "res.users.settings: access their own entries",
+    "domain": "[('user_id', '=', user.id)]",
+    "perms": {
+     "perm_read": "True",
+     "perm_write": "True",
+     "perm_create": "True",
+     "perm_unlink": "True"
+    }
+   },
+   {
+    "model": "res.users.apikeys",
+    "name": "Users can read and delete their own keys",
+    "domain": "[('user_id', '=', user.id)]",
+    "perms": {}
+   },
+   {
+    "model": "ir.embedded.actions",
+    "name": "Users can modify or delete embedded actions that they have created or that are shared",
+    "domain": "[('user_id', 'in', [user.id, False])]",
+    "perms": {
+     "perm_read": "False",
+     "perm_write": "True",
+     "perm_create": "False",
+     "perm_unlink": "True"
+    }
+   },
+   {
+    "model": "res.device",
+    "name": "Users can read only their own devices",
+    "domain": "[('user_id', '=', user.id)]",
+    "perms": {}
+   },
+   {
+    "model": "res.device.log",
+    "name": "Users can read only their own device logs",
+    "domain": "[('user_id', '=', user.id)]",
+    "perms": {}
+   }
+  ],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/sale_management/data/sale_order_template_demo.xml",
+  "sourceRef": "sources/odoo/addons/sale_management/data/sale_order_template_demo.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:base.group_multi_company",
+  "uniqueId": "base.group_multi_company",
+  "name": "base.group_multi_company",
+  "label": "base.group_multi_company",
+  "module": "stock",
+  "category": null,
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/data/stock_demo.xml",
+  "sourceRef": "sources/odoo/addons/stock/data/stock_demo.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:base.group_multi_currency",
+  "uniqueId": "base.group_multi_currency",
+  "name": "Multi Currencies",
+  "label": "Multi Currencies",
+  "module": "base",
+  "category": null,
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/base/security/base_groups.xml",
+  "sourceRef": "sources/odoo/addons/base/security/base_groups.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:base.group_no_one",
+  "uniqueId": "base.group_no_one",
+  "name": "base.group_no_one",
+  "label": "base.group_no_one",
+  "module": "base",
+  "category": null,
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/base/views/res_users_views.xml",
+  "sourceRef": "sources/odoo/addons/base/views/res_users_views.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:base.group_portal",
+  "uniqueId": "base.group_portal",
+  "name": "base.group_portal",
+  "label": "base.group_portal",
+  "module": "stock",
+  "category": null,
+  "implies": [
+   "stock.group_production_lot"
+  ],
+  "description": "",
+  "acl": [
+   {
+    "model": "res.company",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_company_portal"
+   },
+   {
+    "model": "res.country",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_country_portal"
+   },
+   {
+    "model": "res.country.state",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_country_state_portal"
+   },
+   {
+    "model": "res.country.group",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_country_group_portal"
+   },
+   {
+    "model": "res.currency",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_currency_portal"
+   },
+   {
+    "model": "res.currency.rate",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_currency_rate_portal"
+   },
+   {
+    "model": "res.lang",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_lang_portal"
+   },
+   {
+    "model": "res.partner",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_partner_portal"
+   },
+   {
+    "model": "res.users",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_users_portal"
+   },
+   {
+    "model": "res.users.identitycheck",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_res_users_identitycheck_portal"
+   },
+   {
+    "model": "res.users.apikeys",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_users_apikeys_access_portal"
+   },
+   {
+    "model": "res.users.apikeys.description",
+    "read": true,
+    "write": false,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_res_users_apikeys_description_portal"
+   },
+   {
+    "model": "ir.filters",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_filter_portal"
+   },
+   {
+    "model": "account.move",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_invoice_portal"
+   },
+   {
+    "model": "account.move.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_invoice_line_portal"
+   },
+   {
+    "model": "account.payment.term",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_payment_term_portal"
+   },
+   {
+    "model": "purchase.order",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_purchase_order_portal"
+   },
+   {
+    "model": "purchase.order.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_purchase_order_line_portal"
+   },
+   {
+    "model": "sale.order",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_sale_order_portal"
+   },
+   {
+    "model": "sale.order.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_sale_order_line_portal"
+   },
+   {
+    "model": "stock.picking",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale_stock.access_stock_picking_portal"
+   }
+  ],
+  "recordRules": [
+   {
+    "model": "res.partner",
+    "name": "res_partner: portal/public: read access on my commercial partner",
+    "domain": "[('id', 'child_of', user.commercial_partner_id.id)]",
+    "perms": {
+     "perm_write": "False",
+     "perm_create": "False",
+     "perm_unlink": "False"
+    }
+   },
+   {
+    "model": "ir.filters",
+    "name": "ir.filter: portal/public",
+    "domain": "[('user_id', '=', user.id)]",
+    "perms": {}
+   },
+   {
+    "model": "res.company",
+    "name": "company rule portal",
+    "domain": "[('id','in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "res.users.apikeys",
+    "name": "Users can read and delete their own keys",
+    "domain": "[('user_id', '=', user.id)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move",
+    "name": "Portal Personal Account Invoices",
+    "domain": "[('state', 'not in', ('cancel', 'draft')), ('move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')), ('message_partner_ids','child_of',[user.commercial_partner_id.id])]",
+    "perms": {}
+   },
+   {
+    "model": "account.move.line",
+    "name": "Portal Invoice Lines",
+    "domain": "[('parent_state', 'not in', ('cancel', 'draft')), ('move_id.move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')), ('move_id.message_partner_ids','child_of',[user.commercial_partner_id.id])]",
+    "perms": {}
+   },
+   {
+    "model": "purchase.order",
+    "name": "Portal Purchase Orders",
+    "domain": "['|', ('message_partner_ids','child_of',[user.commercial_partner_id.id]),('partner_id', 'child_of', [user.commercial_partner_id.id])]",
+    "perms": {
+     "perm_read": "1",
+     "perm_write": "1",
+     "perm_create": "0",
+     "perm_unlink": "1"
+    }
+   },
+   {
+    "model": "purchase.order.line",
+    "name": "Portal Purchase Order Lines",
+    "domain": "['|',('order_id.message_partner_ids','child_of',[user.commercial_partner_id.id]),('order_id.partner_id','child_of',[user.commercial_partner_id.id])]",
+    "perms": {}
+   },
+   {
+    "model": "sale.order",
+    "name": "Portal Personal Quotations/Sales Orders",
+    "domain": "[('message_partner_ids','child_of',[user.commercial_partner_id.id])]",
+    "perms": {
+     "perm_read": "True",
+     "perm_write": "True",
+     "perm_create": "False",
+     "perm_unlink": "True"
+    }
+   },
+   {
+    "model": "sale.order.line",
+    "name": "Portal Sales Orders Line",
+    "domain": "[('order_id.message_partner_ids','child_of',[user.commercial_partner_id.id])]",
+    "perms": {}
+   },
+   {
+    "model": "stock.picking",
+    "name": "Portal Follower Transfers",
+    "domain": "['|', '|', ('message_partner_ids', 'in', [user.partner_id.id]), ('partner_id', '=', user.partner_id.id), ('sale_id.partner_id', '=', user.partner_id.id)]",
+    "perms": {}
+   }
+  ],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/data/stock_demo.xml",
+  "sourceRef": "sources/odoo/addons/stock/data/stock_demo.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:base.group_public",
+  "uniqueId": "base.group_public",
+  "name": "Public",
+  "label": "Public",
+  "module": "base",
+  "category": null,
+  "implies": [],
+  "description": "Public users have specific access rights (such as record rules and restricted menus).\n                They usually do not belong to the usual Odoo groups.",
+  "acl": [
+   {
+    "model": "res.company",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_company_public"
+   },
+   {
+    "model": "res.country",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_country_public"
+   },
+   {
+    "model": "res.country.state",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_country_state_public"
+   },
+   {
+    "model": "res.country.group",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_country_group_public"
+   },
+   {
+    "model": "res.currency",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_currency_public"
+   },
+   {
+    "model": "res.currency.rate",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_currency_rate_public"
+   },
+   {
+    "model": "res.lang",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_lang_public"
+   },
+   {
+    "model": "res.partner",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_partner_public"
+   },
+   {
+    "model": "res.users",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_users_public"
+   },
+   {
+    "model": "ir.filters",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_filter_public"
+   }
+  ],
+  "recordRules": [
+   {
+    "model": "res.partner",
+    "name": "res_partner: portal/public: read access on my commercial partner",
+    "domain": "[('id', 'child_of', user.commercial_partner_id.id)]",
+    "perms": {
+     "perm_write": "False",
+     "perm_create": "False",
+     "perm_unlink": "False"
+    }
+   },
+   {
+    "model": "ir.filters",
+    "name": "ir.filter: portal/public",
+    "domain": "[('user_id', '=', user.id)]",
+    "perms": {}
+   },
+   {
+    "model": "res.company",
+    "name": "company rule public",
+    "domain": "[('id','in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "res.users.apikeys",
+    "name": "Public users can't interact with keys at all",
+    "domain": "[(0, '=', 1)]",
+    "perms": {}
+   }
+  ],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/base/security/base_groups.xml",
+  "sourceRef": "sources/odoo/addons/base/security/base_groups.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:base.group_partner_manager",
+  "uniqueId": "base.group_partner_manager",
+  "name": "Contact Creation",
+  "label": "Contact Creation",
+  "module": "base",
+  "category": null,
+  "implies": [],
+  "description": "",
+  "acl": [
+   {
+    "model": "res.country",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_country_group_user"
+   },
+   {
+    "model": "res.country.state",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_country_state_group_user"
+   },
+   {
+    "model": "res.country.group",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_country_group_group_user"
+   },
+   {
+    "model": "res.partner",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_partner_group_partner_manager"
+   },
+   {
+    "model": "res.partner.bank",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_partner_bank_group_partner_manager"
+   },
+   {
+    "model": "res.partner.category",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_partner_category_group_partner_manager"
+   },
+   {
+    "model": "res.partner.title",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_partner_title_group_user"
+   },
+   {
+    "model": "res.bank",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_res_bank_group_partner_manager"
+   },
+   {
+    "model": "base.partner.merge.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_base_partner_merge_line"
+   },
+   {
+    "model": "base.partner.merge.automatic.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "base.access_base_partner_merge_automatic_wizard"
+   },
+   {
+    "model": "product.pricelist",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "product.access_product_pricelist_partner_manager"
+   },
+   {
+    "model": "account.account",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_account_partner_manager"
+   },
+   {
+    "model": "stock.location",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_location_partner_manager"
+   }
+  ],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/base/security/base_groups.xml",
+  "sourceRef": "sources/odoo/addons/base/security/base_groups.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:base.group_sanitize_override",
+  "uniqueId": "base.group_sanitize_override",
+  "name": "Bypass HTML Field Sanitize",
+  "label": "Bypass HTML Field Sanitize",
+  "module": "base",
+  "category": null,
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/base/security/base_groups.xml",
+  "sourceRef": "sources/odoo/addons/base/security/base_groups.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:base.group_allow_export",
+  "uniqueId": "base.group_allow_export",
+  "name": "Access to export feature",
+  "label": "Access to export feature",
+  "module": "base",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [
+   {
+    "model": "ir.exports",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "base.access_ir_exports_group_system"
+   }
+  ],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/base/security/base_groups.xml",
+  "sourceRef": "sources/odoo/addons/base/security/base_groups.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:uom.group_uom",
+  "uniqueId": "uom.group_uom",
+  "name": "Manage Multiple Units of Measure",
+  "label": "Manage Multiple Units of Measure",
+  "module": "uom",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/uom/security/uom_security.xml",
+  "sourceRef": "sources/odoo/addons/uom/security/uom_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:product.group_product_pricelist",
+  "uniqueId": "product.group_product_pricelist",
+  "name": "Basic Pricelists",
+  "label": "Basic Pricelists",
+  "module": "product",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/product/security/product_security.xml",
+  "sourceRef": "sources/odoo/addons/product/security/product_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:product.group_stock_packaging",
+  "uniqueId": "product.group_stock_packaging",
+  "name": "Manage Product Packaging",
+  "label": "Manage Product Packaging",
+  "module": "product",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/product/security/product_security.xml",
+  "sourceRef": "sources/odoo/addons/product/security/product_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:product.group_product_variant",
+  "uniqueId": "product.group_product_variant",
+  "name": "Manage Product Variants",
+  "label": "Manage Product Variants",
+  "module": "product",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/product/security/product_security.xml",
+  "sourceRef": "sources/odoo/addons/product/security/product_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:product.group_product_manager",
+  "uniqueId": "product.group_product_manager",
+  "name": "Product Creation",
+  "label": "Product Creation",
+  "module": "product",
+  "category": "base.module_category_usability",
+  "implies": [],
+  "description": "",
+  "acl": [
+   {
+    "model": "product.category",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_category_manager"
+   },
+   {
+    "model": "product.template",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_template_manager"
+   },
+   {
+    "model": "product.packaging",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_packaging_manager"
+   },
+   {
+    "model": "product.supplierinfo",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_supplierinfo_manager"
+   },
+   {
+    "model": "product.pricelist",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_pricelist_manager"
+   },
+   {
+    "model": "product.pricelist.item",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_pricelist_item_manager"
+   },
+   {
+    "model": "product.product",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_product_manager"
+   },
+   {
+    "model": "product.attribute",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_attribute_manager"
+   },
+   {
+    "model": "product.attribute.value",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_attribute_value_manager"
+   },
+   {
+    "model": "product.attribute.custom.value",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_attribute_custom_value_manager"
+   },
+   {
+    "model": "product.template.attribute.value",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_product_attribute_manager"
+   },
+   {
+    "model": "product.template.attribute.exclusion",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_template_attribute_exclusion_manager"
+   },
+   {
+    "model": "product.template.attribute.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_template_attribute_line_manager"
+   },
+   {
+    "model": "product.tag",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_tag_manager"
+   },
+   {
+    "model": "product.combo",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_combo_manager"
+   },
+   {
+    "model": "product.combo.item",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "product.access_product_combo_item_manager"
+   },
+   {
+    "model": "update.product.attribute.value",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "product.access_update_product_attribute_value_manager"
+   }
+  ],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/product/security/product_security.xml",
+  "sourceRef": "sources/odoo/addons/product/security/product_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:analytic.group_analytic_accounting",
+  "uniqueId": "analytic.group_analytic_accounting",
+  "name": "Analytic Accounting",
+  "label": "Analytic Accounting",
+  "module": "analytic",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [
+   {
+    "model": "account.analytic.account",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "analytic.access_account_analytic_account"
+   },
+   {
+    "model": "account.analytic.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "analytic.access_account_analytic_line"
+   },
+   {
+    "model": "account.analytic.plan",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "analytic.access_account_analytic_plan"
+   },
+   {
+    "model": "account.analytic.applicability",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "analytic.access_account_analytic_applicability"
+   },
+   {
+    "model": "account.analytic.distribution.model",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "analytic.access_account_analytic_distribution_model"
+   }
+  ],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/analytic/security/analytic_security.xml",
+  "sourceRef": "sources/odoo/addons/analytic/security/analytic_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:account.group_delivery_invoice_address",
+  "uniqueId": "account.group_delivery_invoice_address",
+  "name": "Delivery Address",
+  "label": "Delivery Address",
+  "module": "account",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/account/security/account_security.xml",
+  "sourceRef": "sources/odoo/addons/account/security/account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:account.group_account_readonly",
+  "uniqueId": "account.group_account_readonly",
+  "name": "Show Accounting Features - Readonly",
+  "label": "Show Accounting Features - Readonly",
+  "module": "account",
+  "category": "base.module_category_hidden",
+  "implies": [
+   "base.group_user"
+  ],
+  "description": "",
+  "acl": [
+   {
+    "model": "account.cash.rounding",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_cash_rounding_readonly"
+   },
+   {
+    "model": "account.invoice.report",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_invoice_report_readonly"
+   },
+   {
+    "model": "product.product",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_product_product_account_user"
+   },
+   {
+    "model": "account.bank.statement",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_bank_statement_group_readonly"
+   },
+   {
+    "model": "account.bank.statement.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_bank_statement_line_group_readonly"
+   },
+   {
+    "model": "account.move",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_move_readonly"
+   },
+   {
+    "model": "account.move.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_move_line_readonly"
+   },
+   {
+    "model": "account.analytic.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_analytic_line_readonly"
+   },
+   {
+    "model": "account.analytic.distribution.model",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_analytic_distribution_readonly"
+   },
+   {
+    "model": "account.journal",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_journal_readonly"
+   },
+   {
+    "model": "account.journal.group",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_journal_group_readonly"
+   },
+   {
+    "model": "account.group",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_group"
+   },
+   {
+    "model": "account.root",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_root"
+   },
+   {
+    "model": "account.code.mapping",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_code_mapping"
+   },
+   {
+    "model": "account.account",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_account"
+   },
+   {
+    "model": "account.tax",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_tax_readonly"
+   },
+   {
+    "model": "account.account.tag",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_account_tax_readonly"
+   },
+   {
+    "model": "account.tax.repartition.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_tax_repartition_line_readonly"
+   },
+   {
+    "model": "account.tax.group",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_tax_group_readonly"
+   },
+   {
+    "model": "account.reconcile.model",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_reconcile_model_readonly"
+   },
+   {
+    "model": "account.reconcile.model.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_reconcile_model_line_readonly"
+   },
+   {
+    "model": "account.reconcile.model.partner.mapping",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_reconcile_model_partner_mapping_readonly"
+   },
+   {
+    "model": "account.partial.reconcile",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_partial_reconcile_readonly"
+   },
+   {
+    "model": "account.full.reconcile",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_full_reconcile_group_readonly"
+   },
+   {
+    "model": "account.payment",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_payment_readonly"
+   },
+   {
+    "model": "account.report",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_report_readonly"
+   },
+   {
+    "model": "account.report.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_report_line_readonly"
+   },
+   {
+    "model": "account.report.expression",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_report_expression_readonly"
+   },
+   {
+    "model": "account.report.column",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_report_column_readonly"
+   },
+   {
+    "model": "account.report.external.value",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_report_external_value_readonly"
+   },
+   {
+    "model": "purchase.order",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_purchase_order_invoicing_payments_readonly"
+   },
+   {
+    "model": "purchase.order.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_purchase_order_line_invoicing_payments_readonly"
+   },
+   {
+    "model": "purchase.bill.line.match",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_purchase_bill_line_match_readonly"
+   },
+   {
+    "model": "stock.picking",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock_account.access_stock_picking_invoicing_payments_readonly"
+   },
+   {
+    "model": "stock.move",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock_account.access_stock_move_invoicing_payments_readonly"
+   },
+   {
+    "model": "sale.order",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_sale_order_readonly"
+   },
+   {
+    "model": "sale.order.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_sale_order_line_readonly"
+   },
+   {
+    "model": "sale.order.option",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale_management.access_sale_order_option_readonly"
+   }
+  ],
+  "recordRules": [
+   {
+    "model": "account.analytic.line",
+    "name": "account.analytic.line.readonly.user",
+    "domain": "[(1, '=', 1)]",
+    "perms": {
+     "perm_write": "False",
+     "perm_create": "False",
+     "perm_unlink": "False"
+    }
+   },
+   {
+    "model": "account.move",
+    "name": "Readonly Move",
+    "domain": "[(1, '=', 1)]",
+    "perms": {
+     "perm_write": "False",
+     "perm_create": "False",
+     "perm_unlink": "False"
+    }
+   },
+   {
+    "model": "account.move.line",
+    "name": "Readonly Move Line",
+    "domain": "[(1, '=', 1)]",
+    "perms": {
+     "perm_write": "False",
+     "perm_create": "False",
+     "perm_unlink": "False"
+    }
+   }
+  ],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/account/security/account_security.xml",
+  "sourceRef": "sources/odoo/addons/account/security/account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:account.group_account_invoice",
+  "uniqueId": "account.group_account_invoice",
+  "name": "Invoicing",
+  "label": "Invoicing",
+  "module": "account",
+  "category": "base.module_category_accounting_accounting",
+  "implies": [
+   "base.group_user"
+  ],
+  "description": "",
+  "acl": [
+   {
+    "model": "account.cash.rounding",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_cash_rounding_uinvoice"
+   },
+   {
+    "model": "account.invoice.report",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_invoice_report_billing"
+   },
+   {
+    "model": "account.bank.statement",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_bank_statement_group_invoice"
+   },
+   {
+    "model": "account.bank.statement.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_bank_statement_line_group_invoice"
+   },
+   {
+    "model": "account.move",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_move_uinvoice"
+   },
+   {
+    "model": "account.move.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_move_line_uinvoice"
+   },
+   {
+    "model": "account.analytic.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_analytic_line_invoice"
+   },
+   {
+    "model": "account.analytic.distribution.model",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_analytic_distribution_invoice"
+   },
+   {
+    "model": "account.journal",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_journal_invoice"
+   },
+   {
+    "model": "account.journal.group",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_journal_group_invoice"
+   },
+   {
+    "model": "account.account",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_account_invoice"
+   },
+   {
+    "model": "account.tax",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_tax_invoice"
+   },
+   {
+    "model": "account.account.tag",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_account_tax_user"
+   },
+   {
+    "model": "account.tax.repartition.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_tax_repartition_line_invoice"
+   },
+   {
+    "model": "account.tax.group",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_tax_group"
+   },
+   {
+    "model": "account.reconcile.model",
+    "read": true,
+    "write": false,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_account_reconcile_model_billing"
+   },
+   {
+    "model": "account.reconcile.model.line",
+    "read": true,
+    "write": false,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_account_reconcile_model_line_billing"
+   },
+   {
+    "model": "account.reconcile.model.partner.mapping",
+    "read": true,
+    "write": false,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_account_reconcile_model_partner_mapping_billing"
+   },
+   {
+    "model": "account.partial.reconcile",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_partial_reconcile_group_invoice"
+   },
+   {
+    "model": "account.full.reconcile",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_full_reconcile_group_invoice"
+   },
+   {
+    "model": "account.payment.method.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_payment_method_line"
+   },
+   {
+    "model": "account.payment.method",
+    "read": true,
+    "write": true,
+    "create": false,
+    "unlink": true,
+    "id": "account.access_account_payment_method"
+   },
+   {
+    "model": "account.payment",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_payment"
+   },
+   {
+    "model": "account.payment.register",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_account_payment_register"
+   },
+   {
+    "model": "account.autopost.bills.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_account_autopost_bills_wizard"
+   },
+   {
+    "model": "validate.account.move",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_validate_account_move"
+   },
+   {
+    "model": "account.move.reversal",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_account_move_reversal"
+   },
+   {
+    "model": "account.move.send.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_move_send_wizard"
+   },
+   {
+    "model": "account.move.send.batch.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_move_send_batch_wizard"
+   },
+   {
+    "model": "purchase.order",
+    "read": true,
+    "write": true,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_purchase_order_invoicing_payments"
+   },
+   {
+    "model": "purchase.order.line",
+    "read": true,
+    "write": true,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_purchase_order_line_invoicing_payments"
+   },
+   {
+    "model": "purchase.bill.line.match",
+    "read": true,
+    "write": true,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_purchase_bill_line_match_invoicing_payments"
+   },
+   {
+    "model": "stock.picking",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock_account.access_stock_picking_invoicing_payments"
+   },
+   {
+    "model": "stock.move",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock_account.access_stock_move_invoicing_payments"
+   },
+   {
+    "model": "sale.order",
+    "read": true,
+    "write": true,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_sale_order_invoicing_payments"
+   },
+   {
+    "model": "sale.order.line",
+    "read": true,
+    "write": true,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_sale_order_line_invoicing_payments"
+   },
+   {
+    "model": "sale.order.option",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale_management.access_sale_order_option_invoice"
+   }
+  ],
+  "recordRules": [
+   {
+    "model": "account.analytic.line",
+    "name": "account.analytic.line.billing.user",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move",
+    "name": "All Journal Entries",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move.line",
+    "name": "All Journal Items",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move",
+    "name": "Readonly Move",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move.line",
+    "name": "Readonly Move Line",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move.send.wizard",
+    "name": "Readonly Invoice Send and Print (single)",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move.send.batch.wizard",
+    "name": "Readonly Invoice Send and Print (batch)",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   },
+   {
+    "model": "res.partner.bank",
+    "name": "Billing: Allow accessing employee bank accounts",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   }
+  ],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/account/security/account_security.xml",
+  "sourceRef": "sources/odoo/addons/account/security/account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:account.group_account_basic",
+  "uniqueId": "account.group_account_basic",
+  "name": "Basic",
+  "label": "Basic",
+  "module": "account",
+  "category": "base.module_category_hidden",
+  "implies": [
+   "account.group_account_invoice"
+  ],
+  "description": "",
+  "acl": [
+   {
+    "model": "account.bank.statement",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_bank_statement"
+   },
+   {
+    "model": "account.bank.statement.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_bank_statement_line"
+   },
+   {
+    "model": "account.group",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_group_basic"
+   },
+   {
+    "model": "account.report",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_report_basic"
+   },
+   {
+    "model": "account.report.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_report_line_basic"
+   },
+   {
+    "model": "account.report.expression",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_report_expression_basic"
+   },
+   {
+    "model": "account.report.column",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_report_column_basic"
+   }
+  ],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/account/security/account_security.xml",
+  "sourceRef": "sources/odoo/addons/account/security/account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:account.group_account_user",
+  "uniqueId": "account.group_account_user",
+  "name": "Show Full Accounting Features",
+  "label": "Show Full Accounting Features",
+  "module": "account",
+  "category": "base.module_category_hidden",
+  "implies": [
+   "account.group_account_basic",
+   "account.group_account_readonly"
+  ],
+  "description": "",
+  "acl": [
+   {
+    "model": "account.analytic.account",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_analytic_accountant"
+   },
+   {
+    "model": "account.analytic.plan",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_analytic_plan_accountant"
+   },
+   {
+    "model": "account.analytic.applicability",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_analytic_applicability_accountant"
+   },
+   {
+    "model": "account.account.tag",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_account_tax"
+   },
+   {
+    "model": "account.reconcile.model",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_reconcile_model"
+   },
+   {
+    "model": "account.reconcile.model.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_reconcile_model_line"
+   },
+   {
+    "model": "account.reconcile.model.partner.mapping",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_reconcile_model_partner_mapping"
+   },
+   {
+    "model": "account.partial.reconcile",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_partial_reconcile"
+   },
+   {
+    "model": "account.full.reconcile",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_full_reconcile"
+   },
+   {
+    "model": "account.automatic.entry.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_account_automatic_entry_wizard"
+   },
+   {
+    "model": "account.accrued.orders.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_account_accrued_orders_wizard"
+   },
+   {
+    "model": "sale.order",
+    "read": true,
+    "write": true,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_sale_order_accountant"
+   },
+   {
+    "model": "sale.order.line",
+    "read": true,
+    "write": true,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_sale_order_line_accountant"
+   }
+  ],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/account/security/account_security.xml",
+  "sourceRef": "sources/odoo/addons/account/security/account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:account.group_account_manager",
+  "uniqueId": "account.group_account_manager",
+  "name": "Administrator",
+  "label": "Administrator",
+  "module": "account",
+  "category": "base.module_category_accounting_accounting",
+  "implies": [
+   "account.group_account_invoice"
+  ],
+  "description": "",
+  "acl": [
+   {
+    "model": "res.partner",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_res_partner_group_account_manager"
+   },
+   {
+    "model": "res.currency",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_res_currency_account_manager"
+   },
+   {
+    "model": "res.currency.rate",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_res_currency_rate_account_manager"
+   },
+   {
+    "model": "account.invoice.report",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_invoice_report"
+   },
+   {
+    "model": "account.incoterms",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_incoterms_manager"
+   },
+   {
+    "model": "account.secure.entries.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_account_secure_entries_wizard"
+   },
+   {
+    "model": "account.lock_exception",
+    "read": true,
+    "write": false,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_account_lock_exception_manager"
+   },
+   {
+    "model": "account.fiscal.position",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_fiscal_position_product_manager"
+   },
+   {
+    "model": "account.fiscal.position.tax",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_fiscal_position_tax_product_manager"
+   },
+   {
+    "model": "account.fiscal.position.account",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_fiscal_position_account_product_manager"
+   },
+   {
+    "model": "product.product",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_product_product_account_manager"
+   },
+   {
+    "model": "product.template",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_product_template_account_manager"
+   },
+   {
+    "model": "account.move.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_move_line_manager"
+   },
+   {
+    "model": "account.move",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_move_manager"
+   },
+   {
+    "model": "account.analytic.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_analytic_line_manager"
+   },
+   {
+    "model": "account.journal",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_journal_manager"
+   },
+   {
+    "model": "account.journal.group",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_journal_group_manager"
+   },
+   {
+    "model": "account.group",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_group_manager"
+   },
+   {
+    "model": "account.root",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_root_manager"
+   },
+   {
+    "model": "account.code.mapping",
+    "read": true,
+    "write": true,
+    "create": false,
+    "unlink": false,
+    "id": "account.access_account_code_mapping_manager"
+   },
+   {
+    "model": "account.account",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_account_manager"
+   },
+   {
+    "model": "account.tax",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_tax_manager"
+   },
+   {
+    "model": "account.tax.repartition.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_tax_repartition_line_manager"
+   },
+   {
+    "model": "account.tax.group",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_tax_group_manager"
+   },
+   {
+    "model": "account.payment.term",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_payment_term_manager"
+   },
+   {
+    "model": "account.payment.term.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_payment_term_line_manager"
+   },
+   {
+    "model": "account.resequence.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_account_resequence"
+   },
+   {
+    "model": "account.financial.year.op",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_account_financial_year_op"
+   },
+   {
+    "model": "account.setup.bank.manual.config",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "account.access_account_setup_bank_manual_config"
+   },
+   {
+    "model": "account.report",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_report_ac_user"
+   },
+   {
+    "model": "account.report.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_report_line_ac_user"
+   },
+   {
+    "model": "account.report.expression",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_report_expression_ac_user"
+   },
+   {
+    "model": "account.report.column",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_report_column_ac_user"
+   },
+   {
+    "model": "account.report.external.value",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_report_external_value_ac_user"
+   },
+   {
+    "model": "account.merge.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_merge_wizard_manager"
+   },
+   {
+    "model": "account.merge.wizard.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "account.access_account_merge_wizard_line_manager"
+   }
+  ],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/account/security/account_security.xml",
+  "sourceRef": "sources/odoo/addons/account/security/account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:account.group_account_secured",
+  "uniqueId": "account.group_account_secured",
+  "name": "Show Inalterability Features",
+  "label": "Show Inalterability Features",
+  "module": "account",
+  "category": "base.module_category_usability",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/account/security/account_security.xml",
+  "sourceRef": "sources/odoo/addons/account/security/account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:account.group_warning_account",
+  "uniqueId": "account.group_warning_account",
+  "name": "A warning can be set on a partner (Account)",
+  "label": "A warning can be set on a partner (Account)",
+  "module": "account",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/account/security/account_security.xml",
+  "sourceRef": "sources/odoo/addons/account/security/account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:account.group_cash_rounding",
+  "uniqueId": "account.group_cash_rounding",
+  "name": "Allow the cash rounding management",
+  "label": "Allow the cash rounding management",
+  "module": "account",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/account/security/account_security.xml",
+  "sourceRef": "sources/odoo/addons/account/security/account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:account.group_sale_receipts",
+  "uniqueId": "account.group_sale_receipts",
+  "name": "Sale Receipt",
+  "label": "Sale Receipt",
+  "module": "account",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/account/security/account_security.xml",
+  "sourceRef": "sources/odoo/addons/account/security/account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:account.group_purchase_receipts",
+  "uniqueId": "account.group_purchase_receipts",
+  "name": "Purchase Receipt",
+  "label": "Purchase Receipt",
+  "module": "account",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/account/security/account_security.xml",
+  "sourceRef": "sources/odoo/addons/account/security/account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:account.group_validate_bank_account",
+  "uniqueId": "account.group_validate_bank_account",
+  "name": "Validate bank account",
+  "label": "Validate bank account",
+  "module": "account",
+  "category": "account.module_category_accounting_bank",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/account/security/account_security.xml",
+  "sourceRef": "sources/odoo/addons/account/security/account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:purchase.group_purchase_user",
+  "uniqueId": "purchase.group_purchase_user",
+  "name": "User",
+  "label": "User",
+  "module": "purchase",
+  "category": "base.module_category_inventory_purchase",
+  "implies": [
+   "base.group_user"
+  ],
+  "description": "",
+  "acl": [
+   {
+    "model": "purchase.order",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_purchase_order"
+   },
+   {
+    "model": "purchase.order.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_purchase_order_line"
+   },
+   {
+    "model": "purchase.bill.line.match",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_purchase_bill_line_match"
+   },
+   {
+    "model": "bill.to.po.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "purchase.access_bill_to_po_wizard"
+   },
+   {
+    "model": "account.tax",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_account_tax_purchase_user"
+   },
+   {
+    "model": "account.account.tag",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_account_tag_purchase_user"
+   },
+   {
+    "model": "product.product",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_product_product_purchase_user"
+   },
+   {
+    "model": "product.template",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_product_template_purchase_user"
+   },
+   {
+    "model": "account.fiscal.position",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_account_fiscal_position_purchase_user"
+   },
+   {
+    "model": "res.partner",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_res_partner_purchase_user"
+   },
+   {
+    "model": "account.journal",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_account_journal"
+   },
+   {
+    "model": "account.move",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_account_move"
+   },
+   {
+    "model": "account.move.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "purchase.access_account_move_line"
+   },
+   {
+    "model": "account.analytic.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_account_analytic_line"
+   },
+   {
+    "model": "account.partial.reconcile",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.account_partial_reconcile"
+   },
+   {
+    "model": "purchase.bill.union",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_purchase_bill_union"
+   },
+   {
+    "model": "purchase.report",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_report_purchase_order_user"
+   },
+   {
+    "model": "stock.location",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase_stock.access_stock_location_purchase_user"
+   },
+   {
+    "model": "stock.warehouse",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase_stock.access_stock_warehouse_purchase_user"
+   },
+   {
+    "model": "stock.picking",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase_stock.access_stock_picking_purchase_user"
+   },
+   {
+    "model": "stock.move",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "purchase_stock.access_stock_move_purchase_user"
+   },
+   {
+    "model": "stock.warehouse.orderpoint",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase_stock.access_stock_warehouse_orderpoint_user"
+   },
+   {
+    "model": "vendor.delay.report",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase_stock.access_report_purchase_order_user"
+   }
+  ],
+  "recordRules": [
+   {
+    "model": "account.move.line",
+    "name": "Purchase User Account Move Line",
+    "domain": "[('move_id.move_type', 'in', ('in_invoice', 'in_refund', 'in_receipt'))]",
+    "perms": {}
+   },
+   {
+    "model": "account.move",
+    "name": "Purchase User Account Move",
+    "domain": "[('move_type', 'in', ('in_invoice', 'in_refund', 'in_receipt'))]",
+    "perms": {}
+   }
+  ],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/purchase/security/purchase_security.xml",
+  "sourceRef": "sources/odoo/addons/purchase/security/purchase_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:purchase.group_purchase_manager",
+  "uniqueId": "purchase.group_purchase_manager",
+  "name": "Administrator",
+  "label": "Administrator",
+  "module": "purchase",
+  "category": "base.module_category_inventory_purchase",
+  "implies": [
+   "purchase.group_purchase_user"
+  ],
+  "description": "",
+  "acl": [
+   {
+    "model": "purchase.order",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_purchase_order_manager"
+   },
+   {
+    "model": "purchase.order.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_purchase_order_line_manager"
+   },
+   {
+    "model": "account.tax",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_account_tax_purchase_user_manager"
+   },
+   {
+    "model": "product.product",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_product_product_purchase_manager"
+   },
+   {
+    "model": "account.journal",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_account_journal_manager"
+   },
+   {
+    "model": "account.move.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_account_move_line_manager"
+   },
+   {
+    "model": "res.partner",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "purchase.access_res_partner_purchase_manager"
+   },
+   {
+    "model": "uom.category",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_uom_category_purchase_manager"
+   },
+   {
+    "model": "uom.uom",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_uom_uom_purchase_manager"
+   },
+   {
+    "model": "product.category",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_product_category_purchase_manager"
+   },
+   {
+    "model": "product.template",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_product_template_purchase_manager"
+   },
+   {
+    "model": "product.packaging",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_product_packaging_purchase_manager"
+   },
+   {
+    "model": "product.supplierinfo",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_product_supplierinfo_purchase_manager"
+   },
+   {
+    "model": "product.pricelist.item",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_product_pricelist_item_purchase_manager"
+   },
+   {
+    "model": "product.tag",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase.access_product_tag_purchase_manager"
+   },
+   {
+    "model": "account.account",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_account_account_purchase_manager"
+   },
+   {
+    "model": "purchase.report",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase.access_report_purchase_order"
+   },
+   {
+    "model": "stock.location",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase_stock.access_stock_location_purchase_user_manager"
+   },
+   {
+    "model": "stock.warehouse",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase_stock.access_stock_warehouse_purchase_user_manager"
+   },
+   {
+    "model": "stock.picking",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase_stock.access_stock_picking_purchase_user_manager"
+   },
+   {
+    "model": "stock.move",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "purchase_stock.access_stock_move_purchase_user_manager"
+   },
+   {
+    "model": "stock.warehouse.orderpoint",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase_stock.access_stock_warehouse_orderpoint_manager"
+   },
+   {
+    "model": "vendor.delay.report",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase_stock.access_report_purchase_order"
+   }
+  ],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/purchase/security/purchase_security.xml",
+  "sourceRef": "sources/odoo/addons/purchase/security/purchase_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:purchase.group_warning_purchase",
+  "uniqueId": "purchase.group_warning_purchase",
+  "name": "A warning can be set on a product or a customer (Purchase)",
+  "label": "A warning can be set on a product or a customer (Purchase)",
+  "module": "purchase",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/purchase/security/purchase_security.xml",
+  "sourceRef": "sources/odoo/addons/purchase/security/purchase_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:purchase.group_send_reminder",
+  "uniqueId": "purchase.group_send_reminder",
+  "name": "Send an automatic reminder email to confirm delivery",
+  "label": "Send an automatic reminder email to confirm delivery",
+  "module": "purchase",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/purchase/security/purchase_security.xml",
+  "sourceRef": "sources/odoo/addons/purchase/security/purchase_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock.group_stock_multi_locations",
+  "uniqueId": "stock.group_stock_multi_locations",
+  "name": "Manage Multiple Stock Locations",
+  "label": "Manage Multiple Stock Locations",
+  "module": "stock",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/security/stock_security.xml",
+  "sourceRef": "sources/odoo/addons/stock/security/stock_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock.group_stock_multi_warehouses",
+  "uniqueId": "stock.group_stock_multi_warehouses",
+  "name": "Manage Multiple Warehouses",
+  "label": "Manage Multiple Warehouses",
+  "module": "stock",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/security/stock_security.xml",
+  "sourceRef": "sources/odoo/addons/stock/security/stock_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock.group_stock_user",
+  "uniqueId": "stock.group_stock_user",
+  "name": "User",
+  "label": "User",
+  "module": "stock",
+  "category": "base.module_category_inventory_inventory",
+  "implies": [
+   "base.group_user"
+  ],
+  "description": "",
+  "acl": [
+   {
+    "model": "stock.location",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_location_user"
+   },
+   {
+    "model": "stock.picking",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_picking_user"
+   },
+   {
+    "model": "stock.picking.type",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_picking_type_user"
+   },
+   {
+    "model": "stock.lot",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_lot_user"
+   },
+   {
+    "model": "stock.move",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_move_user"
+   },
+   {
+    "model": "product.product",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_product_product_stock_user"
+   },
+   {
+    "model": "product.template",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_product_template_stock_user"
+   },
+   {
+    "model": "stock.warehouse.orderpoint",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_warehouse_orderpoint"
+   },
+   {
+    "model": "stock.quant",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_quant_user"
+   },
+   {
+    "model": "stock.quant.package",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_quant_package_stock_user"
+   },
+   {
+    "model": "stock.package_level",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_package_level_stock_user"
+   },
+   {
+    "model": "stock.rule",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_rule_user"
+   },
+   {
+    "model": "stock.move.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_move_line_user"
+   },
+   {
+    "model": "barcodes.model_barcode_nomenclature",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_barcode_nomenclature_stock_user"
+   },
+   {
+    "model": "barcode.rule",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_barcode_rule_stock_user"
+   },
+   {
+    "model": "stock.scrap",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_scrap_user"
+   },
+   {
+    "model": "stock.scrap.reason.tag",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_scrap_reason_tag_user"
+   },
+   {
+    "model": "stock.traceability.report",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_traceability_report"
+   },
+   {
+    "model": "stock.return.picking.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_return_picking_line"
+   },
+   {
+    "model": "stock.return.picking",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_return_picking"
+   },
+   {
+    "model": "stock.change.product.qty",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_change_product_qty"
+   },
+   {
+    "model": "stock.backorder.confirmation.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_backorder_confirmation_line"
+   },
+   {
+    "model": "stock.backorder.confirmation",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_backorder_confirmation"
+   },
+   {
+    "model": "stock.quantity.history",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_quantity_history"
+   },
+   {
+    "model": "stock.rules.report",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_rules_report"
+   },
+   {
+    "model": "stock.warn.insufficient.qty.scrap",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_warn_insufficient_qty_scrap"
+   },
+   {
+    "model": "product.replenish",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_product_replenish"
+   },
+   {
+    "model": "stock.track.confirmation",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_track_confirmation"
+   },
+   {
+    "model": "stock.track.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_track_line"
+   },
+   {
+    "model": "stock.package.destination",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_package_destination"
+   },
+   {
+    "model": "stock.orderpoint.snooze",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_orderpoint_snooze"
+   },
+   {
+    "model": "stock.package.type",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_package_type_user"
+   },
+   {
+    "model": "stock.inventory.adjustment.name",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_inventory_adjustment_name_user"
+   },
+   {
+    "model": "picking.label.type",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_picking_label_type_user"
+   },
+   {
+    "model": "lot.label.layout",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_lot_label_layout_user"
+   },
+   {
+    "model": "stock.replenishment.option",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_replenish_option"
+   },
+   {
+    "model": "stock.lot.report",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock.access_stock_lot_report"
+   },
+   {
+    "model": "purchase.order",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase_stock.access_purchase_order_stock_worker"
+   },
+   {
+    "model": "purchase.order.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "purchase_stock.access_purchase_order_line_stock_worker"
+   },
+   {
+    "model": "sale.order",
+    "read": true,
+    "write": true,
+    "create": false,
+    "unlink": false,
+    "id": "sale_stock.access_sale_order_stock_worker"
+   },
+   {
+    "model": "sale.order.line",
+    "read": true,
+    "write": true,
+    "create": false,
+    "unlink": false,
+    "id": "sale_stock.access_sale_order_line_stock_worker"
+   }
+  ],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/security/stock_security.xml",
+  "sourceRef": "sources/odoo/addons/stock/security/stock_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock.group_stock_manager",
+  "uniqueId": "stock.group_stock_manager",
+  "name": "Administrator",
+  "label": "Administrator",
+  "module": "stock",
+  "category": "base.module_category_inventory_inventory",
+  "implies": [
+   "stock.group_stock_user"
+  ],
+  "description": "",
+  "acl": [
+   {
+    "model": "stock.warehouse",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_warehouse_manager"
+   },
+   {
+    "model": "stock.location",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_location_manager"
+   },
+   {
+    "model": "stock.picking",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_picking_manager"
+   },
+   {
+    "model": "stock.picking.type",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_picking_type_manager"
+   },
+   {
+    "model": "stock.move",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_move_manager"
+   },
+   {
+    "model": "uom.category",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_uom_category_stock_manager"
+   },
+   {
+    "model": "uom.uom",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_uom_uom_stock_manager"
+   },
+   {
+    "model": "product.category",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_product_category_stock_manager"
+   },
+   {
+    "model": "product.template",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_product_template_stock_manager"
+   },
+   {
+    "model": "product.product",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_product_product_stock_manager"
+   },
+   {
+    "model": "product.packaging",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_product_packaging_stock_manager"
+   },
+   {
+    "model": "product.supplierinfo",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_product_supplierinfo_stock_manager"
+   },
+   {
+    "model": "product.pricelist",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_product_pricelist_stock_manager"
+   },
+   {
+    "model": "res.partner",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_product_group_res_partner_stock_manager"
+   },
+   {
+    "model": "product.pricelist.item",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_product_pricelist_item_stock_manager"
+   },
+   {
+    "model": "product.tag",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_product_tag_stock_manager"
+   },
+   {
+    "model": "stock.warehouse.orderpoint",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_warehouse_orderpoint_system"
+   },
+   {
+    "model": "stock.quant.package",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_quant_package_stock_manager"
+   },
+   {
+    "model": "stock.package_level",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_package_level_stock_manager"
+   },
+   {
+    "model": "stock.rule",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_rule_stock_manager"
+   },
+   {
+    "model": "stock.route",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_location_route_stock_manager"
+   },
+   {
+    "model": "stock.move.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_move_line_manager"
+   },
+   {
+    "model": "stock.putaway.rule",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_putaway_manager"
+   },
+   {
+    "model": "barcodes.model_barcode_nomenclature",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_barcode_nomenclature_stock_manager"
+   },
+   {
+    "model": "barcode.rule",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_barcode_rule_stock_manager"
+   },
+   {
+    "model": "stock.scrap",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_scrap_manager"
+   },
+   {
+    "model": "stock.scrap.reason.tag",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_scrap_reason_tag_manager"
+   },
+   {
+    "model": "product.attribute",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_product_attribute_manager"
+   },
+   {
+    "model": "product.attribute.value",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_product_attribute_value_manager"
+   },
+   {
+    "model": "update.product.attribute.value",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_update_product_attribute_value_stock_manager"
+   },
+   {
+    "model": "product.template.attribute.value",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_product_product_attribute_manager"
+   },
+   {
+    "model": "product.template.attribute.exclusion",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_product_template_attribute_exclusion_manager"
+   },
+   {
+    "model": "product.template.attribute.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_product_template_attribute_line_manager"
+   },
+   {
+    "model": "stock.package.type",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_package_type_manager"
+   },
+   {
+    "model": "stock.storage.category",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_storage_category_manager"
+   },
+   {
+    "model": "stock.storage.category.capacity",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "stock.access_stock_storage_category_capacity_manager"
+   },
+   {
+    "model": "stock.inventory.conflict",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_inventory_conflict"
+   },
+   {
+    "model": "stock.inventory.warning",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_inventory_warning"
+   },
+   {
+    "model": "stock.inventory.adjustment.name",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_inventory_adjustment_name_manager"
+   },
+   {
+    "model": "stock.request.count",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_request_count"
+   },
+   {
+    "model": "stock.replenishment.info",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_replenishment_info"
+   },
+   {
+    "model": "stock.quant.relocate",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock.access_stock_quant_relocate"
+   },
+   {
+    "model": "account.account",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock_account.access_account_account_stock_manager"
+   },
+   {
+    "model": "account.journal",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "stock_account.access_account_journal_stock_manager"
+   },
+   {
+    "model": "stock.valuation.layer",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock_account.access_stock_valuation_layer"
+   },
+   {
+    "model": "stock.valuation.layer.revaluation",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "stock_account.access_stock_valuation_layer_revaluation"
+   },
+   {
+    "model": "account.partial.reconcile",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale_stock.access_account_partial_reconcile"
+   },
+   {
+    "model": "account.journal",
+    "read": true,
+    "write": true,
+    "create": false,
+    "unlink": false,
+    "id": "sale_stock.access_account_journal"
+   }
+  ],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/security/stock_security.xml",
+  "sourceRef": "sources/odoo/addons/stock/security/stock_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock.group_production_lot",
+  "uniqueId": "stock.group_production_lot",
+  "name": "Manage Lots / Serial Numbers",
+  "label": "Manage Lots / Serial Numbers",
+  "module": "stock",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/security/stock_security.xml",
+  "sourceRef": "sources/odoo/addons/stock/security/stock_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock.group_stock_lot_print_gs1",
+  "uniqueId": "stock.group_stock_lot_print_gs1",
+  "name": "Print GS1 Barcodes for Lot & Serial Numbers",
+  "label": "Print GS1 Barcodes for Lot & Serial Numbers",
+  "module": "stock",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/security/stock_security.xml",
+  "sourceRef": "sources/odoo/addons/stock/security/stock_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock.group_lot_on_delivery_slip",
+  "uniqueId": "stock.group_lot_on_delivery_slip",
+  "name": "Display Serial & Lot Number in Delivery Slips",
+  "label": "Display Serial & Lot Number in Delivery Slips",
+  "module": "stock",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/security/stock_security.xml",
+  "sourceRef": "sources/odoo/addons/stock/security/stock_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock.group_tracking_lot",
+  "uniqueId": "stock.group_tracking_lot",
+  "name": "Manage Packages",
+  "label": "Manage Packages",
+  "module": "stock",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/security/stock_security.xml",
+  "sourceRef": "sources/odoo/addons/stock/security/stock_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock.group_adv_location",
+  "uniqueId": "stock.group_adv_location",
+  "name": "Manage Push and Pull inventory flows",
+  "label": "Manage Push and Pull inventory flows",
+  "module": "stock",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/security/stock_security.xml",
+  "sourceRef": "sources/odoo/addons/stock/security/stock_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock.group_tracking_owner",
+  "uniqueId": "stock.group_tracking_owner",
+  "name": "Manage Different Stock Owners",
+  "label": "Manage Different Stock Owners",
+  "module": "stock",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/security/stock_security.xml",
+  "sourceRef": "sources/odoo/addons/stock/security/stock_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock.group_warning_stock",
+  "uniqueId": "stock.group_warning_stock",
+  "name": "A warning can be set on a partner (Stock)",
+  "label": "A warning can be set on a partner (Stock)",
+  "module": "stock",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/security/stock_security.xml",
+  "sourceRef": "sources/odoo/addons/stock/security/stock_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock.group_stock_sign_delivery",
+  "uniqueId": "stock.group_stock_sign_delivery",
+  "name": "Require a signature on your delivery orders",
+  "label": "Require a signature on your delivery orders",
+  "module": "stock",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/security/stock_security.xml",
+  "sourceRef": "sources/odoo/addons/stock/security/stock_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock.group_reception_report",
+  "uniqueId": "stock.group_reception_report",
+  "name": "Use Reception Report",
+  "label": "Use Reception Report",
+  "module": "stock",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock/security/stock_security.xml",
+  "sourceRef": "sources/odoo/addons/stock/security/stock_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock_account.group_lot_on_invoice",
+  "uniqueId": "stock_account.group_lot_on_invoice",
+  "name": "Display Serial & Lot Number on Invoices",
+  "label": "Display Serial & Lot Number on Invoices",
+  "module": "stock_account",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock_account/security/stock_account_security.xml",
+  "sourceRef": "sources/odoo/addons/stock_account/security/stock_account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:stock_account.group_stock_accounting_automatic",
+  "uniqueId": "stock_account.group_stock_accounting_automatic",
+  "name": "Stock Accounting Automatic",
+  "label": "Stock Accounting Automatic",
+  "module": "stock_account",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/stock_account/security/stock_account_security.xml",
+  "sourceRef": "sources/odoo/addons/stock_account/security/stock_account_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:sales_team.group_sale_salesman",
+  "uniqueId": "sales_team.group_sale_salesman",
+  "name": "User: Own Documents Only",
+  "label": "User: Own Documents Only",
+  "module": "sales_team",
+  "category": "base.module_category_sales_sales",
+  "implies": [
+   "base.group_user"
+  ],
+  "description": "the user will have access to his own data in the sales application.",
+  "acl": [
+   {
+    "model": "crm.team",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sales_team.access_crm_team_user"
+   },
+   {
+    "model": "crm.tag",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sales_team.access_crm_tag_salesman"
+   },
+   {
+    "model": "account.account",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_account_account_salesman"
+   },
+   {
+    "model": "account.analytic.account",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale.access_account_analytic_account_salesman"
+   },
+   {
+    "model": "account.account.tag",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_account_account_tag_sale_salesman"
+   },
+   {
+    "model": "account.move.send.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale.access_account_move_send_wizard_salesman"
+   },
+   {
+    "model": "account.move.send.batch.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale.access_account_move_send_batch_wizard_salesman"
+   },
+   {
+    "model": "account.journal",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_sale_account_journal"
+   },
+   {
+    "model": "account.move",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_account_move_salesman"
+   },
+   {
+    "model": "account.move.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_account_move_line_salesman"
+   },
+   {
+    "model": "account.partial.reconcile",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_account_partial_reconcile_salesman"
+   },
+   {
+    "model": "account.payment.term",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_account_payment_term_salesman"
+   },
+   {
+    "model": "account.tax",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_account_tax_user"
+   },
+   {
+    "model": "account.tax.group",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_account_tax_group_sale_manager"
+   },
+   {
+    "model": "res.partner",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_res_partner_sale_user"
+   },
+   {
+    "model": "product.pricelist",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_product_pricelist_sale_user"
+   },
+   {
+    "model": "product.attribute.custom.value",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_product_product_attribute_custom_value_sale_user"
+   },
+   {
+    "model": "product.supplierinfo",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_product_supplierinfo_user"
+   },
+   {
+    "model": "product.product",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_product_product_sale_user"
+   },
+   {
+    "model": "product.template",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_product_template_sale_user"
+   },
+   {
+    "model": "uom.uom",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_uom_uom_user"
+   },
+   {
+    "model": "sale.order",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale.access_sale_order"
+   },
+   {
+    "model": "sale.order.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_sale_order_line"
+   },
+   {
+    "model": "sale.report",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale.access_sale_report_salesman"
+   },
+   {
+    "model": "payment.link.wizard",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale.access_payment_link_wizard_sale"
+   },
+   {
+    "model": "sale.advance.payment.inv",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale.access_sale_advance_payment_inv"
+   },
+   {
+    "model": "sale.order.cancel",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale.access_sale_order_cancel"
+   },
+   {
+    "model": "sale.mass.cancel.orders",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale.access_sale_mass_cancel_orders"
+   },
+   {
+    "model": "sale.order.discount",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale.access_sale_order_discount"
+   },
+   {
+    "model": "sale.order.template",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale_management.access_sale_order_template"
+   },
+   {
+    "model": "sale.order.template.line",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale_management.access_sale_order_template_line"
+   },
+   {
+    "model": "sale.order.template.option",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale_management.access_sale_order_template_option"
+   },
+   {
+    "model": "sale.order.option",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale_management.access_sale_order_option"
+   },
+   {
+    "model": "stock.picking",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale_stock.access_stock_picking_salesman"
+   },
+   {
+    "model": "stock.move",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale_stock.access_stock_move_salesman"
+   },
+   {
+    "model": "product.packaging",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale_stock.access_product_packaging_user"
+   },
+   {
+    "model": "stock.warehouse",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale_stock.access_stock_warehouse_user"
+   },
+   {
+    "model": "stock.location",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale_stock.access_stock_location_user"
+   },
+   {
+    "model": "stock.warehouse.orderpoint",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale_stock.access_stock_warehouse_orderpoint_sale_salesman"
+   },
+   {
+    "model": "stock.rule",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale_stock.access_stock_rule"
+   },
+   {
+    "model": "stock.package.type",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale_stock.access_stock_package_type_salesman"
+   }
+  ],
+  "recordRules": [
+   {
+    "model": "sale.order",
+    "name": "Personal Orders",
+    "domain": "['|',('user_id','=',user.id),('user_id','=',False)]",
+    "perms": {}
+   },
+   {
+    "model": "sale.report",
+    "name": "Personal Orders Analysis",
+    "domain": "['|',('user_id','=',user.id),('user_id','=',False)]",
+    "perms": {}
+   },
+   {
+    "model": "sale.order.line",
+    "name": "Personal Order Lines",
+    "domain": "['|',('salesman_id','=',user.id),('salesman_id','=',False)]",
+    "perms": {}
+   },
+   {
+    "model": "account.invoice.report",
+    "name": "Personal Invoices Analysis",
+    "domain": "['|', ('invoice_user_id', '=', user.id), ('invoice_user_id', '=', False)]",
+    "perms": {}
+   },
+   {
+    "model": "payment.transaction",
+    "name": "Access every payment transaction",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   },
+   {
+    "model": "payment.model_payment_token",
+    "name": "Access every payment token",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move",
+    "name": "Personal Invoices",
+    "domain": "[('move_type', 'in', ('out_invoice', 'out_refund')), '|', ('invoice_user_id', '=', user.id), ('invoice_user_id', '=', False)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move.line",
+    "name": "Personal Invoice Lines",
+    "domain": "[('move_id.move_type', 'in', ('out_invoice', 'out_refund')), '|', ('move_id.invoice_user_id', '=', user.id), ('move_id.invoice_user_id', '=', False)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move.send.wizard",
+    "name": "Personal Invoice Send and Print (single mode)",
+    "domain": "[('move_id.move_type', 'in', ('out_invoice', 'out_refund')), '|', ('move_id.invoice_user_id', '=', user.id), ('move_id.invoice_user_id', '=', False)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move.send.batch.wizard",
+    "name": "Personal Invoice Send and Print (batch mode)",
+    "domain": "[('move_ids.move_type', 'in', ('out_invoice', 'out_refund')), '|', ('move_ids.invoice_user_id', '=', user.id), ('move_ids.invoice_user_id', '=', False)]",
+    "perms": {}
+   }
+  ],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/sales_team/security/sales_team_security.xml",
+  "sourceRef": "sources/odoo/addons/sales_team/security/sales_team_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:sales_team.group_sale_salesman_all_leads",
+  "uniqueId": "sales_team.group_sale_salesman_all_leads",
+  "name": "User: All Documents",
+  "label": "User: All Documents",
+  "module": "sales_team",
+  "category": "base.module_category_sales_sales",
+  "implies": [
+   "sales_team.group_sale_salesman"
+  ],
+  "description": "the user will have access to all records of everyone in the sales application.",
+  "acl": [],
+  "recordRules": [
+   {
+    "model": "crm.team",
+    "name": "All Salesteam",
+    "domain": "[(1,'=',1)]",
+    "perms": {}
+   },
+   {
+    "model": "sale.order",
+    "name": "All Orders",
+    "domain": "[(1,'=',1)]",
+    "perms": {}
+   },
+   {
+    "model": "sale.report",
+    "name": "All Orders Analysis",
+    "domain": "[(1,'=',1)]",
+    "perms": {}
+   },
+   {
+    "model": "sale.order.line",
+    "name": "All Orders Lines",
+    "domain": "[(1,'=',1)]",
+    "perms": {}
+   },
+   {
+    "model": "account.invoice.report",
+    "name": "All Invoices Analysis",
+    "domain": "[(1, '=', 1)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move",
+    "name": "All Invoices",
+    "domain": "[('move_type', 'in', ('out_invoice', 'out_refund'))]",
+    "perms": {}
+   },
+   {
+    "model": "account.move.line",
+    "name": "All Invoice Lines",
+    "domain": "[('move_id.move_type', 'in', ('out_invoice', 'out_refund'))]",
+    "perms": {}
+   },
+   {
+    "model": "account.move.send.wizard",
+    "name": "All Invoice Send and Print (single mode)",
+    "domain": "[('move_id.move_type', 'in', ('out_invoice', 'out_refund'))]",
+    "perms": {}
+   },
+   {
+    "model": "account.move.send.batch.wizard",
+    "name": "All Invoice Send and Print (batch mode)",
+    "domain": "[('move_ids.move_type', 'in', ('out_invoice', 'out_refund'))]",
+    "perms": {}
+   }
+  ],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/sales_team/security/sales_team_security.xml",
+  "sourceRef": "sources/odoo/addons/sales_team/security/sales_team_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:sales_team.group_sale_manager",
+  "uniqueId": "sales_team.group_sale_manager",
+  "name": "Administrator",
+  "label": "Administrator",
+  "module": "sales_team",
+  "category": "base.module_category_sales_sales",
+  "implies": [
+   "sales_team.group_sale_salesman_all_leads",
+   "mail.group_mail_canned_response_admin"
+  ],
+  "description": "the user will have an access to the sales configuration as well as statistic reports.",
+  "acl": [
+   {
+    "model": "crm.team",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sales_team.access_crm_team_manager"
+   },
+   {
+    "model": "crm.team.member",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sales_team.access_crm_team_member_manager"
+   },
+   {
+    "model": "crm.tag",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sales_team.access_crm_tag_manager"
+   },
+   {
+    "model": "res.partner",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale.access_res_partner_sale_manager"
+   },
+   {
+    "model": "mail.model_mail_activity_type",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_mail_activity_type_sale_manager"
+   },
+   {
+    "model": "product.category",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_product_category_sale_manager"
+   },
+   {
+    "model": "product.pricelist",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_product_pricelist_sale_manager"
+   },
+   {
+    "model": "product.pricelist.item",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_product_pricelist_item_sale_manager"
+   },
+   {
+    "model": "product.attribute",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_product_attribute_sale_manager"
+   },
+   {
+    "model": "product.attribute.value",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_product_attribute_value_sale_manager"
+   },
+   {
+    "model": "update.product.attribute.value",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": false,
+    "id": "sale.access_update_product_attribute_value_sale_manager"
+   },
+   {
+    "model": "product.template.attribute.value",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_product_product_attribute_sale_manager"
+   },
+   {
+    "model": "product.supplierinfo",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_product_supplierinfo_sale_manager"
+   },
+   {
+    "model": "product.template.attribute.exclusion",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_product_template_attribute_exclusion_sale_manager"
+   },
+   {
+    "model": "product.template.attribute.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_product_template_attribute_line_sale_manager"
+   },
+   {
+    "model": "product.tag",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_product_tag_sale_manager"
+   },
+   {
+    "model": "product.product",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_product_product_sale_manager"
+   },
+   {
+    "model": "product.template",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_product_template_sale_manager"
+   },
+   {
+    "model": "uom.category",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_uom_category_sale_manager"
+   },
+   {
+    "model": "uom.uom",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_uom_uom_sale_manager"
+   },
+   {
+    "model": "sale.order",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_sale_order_manager"
+   },
+   {
+    "model": "mail.model_mail_activity_plan",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_mail_activity_plan_sale_manager"
+   },
+   {
+    "model": "mail.model_mail_activity_plan_template",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale.access_mail_activity_plan_template_sale_manager"
+   },
+   {
+    "model": "sale.order.template",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale_management.access_sale_order_template_manager"
+   },
+   {
+    "model": "sale.order.template.line",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale_management.access_sale_order_template_line_manager"
+   },
+   {
+    "model": "sale.order.template.option",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale_management.access_sale_order_template_option_manager"
+   },
+   {
+    "model": "stock.move",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale_stock.access_stock_move_manager"
+   },
+   {
+    "model": "stock.picking",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale_stock.access_stock_picking_sales"
+   },
+   {
+    "model": "product.packaging",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale_stock.access_product_packaging_sale_manager"
+   },
+   {
+    "model": "stock.location",
+    "read": true,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sale_stock.access_stock_location_sale_manager"
+   },
+   {
+    "model": "stock.rule",
+    "read": true,
+    "write": true,
+    "create": true,
+    "unlink": true,
+    "id": "sale_stock.access_stock_rule_salemanager"
+   }
+  ],
+  "recordRules": [
+   {
+    "model": "mail.model_mail_activity_plan",
+    "name": "Manager can manage sale order plans",
+    "domain": "[('res_model', '=', 'sale.order')]",
+    "perms": {
+     "perm_read": "False"
+    }
+   },
+   {
+    "model": "mail.model_mail_activity_plan_template",
+    "name": "Manager can manage sale order plan templates",
+    "domain": "[('plan_id.res_model', '=', 'sale.order')]",
+    "perms": {
+     "perm_read": "False"
+    }
+   }
+  ],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/sales_team/security/sales_team_security.xml",
+  "sourceRef": "sources/odoo/addons/sales_team/security/sales_team_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:sale.group_auto_done_setting",
+  "uniqueId": "sale.group_auto_done_setting",
+  "name": "Lock Confirmed Sales",
+  "label": "Lock Confirmed Sales",
+  "module": "sale",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/sale/security/res_groups.xml",
+  "sourceRef": "sources/odoo/addons/sale/security/res_groups.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:sale.group_discount_per_so_line",
+  "uniqueId": "sale.group_discount_per_so_line",
+  "name": "Discount on lines",
+  "label": "Discount on lines",
+  "module": "sale",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/sale/security/res_groups.xml",
+  "sourceRef": "sources/odoo/addons/sale/security/res_groups.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:sale.group_warning_sale",
+  "uniqueId": "sale.group_warning_sale",
+  "name": "A warning can be set on a product or a customer (Sale)",
+  "label": "A warning can be set on a product or a customer (Sale)",
+  "module": "sale",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/sale/security/res_groups.xml",
+  "sourceRef": "sources/odoo/addons/sale/security/res_groups.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:sale.group_proforma_sales",
+  "uniqueId": "sale.group_proforma_sales",
+  "name": "Pro-forma Invoices",
+  "label": "Pro-forma Invoices",
+  "module": "sale",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/sale/security/res_groups.xml",
+  "sourceRef": "sources/odoo/addons/sale/security/res_groups.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:sale_management.group_sale_order_template",
+  "uniqueId": "sale_management.group_sale_order_template",
+  "name": "Quotation Templates",
+  "label": "Quotation Templates",
+  "module": "sale_management",
+  "category": "base.module_category_hidden",
+  "implies": [],
+  "description": "",
+  "acl": [],
+  "recordRules": [],
+  "definedOutsideImport": false,
+  "_source": "sources/odoo/addons/sale_management/security/sale_management_security.xml",
+  "sourceRef": "sources/odoo/addons/sale_management/security/sale_management_security.xml",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "role",
+  "linkId": "odoo:role:(all users)",
+  "uniqueId": "(all users)",
+  "name": "(all users)",
+  "label": "(all users)",
+  "module": null,
+  "category": null,
+  "implies": [],
+  "description": "",
+  "acl": [
+   {
+    "model": "ir.attachment",
+    "read": false,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_ir_attachment_group_portal_public"
+   },
+   {
+    "model": "ir.model.inherit",
+    "read": false,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_ir_model_inherit"
+   },
+   {
+    "model": "ir.ui.view",
+    "read": false,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_ir_ui_view_group_user"
+   },
+   {
+    "model": "ir.default",
+    "read": false,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_ir_default_all"
+   },
+   {
+    "model": "res.users.deletion",
+    "read": false,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_users_deletion_all"
+   },
+   {
+    "model": "res.users.settings",
+    "read": false,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "base.access_res_users_settings_all"
+   },
+   {
+    "model": "crm.team.member",
+    "read": false,
+    "write": false,
+    "create": false,
+    "unlink": false,
+    "id": "sales_team.access_crm_team_member_all"
+   }
+  ],
+  "recordRules": [
+   {
+    "model": "res.users.log",
+    "name": "res.users.log per user",
+    "domain": "[('create_uid','=', user.id)]",
+    "perms": {
+     "perm_read": "False"
+    }
+   },
+   {
+    "model": "res.partner",
+    "name": "res.partner company",
+    "domain": "['|', '|', ('partner_share', '=', False), ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+    "perms": {}
+   },
+   {
+    "model": "ir.ui.view.custom",
+    "name": "ir.ui.view_custom rule",
+    "domain": "[('user_id','=',user.id)]",
+    "perms": {}
+   },
+   {
+    "model": "res.partner.bank",
+    "name": "Partner bank company rule",
+    "domain": "['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+    "perms": {}
+   },
+   {
+    "model": "res.currency.rate",
+    "name": "multi-company currency rate rule",
+    "domain": "['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+    "perms": {}
+   },
+   {
+    "model": "change.password.user",
+    "name": "change user password rule",
+    "domain": "[('create_uid', '=', user.id)]",
+    "perms": {}
+   },
+   {
+    "model": "res.users.identitycheck",
+    "name": "users can only access their own id check",
+    "domain": "[('create_uid', '=', user.id)]",
+    "perms": {}
+   },
+   {
+    "model": "res.users",
+    "name": "user rule",
+    "domain": "['|', ('share', '=', False), ('company_ids', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "change.password.own",
+    "name": "change own password",
+    "domain": "[('create_uid', '=', user.id)]",
+    "perms": {}
+   },
+   {
+    "model": "product.template",
+    "name": "Product multi-company",
+    "domain": "['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+    "perms": {}
+   },
+   {
+    "model": "product.document",
+    "name": "Product multi-company",
+    "domain": "['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+    "perms": {}
+   },
+   {
+    "model": "product.pricelist",
+    "name": "product pricelist company rule",
+    "domain": "['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+    "perms": {}
+   },
+   {
+    "model": "product.pricelist.item",
+    "name": "product pricelist item company rule",
+    "domain": "['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+    "perms": {}
+   },
+   {
+    "model": "product.supplierinfo",
+    "name": "product supplierinfo company rule",
+    "domain": "['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "product.packaging",
+    "name": "product packaging company rule",
+    "domain": "['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "product.combo",
+    "name": "Product combo multi-company rule",
+    "domain": "['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.analytic.account",
+    "name": "Analytic multi company rule",
+    "domain": "['|',('company_id','=',False),('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.analytic.line",
+    "name": "Analytic line multi company rule",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.analytic.applicability",
+    "name": "Analytic applicability multi company rule",
+    "domain": "['|',('company_id','=',False),('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.analytic.distribution.model",
+    "name": "Analytic distribution model multi company rule",
+    "domain": "['|',('company_id','=',False),('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move",
+    "name": "Account Entry",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.move.line",
+    "name": "Entry lines",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.journal.group",
+    "name": "Multi-ledger multi-company",
+    "domain": "['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.journal",
+    "name": "Journal multi-company",
+    "domain": "[('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.account",
+    "name": "Account multi-company",
+    "domain": "[('company_ids', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.group",
+    "name": "Account Group multi-company",
+    "domain": "[('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.tax.group",
+    "name": "Tax group multi-company",
+    "domain": "[('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.tax",
+    "name": "Tax multi-company",
+    "domain": "[('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.tax.repartition.line",
+    "name": "Tax Repartition multi-company",
+    "domain": "['|',('company_id','=',False), ('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.invoice.report",
+    "name": "Invoice Analysis multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.fiscal.position",
+    "name": "Account fiscal Mapping company rule",
+    "domain": "[('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.bank.statement",
+    "name": "Account bank statement company rule",
+    "domain": "[('company_id', 'in', company_ids + [False])]",
+    "perms": {}
+   },
+   {
+    "model": "account.bank.statement.line",
+    "name": "Account bank statement line company rule",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.reconcile.model",
+    "name": "Account reconcile model template company rule",
+    "domain": "[('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.reconcile.model.line",
+    "name": "Account reconcile model_line template company rule",
+    "domain": "[('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.payment",
+    "name": "Account payment company rule",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.payment.term",
+    "name": "Account payment term company rule",
+    "domain": "['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "account.report.external.value",
+    "name": "Report External Value multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "purchase.order",
+    "name": "Purchase Order multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "purchase.order.line",
+    "name": "Purchase Order Line multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "purchase.bill.union",
+    "name": "Purchases & Bills Union multi-company",
+    "domain": "[('company_id', 'in', company_ids + [False])]",
+    "perms": {}
+   },
+   {
+    "model": "purchase.report",
+    "name": "Purchase Order Report multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": null,
+    "name": "stock_picking multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": null,
+    "name": "Stock Operation Type multi-company",
+    "domain": "[('company_id','in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": null,
+    "name": "Stock Operation Type multi-company",
+    "domain": "[('company_id','in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": null,
+    "name": "Stock Production Lot multi-company",
+    "domain": "[('company_id', 'in', company_ids + [False])]",
+    "perms": {}
+   },
+   {
+    "model": "stock.warehouse",
+    "name": "Warehouse multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "stock.location",
+    "name": "Location multi-company",
+    "domain": "[('company_id', 'in', company_ids + [False])]",
+    "perms": {}
+   },
+   {
+    "model": null,
+    "name": "stock_move multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": null,
+    "name": "stock_move_line multi-company",
+    "domain": "[('company_id', 'in', company_ids + [False])]",
+    "perms": {}
+   },
+   {
+    "model": "stock.quant",
+    "name": "stock_quant multi-company",
+    "domain": "[('company_id', 'in', company_ids + [False])]",
+    "perms": {}
+   },
+   {
+    "model": null,
+    "name": "stock_warehouse.orderpoint multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "stock.rule",
+    "name": "product_pulled_flow multi-company",
+    "domain": "[('company_id', 'in', company_ids + [False])]",
+    "perms": {}
+   },
+   {
+    "model": "stock.route",
+    "name": "stock_route multi-company",
+    "domain": "[('company_id', 'in', company_ids + [False])]",
+    "perms": {}
+   },
+   {
+    "model": "stock.quant.package",
+    "name": "stock_quant_package multi-company",
+    "domain": "[('company_id', 'in', company_ids + [False])]",
+    "perms": {}
+   },
+   {
+    "model": "stock.scrap",
+    "name": "stock_scrap_company multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "report.stock.quantity",
+    "name": "report_stock_quantity_flow multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "stock.storage.category",
+    "name": "stock_storage_category multi-company",
+    "domain": "[('company_id', 'in', company_ids + [False])]",
+    "perms": {}
+   },
+   {
+    "model": null,
+    "name": "Stock Valuation Layer Multicompany",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "crm.team",
+    "name": "Sales Team multi-company",
+    "domain": "[('company_id', 'in', company_ids + [False])]",
+    "perms": {}
+   },
+   {
+    "model": "sale.order",
+    "name": "Sales Order multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "sale.order.line",
+    "name": "Sales Order Line multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "sale.report",
+    "name": "Sales Order Analysis multi-company",
+    "domain": "[('company_id', 'in', company_ids)]",
+    "perms": {}
+   },
+   {
+    "model": "sale.payment.provider.onboarding.wizard",
+    "name": "Payment Provider Onboarding Wizard Rule",
+    "domain": "[('create_uid', '=', user.id)]",
+    "perms": {}
+   },
+   {
+    "model": "sale.advance.payment.inv",
+    "name": "Sales Advance Payment Invoice Rule",
+    "domain": "[('create_uid', '=', user.id)]",
+    "perms": {}
+   },
+   {
+    "model": "sale.order.cancel",
+    "name": "Sales Order Cancel Rule",
+    "domain": "[('create_uid', '=', user.id)]",
+    "perms": {}
+   },
+   {
+    "model": "sale.mass.cancel.orders",
+    "name": "Sales Mass Cancel Orders: access only your own wizard",
+    "domain": "[('create_uid', '=', user.id)]",
+    "perms": {}
+   },
+   {
+    "model": "sale.order.template",
+    "name": "Quotation Template multi-company",
+    "domain": "[('company_id', 'in', company_ids + [False])]",
+    "perms": {}
+   }
+  ],
+  "definedOutsideImport": false,
+  "_source": null,
+  "sourceRef": null,
+  "_gaps": [],
+  "_links": []
+ }
+]

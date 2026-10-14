@@ -1,0 +1,380 @@
+[
+ {
+  "id": "base.demo_failure_action",
+  "name": "Failed to install demo data for some modules, demo disabled",
+  "model": "ir.demo_failure.wizard",
+  "state": "code",
+  "code": "failures = env['ir.demo_failure'].search([\n    ('wizard_id', '=', False),\n])\nrecord = model.create({\n    'failure_ids': [Command.set(failures.ids)],\n})\naction = {\n    'type': 'ir.actions.act_window',\n    'res_id': record.id,\n    'res_model': 'ir.demo_failure.wizard',\n    'target': 'new',\n    'views': [(env.ref('base.demo_failures_dialog').id, 'form')],\n}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/data/ir_demo_failure_data.xml"
+ },
+ {
+  "id": "base.action_run_ir_action_todo",
+  "name": "Config: Run Remaining Action Todo",
+  "model": "res.config",
+  "state": "code",
+  "code": "config = model.next() or {}\nif config.get('type') not in ('ir.actions.act_window_close',):\n    action = config",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_actions_views.xml"
+ },
+ {
+  "id": "product.action_product_template_price_list_report",
+  "name": "Pricelist Report",
+  "model": "product.template",
+  "state": "code",
+  "code": "action = {\n    'name': 'Pricelist Report',\n    'type': 'ir.actions.client',\n    'tag': 'generate_pricelist_report',\n    'context': env.context,\n}",
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_template_views.xml"
+ },
+ {
+  "id": "product.action_product_price_list_report",
+  "name": "Pricelist Report",
+  "model": "product.product",
+  "state": "code",
+  "code": "action = {\n    'name': 'Pricelist Report',\n    'type': 'ir.actions.client',\n    'tag': 'generate_pricelist_report',\n    'context': env.context,\n}",
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_views.xml"
+ },
+ {
+  "id": "account.model_account_move_action_share",
+  "name": "Share",
+  "model": "account.move",
+  "state": "code",
+  "code": "action = records.action_share()",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/data/account_data.xml"
+ },
+ {
+  "id": "account.action_unmerge_accounts",
+  "name": "Unmerge account",
+  "model": "account.account",
+  "state": "code",
+  "code": "if records:\n    action = records.action_unmerge()",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_account_views.xml"
+ },
+ {
+  "id": "account.action_automatic_entry_change_account",
+  "name": "Move to Account",
+  "model": "account.move.line",
+  "state": "code",
+  "code": "action = records.action_automatic_entry('change_account')",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_automatic_entry_change_period",
+  "name": "Change Period",
+  "model": "account.move.line",
+  "state": "code",
+  "code": "action = records.action_automatic_entry('change_period')",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_switch_move_type",
+  "name": "Switch into invoice/credit note",
+  "model": "account.move",
+  "state": "code",
+  "code": "if records:\n    action = records.action_switch_move_type()",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_force_register_payment",
+  "name": "Pay",
+  "model": "account.move",
+  "state": "code",
+  "code": "if records:\n    action = records.action_force_register_payment()",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_block_payment",
+  "name": "(Un)Block Payment",
+  "model": "account.move",
+  "state": "code",
+  "code": "records.action_toggle_block_payment()",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_check_hash_integrity",
+  "name": "Data Inalterability Check",
+  "model": "res.company",
+  "state": "code",
+  "code": "action = env.company._action_check_hash_integrity()",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_export_zip",
+  "name": "Export ZIP",
+  "model": "account.move",
+  "state": "code",
+  "code": "if records:\n                    action = records.action_export_zip()",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_account_confirm_payments",
+  "name": "Post Payments",
+  "model": "account.payment",
+  "state": "code",
+  "code": "records.action_post()",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_payment_view.xml"
+ },
+ {
+  "id": "account.action_new_bank_setting",
+  "name": "Add a Bank Account",
+  "model": "res.company",
+  "state": "code",
+  "code": "action = model.setting_init_bank_account_action()",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/res_partner_bank_views.xml"
+ },
+ {
+  "id": "account.action_account_unreconcile",
+  "name": "Unreconcile",
+  "model": "account.move.line",
+  "state": "code",
+  "code": "model.action_unreconcile_match_entries()",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/wizard/account_unreconcile_view.xml"
+ },
+ {
+  "id": "purchase.model_purchase_order_action_share",
+  "name": "Share",
+  "model": "purchase.order",
+  "state": "code",
+  "code": "action = records.action_share()",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/data/purchase_data.xml"
+ },
+ {
+  "id": "purchase.action_purchase_batch_bills",
+  "name": "Create Vendor Bills",
+  "model": "purchase.order",
+  "state": "code",
+  "code": "if records:\n                action = records.action_create_invoice()",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/purchase_views.xml"
+ },
+ {
+  "id": "purchase.action_purchase_send_reminder",
+  "name": "Send Reminder",
+  "model": "purchase.order",
+  "state": "code",
+  "code": "if records:\n                action = records._send_reminder_mail(send_single=True)",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/purchase_views.xml"
+ },
+ {
+  "id": "purchase.action_merger",
+  "name": "Merge",
+  "model": "purchase.order",
+  "state": "code",
+  "code": "if records:\n                action = records.action_merge()",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/purchase_views.xml"
+ },
+ {
+  "id": "purchase.action_confirm_rfqs",
+  "name": "Confirm RFQ",
+  "model": "purchase.order",
+  "state": "code",
+  "code": "if records:\n    res = records.button_confirm()\nif isinstance(res, dict):\n    action = res",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/purchase_views.xml"
+ },
+ {
+  "id": "stock.action_open_routes",
+  "name": "Routes",
+  "model": "product.template",
+  "state": "code",
+  "code": "action = model.action_open_routes_diagram()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/product_views.xml"
+ },
+ {
+  "id": "stock.action_revert_inventory_adjustment",
+  "name": "Revert Inventory Adjustment",
+  "model": "stock.move.line",
+  "state": "code",
+  "code": "action = records.action_revert_inventory()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_move_line_views.xml"
+ },
+ {
+  "id": "stock.action_replenishment",
+  "name": "Replenishment",
+  "model": "stock.warehouse.orderpoint",
+  "state": "code",
+  "code": "action = model.with_context(\n                search_default_filter_not_snoozed=True,\n                default_trigger='manual',\n                searchpanel_default_trigger='manual'\n            ).action_open_orderpoints()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_orderpoint_views.xml"
+ },
+ {
+  "id": "stock.action_validate_picking",
+  "name": "Validate",
+  "model": "stock.picking",
+  "state": "code",
+  "code": "if records:\n                res = records.button_validate()\n                if isinstance(res, dict):\n                    action = res",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_unreserve_picking",
+  "name": "Unreserve",
+  "model": "stock.picking",
+  "state": "code",
+  "code": "if records:\n                records.do_unreserve()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_print_labels",
+  "name": "Labels",
+  "model": "stock.picking",
+  "state": "code",
+  "code": "if records:\n                action = records.action_open_label_type()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_toggle_is_locked",
+  "name": "Lock/Unlock",
+  "model": "stock.picking",
+  "state": "code",
+  "code": "if records:\n                records.action_toggle_is_locked()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_scrap",
+  "name": "Scrap",
+  "model": "stock.picking",
+  "state": "code",
+  "code": "if records:\n                action = records.button_scrap()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.click_dashboard_graph",
+  "name": "stock.click_dashboard_graph",
+  "model": "stock.picking",
+  "state": "code",
+  "code": "action = model.get_action_click_graph()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.method_action_picking_tree_incoming",
+  "name": "stock.method_action_picking_tree_incoming",
+  "model": "stock.picking",
+  "state": "code",
+  "code": "action = model.get_action_picking_tree_incoming()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.method_action_picking_tree_outgoing",
+  "name": "stock.method_action_picking_tree_outgoing",
+  "model": "stock.picking",
+  "state": "code",
+  "code": "action = model.get_action_picking_tree_outgoing()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.method_action_picking_tree_internal",
+  "name": "stock.method_action_picking_tree_internal",
+  "model": "stock.picking",
+  "state": "code",
+  "code": "action = model.get_action_picking_tree_internal()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_install_barcode",
+  "name": "Install Barcode",
+  "model": "stock.picking.type",
+  "state": "code",
+  "code": "action = model.action_redirect_to_barcode_installation()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.stock_split_picking",
+  "name": "Split",
+  "model": "stock.picking",
+  "state": "code",
+  "code": "action = records.action_split_transfer()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_view_inventory_tree",
+  "name": "Inventory",
+  "model": "stock.quant",
+  "state": "code",
+  "code": "action = model.action_view_inventory()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_quant_views.xml"
+ },
+ {
+  "id": "stock.action_view_quants",
+  "name": "Inventory",
+  "model": "stock.quant",
+  "state": "code",
+  "code": "action = model.with_context(\n                search_default_internal_loc=1,\n                always_show_loc=1,\n            ).action_view_quants()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_quant_views.xml"
+ },
+ {
+  "id": "stock.action_view_set_quants_tree",
+  "name": "Set to quantity on hand",
+  "model": "stock.quant",
+  "state": "code",
+  "code": "action = records.action_set_inventory_quantity()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_quant_views.xml"
+ },
+ {
+  "id": "stock.action_view_set_to_zero_quants_tree",
+  "name": "Set to 0",
+  "model": "stock.quant",
+  "state": "code",
+  "code": "action = records.action_set_inventory_quantity_zero()",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_quant_views.xml"
+ },
+ {
+  "id": "sale.model_sale_order_action_quotation_sent",
+  "name": "Mark Quotation as Sent",
+  "model": "sale.order",
+  "state": "code",
+  "code": "action = records.action_quotation_sent()",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/sale_order_views.xml"
+ },
+ {
+  "id": "sale.model_sale_order_action_share",
+  "name": "Share",
+  "model": "sale.order",
+  "state": "code",
+  "code": "action = records.action_share()",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/sale_order_views.xml"
+ },
+ {
+  "id": "sale.model_sale_order_send_mail",
+  "name": "Send an email",
+  "model": "sale.order",
+  "state": "code",
+  "code": "if records:\n                action = records.with_context(hide_default_template=True).action_quotation_send()",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/sale_order_views.xml"
+ }
+]

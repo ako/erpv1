@@ -5,7 +5,7 @@ Every gate decision lands here as `CONFIRMED` or `ASSUMED`, never silently decid
 
 ## Current stage
 
-**Stage 1 — Analysis**, in progress — gates passed: P, 0 (derived by gate-check on 2026-10-14; re-run it rather than editing this line).
+**Stage 2 — Requirements**, in progress — gates passed: P, 0, 1 (derived by gate-check on 2026-10-14; re-run it rather than editing this line).
 
 Toolkit commit: d16f578
 Interview mode: assist
@@ -40,6 +40,10 @@ Unit tests default: yes
 | 0 | Missing dependencies (mail, portal, account_payment/payment, utm, barcodes_gs1_nomenclature, digest, onboarding, base_setup): **declare not implemented**; manual payment registration stays in scope | CONFIRMED | Stage 0 gate, chat 2026-10-14 |
 | 0 | Interview mode switched steering → **assist** (sufficiency report: SPECIFICATION, 0 contradictions) — questions batched at gates, low-consequence ones assumed and reported | CONFIRMED | Stage 0 gate, chat 2026-10-14 |
 | 0 | Scope (CAC-1): C1–C8 in scope in waves 1–4, C9 ledger / C10 analytic / C11 valuation / C12 framework deferred; one Mendix app; size tier full (≈115 in-scope models, far over small-tier bounds) | CONFIRMED | Stage 0 gate, chat 2026-10-14 — user accepted the map without additions |
+| 1 | Path A (code): project-local Odoo extractor `pipelines/odoo/` — quality **100%** on 9 Odoo-shaped dimensions (3557 fields, 1223 relations, 132 static enumerations, 712 views, 223 menus, 759 security records, 43 routes, 7 crons); independent regex validator; one correlated blind spot found by a 3rd probe and fixed (annotated fields) | CONFIRMED | `analysis/odoo/knowledge-base/extracted/extraction-quality.json`, method log `pipelines/odoo/SESSION-NOTES.md` |
+| 1 | Path B (documents): the 24 non-code files (READMEs, licence, anglo-saxon PDF/ODS, framework assets) read by hand | CONFIRMED | `analysis/odoo/non-code-sources.md`; source ledger 825/825 name-verified, 0 waivers |
+| 1 | Path C (SME): no open questions that code + docs cannot answer at this point; behavioural questions are raised at the Stage 2 interview gate (SME = user, assist mode) | ASSUMED | Agent, 2026-10-14 — reported in chat |
+| 1 | Extraction scope (CAC-1b): extraction covers all 13 imported addons; **BRDs only for C1–C8** (89 entities, 56 structures, 504 views in scope). C9–C12 output (76 entities, 68 structures, 208 views) stays in the KB as reference, no BRDs. Nothing missing for an in-scope capability | ASSUMED | Follows from the CAC-1 decision; stated in chat 2026-10-14 (assist mode) |
 | P | Source is committed to git (`sources/` tracked) | ASSUMED | LGPL-3.0 public code; container is ephemeral so an ignored copy would be lost (cloud-dev-environment.md step 5) |
 | 3 | Odoo in-place extension (`_inherit` without new `_name`): fields go into the owning Mendix entity; 1–1 extension entity only where the module must stay optional; method overrides → explicit sub-microflow hooks | ASSUMED | Discussed in chat 2026-10-14, to confirm at Stage 3 |
 | 3 | Odoo mixins (`_inherit` with new `_name`, e.g. `mail.thread`): no multiple inheritance in Mendix; at most one shared generalization (e.g. `Core.BusinessDocument`), otherwise associations; chatter out of scope | ASSUMED | Chat 2026-10-14 |

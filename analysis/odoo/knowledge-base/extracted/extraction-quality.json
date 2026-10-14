@@ -1,0 +1,106 @@
+{
+ "project": "erpv1",
+ "source": "odoo",
+ "scoredAt": "2026-10-14T17:18:32+00:00",
+ "overallScore": 100.0,
+ "passed": true,
+ "threshold": 95.0,
+ "methods": {
+  "extractor": "python ast + ElementTree + csv (pipelines/odoo/extractor.py)",
+  "validator": "line regex + paren counting over raw text (pipelines/odoo/validator.py)"
+ },
+ "dimensions": {
+  "entityFields": {
+   "score": 100.0,
+   "found": 3557,
+   "expected": 3557,
+   "gaps": [],
+   "gapCount": 0
+  },
+  "typeAccuracy": {
+   "score": 100.0,
+   "found": 3557,
+   "expected": 3557,
+   "gaps": [],
+   "gapCount": 0
+  },
+  "associations": {
+   "score": 100.0,
+   "found": 1223,
+   "expected": 1223,
+   "gaps": [],
+   "gapCount": 0
+  },
+  "enumerations": {
+   "score": 100.0,
+   "found": 132,
+   "expected": 132,
+   "gaps": [],
+   "gapCount": 0
+  },
+  "views": {
+   "score": 100.0,
+   "found": 712,
+   "expected": 712,
+   "gaps": [],
+   "gapCount": 0
+  },
+  "menus": {
+   "score": 100.0,
+   "found": 223,
+   "expected": 223,
+   "gaps": [],
+   "gapCount": 0
+  },
+  "security": {
+   "score": 100.0,
+   "found": 759,
+   "expected": 759,
+   "gaps": [],
+   "gapCount": 0
+  },
+  "endpoints": {
+   "score": 100.0,
+   "found": 43,
+   "expected": 43,
+   "gaps": [],
+   "gapCount": 0
+  },
+  "timers": {
+   "score": 100.0,
+   "found": 7,
+   "expected": 7,
+   "gaps": [],
+   "gapCount": 0
+  }
+ },
+ "confirmedZeros": [],
+ "externalRelations": {
+  "count": 9,
+  "note": "relational fields whose target is defined only in addons declared not implemented (utm, mail, base_setup, ...) \u2014 target unresolvable by both methods, not scored",
+  "fields": [
+   "account.move.campaign_id",
+   "account.move.medium_id",
+   "account.move.source_id",
+   "account.journal.alias_id",
+   "res.config.settings.account_fiscal_country_id",
+   "res.config.settings.company_so_template_id",
+   "sale.order.campaign_id",
+   "sale.order.medium_id",
+   "sale.order.source_id"
+  ]
+ },
+ "unscored": [
+  {
+   "dimension": "testCoverage",
+   "reason": "tests/ excluded at import (sources/odoo/SOURCE.md); nothing to classify"
+  }
+ ],
+ "brdOnly": [
+  "Method behaviour: what action_* / _compute_* / constraint bodies do (logics.json lists them with source line ranges)",
+  "Dynamic selections (method/lambda) \u2014 values computed at runtime (reports/gaps-report.md)",
+  "Domain expressions on fields, actions and record rules \u2014 captured as text, meaning is BRD work",
+  "Onchange UX behaviour and view-level invisible/readonly conditions",
+  "Fields contributed by addons declared not implemented (mail, portal, utm, payment, ...)"
+ ]
+}

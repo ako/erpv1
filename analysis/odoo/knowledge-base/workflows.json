@@ -1,0 +1,1310 @@
+[
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:ir.actions.server.state",
+  "uniqueId": "ir.actions.server.state",
+  "name": "ir.actions.server lifecycle",
+  "label": "ir.actions.server state",
+  "module": "base",
+  "model": "ir.actions.server",
+  "field": "state",
+  "capability": "C12",
+  "inScope": false,
+  "states": [
+   {
+    "name": "object_write",
+    "label": "Update Record"
+   },
+   {
+    "name": "object_create",
+    "label": "Create Record"
+   },
+   {
+    "name": "code",
+    "label": "Execute Code"
+   },
+   {
+    "name": "webhook",
+    "label": "Send Webhook Notification"
+   },
+   {
+    "name": "multi",
+    "label": "Execute Existing Actions"
+   }
+  ],
+  "transitions": [],
+  "_source": "sources/odoo/addons/base/models/ir_actions.py",
+  "sourceRef": "sources/odoo/addons/base/models/ir_actions.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:ir.actions.todo.state",
+  "uniqueId": "ir.actions.todo.state",
+  "name": "ir.actions.todo lifecycle",
+  "label": "ir.actions.todo state",
+  "module": "base",
+  "model": "ir.actions.todo",
+  "field": "state",
+  "capability": "C12",
+  "inScope": false,
+  "states": [
+   {
+    "name": "open",
+    "label": "To Do"
+   },
+   {
+    "name": "done",
+    "label": "Done"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "ensure_one_open_todo",
+    "addon": "base",
+    "to": "done"
+   },
+   {
+    "method": "action_launch",
+    "addon": "base",
+    "to": "done"
+   },
+   {
+    "method": "action_open",
+    "addon": "base",
+    "to": "open"
+   }
+  ],
+  "_source": "sources/odoo/addons/base/models/ir_actions.py",
+  "sourceRef": "sources/odoo/addons/base/models/ir_actions.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:ir.model.state",
+  "uniqueId": "ir.model.state",
+  "name": "ir.model lifecycle",
+  "label": "ir.model state",
+  "module": "base",
+  "model": "ir.model",
+  "field": "state",
+  "capability": "C12",
+  "inScope": false,
+  "states": [
+   {
+    "name": "manual",
+    "label": "Custom Object"
+   },
+   {
+    "name": "base",
+    "label": "Base Object"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "_reflect_model_params",
+    "addon": "base",
+    "to": "manual"
+   }
+  ],
+  "_source": "sources/odoo/addons/base/models/ir_model.py",
+  "sourceRef": "sources/odoo/addons/base/models/ir_model.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:ir.model.fields.state",
+  "uniqueId": "ir.model.fields.state",
+  "name": "ir.model.fields lifecycle",
+  "label": "ir.model.fields state",
+  "module": "base",
+  "model": "ir.model.fields",
+  "field": "state",
+  "capability": "C12",
+  "inScope": false,
+  "states": [
+   {
+    "name": "manual",
+    "label": "Custom Field"
+   },
+   {
+    "name": "base",
+    "label": "Base Field"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "_reflect_field_params",
+    "addon": "base",
+    "to": "manual"
+   }
+  ],
+  "_source": "sources/odoo/addons/base/models/ir_model.py",
+  "sourceRef": "sources/odoo/addons/base/models/ir_model.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:ir.module.module.state",
+  "uniqueId": "ir.module.module.state",
+  "name": "ir.module.module lifecycle",
+  "label": "ir.module.module state",
+  "module": "base",
+  "model": "ir.module.module",
+  "field": "state",
+  "capability": "C12",
+  "inScope": false,
+  "states": [
+   {
+    "name": "uninstallable",
+    "label": "Uninstallable"
+   },
+   {
+    "name": "uninstalled",
+    "label": "Not Installed"
+   },
+   {
+    "name": "installed",
+    "label": "Installed"
+   },
+   {
+    "name": "to upgrade",
+    "label": "To be upgraded"
+   },
+   {
+    "name": "to remove",
+    "label": "To be removed"
+   },
+   {
+    "name": "to install",
+    "label": "To be installed"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "button_install_cancel",
+    "addon": "base",
+    "to": "uninstalled"
+   },
+   {
+    "method": "module_uninstall",
+    "addon": "base",
+    "to": "uninstalled"
+   },
+   {
+    "method": "button_uninstall_cancel",
+    "addon": "base",
+    "to": "installed"
+   },
+   {
+    "method": "button_upgrade_cancel",
+    "addon": "base",
+    "to": "installed"
+   }
+  ],
+  "_source": "sources/odoo/addons/base/models/ir_module.py",
+  "sourceRef": "sources/odoo/addons/base/models/ir_module.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:ir.module.module.dependency.state",
+  "uniqueId": "ir.module.module.dependency.state",
+  "name": "ir.module.module.dependency lifecycle",
+  "label": "ir.module.module.dependency state",
+  "module": "base",
+  "model": "ir.module.module.dependency",
+  "field": "state",
+  "capability": "C12",
+  "inScope": false,
+  "states": [],
+  "transitions": [],
+  "_source": "sources/odoo/addons/base/models/ir_module.py",
+  "sourceRef": "sources/odoo/addons/base/models/ir_module.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:ir.module.module.exclusion.state",
+  "uniqueId": "ir.module.module.exclusion.state",
+  "name": "ir.module.module.exclusion lifecycle",
+  "label": "ir.module.module.exclusion state",
+  "module": "base",
+  "model": "ir.module.module.exclusion",
+  "field": "state",
+  "capability": "C12",
+  "inScope": false,
+  "states": [],
+  "transitions": [],
+  "_source": "sources/odoo/addons/base/models/ir_module.py",
+  "sourceRef": "sources/odoo/addons/base/models/ir_module.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:res.users.deletion.state",
+  "uniqueId": "res.users.deletion.state",
+  "name": "res.users.deletion lifecycle",
+  "label": "res.users.deletion state",
+  "module": "base",
+  "model": "res.users.deletion",
+  "field": "state",
+  "capability": "C1",
+  "inScope": true,
+  "states": [
+   {
+    "name": "todo",
+    "label": "To Do"
+   },
+   {
+    "name": "done",
+    "label": "Done"
+   },
+   {
+    "name": "fail",
+    "label": "Failed"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "_gc_portal_users",
+    "addon": "base",
+    "to": "done"
+   },
+   {
+    "method": "_gc_portal_users",
+    "addon": "base",
+    "to": "fail"
+   }
+  ],
+  "_source": "sources/odoo/addons/base/models/res_users_deletion.py",
+  "sourceRef": "sources/odoo/addons/base/models/res_users_deletion.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:base.language.export.state",
+  "uniqueId": "base.language.export.state",
+  "name": "base.language.export lifecycle",
+  "label": "base.language.export state",
+  "module": "base",
+  "model": "base.language.export",
+  "field": "state",
+  "capability": "C12",
+  "inScope": false,
+  "states": [
+   {
+    "name": "choose",
+    "label": "choose"
+   },
+   {
+    "name": "get",
+    "label": "get"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "act_getfile",
+    "addon": "base",
+    "to": "get"
+   }
+  ],
+  "_source": "sources/odoo/addons/base/wizard/base_export_language.py",
+  "sourceRef": "sources/odoo/addons/base/wizard/base_export_language.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:base.module.update.state",
+  "uniqueId": "base.module.update.state",
+  "name": "base.module.update lifecycle",
+  "label": "base.module.update state",
+  "module": "base",
+  "model": "base.module.update",
+  "field": "state",
+  "capability": "C12",
+  "inScope": false,
+  "states": [
+   {
+    "name": "init",
+    "label": "init"
+   },
+   {
+    "name": "done",
+    "label": "done"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "update_module",
+    "addon": "base",
+    "to": "done"
+   }
+  ],
+  "_source": "sources/odoo/addons/base/wizard/base_module_update.py",
+  "sourceRef": "sources/odoo/addons/base/wizard/base_module_update.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:base.partner.merge.automatic.wizard.state",
+  "uniqueId": "base.partner.merge.automatic.wizard.state",
+  "name": "base.partner.merge.automatic.wizard lifecycle",
+  "label": "base.partner.merge.automatic.wizard state",
+  "module": "base",
+  "model": "base.partner.merge.automatic.wizard",
+  "field": "state",
+  "capability": "C12",
+  "inScope": false,
+  "states": [
+   {
+    "name": "option",
+    "label": "Option"
+   },
+   {
+    "name": "selection",
+    "label": "Selection"
+   },
+   {
+    "name": "finished",
+    "label": "Finished"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "_action_next_screen",
+    "addon": "base",
+    "to": "finished"
+   },
+   {
+    "method": "_action_next_screen",
+    "addon": "base",
+    "to": "selection"
+   },
+   {
+    "method": "_process_query",
+    "addon": "base",
+    "to": "selection"
+   },
+   {
+    "method": "action_start_automatic_process",
+    "addon": "base",
+    "to": "finished"
+   },
+   {
+    "method": "parent_migration_process_cb",
+    "addon": "base",
+    "to": "finished"
+   },
+   {
+    "method": "action_merge",
+    "addon": "base",
+    "to": "finished"
+   }
+  ],
+  "_source": "sources/odoo/addons/base/wizard/base_partner_merge.py",
+  "sourceRef": "sources/odoo/addons/base/wizard/base_partner_merge.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:account.move.state",
+  "uniqueId": "account.move.state",
+  "name": "account.move lifecycle",
+  "label": "account.move state",
+  "module": "account",
+  "model": "account.move",
+  "field": "state",
+  "capability": "C8",
+  "inScope": true,
+  "states": [
+   {
+    "name": "draft",
+    "label": "Draft"
+   },
+   {
+    "name": "posted",
+    "label": "Posted"
+   },
+   {
+    "name": "cancel",
+    "label": "Cancelled"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "_field_to_sql",
+    "addon": "account",
+    "to": "cancel"
+   },
+   {
+    "method": "_field_to_sql",
+    "addon": "account",
+    "to": "draft"
+   },
+   {
+    "method": "_fetch_duplicate_reference",
+    "addon": "account",
+    "to": "draft"
+   },
+   {
+    "method": "_compute_abnormal_warnings",
+    "addon": "account",
+    "to": "posted"
+   },
+   {
+    "method": "_post",
+    "addon": "account",
+    "to": "posted"
+   },
+   {
+    "method": "button_draft",
+    "addon": "account",
+    "to": "draft"
+   },
+   {
+    "method": "button_cancel",
+    "addon": "account",
+    "to": "cancel"
+   },
+   {
+    "method": "button_cancel",
+    "addon": "account",
+    "to": "canceled"
+   }
+  ],
+  "_source": "sources/odoo/addons/account/models/account_bank_statement_line.py",
+  "sourceRef": "sources/odoo/addons/account/models/account_bank_statement_line.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:account.lock_exception.state",
+  "uniqueId": "account.lock_exception.state",
+  "name": "account.lock_exception lifecycle",
+  "label": "account.lock_exception state",
+  "module": "account",
+  "model": "account.lock_exception",
+  "field": "state",
+  "capability": "C9",
+  "inScope": false,
+  "states": [
+   {
+    "name": "active",
+    "label": "Active"
+   },
+   {
+    "name": "revoked",
+    "label": "Revoked"
+   },
+   {
+    "name": "expired",
+    "label": "Expired"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "_compute_state",
+    "addon": "account",
+    "to": "active"
+   },
+   {
+    "method": "_compute_state",
+    "addon": "account",
+    "to": "expired"
+   },
+   {
+    "method": "_compute_state",
+    "addon": "account",
+    "to": "revoked"
+   }
+  ],
+  "_source": "sources/odoo/addons/account/models/account_lock_exception.py",
+  "sourceRef": "sources/odoo/addons/account/models/account_lock_exception.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:account.payment.state",
+  "uniqueId": "account.payment.state",
+  "name": "account.payment lifecycle",
+  "label": "account.payment state",
+  "module": "account",
+  "model": "account.payment",
+  "field": "state",
+  "capability": "C8",
+  "inScope": true,
+  "states": [
+   {
+    "name": "draft",
+    "label": "Draft"
+   },
+   {
+    "name": "in_process",
+    "label": "In Process"
+   },
+   {
+    "name": "paid",
+    "label": "Paid"
+   },
+   {
+    "name": "canceled",
+    "label": "Canceled"
+   },
+   {
+    "name": "rejected",
+    "label": "Rejected"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "_compute_state",
+    "addon": "account",
+    "to": "draft"
+   },
+   {
+    "method": "_compute_state",
+    "addon": "account",
+    "to": "paid"
+   },
+   {
+    "method": "_generate_journal_entry",
+    "addon": "account",
+    "to": "in_process"
+   },
+   {
+    "method": "action_post",
+    "addon": "account",
+    "to": "in_process"
+   },
+   {
+    "method": "action_post",
+    "addon": "account",
+    "to": "paid"
+   },
+   {
+    "method": "action_validate",
+    "addon": "account",
+    "to": "paid"
+   },
+   {
+    "method": "action_reject",
+    "addon": "account",
+    "to": "rejected"
+   },
+   {
+    "method": "action_cancel",
+    "addon": "account",
+    "to": "canceled"
+   },
+   {
+    "method": "action_draft",
+    "addon": "account",
+    "to": "draft"
+   }
+  ],
+  "_source": "sources/odoo/addons/account/models/account_payment.py",
+  "sourceRef": "sources/odoo/addons/account/models/account_payment.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:account.invoice.report.state",
+  "uniqueId": "account.invoice.report.state",
+  "name": "account.invoice.report lifecycle",
+  "label": "account.invoice.report state",
+  "module": "account",
+  "model": "account.invoice.report",
+  "field": "state",
+  "capability": "C8",
+  "inScope": true,
+  "states": [
+   {
+    "name": "draft",
+    "label": "Draft"
+   },
+   {
+    "name": "posted",
+    "label": "Open"
+   },
+   {
+    "name": "cancel",
+    "label": "Cancelled"
+   }
+  ],
+  "transitions": [],
+  "_source": "sources/odoo/addons/account/report/account_invoice_report.py",
+  "sourceRef": "sources/odoo/addons/account/report/account_invoice_report.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:purchase.order.state",
+  "uniqueId": "purchase.order.state",
+  "name": "purchase.order lifecycle",
+  "label": "purchase.order state",
+  "module": "purchase",
+  "model": "purchase.order",
+  "field": "state",
+  "capability": "C5",
+  "inScope": true,
+  "states": [
+   {
+    "name": "draft",
+    "label": "RFQ"
+   },
+   {
+    "name": "sent",
+    "label": "RFQ Sent"
+   },
+   {
+    "name": "to approve",
+    "label": "To Approve"
+   },
+   {
+    "name": "purchase",
+    "label": "Purchase Order"
+   },
+   {
+    "name": "done",
+    "label": "Locked"
+   },
+   {
+    "name": "cancel",
+    "label": "Cancelled"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "message_post",
+    "addon": "purchase",
+    "to": "sent"
+   },
+   {
+    "method": "print_quotation",
+    "addon": "purchase",
+    "to": "sent"
+   },
+   {
+    "method": "button_approve",
+    "addon": "purchase",
+    "to": "done"
+   },
+   {
+    "method": "button_approve",
+    "addon": "purchase",
+    "to": "purchase"
+   },
+   {
+    "method": "button_draft",
+    "addon": "purchase",
+    "to": "draft"
+   },
+   {
+    "method": "button_cancel",
+    "addon": "purchase",
+    "to": "cancel"
+   },
+   {
+    "method": "button_unlock",
+    "addon": "purchase",
+    "to": "purchase"
+   },
+   {
+    "method": "button_done",
+    "addon": "purchase",
+    "to": "done"
+   },
+   {
+    "method": "_prepare_picking",
+    "addon": "purchase_stock",
+    "to": "draft"
+   }
+  ],
+  "_source": "sources/odoo/addons/purchase/models/purchase_order.py",
+  "sourceRef": "sources/odoo/addons/purchase/models/purchase_order.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:purchase.order.line.state",
+  "uniqueId": "purchase.order.line.state",
+  "name": "purchase.order.line lifecycle",
+  "label": "purchase.order.line state",
+  "module": "purchase",
+  "model": "purchase.order.line",
+  "field": "state",
+  "capability": "C5",
+  "inScope": true,
+  "states": [],
+  "transitions": [
+   {
+    "method": "_prepare_stock_move_vals",
+    "addon": "purchase_stock",
+    "to": "draft"
+   }
+  ],
+  "_source": "sources/odoo/addons/purchase/models/purchase_order_line.py",
+  "sourceRef": "sources/odoo/addons/purchase/models/purchase_order_line.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:purchase.report.state",
+  "uniqueId": "purchase.report.state",
+  "name": "purchase.report lifecycle",
+  "label": "purchase.report state",
+  "module": "purchase",
+  "model": "purchase.report",
+  "field": "state",
+  "capability": "C5",
+  "inScope": true,
+  "states": [
+   {
+    "name": "draft",
+    "label": "Draft RFQ"
+   },
+   {
+    "name": "sent",
+    "label": "RFQ Sent"
+   },
+   {
+    "name": "to approve",
+    "label": "To Approve"
+   },
+   {
+    "name": "purchase",
+    "label": "Purchase Order"
+   },
+   {
+    "name": "done",
+    "label": "Done"
+   },
+   {
+    "name": "cancel",
+    "label": "Cancelled"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "_from",
+    "addon": "purchase_stock",
+    "to": "done"
+   }
+  ],
+  "_source": "sources/odoo/addons/purchase/report/purchase_report.py",
+  "sourceRef": "sources/odoo/addons/purchase/report/purchase_report.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:stock.move.state",
+  "uniqueId": "stock.move.state",
+  "name": "stock.move lifecycle",
+  "label": "stock.move state",
+  "module": "stock",
+  "model": "stock.move",
+  "field": "state",
+  "capability": "C6",
+  "inScope": true,
+  "states": [
+   {
+    "name": "draft",
+    "label": "New"
+   },
+   {
+    "name": "waiting",
+    "label": "Waiting Another Move"
+   },
+   {
+    "name": "confirmed",
+    "label": "Waiting Availability"
+   },
+   {
+    "name": "partially_available",
+    "label": "Partially Available"
+   },
+   {
+    "name": "assigned",
+    "label": "Available"
+   },
+   {
+    "name": "done",
+    "label": "Done"
+   },
+   {
+    "name": "cancel",
+    "label": "Cancelled"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "write",
+    "addon": "stock",
+    "to": "partially_available"
+   },
+   {
+    "method": "_action_confirm",
+    "addon": "stock",
+    "to": "confirmed"
+   },
+   {
+    "method": "_action_confirm",
+    "addon": "stock",
+    "to": "waiting"
+   },
+   {
+    "method": "_action_assign",
+    "addon": "stock",
+    "to": "assigned"
+   },
+   {
+    "method": "_action_assign",
+    "addon": "stock",
+    "to": "partially_available"
+   },
+   {
+    "method": "_action_cancel",
+    "addon": "stock",
+    "to": "cancel"
+   },
+   {
+    "method": "_action_done",
+    "addon": "stock",
+    "to": "done"
+   }
+  ],
+  "_source": "sources/odoo/addons/stock/models/stock_move.py",
+  "sourceRef": "sources/odoo/addons/stock/models/stock_move.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:stock.move.line.state",
+  "uniqueId": "stock.move.line.state",
+  "name": "stock.move.line lifecycle",
+  "label": "stock.move.line state",
+  "module": "stock",
+  "model": "stock.move.line",
+  "field": "state",
+  "capability": "C6",
+  "inScope": true,
+  "states": [],
+  "transitions": [
+   {
+    "method": "_get_revert_inventory_move_values",
+    "addon": "stock",
+    "to": "confirmed"
+   }
+  ],
+  "_source": "sources/odoo/addons/stock/models/stock_move_line.py",
+  "sourceRef": "sources/odoo/addons/stock/models/stock_move_line.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:stock.package_level.state",
+  "uniqueId": "stock.package_level.state",
+  "name": "stock.package_level lifecycle",
+  "label": "stock.package_level state",
+  "module": "stock",
+  "model": "stock.package_level",
+  "field": "state",
+  "capability": "C6",
+  "inScope": true,
+  "states": [
+   {
+    "name": "draft",
+    "label": "Draft"
+   },
+   {
+    "name": "confirmed",
+    "label": "Confirmed"
+   },
+   {
+    "name": "assigned",
+    "label": "Reserved"
+   },
+   {
+    "name": "new",
+    "label": "New"
+   },
+   {
+    "name": "done",
+    "label": "Done"
+   },
+   {
+    "name": "cancel",
+    "label": "Cancelled"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "_compute_state",
+    "addon": "stock",
+    "to": "assigned"
+   },
+   {
+    "method": "_compute_state",
+    "addon": "stock",
+    "to": "cancel"
+   },
+   {
+    "method": "_compute_state",
+    "addon": "stock",
+    "to": "confirmed"
+   },
+   {
+    "method": "_compute_state",
+    "addon": "stock",
+    "to": "done"
+   },
+   {
+    "method": "_compute_state",
+    "addon": "stock",
+    "to": "draft"
+   },
+   {
+    "method": "_compute_state",
+    "addon": "stock",
+    "to": "new"
+   }
+  ],
+  "_source": "sources/odoo/addons/stock/models/stock_package_level.py",
+  "sourceRef": "sources/odoo/addons/stock/models/stock_package_level.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:stock.picking.state",
+  "uniqueId": "stock.picking.state",
+  "name": "stock.picking lifecycle",
+  "label": "stock.picking state",
+  "module": "stock",
+  "model": "stock.picking",
+  "field": "state",
+  "capability": "C6",
+  "inScope": true,
+  "states": [
+   {
+    "name": "draft",
+    "label": "Draft"
+   },
+   {
+    "name": "waiting",
+    "label": "Waiting Another Operation"
+   },
+   {
+    "name": "confirmed",
+    "label": "Waiting"
+   },
+   {
+    "name": "assigned",
+    "label": "Ready"
+   },
+   {
+    "name": "done",
+    "label": "Done"
+   },
+   {
+    "name": "cancel",
+    "label": "Cancelled"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "_compute_state",
+    "addon": "stock",
+    "to": "assigned"
+   },
+   {
+    "method": "_compute_state",
+    "addon": "stock",
+    "to": "cancel"
+   },
+   {
+    "method": "_compute_state",
+    "addon": "stock",
+    "to": "done"
+   },
+   {
+    "method": "_compute_state",
+    "addon": "stock",
+    "to": "draft"
+   },
+   {
+    "method": "action_cancel",
+    "addon": "stock",
+    "to": "cancel"
+   }
+  ],
+  "_source": "sources/odoo/addons/stock/models/stock_picking.py",
+  "sourceRef": "sources/odoo/addons/stock/models/stock_picking.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:stock.scrap.state",
+  "uniqueId": "stock.scrap.state",
+  "name": "stock.scrap lifecycle",
+  "label": "stock.scrap state",
+  "module": "stock",
+  "model": "stock.scrap",
+  "field": "state",
+  "capability": "C6",
+  "inScope": true,
+  "states": [
+   {
+    "name": "draft",
+    "label": "Draft"
+   },
+   {
+    "name": "done",
+    "label": "Done"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "_prepare_move_values",
+    "addon": "stock",
+    "to": "draft"
+   },
+   {
+    "method": "do_scrap",
+    "addon": "stock",
+    "to": "done"
+   }
+  ],
+  "_source": "sources/odoo/addons/stock/models/stock_scrap.py",
+  "sourceRef": "sources/odoo/addons/stock/models/stock_scrap.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:report.stock.quantity.state",
+  "uniqueId": "report.stock.quantity.state",
+  "name": "report.stock.quantity lifecycle",
+  "label": "report.stock.quantity state",
+  "module": "stock",
+  "model": "report.stock.quantity",
+  "field": "state",
+  "capability": "C6",
+  "inScope": true,
+  "states": [
+   {
+    "name": "forecast",
+    "label": "Forecasted Stock"
+   },
+   {
+    "name": "in",
+    "label": "Forecasted Receipts"
+   },
+   {
+    "name": "out",
+    "label": "Forecasted Deliveries"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "init",
+    "addon": "stock",
+    "to": "done"
+   }
+  ],
+  "_source": "sources/odoo/addons/stock/report/report_stock_quantity.py",
+  "sourceRef": "sources/odoo/addons/stock/report/report_stock_quantity.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:sale.order.state",
+  "uniqueId": "sale.order.state",
+  "name": "sale.order lifecycle",
+  "label": "sale.order state",
+  "module": "sale",
+  "model": "sale.order",
+  "field": "state",
+  "capability": "C4",
+  "inScope": true,
+  "states": [
+   {
+    "name": "draft",
+    "label": "Quotation"
+   },
+   {
+    "name": "sent",
+    "label": "Quotation Sent"
+   },
+   {
+    "name": "sale",
+    "label": "Sales Order"
+   },
+   {
+    "name": "cancel",
+    "label": "Cancelled"
+   }
+  ],
+  "transitions": [
+   {
+    "method": "action_draft",
+    "addon": "sale",
+    "to": "draft"
+   },
+   {
+    "method": "action_quotation_sent",
+    "addon": "sale",
+    "to": "sent"
+   },
+   {
+    "method": "_prepare_confirmation_values",
+    "addon": "sale",
+    "to": "sale"
+   },
+   {
+    "method": "_action_cancel",
+    "addon": "sale",
+    "to": "cancel"
+   },
+   {
+    "method": "message_post",
+    "addon": "sale",
+    "to": "sent"
+   }
+  ],
+  "_source": "sources/odoo/addons/sale/models/sale_order.py",
+  "sourceRef": "sources/odoo/addons/sale/models/sale_order.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:sale.order.line.state",
+  "uniqueId": "sale.order.line.state",
+  "name": "sale.order.line lifecycle",
+  "label": "sale.order.line state",
+  "module": "sale",
+  "model": "sale.order.line",
+  "field": "state",
+  "capability": "C4",
+  "inScope": true,
+  "states": [],
+  "transitions": [],
+  "_source": "sources/odoo/addons/sale/models/sale_order_line.py",
+  "sourceRef": "sources/odoo/addons/sale/models/sale_order_line.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ },
+ {
+  "type": "workflow",
+  "linkId": "odoo:workflow:sale.report.state",
+  "uniqueId": "sale.report.state",
+  "name": "sale.report lifecycle",
+  "label": "sale.report state",
+  "module": "sale",
+  "model": "sale.report",
+  "field": "state",
+  "capability": "C4",
+  "inScope": true,
+  "states": [
+   {
+    "name": "draft",
+    "label": "Quotation"
+   },
+   {
+    "name": "sent",
+    "label": "Quotation Sent"
+   },
+   {
+    "name": "sale",
+    "label": "Sales Order"
+   },
+   {
+    "name": "cancel",
+    "label": "Cancelled"
+   }
+  ],
+  "transitions": [],
+  "_source": "sources/odoo/addons/sale/report/sale_report.py",
+  "sourceRef": "sources/odoo/addons/sale/report/sale_report.py",
+  "_gaps": [
+   "transitions inferred from state writes in method bodies; guards/side effects are BRD-only"
+  ],
+  "_links": []
+ }
+]

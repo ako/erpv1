@@ -1,0 +1,4836 @@
+[
+ {
+  "file": "sources/odoo/addons/base/__manifest__.py",
+  "yield": [
+   "manifest: Base, depends -"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/uom/__manifest__.py",
+  "yield": [
+   "manifest: Units of measure, depends base"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/__manifest__.py",
+  "yield": [
+   "manifest: Products & Pricelists, depends base, mail, uom"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/__manifest__.py",
+  "yield": [
+   "manifest: Analytic Accounting, depends base, mail, uom"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/__manifest__.py",
+  "yield": [
+   "manifest: Invoicing, depends base_setup, onboarding, product, analytic, portal, digest"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/__manifest__.py",
+  "yield": [
+   "manifest: Purchase, depends account"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/__manifest__.py",
+  "yield": [
+   "manifest: Inventory, depends product, barcodes_gs1_nomenclature, digest"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/__manifest__.py",
+  "yield": [
+   "manifest: WMS Accounting, depends stock, account"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/__manifest__.py",
+  "yield": [
+   "manifest: Purchase Stock, depends stock_account, purchase"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/__manifest__.py",
+  "yield": [
+   "manifest: Sales Teams, depends base, mail"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/__manifest__.py",
+  "yield": [
+   "manifest: Sales, depends sales_team, account_payment, utm"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/__manifest__.py",
+  "yield": [
+   "manifest: Sales, depends sale, digest"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/__manifest__.py",
+  "yield": [
+   "manifest: Sales and Warehouse Management, depends sale, stock_account"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/assetsbundle.py",
+  "yield": [
+   "no registered model; module-level helpers: CompileError, AssetError, AssetNotFound, XMLAssetError, AssetsBundle, WebAsset, JavascriptAsset, XMLAsset, StylesheetAsset, PreprocessedCSS, SassStylesheetAsset, ScssStylesheetAsset, LessStylesheetAsset"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/avatar_mixin.py",
+  "yield": [
+   "1 model class(es): avatar.mixin"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/decimal_precision.py",
+  "yield": [
+   "1 model class(es): decimal.precision"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/image_mixin.py",
+  "yield": [
+   "1 model class(es): image.mixin"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_actions.py",
+  "yield": [
+   "8 model class(es): ir.actions.act_url, ir.actions.act_window, ir.actions.act_window.view, ir.actions.act_window_close, ir.actions.actions, ir.actions.client, ir.actions.server, ir.actions.todo"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_actions_report.py",
+  "yield": [
+   "1 model class(es): ir.actions.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_asset.py",
+  "yield": [
+   "1 model class(es): ir.asset"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_attachment.py",
+  "yield": [
+   "1 model class(es): ir.attachment"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_autovacuum.py",
+  "yield": [
+   "1 model class(es): ir.autovacuum"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_binary.py",
+  "yield": [
+   "1 model class(es): ir.binary"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_config_parameter.py",
+  "yield": [
+   "1 model class(es): ir.config_parameter"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_cron.py",
+  "yield": [
+   "3 model class(es): ir.cron, ir.cron.progress, ir.cron.trigger"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_default.py",
+  "yield": [
+   "1 model class(es): ir.default"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_demo.py",
+  "yield": [
+   "1 model class(es): ir.demo"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_demo_failure.py",
+  "yield": [
+   "2 model class(es): ir.demo_failure, ir.demo_failure.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_embedded_actions.py",
+  "yield": [
+   "1 model class(es): ir.embedded.actions"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_exports.py",
+  "yield": [
+   "2 model class(es): ir.exports, ir.exports.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_fields.py",
+  "yield": [
+   "1 model class(es): ir.fields.converter"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_filters.py",
+  "yield": [
+   "1 model class(es): ir.filters"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_http.py",
+  "yield": [
+   "1 model class(es): ir.http"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_logging.py",
+  "yield": [
+   "1 model class(es): ir.logging"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_mail_server.py",
+  "yield": [
+   "1 model class(es): ir.mail_server"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_model.py",
+  "yield": [
+   "11 model class(es): _unknown, base, ir.model, ir.model.access, ir.model.constraint, ir.model.data, ir.model.fields, ir.model.fields.selection, ir.model.inherit, ir.model.relation, wizard.ir.model.menu.create"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_module.py",
+  "yield": [
+   "4 model class(es): ir.module.category, ir.module.module, ir.module.module.dependency, ir.module.module.exclusion"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_profile.py",
+  "yield": [
+   "2 model class(es): base.enable.profiling.wizard, ir.profile"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_qweb.py",
+  "yield": [
+   "1 model class(es): ir.qweb"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_qweb_fields.py",
+  "yield": [
+   "21 model class(es): ir.qweb.field, ir.qweb.field.barcode, ir.qweb.field.contact, ir.qweb.field.date, ir.qweb.field.datetime, ir.qweb.field.duration, ir.qweb.field.float, ir.qweb.field.float_time, ir.qweb.field.html, ir.qweb.field.image, ir.qweb.field.image_url, ir.qweb.field.integer, ir.qweb.field.many2many, ir.qweb.fi"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_rule.py",
+  "yield": [
+   "1 model class(es): ir.rule"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_sequence.py",
+  "yield": [
+   "2 model class(es): ir.sequence, ir.sequence.date_range"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_ui_menu.py",
+  "yield": [
+   "1 model class(es): ir.ui.menu"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/ir_ui_view.py",
+  "yield": [
+   "4 model class(es): base, ir.ui.view, ir.ui.view.custom, reset.view.arch.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/report_layout.py",
+  "yield": [
+   "1 model class(es): report.layout"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/report_paperformat.py",
+  "yield": [
+   "1 model class(es): report.paperformat"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/res_bank.py",
+  "yield": [
+   "2 model class(es): res.bank, res.partner.bank"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/res_company.py",
+  "yield": [
+   "1 model class(es): res.company"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/res_config.py",
+  "yield": [
+   "2 model class(es): res.config, res.config.settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/res_country.py",
+  "yield": [
+   "3 model class(es): res.country, res.country.group, res.country.state"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/res_currency.py",
+  "yield": [
+   "2 model class(es): res.currency, res.currency.rate"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/res_device.py",
+  "yield": [
+   "2 model class(es): res.device, res.device.log"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/res_lang.py",
+  "yield": [
+   "1 model class(es): res.lang"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/res_partner.py",
+  "yield": [
+   "6 model class(es): format.address.mixin, format.vat.label.mixin, res.partner, res.partner.category, res.partner.industry, res.partner.title"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/res_users.py",
+  "yield": [
+   "16 model class(es): change.password.own, change.password.user, change.password.wizard, ir.module.category, res.groups, res.users, res.users.apikeys, res.users.apikeys.description, res.users.apikeys.show, res.users.identitycheck, res.users.log"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/res_users_deletion.py",
+  "yield": [
+   "1 model class(es): res.users.deletion"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/res_users_settings.py",
+  "yield": [
+   "1 model class(es): res.users.settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/report/report_base_report_irmodulereference.py",
+  "yield": [
+   "1 model class(es): report.base.report_irmodulereference"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_export_language.py",
+  "yield": [
+   "1 model class(es): base.language.export"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_import_language.py",
+  "yield": [
+   "1 model class(es): base.language.import"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_language_install.py",
+  "yield": [
+   "1 model class(es): base.language.install"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_module_uninstall.py",
+  "yield": [
+   "1 model class(es): base.module.uninstall"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_module_update.py",
+  "yield": [
+   "1 model class(es): base.module.update"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_module_upgrade.py",
+  "yield": [
+   "1 model class(es): base.module.upgrade"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_partner_merge.py",
+  "yield": [
+   "2 model class(es): base.partner.merge.automatic.wizard, base.partner.merge.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/uom/models/uom_uom.py",
+  "yield": [
+   "2 model class(es): uom.category, uom.uom"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/decimal_precision.py",
+  "yield": [
+   "1 model class(es): decimal.precision"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/ir_attachment.py",
+  "yield": [
+   "1 model class(es): ir.attachment"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_attribute.py",
+  "yield": [
+   "1 model class(es): product.attribute"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_attribute_custom_value.py",
+  "yield": [
+   "1 model class(es): product.attribute.custom.value"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_attribute_value.py",
+  "yield": [
+   "1 model class(es): product.attribute.value"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_catalog_mixin.py",
+  "yield": [
+   "1 model class(es): product.catalog.mixin"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_category.py",
+  "yield": [
+   "1 model class(es): product.category"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_combo.py",
+  "yield": [
+   "1 model class(es): product.combo"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_combo_item.py",
+  "yield": [
+   "1 model class(es): product.combo.item"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_document.py",
+  "yield": [
+   "1 model class(es): product.document"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_packaging.py",
+  "yield": [
+   "1 model class(es): product.packaging"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_pricelist.py",
+  "yield": [
+   "1 model class(es): product.pricelist"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_pricelist_item.py",
+  "yield": [
+   "1 model class(es): product.pricelist.item"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_product.py",
+  "yield": [
+   "1 model class(es): product.product"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_supplierinfo.py",
+  "yield": [
+   "1 model class(es): product.supplierinfo"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_tag.py",
+  "yield": [
+   "1 model class(es): product.tag"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_template.py",
+  "yield": [
+   "1 model class(es): product.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_template_attribute_exclusion.py",
+  "yield": [
+   "1 model class(es): product.template.attribute.exclusion"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_template_attribute_line.py",
+  "yield": [
+   "1 model class(es): product.template.attribute.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/product_template_attribute_value.py",
+  "yield": [
+   "1 model class(es): product.template.attribute.value"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/res_company.py",
+  "yield": [
+   "1 model class(es): res.company"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/res_config_settings.py",
+  "yield": [
+   "1 model class(es): res.config.settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/res_country_group.py",
+  "yield": [
+   "1 model class(es): res.country.group"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/res_currency.py",
+  "yield": [
+   "1 model class(es): res.currency"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/res_partner.py",
+  "yield": [
+   "1 model class(es): res.partner"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/uom_uom.py",
+  "yield": [
+   "1 model class(es): uom.uom"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/report/product_label_report.py",
+  "yield": [
+   "5 model class(es): report.product.report_producttemplatelabel2x7, report.product.report_producttemplatelabel4x12, report.product.report_producttemplatelabel4x12noprice, report.product.report_producttemplatelabel4x7, report.product.report_producttemplatelabel_dymo"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/report/product_pricelist_report.py",
+  "yield": [
+   "1 model class(es): report.product.report_pricelist"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/wizard/product_label_layout.py",
+  "yield": [
+   "1 model class(es): product.label.layout"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/wizard/update_product_attribute_value.py",
+  "yield": [
+   "1 model class(es): update.product.attribute.value"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/models/analytic_account.py",
+  "yield": [
+   "1 model class(es): account.analytic.account"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/models/analytic_distribution_model.py",
+  "yield": [
+   "1 model class(es): account.analytic.distribution.model"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/models/analytic_line.py",
+  "yield": [
+   "2 model class(es): account.analytic.line, analytic.plan.fields.mixin"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/models/analytic_mixin.py",
+  "yield": [
+   "1 model class(es): analytic.mixin"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/models/analytic_plan.py",
+  "yield": [
+   "2 model class(es): account.analytic.applicability, account.analytic.plan"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/models/ir_config_parameter.py",
+  "yield": [
+   "1 model class(es): ir.config_parameter"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/models/res_config_settings.py",
+  "yield": [
+   "1 model class(es): res.config.settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_account.py",
+  "yield": [
+   "2 model class(es): account.account, account.group"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_account_tag.py",
+  "yield": [
+   "1 model class(es): account.account.tag"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_analytic_account.py",
+  "yield": [
+   "1 model class(es): account.analytic.account"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_analytic_distribution_model.py",
+  "yield": [
+   "1 model class(es): account.analytic.distribution.model"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_analytic_line.py",
+  "yield": [
+   "1 model class(es): account.analytic.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_analytic_plan.py",
+  "yield": [
+   "1 model class(es): account.analytic.applicability"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_bank_statement.py",
+  "yield": [
+   "1 model class(es): account.bank.statement"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_bank_statement_line.py",
+  "yield": [
+   "2 model class(es): account.bank.statement.line, account.move"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_cash_rounding.py",
+  "yield": [
+   "1 model class(es): account.cash.rounding"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_code_mapping.py",
+  "yield": [
+   "1 model class(es): account.code.mapping"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_full_reconcile.py",
+  "yield": [
+   "1 model class(es): account.full.reconcile"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_incoterms.py",
+  "yield": [
+   "1 model class(es): account.incoterms"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_journal.py",
+  "yield": [
+   "2 model class(es): account.journal, account.journal.group"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_journal_dashboard.py",
+  "yield": [
+   "1 model class(es): account.journal"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_lock_exception.py",
+  "yield": [
+   "1 model class(es): account.lock_exception"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_move.py",
+  "yield": [
+   "1 model class(es): account.move"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_move_line.py",
+  "yield": [
+   "1 model class(es): account.move.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_move_line_tax_details.py",
+  "yield": [
+   "1 model class(es): account.move.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_move_send.py",
+  "yield": [
+   "1 model class(es): account.move.send"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_partial_reconcile.py",
+  "yield": [
+   "1 model class(es): account.partial.reconcile"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_payment.py",
+  "yield": [
+   "2 model class(es): account.move, account.payment"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_payment_method.py",
+  "yield": [
+   "2 model class(es): account.payment.method, account.payment.method.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_payment_term.py",
+  "yield": [
+   "2 model class(es): account.payment.term, account.payment.term.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_reconcile_model.py",
+  "yield": [
+   "3 model class(es): account.reconcile.model, account.reconcile.model.line, account.reconcile.model.partner.mapping"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_report.py",
+  "yield": [
+   "5 model class(es): account.report, account.report.column, account.report.expression, account.report.external.value, account.report.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_root.py",
+  "yield": [
+   "1 model class(es): account.root"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/account_tax.py",
+  "yield": [
+   "3 model class(es): account.tax, account.tax.group, account.tax.repartition.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/chart_template.py",
+  "yield": [
+   "1 model class(es): account.chart.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/company.py",
+  "yield": [
+   "1 model class(es): res.company"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/decimal_precision.py",
+  "yield": [
+   "1 model class(es): decimal.precision"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/digest.py",
+  "yield": [
+   "1 model class(es): digest.digest"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/exceptions.py",
+  "yield": [
+   "no registered model; module-level helpers: TaxClosingNonPostedDependingMovesError"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/ir_actions_report.py",
+  "yield": [
+   "1 model class(es): ir.actions.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/ir_attachment.py",
+  "yield": [
+   "1 model class(es): ir.attachment"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/ir_module.py",
+  "yield": [
+   "1 model class(es): ir.module.module"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/ir_ui_menu.py",
+  "yield": [
+   "1 model class(es): ir.ui.menu"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/kpi_provider.py",
+  "yield": [
+   "1 model class(es): kpi.provider"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/mail_message.py",
+  "yield": [
+   "1 model class(es): mail.message"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/mail_template.py",
+  "yield": [
+   "1 model class(es): mail.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/mail_tracking_value.py",
+  "yield": [
+   "1 model class(es): mail.tracking.value"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/merge_partner_automatic.py",
+  "yield": [
+   "1 model class(es): base.partner.merge.automatic.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/onboarding_onboarding.py",
+  "yield": [
+   "1 model class(es): onboarding.onboarding"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/onboarding_onboarding_step.py",
+  "yield": [
+   "1 model class(es): onboarding.onboarding.step"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/partner.py",
+  "yield": [
+   "4 model class(es): account.fiscal.position, account.fiscal.position.account, account.fiscal.position.tax, res.partner"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/product.py",
+  "yield": [
+   "3 model class(es): product.category, product.product, product.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/res_config_settings.py",
+  "yield": [
+   "1 model class(es): res.config.settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/res_currency.py",
+  "yield": [
+   "1 model class(es): res.currency"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/res_partner_bank.py",
+  "yield": [
+   "1 model class(es): res.partner.bank"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/res_users.py",
+  "yield": [
+   "1 model class(es): res.groups"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/sequence_mixin.py",
+  "yield": [
+   "1 model class(es): sequence.mixin"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/template_generic_coa.py",
+  "yield": [
+   "1 model class(es): account.chart.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/uom_uom.py",
+  "yield": [
+   "1 model class(es): uom.uom"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/report/account_hash_integrity_templates.py",
+  "yield": [
+   "1 model class(es): report.account.report_hash_integrity"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/report/account_invoice_report.py",
+  "yield": [
+   "3 model class(es): account.invoice.report, report.account.report_invoice, report.account.report_invoice_with_payments"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/tools/dict_to_xml.py",
+  "yield": [
+   "no registered model; module-level helpers: dict_to_xml"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/tools/structured_reference.py",
+  "yield": [
+   "no registered model; module-level helpers: sanitize_structured_reference, format_structured_reference_iso, is_valid_structured_reference_iso, is_valid_structured_reference_be, is_valid_structured_reference_dk, is_valid_structured_reference_fi, is_valid_structured_reference_no_se, is_valid_structured_reference_nl, is_valid_structured_reference_si, is_valid_structured_reference, is_valid_structured_reference_for_country"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_automatic_entry_wizard.py",
+  "yield": [
+   "1 model class(es): account.automatic.entry.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_autopost_bills_wizard.py",
+  "yield": [
+   "1 model class(es): account.autopost.bills.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_merge_wizard.py",
+  "yield": [
+   "2 model class(es): account.merge.wizard, account.merge.wizard.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_move_reversal.py",
+  "yield": [
+   "1 model class(es): account.move.reversal"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_move_send_batch_wizard.py",
+  "yield": [
+   "1 model class(es): account.move.send.batch.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_move_send_wizard.py",
+  "yield": [
+   "1 model class(es): account.move.send.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_payment_register.py",
+  "yield": [
+   "1 model class(es): account.payment.register"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_resequence.py",
+  "yield": [
+   "1 model class(es): account.resequence.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_secure_entries_wizard.py",
+  "yield": [
+   "1 model class(es): account.secure.entries.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_validate_account_move.py",
+  "yield": [
+   "1 model class(es): validate.account.move"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/accrued_orders.py",
+  "yield": [
+   "1 model class(es): account.accrued.orders.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/base_document_layout.py",
+  "yield": [
+   "1 model class(es): base.document.layout"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/base_partner_merge.py",
+  "yield": [
+   "1 model class(es): base.partner.merge.automatic.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/setup_wizards.py",
+  "yield": [
+   "2 model class(es): account.financial.year.op, account.setup.bank.manual.config"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/models/account_invoice.py",
+  "yield": [
+   "2 model class(es): account.move, account.move.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/models/account_tax.py",
+  "yield": [
+   "1 model class(es): account.tax"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/models/analytic_account.py",
+  "yield": [
+   "1 model class(es): account.analytic.account"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/models/analytic_applicability.py",
+  "yield": [
+   "1 model class(es): account.analytic.applicability"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/models/ir_actions_report.py",
+  "yield": [
+   "1 model class(es): ir.actions.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/models/product.py",
+  "yield": [
+   "4 model class(es): product.packaging, product.product, product.supplierinfo, product.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/models/purchase_bill_line_match.py",
+  "yield": [
+   "1 model class(es): purchase.bill.line.match"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/models/purchase_order.py",
+  "yield": [
+   "1 model class(es): purchase.order"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/models/purchase_order_line.py",
+  "yield": [
+   "1 model class(es): purchase.order.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/models/res_company.py",
+  "yield": [
+   "1 model class(es): res.company"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/models/res_config_settings.py",
+  "yield": [
+   "1 model class(es): res.config.settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/models/res_partner.py",
+  "yield": [
+   "1 model class(es): res.partner"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/report/purchase_bill.py",
+  "yield": [
+   "1 model class(es): purchase.bill.union"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/report/purchase_report.py",
+  "yield": [
+   "1 model class(es): purchase.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/wizard/bill_to_po_wizard.py",
+  "yield": [
+   "1 model class(es): bill.to.po.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/barcode.py",
+  "yield": [
+   "1 model class(es): barcode.rule"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/ir_actions_report.py",
+  "yield": [
+   "1 model class(es): ir.actions.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/product.py",
+  "yield": [
+   "5 model class(es): product.category, product.packaging, product.product, product.template, uom.uom"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/product_strategy.py",
+  "yield": [
+   "2 model class(es): product.removal, stock.putaway.rule"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/res_company.py",
+  "yield": [
+   "1 model class(es): res.company"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/res_config_settings.py",
+  "yield": [
+   "1 model class(es): res.config.settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/res_partner.py",
+  "yield": [
+   "1 model class(es): res.partner"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/res_users.py",
+  "yield": [
+   "1 model class(es): res.users"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_location.py",
+  "yield": [
+   "2 model class(es): stock.location, stock.route"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_lot.py",
+  "yield": [
+   "1 model class(es): stock.lot"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_move.py",
+  "yield": [
+   "1 model class(es): stock.move"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_move_line.py",
+  "yield": [
+   "1 model class(es): stock.move.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_orderpoint.py",
+  "yield": [
+   "1 model class(es): stock.warehouse.orderpoint"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_package_level.py",
+  "yield": [
+   "1 model class(es): stock.package_level"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_package_type.py",
+  "yield": [
+   "1 model class(es): stock.package.type"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_picking.py",
+  "yield": [
+   "2 model class(es): stock.picking, stock.picking.type"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_quant.py",
+  "yield": [
+   "2 model class(es): stock.quant, stock.quant.package"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_replenish_mixin.py",
+  "yield": [
+   "1 model class(es): stock.replenish.mixin"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_rule.py",
+  "yield": [
+   "2 model class(es): procurement.group, stock.rule"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_scrap.py",
+  "yield": [
+   "2 model class(es): stock.scrap, stock.scrap.reason.tag"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_storage_category.py",
+  "yield": [
+   "2 model class(es): stock.storage.category, stock.storage.category.capacity"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/stock_warehouse.py",
+  "yield": [
+   "1 model class(es): stock.warehouse"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/product_label_report.py",
+  "yield": [
+   "2 model class(es): report.stock.label_lot_template_view, report.stock.label_product_product_view"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/report_stock_quantity.py",
+  "yield": [
+   "1 model class(es): report.stock.quantity"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/report_stock_reception.py",
+  "yield": [
+   "1 model class(es): report.stock.report_reception"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/report_stock_rule.py",
+  "yield": [
+   "1 model class(es): report.stock.report_stock_rule"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/stock_forecasted.py",
+  "yield": [
+   "2 model class(es): stock.forecasted_product_product, stock.forecasted_product_template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/stock_lot_customer.py",
+  "yield": [
+   "1 model class(es): stock.lot.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/stock_traceability.py",
+  "yield": [
+   "1 model class(es): stock.traceability.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/utils/overview_graph.py",
+  "yield": [
+   "no registered model; module-level helpers: (none)"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/product_label_layout.py",
+  "yield": [
+   "1 model class(es): product.label.layout"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/product_replenish.py",
+  "yield": [
+   "1 model class(es): product.replenish"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_backorder_confirmation.py",
+  "yield": [
+   "2 model class(es): stock.backorder.confirmation, stock.backorder.confirmation.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_change_product_qty.py",
+  "yield": [
+   "1 model class(es): stock.change.product.qty"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_inventory_adjustment_name.py",
+  "yield": [
+   "1 model class(es): stock.inventory.adjustment.name"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_inventory_conflict.py",
+  "yield": [
+   "1 model class(es): stock.inventory.conflict"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_inventory_warning.py",
+  "yield": [
+   "1 model class(es): stock.inventory.warning"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_label_type.py",
+  "yield": [
+   "1 model class(es): picking.label.type"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_lot_label_layout.py",
+  "yield": [
+   "1 model class(es): lot.label.layout"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_orderpoint_snooze.py",
+  "yield": [
+   "1 model class(es): stock.orderpoint.snooze"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_package_destination.py",
+  "yield": [
+   "1 model class(es): stock.package.destination"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_picking_return.py",
+  "yield": [
+   "2 model class(es): stock.return.picking, stock.return.picking.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_quant_relocate.py",
+  "yield": [
+   "1 model class(es): stock.quant.relocate"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_quantity_history.py",
+  "yield": [
+   "1 model class(es): stock.quantity.history"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_replenishment_info.py",
+  "yield": [
+   "2 model class(es): stock.replenishment.info, stock.replenishment.option"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_request_count.py",
+  "yield": [
+   "1 model class(es): stock.request.count"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_rules_report.py",
+  "yield": [
+   "1 model class(es): stock.rules.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_track_confirmation.py",
+  "yield": [
+   "2 model class(es): stock.track.confirmation, stock.track.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_warn_insufficient_qty.py",
+  "yield": [
+   "2 model class(es): stock.warn.insufficient.qty, stock.warn.insufficient.qty.scrap"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/account_chart_template.py",
+  "yield": [
+   "1 model class(es): account.chart.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/account_move.py",
+  "yield": [
+   "2 model class(es): account.move, account.move.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/analytic_account.py",
+  "yield": [
+   "2 model class(es): account.analytic.account, account.analytic.plan"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/product.py",
+  "yield": [
+   "3 model class(es): product.category, product.product, product.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/res_company.py",
+  "yield": [
+   "1 model class(es): res.company"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/res_config_settings.py",
+  "yield": [
+   "1 model class(es): res.config.settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/stock_location.py",
+  "yield": [
+   "1 model class(es): stock.location"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/stock_lot.py",
+  "yield": [
+   "1 model class(es): stock.lot"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/stock_move.py",
+  "yield": [
+   "1 model class(es): stock.move"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/stock_move_line.py",
+  "yield": [
+   "1 model class(es): stock.move.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/stock_picking.py",
+  "yield": [
+   "1 model class(es): stock.picking"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/stock_quant.py",
+  "yield": [
+   "1 model class(es): stock.quant"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/stock_valuation_layer.py",
+  "yield": [
+   "1 model class(es): stock.valuation.layer"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/template_generic_coa.py",
+  "yield": [
+   "1 model class(es): account.chart.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/report/stock_forecasted.py",
+  "yield": [
+   "1 model class(es): stock.forecasted_product_product"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/wizard/stock_picking_return.py",
+  "yield": [
+   "1 model class(es): stock.return.picking.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/wizard/stock_quantity_history.py",
+  "yield": [
+   "1 model class(es): stock.quantity.history"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/wizard/stock_request_count.py",
+  "yield": [
+   "1 model class(es): stock.request.count"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/wizard/stock_valuation_layer_revaluation.py",
+  "yield": [
+   "1 model class(es): stock.valuation.layer.revaluation"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/account_invoice.py",
+  "yield": [
+   "1 model class(es): account.move"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/account_move_line.py",
+  "yield": [
+   "1 model class(es): account.move.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/product.py",
+  "yield": [
+   "4 model class(es): product.category, product.product, product.supplierinfo, product.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/purchase_order.py",
+  "yield": [
+   "1 model class(es): purchase.order"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/purchase_order_line.py",
+  "yield": [
+   "1 model class(es): purchase.order.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/res_company.py",
+  "yield": [
+   "1 model class(es): res.company"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/res_config_settings.py",
+  "yield": [
+   "1 model class(es): res.config.settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/res_partner.py",
+  "yield": [
+   "1 model class(es): res.partner"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/stock.py",
+  "yield": [
+   "6 model class(es): procurement.group, stock.lot, stock.picking, stock.return.picking, stock.warehouse, stock.warehouse.orderpoint"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/stock_move.py",
+  "yield": [
+   "1 model class(es): stock.move"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/stock_replenish_mixin.py",
+  "yield": [
+   "1 model class(es): stock.replenish.mixin"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/stock_rule.py",
+  "yield": [
+   "1 model class(es): stock.rule"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/stock_valuation_layer.py",
+  "yield": [
+   "1 model class(es): stock.valuation.layer"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/report/purchase_report.py",
+  "yield": [
+   "1 model class(es): purchase.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/report/report_stock_rule.py",
+  "yield": [
+   "1 model class(es): report.stock.report_stock_rule"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/report/stock_forecasted.py",
+  "yield": [
+   "1 model class(es): stock.forecasted_product_product"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/report/vendor_delay_report.py",
+  "yield": [
+   "1 model class(es): vendor.delay.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/wizard/product_replenish.py",
+  "yield": [
+   "1 model class(es): product.replenish"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/wizard/stock_replenishment_info.py",
+  "yield": [
+   "2 model class(es): stock.replenishment.info, stock.replenishment.option"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/models/crm_tag.py",
+  "yield": [
+   "1 model class(es): crm.tag"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/models/crm_team.py",
+  "yield": [
+   "1 model class(es): crm.team"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/models/crm_team_member.py",
+  "yield": [
+   "1 model class(es): crm.team.member"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/models/res_users.py",
+  "yield": [
+   "1 model class(es): res.users"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/account_move.py",
+  "yield": [
+   "1 model class(es): account.move"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/account_move_line.py",
+  "yield": [
+   "1 model class(es): account.move.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/analytic.py",
+  "yield": [
+   "2 model class(es): account.analytic.applicability, account.analytic.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/chart_template.py",
+  "yield": [
+   "1 model class(es): account.chart.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/crm_team.py",
+  "yield": [
+   "1 model class(es): crm.team"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/ir_config_parameter.py",
+  "yield": [
+   "1 model class(es): ir.config_parameter"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/mail_scheduled_message.py",
+  "yield": [
+   "1 model class(es): mail.scheduled.message"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/payment_provider.py",
+  "yield": [
+   "1 model class(es): payment.provider"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/payment_transaction.py",
+  "yield": [
+   "1 model class(es): payment.transaction"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/product_category.py",
+  "yield": [
+   "1 model class(es): product.category"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/product_document.py",
+  "yield": [
+   "1 model class(es): product.document"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/product_product.py",
+  "yield": [
+   "3 model class(es): product.attribute.custom.value, product.packaging, product.product"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/product_template.py",
+  "yield": [
+   "1 model class(es): product.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/res_company.py",
+  "yield": [
+   "1 model class(es): res.company"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/res_partner.py",
+  "yield": [
+   "1 model class(es): res.partner"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/sale_order.py",
+  "yield": [
+   "1 model class(es): sale.order"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/sale_order_line.py",
+  "yield": [
+   "1 model class(es): sale.order.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/utm_campaign.py",
+  "yield": [
+   "1 model class(es): utm.campaign"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/report/account_invoice_report.py",
+  "yield": [
+   "1 model class(es): account.invoice.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/report/sale_report.py",
+  "yield": [
+   "1 model class(es): sale.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/base_document_layout.py",
+  "yield": [
+   "1 model class(es): base.document.layout"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/mail_compose_message.py",
+  "yield": [
+   "1 model class(es): mail.compose.message"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/mass_cancel_orders.py",
+  "yield": [
+   "1 model class(es): sale.mass.cancel.orders"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/payment_link_wizard.py",
+  "yield": [
+   "1 model class(es): payment.link.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/payment_provider_onboarding_wizard.py",
+  "yield": [
+   "1 model class(es): sale.payment.provider.onboarding.wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/res_config_settings.py",
+  "yield": [
+   "1 model class(es): res.config.settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/sale_make_invoice_advance.py",
+  "yield": [
+   "1 model class(es): sale.advance.payment.inv"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/sale_order_cancel.py",
+  "yield": [
+   "1 model class(es): sale.order.cancel"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/sale_order_discount.py",
+  "yield": [
+   "1 model class(es): sale.order.discount"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/models/digest.py",
+  "yield": [
+   "1 model class(es): digest.digest"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/models/res_company.py",
+  "yield": [
+   "1 model class(es): res.company"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/models/res_config_settings.py",
+  "yield": [
+   "1 model class(es): res.config.settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/models/sale_order.py",
+  "yield": [
+   "1 model class(es): sale.order"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/models/sale_order_line.py",
+  "yield": [
+   "1 model class(es): sale.order.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/models/sale_order_option.py",
+  "yield": [
+   "1 model class(es): sale.order.option"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/models/sale_order_template.py",
+  "yield": [
+   "1 model class(es): sale.order.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/models/sale_order_template_line.py",
+  "yield": [
+   "1 model class(es): sale.order.template.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/models/sale_order_template_option.py",
+  "yield": [
+   "1 model class(es): sale.order.template.option"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/models/account_move.py",
+  "yield": [
+   "2 model class(es): account.move, account.move.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/models/product_template.py",
+  "yield": [
+   "1 model class(es): product.template"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/models/res_company.py",
+  "yield": [
+   "1 model class(es): res.company"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/models/res_config_settings.py",
+  "yield": [
+   "1 model class(es): res.config.settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/models/res_users.py",
+  "yield": [
+   "1 model class(es): res.users"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/models/sale_order.py",
+  "yield": [
+   "1 model class(es): sale.order"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/models/sale_order_line.py",
+  "yield": [
+   "1 model class(es): sale.order.line"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/models/stock.py",
+  "yield": [
+   "7 model class(es): procurement.group, stock.lot, stock.move, stock.move.line, stock.picking, stock.route, stock.rule"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/models/stock_valuation_layer.py",
+  "yield": [
+   "1 model class(es): stock.valuation.layer"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/models/stock_warehouse.py",
+  "yield": [
+   "1 model class(es): stock.warehouse"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/report/report_stock_rule.py",
+  "yield": [
+   "1 model class(es): report.stock.report_stock_rule"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/report/sale_report.py",
+  "yield": [
+   "1 model class(es): sale.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/report/stock_forecasted.py",
+  "yield": [
+   "1 model class(es): stock.forecasted_product_product"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/wizard/sale_order_cancel.py",
+  "yield": [
+   "1 model class(es): sale.order.cancel"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/wizard/stock_return_picking.py",
+  "yield": [
+   "1 model class(es): stock.return.picking"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/wizard/stock_rules_report.py",
+  "yield": [
+   "1 model class(es): stock.rules.report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/ir_config_parameter_data.xml",
+  "yield": [
+   "records: ir.config_parameter x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/ir_cron_data.xml",
+  "yield": [
+   "records: ir.cron x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/ir_demo_data.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/ir_demo_failure_data.xml",
+  "yield": [
+   "records: ir.actions.server x1, ir.actions.todo x1, ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/ir_module_category_data.xml",
+  "yield": [
+   "records: ir.module.category x26, res.groups x9"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/ir_module_module.xml",
+  "yield": [
+   "records: ir.module.module x21"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/report_paperformat_data.xml",
+  "yield": [
+   "records: report.paperformat x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_bank.xml",
+  "yield": [
+   "records: res.bank x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_bank_demo.xml",
+  "yield": [
+   "records: res.bank x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_company_data.xml",
+  "yield": [
+   "records: res.company x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_country_data.xml",
+  "yield": [
+   "records: res.country x250, res.country.group x6"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_currency_data.xml",
+  "yield": [
+   "records: res.currency x170"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_currency_demo.xml",
+  "yield": [
+   "records: res.currency x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_currency_rate_demo.xml",
+  "yield": [
+   "records: res.currency.rate x163"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_lang_data.xml",
+  "yield": [
+   "records: res.lang x6"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_partner_bank_demo.xml",
+  "yield": [
+   "records: res.partner.bank x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_partner_data.xml",
+  "yield": [
+   "records: res.partner x4, res.partner.industry x21, res.partner.title x5"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_partner_demo.xml",
+  "yield": [
+   "records: res.partner x33, res.partner.category x7"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_partner_image_demo.xml",
+  "yield": [
+   "records: res.partner x25"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_users_data.xml",
+  "yield": [
+   "records: res.users x4, res.users.settings x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res_users_demo.xml",
+  "yield": [
+   "records: res.groups x1, res.partner x5, res.users x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/report/corporate_defaults.xml",
+  "yield": [
+   "records: (none)"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/report/corporate_odt_header.xml",
+  "yield": [
+   "records: (none)"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/report/corporate_sxw_header.xml",
+  "yield": [
+   "records: (none)"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/report/custom_report.xml",
+  "yield": [
+   "records: (none)"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/report/custom_view.xml",
+  "yield": [
+   "records: (none)"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/report/ir_model_report.xml",
+  "yield": [
+   "records: ir.actions.report x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/report/ir_model_templates.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/report/ir_module_report_templates.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/report/ir_module_reports.xml",
+  "yield": [
+   "records: ir.actions.report x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/security/base_groups.xml",
+  "yield": [
+   "records: ir.config_parameter x1, res.groups x12, res.users x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/security/base_security.xml",
+  "yield": [
+   "records: ir.rule x31"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/base_menus.xml",
+  "yield": [
+   "records: ir.actions.act_url x1, ir.actions.client x1, ir.actions.todo x1, ir.ui.menu x1, menuitem x16"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/decimal_precision_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x2, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_actions_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x7, ir.actions.act_window.view x2, ir.actions.server x1, ir.ui.view x19, menuitem x8"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_asset_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_attachment_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_config_parameter_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_cron_trigger_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_cron_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x4, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_default_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_filters_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_logging_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_mail_server_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_model_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x8, ir.ui.view x22, menuitem x8"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_module_views.xml",
+  "yield": [
+   "records: ir.actions.act_url x2, ir.actions.act_window x1, ir.ui.view x5, menuitem x5"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_profile_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x4, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_qweb_widget_templates.xml",
+  "yield": [
+   "records: qweb.template x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_rule_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_sequence_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_ui_menu_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/ir_ui_view_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x3, ir.ui.view x7, menuitem x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/report_paperformat_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x2, menuitem x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/res_bank_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x6"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/res_company_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/res_config_settings_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/res_config_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/res_country_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x3, ir.ui.view x8"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/res_currency_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x7"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/res_device_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/res_lang_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/res_partner_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x6, ir.actions.act_window.view x9, ir.ui.view x15"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/res_users_identitycheck_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/views/res_users_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x6, ir.actions.act_window.view x3, ir.ui.view x15, menuitem x2, res.groups x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_export_language_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_import_language_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_language_install_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_module_uninstall_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_module_update_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_module_upgrade_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x2, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/base_partner_merge_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/security/ir.model.access.csv",
+  "yield": [
+   "ACL rows: 143"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/uom/data/uom_data.xml",
+  "yield": [
+   "records: uom.category x7, uom.uom x28"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/uom/security/uom_security.xml",
+  "yield": [
+   "records: res.groups x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/uom/views/uom_uom_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x6"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/uom/security/ir.model.access.csv",
+  "yield": [
+   "ACL rows: 4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/data/product_attribute_demo.xml",
+  "yield": [
+   "records: product.attribute x6, product.attribute.value x16"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/data/product_category_demo.xml",
+  "yield": [
+   "records: product.category x8"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/data/product_data.xml",
+  "yield": [
+   "records: decimal.precision x5, product.category x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/data/product_demo.xml",
+  "yield": [
+   "records: product.combo x3, product.product x35, product.template x4, product.template.attribute.exclusion x3, product.template.attribute.line x5, product.template.attribute.value x4, res.groups x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/data/product_document_demo.xml",
+  "yield": [
+   "records: product.document x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/data/product_supplierinfo_demo.xml",
+  "yield": [
+   "records: product.supplierinfo x26"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/report/product_packaging.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/report/product_pricelist_report_templates.xml",
+  "yield": [
+   "records: qweb.template x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/report/product_product_templates.xml",
+  "yield": [
+   "records: qweb.template x7"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/report/product_reports.xml",
+  "yield": [
+   "records: ir.actions.report x7, report.paperformat x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/report/product_template_templates.xml",
+  "yield": [
+   "records: qweb.template x5"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/security/product_security.xml",
+  "yield": [
+   "records: ir.rule x7, res.groups x5, res.users x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/product_attribute_value_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/product_attribute_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x7"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/product_category_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/product_combo_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/product_document_views.xml",
+  "yield": [
+   "records: ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/product_packaging_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x5"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/product_pricelist_item_views.xml",
+  "yield": [
+   "records: ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/product_pricelist_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/product_supplierinfo_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/product_tag_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/product_template_attribute_line_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/product_template_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.actions.server x1, ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/product_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x4, ir.actions.server x1, ir.ui.view x13"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/res_config_settings_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/res_country_group_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/views/res_partner_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/wizard/product_label_layout_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/wizard/update_product_attribute_value_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/security/ir.model.access.csv",
+  "yield": [
+   "ACL rows: 36"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/data/analytic_account_demo.xml",
+  "yield": [
+   "records: account.analytic.account x23, account.analytic.plan x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/data/analytic_data.xml",
+  "yield": [
+   "records: account.analytic.plan x1, decimal.precision x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/security/analytic_security.xml",
+  "yield": [
+   "records: ir.rule x4, res.groups x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/views/analytic_account_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x5"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/views/analytic_distribution_model_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/views/analytic_line_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x6"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/views/analytic_plan_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/security/ir.model.access.csv",
+  "yield": [
+   "ACL rows: 5"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/data/account_data.xml",
+  "yield": [
+   "records: account.account.tag x3, account.payment.method x2, account.payment.term x10, decimal.precision x1, ir.actions.act_window x1, ir.actions.server x1, mail.message.subtype x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/data/account_incoterms_data.xml",
+  "yield": [
+   "records: account.incoterms x11"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/data/account_reports_data.xml",
+  "yield": [
+   "records: account.report x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/data/account_tour.xml",
+  "yield": [
+   "records: web_tour.tour x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/data/digest_data.xml",
+  "yield": [
+   "records: digest.digest x1, digest.tip x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/data/ir_config_parameter_data.xml",
+  "yield": [
+   "records: ir.config_parameter x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/data/ir_sequence.xml",
+  "yield": [
+   "records: ir.sequence x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/data/mail_template_data.xml",
+  "yield": [
+   "records: mail.template x3, qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/data/onboarding_data.xml",
+  "yield": [
+   "records: onboarding.onboarding x1, onboarding.onboarding.step x5"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/data/service_cron.xml",
+  "yield": [
+   "records: ir.cron x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/demo/account_demo.xml",
+  "yield": [
+   "records: account.account.tag x5, account.analytic.plan x1, account.payment.term x1, res.partner x4, res.users x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/report/account_hash_integrity_templates.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/report/account_invoice_report_view.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.filters x5, ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/security/account_security.xml",
+  "yield": [
+   "records: ir.module.category x2, ir.rule x31, res.groups x12, res.users x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_account_tag_views.xml",
+  "yield": [
+   "records: ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_account_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.actions.server x1, ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_analytic_account_views.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_analytic_distribution_model_views.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_analytic_line_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_analytic_plan_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_bank_statement_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x3, ir.actions.act_window.view x1, ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_cash_rounding_view.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_full_reconcile_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_group_views.xml",
+  "yield": [
+   "records: ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_incoterms_view.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_journal_dashboard_view.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_journal_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x6"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_lock_exception_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_menuitem.xml",
+  "yield": [
+   "records: menuitem x51"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_move_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x21, ir.actions.server x7, ir.ui.view x32"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_payment_method.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_payment_term_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_payment_view.xml",
+  "yield": [
+   "records: ir.actions.act_window x6, ir.actions.server x1, ir.ui.view x7"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_portal_templates.xml",
+  "yield": [
+   "records: qweb.template x8"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_reconcile_model_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_report.xml",
+  "yield": [
+   "records: ir.actions.report x6, report.paperformat x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/account_tax_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x11"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/base_document_layout_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/bill_preview_template.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/digest_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/ir_actions_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/ir_module_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/mail_message_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x2, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/partner_view.xml",
+  "yield": [
+   "records: ir.actions.act_window x4, ir.ui.view x8"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/product_view.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/product_views.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/report_invoice.xml",
+  "yield": [
+   "records: qweb.template x7"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/report_payment_receipt_templates.xml",
+  "yield": [
+   "records: qweb.template x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/report_statement.xml",
+  "yield": [
+   "records: qweb.template x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/report_templates.xml",
+  "yield": [
+   "records: qweb.template x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/res_company_views.xml",
+  "yield": [
+   "records: ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/res_config_settings_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/res_currency.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/res_partner_bank_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.actions.server x1, ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/terms_template.xml",
+  "yield": [
+   "records: qweb.template x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/tests_shared_js_python.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/views/uom_uom_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_automatic_entry_wizard_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_autopost_bills_wizard.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_merge_wizard_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_move_reversal_view.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_move_send_batch_wizard.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_move_send_wizard.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_payment_register_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_resequence_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_secure_entries_wizard.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_unreconcile_view.xml",
+  "yield": [
+   "records: ir.actions.server x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/account_validate_move_view.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/accrued_orders.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/setup_wizards_view.xml",
+  "yield": [
+   "records: ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/security/ir.model.access.csv",
+  "yield": [
+   "ACL rows: 132"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/data/digest_data.xml",
+  "yield": [
+   "records: digest.tip x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/data/ir_cron_data.xml",
+  "yield": [
+   "records: ir.cron x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/data/mail_template_data.xml",
+  "yield": [
+   "records: mail.template x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/data/mail_templates.xml",
+  "yield": [
+   "records: qweb.template x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/data/purchase_data.xml",
+  "yield": [
+   "records: ir.actions.server x1, ir.sequence x1, mail.message.subtype x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/data/purchase_demo.xml",
+  "yield": [
+   "records: mail.activity x4, purchase.order x10, res.partner x3, res.users x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/data/purchase_tour.xml",
+  "yield": [
+   "records: web_tour.tour x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/report/purchase_bill_views.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/report/purchase_order_templates.xml",
+  "yield": [
+   "records: qweb.template x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/report/purchase_quotation_templates.xml",
+  "yield": [
+   "records: qweb.template x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/report/purchase_report_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x4, menuitem x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/report/purchase_reports.xml",
+  "yield": [
+   "records: ir.actions.report x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/security/purchase_security.xml",
+  "yield": [
+   "records: ir.module.category x1, ir.rule x8, res.groups x5, res.users x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/views/account_move_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/views/analytic_account_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/views/portal_templates.xml",
+  "yield": [
+   "records: qweb.template x8"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/views/product_packaging_views.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/views/product_views.xml",
+  "yield": [
+   "records: ir.ui.view x9"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/views/purchase_bill_line_match_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/views/purchase_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x7, ir.actions.server x4, ir.ui.menu x1, ir.ui.view x18, menuitem x16"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/views/res_config_settings_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/views/res_partner_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/wizard/bill_to_po_wizard_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/security/ir.model.access.csv",
+  "yield": [
+   "ACL rows: 42"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/data/default_barcode_patterns.xml",
+  "yield": [
+   "records: barcode.rule x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/data/digest_data.xml",
+  "yield": [
+   "records: digest.tip x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/data/mail_template_data.xml",
+  "yield": [
+   "records: mail.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/data/mail_templates.xml",
+  "yield": [
+   "records: qweb.template x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/data/stock_data.xml",
+  "yield": [
+   "records: ir.config_parameter x1, product.removal x4, stock.location x6, stock.route x1, stock.warehouse x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/data/stock_demo.xml",
+  "yield": [
+   "records: product.product x1, res.company x2, res.groups x3, res.partner x2, res.users x1, stock.lot x1, stock.package.type x2, stock.quant x15"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/data/stock_demo2.xml",
+  "yield": [
+   "records: product.product x1, stock.location x1, stock.lot x3, stock.picking x14, stock.quant x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/data/stock_demo_pre.xml",
+  "yield": [
+   "records: product.product x26, stock.location x6"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/data/stock_orderpoint_demo.xml",
+  "yield": [
+   "records: stock.warehouse.orderpoint x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/data/stock_sequence_data.xml",
+  "yield": [
+   "records: ir.cron x1, ir.sequence x5"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/data/stock_storage_category_demo.xml",
+  "yield": [
+   "records: stock.storage.category x6"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/data/stock_traceability_report_data.xml",
+  "yield": [
+   "records: ir.actions.client x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/package_templates.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/picking_templates.xml",
+  "yield": [
+   "records: qweb.template x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/product_packaging.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/product_templates.xml",
+  "yield": [
+   "records: qweb.template x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/report_deliveryslip.xml",
+  "yield": [
+   "records: qweb.template x6"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/report_location_barcode.xml",
+  "yield": [
+   "records: qweb.template x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/report_lot_barcode.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/report_package_barcode.xml",
+  "yield": [
+   "records: qweb.template x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/report_return_slip.xml",
+  "yield": [
+   "records: ir.actions.report x1, qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/report_stock_quantity.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/report_stock_reception.xml",
+  "yield": [
+   "records: ir.actions.client x1, ir.actions.report x1, qweb.template x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/report_stock_rule.xml",
+  "yield": [
+   "records: qweb.template x6"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/report_stockinventory.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/report_stockpicking_operations.xml",
+  "yield": [
+   "records: qweb.template x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/stock_lot_customer.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml",
+  "yield": [
+   "records: ir.actions.report x16"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/security/stock_security.xml",
+  "yield": [
+   "records: ir.module.category x1, ir.rule x16, res.groups x13, res.users x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/product_strategy_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x3, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/product_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x4, ir.actions.server x1, ir.ui.view x17, menuitem x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/report_stock_traceability.xml",
+  "yield": [
+   "records: qweb.template x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/res_config_settings_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1, menuitem x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/res_partner_views.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_forecasted.xml",
+  "yield": [
+   "records: ir.actions.client x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_location_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x5, ir.ui.view x8, menuitem x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_lot_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x4, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_menu_views.xml",
+  "yield": [
+   "records: menuitem x17"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_move_line_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.actions.server x1, ir.ui.view x7, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_move_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.actions.act_window.view x5, ir.ui.view x11, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_orderpoint_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.actions.server x1, ir.ui.view x5, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_package_level_views.xml",
+  "yield": [
+   "records: ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_package_type_view.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x2, menuitem x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_picking_type_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x4, menuitem x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x15, ir.actions.server x11, ir.ui.view x6, menuitem x3, qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_quant_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x3, ir.actions.server x4, ir.ui.view x14, menuitem x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_rule_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x5, menuitem x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_scrap_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x5, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_storage_category_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_template.xml",
+  "yield": [
+   "records: qweb.template x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/views/stock_warehouse_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/product_label_layout_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/product_replenish_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_backorder_confirmation_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_change_product_qty_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_inventory_adjustment_name.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_inventory_conflict.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_inventory_warning.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_label_type.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_lot_label_layout.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_orderpoint_snooze_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_package_destination_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_picking_return_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_quant_relocate.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_quantity_history.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_replenishment_info.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_request_count.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_rules_report_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_track_confirmation_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/stock_warn_insufficient_qty_views.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/security/ir.model.access.csv",
+  "yield": [
+   "ACL rows: 95"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/data/product_data.xml",
+  "yield": [
+   "records: (none)"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/data/stock_account_data.xml",
+  "yield": [
+   "records: (none)"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/data/stock_account_demo.xml",
+  "yield": [
+   "records: product.category x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/report/account_invoice_report_view.xml",
+  "yield": [
+   "records: ir.filters x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/security/stock_account_security.xml",
+  "yield": [
+   "records: ir.rule x1, res.groups x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/views/product_views.xml",
+  "yield": [
+   "records: ir.ui.view x5"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/views/report_invoice.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/views/res_config_settings_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/views/stock_account_views.xml",
+  "yield": [
+   "records: ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/views/stock_lot_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/views/stock_picking_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/views/stock_quant_views.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/views/stock_valuation_layer_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x2, ir.ui.view x8, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/wizard/stock_quantity_history.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/wizard/stock_request_count.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/wizard/stock_valuation_layer_revaluation_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/security/ir.model.access.csv",
+  "yield": [
+   "ACL rows: 8"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/data/mail_templates.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/data/purchase_stock_data.xml",
+  "yield": [
+   "records: stock.route x1, stock.warehouse x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/data/purchase_stock_demo.xml",
+  "yield": [
+   "records: product.product x8, purchase.order x1, res.company x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/report/purchase_report_templates.xml",
+  "yield": [
+   "records: qweb.template x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/report/purchase_report_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/report/report_stock_rule.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/report/vendor_delay_report.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/views/product_views.xml",
+  "yield": [
+   "records: ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/views/purchase_views.xml",
+  "yield": [
+   "records: ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/views/res_config_settings_views.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/views/res_partner_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/views/stock_lot_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/views/stock_orderpoint_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/views/stock_picking_views.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/views/stock_rule_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/views/stock_views.xml",
+  "yield": [
+   "records: ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/wizard/product_replenish_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/wizard/stock_replenishment_info.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/security/ir.model.access.csv",
+  "yield": [
+   "ACL rows: 14"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/data/crm_tag_demo.xml",
+  "yield": [
+   "records: crm.tag x8"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/data/crm_team_data.xml",
+  "yield": [
+   "records: crm.team x3, crm.team.member x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/data/crm_team_demo.xml",
+  "yield": [
+   "records: crm.team x2, crm.team.member x1, res.users x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/security/sales_team_security.xml",
+  "yield": [
+   "records: ir.module.category x1, ir.rule x2, res.groups x3, res.users x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/views/crm_tag_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/views/crm_team_member_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x7"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/views/crm_team_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x3, ir.ui.view x5"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/views/mail_activity_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/security/ir.model.access.csv",
+  "yield": [
+   "ACL rows: 9"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/data/ir_config_parameter.xml",
+  "yield": [
+   "records: ir.config_parameter x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/data/ir_cron.xml",
+  "yield": [
+   "records: ir.cron x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/data/ir_sequence_data.xml",
+  "yield": [
+   "records: ir.sequence x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/data/mail_activity_type_data.xml",
+  "yield": [
+   "records: mail.activity.type x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/data/mail_message_subtype_data.xml",
+  "yield": [
+   "records: mail.message.subtype x8"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/data/mail_template_data.xml",
+  "yield": [
+   "records: mail.template x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/data/product_demo.xml",
+  "yield": [
+   "records: product.attribute x2, product.attribute.value x3, product.product x33, product.template x4, product.template.attribute.line x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/data/sale_demo.xml",
+  "yield": [
+   "records: crm.team x2, mail.activity x8, mail.message x3, res.company x1, res.users x1, sale.order x26, sale.order.line x44, utm.source x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/data/sale_tour.xml",
+  "yield": [
+   "records: web_tour.tour x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/report/account_invoice_report_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/report/ir_actions_report.xml",
+  "yield": [
+   "records: ir.actions.report x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/report/ir_actions_report_templates.xml",
+  "yield": [
+   "records: qweb.template x6"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/report/sale_report_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x7, ir.ui.view x6"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml",
+  "yield": [
+   "records: ir.rule x29"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/security/res_groups.xml",
+  "yield": [
+   "records: res.groups x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/account_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.actions.act_window.view x2, ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/crm_team_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x5, ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/mail_activity_plan_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/mail_activity_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/payment_views.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/product_document_views.xml",
+  "yield": [
+   "records: ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/product_packaging_views.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/product_template_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/product_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x6"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/res_partner_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/sale_menus.xml",
+  "yield": [
+   "records: menuitem x39"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/sale_order_line_views.xml",
+  "yield": [
+   "records: ir.ui.view x4"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/sale_order_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x5, ir.actions.act_window.view x14, ir.actions.server x3, ir.ui.view x16"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/sale_portal_templates.xml",
+  "yield": [
+   "records: qweb.template x7"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/views/utm_campaign_views.xml",
+  "yield": [
+   "records: ir.ui.view x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/account_accrued_orders_wizard_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/mass_cancel_orders_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/payment_link_wizard_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/res_config_settings_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/sale_make_invoice_advance_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/sale_order_cancel_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/sale_order_discount_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/security/ir.model.access.csv",
+  "yield": [
+   "ACL rows: 56"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/data/digest_data.xml",
+  "yield": [
+   "records: digest.digest x1, digest.tip x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/data/sale_order_template_demo.xml",
+  "yield": [
+   "records: res.groups x1, sale.order.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/report/sale_report_templates.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/security/sale_management_security.xml",
+  "yield": [
+   "records: ir.rule x1, res.groups x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/views/digest_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/views/res_config_settings_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/views/sale_management_menus.xml",
+  "yield": [
+   "records: ir.ui.menu x1, menuitem x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/views/sale_order_template_views.xml",
+  "yield": [
+   "records: ir.actions.act_window x1, ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/views/sale_order_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/views/sale_portal_templates.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/security/ir.model.access.csv",
+  "yield": [
+   "ACL rows: 10"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/data/mail_templates.xml",
+  "yield": [
+   "records: qweb.template x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/data/sale_order_demo.xml",
+  "yield": [
+   "records: product.product x1, sale.order x10, sale.order.line x6, stock.quant x2"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/data/sale_stock_data.xml",
+  "yield": [
+   "records: stock.route x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/report/sale_order_report_templates.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/report/stock_report_deliveryslip.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/security/sale_stock_security.xml",
+  "yield": [
+   "records: ir.rule x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/views/res_config_settings_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/views/res_users_views.xml",
+  "yield": [
+   "records: ir.ui.view x3"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/views/sale_order_views.xml",
+  "yield": [
+   "records: ir.ui.view x5"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/views/sale_stock_portal_template.xml",
+  "yield": [
+   "records: qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/views/stock_lot_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/views/stock_picking_views.xml",
+  "yield": [
+   "records: ir.ui.view x1, qweb.template x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/views/stock_route_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/wizard/sale_order_cancel_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/wizard/stock_rules_report_views.xml",
+  "yield": [
+   "records: ir.ui.view x1"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/security/ir.model.access.csv",
+  "yield": [
+   "ACL rows: 18"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/__init__.py",
+  "yield": [
+   "imports: controllers, models, report, wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/controllers/__init__.py",
+  "yield": [
+   "imports: rpc"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res.country.state.csv",
+  "yield": [
+   "template csv: res.country.state.csv, 1780 rows, columns id, country_id:id, name, code"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/data/res.lang.csv",
+  "yield": [
+   "template csv: res.lang.csv, 92 rows, columns id, name, code, iso_code, direction, grouping, decimal_point, thousands_sep"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/models/__init__.py",
+  "yield": [
+   "imports: assetsbundle, avatar_mixin, decimal_precision, image_mixin, ir_actions, ir_actions_report, ir_asset, ir_attachment, ir_autovacuum, ir_binary, ir_config_parameter, ir_cron, ir_default, ir_demo, ir_demo_failure, ir_embedded_actions, ir_exports, ir_fields, ir_filters, ir_http, ir_logging, ir_mail_server, ir_model, ir_module, ir_profile, ir_qweb, ir_qweb_fields, ir_rule, ir_sequence, ir_ui_menu, ir_ui_view, report_layout, report_paperformat, res_bank, res_company, res_config, res_country, res_currency, res_device, res_lang, res_partner, res_users, res_users_deletion, res_users_settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/report/__init__.py",
+  "yield": [
+   "imports: report_base_report_irmodulereference"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/wizard/__init__.py",
+  "yield": [
+   "imports: base_export_language, base_import_language, base_language_install, base_module_uninstall, base_module_update, base_module_upgrade, base_partner_merge"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/uom/__init__.py",
+  "yield": [
+   "imports: models"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/uom/models/__init__.py",
+  "yield": [
+   "imports: uom_uom"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/__init__.py",
+  "yield": [
+   "imports: controllers, models, report, wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/controllers/__init__.py",
+  "yield": [
+   "imports: catalog, pricelist_report, product_document"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/models/__init__.py",
+  "yield": [
+   "imports: decimal_precision, ir_attachment, product_attribute, product_attribute_custom_value, product_attribute_value, product_catalog_mixin, product_category, product_combo, product_combo_item, product_document, product_packaging, product_pricelist, product_pricelist_item, product_product, product_supplierinfo, product_tag, product_template, product_template_attribute_exclusion, product_template_attribute_line, product_template_attribute_value, res_company, res_config_settings, res_country_group, res_currency, res_partner, uom_uom"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/report/__init__.py",
+  "yield": [
+   "imports: product_label_report, product_pricelist_report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/wizard/__init__.py",
+  "yield": [
+   "imports: product_label_layout, update_product_attribute_value"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/__init__.py",
+  "yield": [
+   "imports: models"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/migrations/1.2/pre-migrate.py",
+  "yield": [
+   "migration script (data upgrade, not ported): defines migrate"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/analytic/models/__init__.py",
+  "yield": [
+   "imports: analytic_account, analytic_distribution_model, analytic_line, analytic_mixin, analytic_plan, ir_config_parameter, res_config_settings"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/__init__.py",
+  "yield": [
+   "imports: controllers, demo, models, report, tools, wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/controllers/__init__.py",
+  "yield": [
+   "imports: download_docs, portal, terms, tests_shared_js_python"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/data/template/account.account-generic_coa.csv",
+  "yield": [
+   "template csv: account.account, 44 rows, columns id, name, code, account_type, tag_ids, reconcile, non_trade"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/data/template/account.tax-generic_coa.csv",
+  "yield": [
+   "template csv: account.tax, 8 rows, columns id, name, description, invoice_label, amount, type_tax_use, tax_group_id, repartition_line_ids/document_type"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/data/template/account.tax.group-generic_coa.csv",
+  "yield": [
+   "template csv: account.tax.group, 1 rows, columns id, name, country_id, tax_payable_account_id, tax_receivable_account_id"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/demo/__init__.py",
+  "yield": [
+   "imports: account_demo"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/demo/account_demo.py",
+  "yield": [
+   "demo data generator: _get_demo_data, _get_demo_exception_product_template_xml_ids, _get_demo_exception_product_variant_xml_ids, _get_demo_data_products, _post_load_demo_data, _get_demo_data_bank, _get_demo_data_journal, _get_demo_data_move, _get_demo_data_statement, _get_demo_data_transactions"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/models/__init__.py",
+  "yield": [
+   "imports: account_account, account_account_tag, account_analytic_account, account_analytic_distribution_model, account_analytic_line, account_analytic_plan, account_bank_statement, account_bank_statement_line, account_cash_rounding, account_code_mapping, account_full_reconcile, account_incoterms, account_journal, account_journal_dashboard, account_lock_exception, account_move, account_move_line, account_move_line_tax_details, account_move_send, account_partial_reconcile, account_payment, account_payment_method, account_payment_term, account_reconcile_model, account_report, account_root, account_tax, chart_template, company, decimal_precision, digest, ir_actions_report, ir_attachment, ir_module, ir_ui_menu, kpi_provider, mail_message, mail_template, mail_tracking_value, merge_partner_automatic, onboarding_onboarding_step, partner, product, res_config_settings, res_currency, res_partner_bank, res_users, sequence_mixin, template_generic_coa, uom_uom"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/report/__init__.py",
+  "yield": [
+   "imports: account_hash_integrity_templates, account_invoice_report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/tools/__init__.py",
+  "yield": [
+   "imports: dict_to_xml, structured_reference"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/wizard/__init__.py",
+  "yield": [
+   "imports: account_automatic_entry_wizard, account_autopost_bills_wizard, account_merge_wizard, account_move_reversal, account_move_send_batch_wizard, account_move_send_wizard, account_payment_register, account_resequence, account_secure_entries_wizard, account_validate_account_move, accrued_orders, base_document_layout, base_partner_merge, setup_wizards"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/__init__.py",
+  "yield": [
+   "imports: controllers, models, report, wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/controllers/__init__.py",
+  "yield": [
+   "imports: portal"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/migrations/9.0.1.2/pre-create-properties.py",
+  "yield": [
+   "migration script (data upgrade, not ported): defines convert_field, migrate"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/models/__init__.py",
+  "yield": [
+   "imports: account_invoice, account_tax, analytic_account, analytic_applicability, ir_actions_report, product, purchase_bill_line_match, purchase_order, purchase_order_line, res_company, res_config_settings, res_partner"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/report/__init__.py",
+  "yield": [
+   "imports: purchase_bill, purchase_report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/wizard/__init__.py",
+  "yield": [
+   "imports: bill_to_po_wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/__init__.py",
+  "yield": [
+   "imports: controllers, models, report, wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/controllers/__init__.py",
+  "yield": [
+   "imports: main"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/models/__init__.py",
+  "yield": [
+   "imports: barcode, ir_actions_report, product, product_strategy, res_company, res_config_settings, res_partner, res_users, stock_location, stock_lot, stock_move, stock_move_line, stock_orderpoint, stock_package_level, stock_package_type, stock_picking, stock_quant, stock_replenish_mixin, stock_rule, stock_scrap, stock_storage_category, stock_warehouse"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/report/__init__.py",
+  "yield": [
+   "imports: product_label_report, report_stock_quantity, report_stock_reception, report_stock_rule, stock_forecasted, stock_lot_customer, stock_traceability"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/wizard/__init__.py",
+  "yield": [
+   "imports: product_label_layout, product_replenish, stock_backorder_confirmation, stock_change_product_qty, stock_inventory_adjustment_name, stock_inventory_conflict, stock_inventory_warning, stock_label_type, stock_lot_label_layout, stock_orderpoint_snooze, stock_package_destination, stock_picking_return, stock_quant_relocate, stock_quantity_history, stock_replenishment_info, stock_request_count, stock_rules_report, stock_track_confirmation, stock_warn_insufficient_qty"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/__init__.py",
+  "yield": [
+   "imports: models, report, wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/models/__init__.py",
+  "yield": [
+   "imports: account_chart_template, account_move, analytic_account, product, res_company, res_config_settings, stock_location, stock_lot, stock_move, stock_move_line, stock_picking, stock_quant, stock_valuation_layer, template_generic_coa"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/report/__init__.py",
+  "yield": [
+   "imports: stock_forecasted"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock_account/wizard/__init__.py",
+  "yield": [
+   "imports: stock_picking_return, stock_quantity_history, stock_request_count, stock_valuation_layer_revaluation"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/__init__.py",
+  "yield": [
+   "imports: models, report, wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/models/__init__.py",
+  "yield": [
+   "imports: account_invoice, account_move_line, product, purchase_order, purchase_order_line, res_company, res_config_settings, res_partner, stock, stock_move, stock_replenish_mixin, stock_rule, stock_valuation_layer"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/report/__init__.py",
+  "yield": [
+   "imports: purchase_report, report_stock_rule, stock_forecasted, vendor_delay_report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase_stock/wizard/__init__.py",
+  "yield": [
+   "imports: product_replenish, stock_replenishment_info"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/__init__.py",
+  "yield": [
+   "imports: models"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sales_team/models/__init__.py",
+  "yield": [
+   "imports: crm_tag, crm_team, crm_team_member, res_users"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/__init__.py",
+  "yield": [
+   "imports: controllers, models, report, wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/controllers/__init__.py",
+  "yield": [
+   "imports: combo_configurator, portal, product_configurator"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/models/__init__.py",
+  "yield": [
+   "imports: account_move, account_move_line, analytic, chart_template, crm_team, ir_config_parameter, mail_scheduled_message, payment_provider, payment_transaction, product_category, product_document, product_product, product_template, res_company, res_partner, sale_order, sale_order_line, utm_campaign"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/report/__init__.py",
+  "yield": [
+   "imports: account_invoice_report, sale_report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/wizard/__init__.py",
+  "yield": [
+   "imports: base_document_layout, mail_compose_message, mass_cancel_orders, payment_link_wizard, payment_provider_onboarding_wizard, res_config_settings, sale_make_invoice_advance, sale_order_cancel, sale_order_discount"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/__init__.py",
+  "yield": [
+   "imports: controllers, models"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/controllers/__init__.py",
+  "yield": [
+   "imports: portal"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/models/__init__.py",
+  "yield": [
+   "imports: digest, res_company, res_config_settings, sale_order, sale_order_line, sale_order_option, sale_order_template, sale_order_template_line, sale_order_template_option"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/__init__.py",
+  "yield": [
+   "imports: controllers, models, report, wizard"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/controllers/__init__.py",
+  "yield": [
+   "imports: portal"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/models/__init__.py",
+  "yield": [
+   "imports: account_move, product_template, res_company, res_config_settings, res_users, sale_order, sale_order_line, stock, stock_valuation_layer, stock_warehouse"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/report/__init__.py",
+  "yield": [
+   "imports: report_stock_rule, sale_report, stock_forecasted"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/wizard/__init__.py",
+  "yield": [
+   "imports: sale_order_cancel, stock_return_picking, stock_rules_report"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/base/controllers/rpc.py",
+  "yield": [
+   "http route /xmlrpc/<service>",
+   "http route /xmlrpc/2/<service>",
+   "http route /jsonrpc"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/controllers/catalog.py",
+  "yield": [
+   "http route /product/catalog/order_lines_info",
+   "http route /product/catalog/update_order_line_info"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/controllers/pricelist_report.py",
+  "yield": [
+   "http route /product/export/pricelist/"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/product/controllers/product_document.py",
+  "yield": [
+   "http route /product/document/upload"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/controllers/download_docs.py",
+  "yield": [
+   "http route /account/download_invoice_attachments/<models(\"ir.attachment\"):attachments>",
+   "http route /account/download_invoice_documents/<models(\"account.move\"):invoices>/<string:filetype>"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/controllers/portal.py",
+  "yield": [
+   "http route /my/invoices",
+   "http route /my/invoices/page/<int:page>",
+   "http route /my/invoices/<int:invoice_id>"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/controllers/terms.py",
+  "yield": [
+   "http route /terms"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/account/controllers/tests_shared_js_python.py",
+  "yield": [
+   "http route /account/init_tests_shared_js_python",
+   "http route /account/post_tests_shared_js_python"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/purchase/controllers/portal.py",
+  "yield": [
+   "http route /my/rfq",
+   "http route /my/rfq/page/<int:page>",
+   "http route /my/purchase",
+   "http route /my/purchase/page/<int:page>",
+   "http route /my/purchase/<int:order_id>",
+   "http route /my/purchase/<int:order_id>/update",
+   "http route /my/purchase/<int:order_id>/download_edi"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/stock/controllers/main.py",
+  "yield": [
+   "http route /stock/<string:output_format>/<string:report_name>"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/controllers/combo_configurator.py",
+  "yield": [
+   "http route /sale/combo_configurator/get_data",
+   "http route /sale/combo_configurator/get_price"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/controllers/portal.py",
+  "yield": [
+   "http route /my/quotes",
+   "http route /my/quotes/page/<int:page>",
+   "http route /my/orders",
+   "http route /my/orders/page/<int:page>",
+   "http route /my/orders/<int:order_id>",
+   "http route /my/orders/<int:order_id>/accept",
+   "http route /my/orders/<int:order_id>/decline",
+   "http route /my/orders/<int:order_id>/document/<int:document_id>",
+   "http route /my/orders/<int:order_id>/transaction",
+   "http route (inherited) payment_pay"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale/controllers/product_configurator.py",
+  "yield": [
+   "http route /sale/product_configurator/get_values",
+   "http route /sale/product_configurator/create_product",
+   "http route /sale/product_configurator/update_combination",
+   "http route /sale/product_configurator/get_optional_products"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_management/controllers/portal.py",
+  "yield": [
+   "http route /my/orders/<int:order_id>/update_line_dict",
+   "http route /my/orders/<int:order_id>/add_option/<int:option_id>"
+  ]
+ },
+ {
+  "file": "sources/odoo/addons/sale_stock/controllers/portal.py",
+  "yield": [
+   "http route /my/picking/pdf/<int:picking_id>",
+   "http route /my/picking/return/pdf/<int:picking_id>"
+  ]
+ }
+]

@@ -1,0 +1,1508 @@
+[
+ {
+  "id": "base.res_users_log_rule",
+  "name": "res.users.log per user",
+  "model": "res.users.log",
+  "domain": "[('create_uid','=', user.id)]",
+  "groups": [],
+  "perms": {
+   "perm_read": "False"
+  },
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.res_partner_rule",
+  "name": "res.partner company",
+  "model": "res.partner",
+  "domain": "['|', '|', ('partner_share', '=', False), ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+  "groups": [],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.res_partner_portal_public_rule",
+  "name": "res_partner: portal/public: read access on my commercial partner",
+  "model": "res.partner",
+  "domain": "[('id', 'child_of', user.commercial_partner_id.id)]",
+  "groups": [
+   "base.group_portal",
+   "base.group_public"
+  ],
+  "perms": {
+   "perm_write": "False",
+   "perm_create": "False",
+   "perm_unlink": "False"
+  },
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.ir_default_user_rule",
+  "name": "Defaults: alter personal defaults",
+  "model": "ir.default",
+  "domain": "[('user_id','=',user.id)]",
+  "groups": [
+   "base.group_user"
+  ],
+  "perms": {
+   "perm_read": "False"
+  },
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.ir_default_system_rule",
+  "name": "Defaults: alter all defaults",
+  "model": "ir.default",
+  "domain": "[(1,'=',1)]",
+  "groups": [
+   "base.group_system"
+  ],
+  "perms": {
+   "perm_read": "False"
+  },
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.ir_ui_view_custom_personal",
+  "name": "ir.ui.view_custom rule",
+  "model": "ir.ui.view.custom",
+  "domain": "[('user_id','=',user.id)]",
+  "groups": [],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.res_partner_bank_rule",
+  "name": "Partner bank company rule",
+  "model": "res.partner.bank",
+  "domain": "['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+  "groups": [],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.res_currency_rate_rule",
+  "name": "multi-company currency rate rule",
+  "model": "res.currency.rate",
+  "domain": "['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+  "groups": [],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.change_password_rule",
+  "name": "change user password rule",
+  "model": "change.password.user",
+  "domain": "[('create_uid', '=', user.id)]",
+  "groups": [],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.ir_filters_admin_all_rights_rule",
+  "name": "ir.filters.admin.all.rights",
+  "model": "ir.filters",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "base.group_erp_manager"
+  ],
+  "perms": {
+   "perm_read": "True",
+   "perm_write": "True",
+   "perm_create": "True",
+   "perm_unlink": "True"
+  },
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.ir_filters_employee_rule",
+  "name": "ir.filters.owner",
+  "model": "ir.filters",
+  "domain": "[('user_id','in',[False,user.id])]",
+  "groups": [
+   "base.group_user"
+  ],
+  "perms": {
+   "perm_unlink": "False"
+  },
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.ir_filters_delete_own_rule",
+  "name": "ir.filters.own.rule.delete",
+  "model": "ir.filters",
+  "domain": "[('user_id', '=', user.id)]",
+  "groups": [
+   "base.group_user"
+  ],
+  "perms": {
+   "perm_read": "False",
+   "perm_write": "False",
+   "perm_create": "False"
+  },
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.ir_filters_portal_public_rule",
+  "name": "ir.filter: portal/public",
+  "model": "ir.filters",
+  "domain": "[('user_id', '=', user.id)]",
+  "groups": [
+   "base.group_portal",
+   "base.group_public"
+  ],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.res_company_rule_portal",
+  "name": "company rule portal",
+  "model": "res.company",
+  "domain": "[('id','in', company_ids)]",
+  "groups": [
+   "base.group_portal"
+  ],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.res_company_rule_employee",
+  "name": "company rule employee",
+  "model": "res.company",
+  "domain": "[('id','in', company_ids)]",
+  "groups": [
+   "base.group_user"
+  ],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.res_company_rule_public",
+  "name": "company rule public",
+  "model": "res.company",
+  "domain": "[('id','in', company_ids)]",
+  "groups": [
+   "base.group_public"
+  ],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.res_company_rule_erp_manager",
+  "name": "company rule erp manager",
+  "model": "res.company",
+  "domain": "[(1,'=',1)]",
+  "groups": [
+   "base.group_erp_manager"
+  ],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.res_users_identity_check",
+  "name": "users can only access their own id check",
+  "model": "res.users.identitycheck",
+  "domain": "[('create_uid', '=', user.id)]",
+  "groups": [],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.res_users_rule",
+  "name": "user rule",
+  "model": "res.users",
+  "domain": "['|', ('share', '=', False), ('company_ids', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.change_password_own_rule",
+  "name": "change own password",
+  "model": "change.password.own",
+  "domain": "[('create_uid', '=', user.id)]",
+  "groups": [],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.res_users_settings_rule_admin",
+  "name": "Administrators can access all User Settings.",
+  "model": "res.users.settings",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "base.group_system"
+  ],
+  "perms": {
+   "perm_read": "True",
+   "perm_write": "True",
+   "perm_create": "True",
+   "perm_unlink": "True"
+  },
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.res_users_settings_rule_user",
+  "name": "res.users.settings: access their own entries",
+  "model": "res.users.settings",
+  "domain": "[('user_id', '=', user.id)]",
+  "groups": [
+   "base.group_user"
+  ],
+  "perms": {
+   "perm_read": "True",
+   "perm_write": "True",
+   "perm_create": "True",
+   "perm_unlink": "True"
+  },
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.api_key_public",
+  "name": "Public users can't interact with keys at all",
+  "model": "res.users.apikeys",
+  "domain": "[(0, '=', 1)]",
+  "groups": [
+   "base.group_public"
+  ],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.api_key_user",
+  "name": "Users can read and delete their own keys",
+  "model": "res.users.apikeys",
+  "domain": "[('user_id', '=', user.id)]",
+  "groups": [
+   "base.group_portal",
+   "base.group_user"
+  ],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.api_key_admin",
+  "name": "Administrators can view user keys to revoke them",
+  "model": "res.users.apikeys",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "base.group_system"
+  ],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.embedded_action_user_delete_rule",
+  "name": "Users can modify or delete embedded actions that they have created or that are shared",
+  "model": "ir.embedded.actions",
+  "domain": "[('user_id', 'in', [user.id, False])]",
+  "groups": [
+   "base.group_user"
+  ],
+  "perms": {
+   "perm_read": "False",
+   "perm_write": "True",
+   "perm_create": "False",
+   "perm_unlink": "True"
+  },
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.embedded_action_admin_delete_rule",
+  "name": "Admins have all the rights on embedded actions",
+  "model": "ir.embedded.actions",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "base.group_system"
+  ],
+  "perms": {
+   "perm_read": "False",
+   "perm_write": "True",
+   "perm_create": "False",
+   "perm_unlink": "True"
+  },
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.user_device",
+  "name": "Users can read only their own devices",
+  "model": "res.device",
+  "domain": "[('user_id', '=', user.id)]",
+  "groups": [
+   "base.group_user"
+  ],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.user_device_admin",
+  "name": "Administrators can read all devices",
+  "model": "res.device",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "base.group_system"
+  ],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.user_device_logs",
+  "name": "Users can read only their own device logs",
+  "model": "res.device.log",
+  "domain": "[('user_id', '=', user.id)]",
+  "groups": [
+   "base.group_user"
+  ],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "base.user_device_logs_admin",
+  "name": "Administrators can read all device logs",
+  "model": "res.device.log",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "base.group_system"
+  ],
+  "perms": {},
+  "addon": "base",
+  "file": "sources/odoo/addons/base/security/base_security.xml"
+ },
+ {
+  "id": "product.product_comp_rule",
+  "name": "Product multi-company",
+  "model": "product.template",
+  "domain": "['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+  "groups": [],
+  "perms": {},
+  "addon": "product",
+  "file": "sources/odoo/addons/product/security/product_security.xml"
+ },
+ {
+  "id": "product.product_document_comp_rule",
+  "name": "Product multi-company",
+  "model": "product.document",
+  "domain": "['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+  "groups": [],
+  "perms": {},
+  "addon": "product",
+  "file": "sources/odoo/addons/product/security/product_security.xml"
+ },
+ {
+  "id": "product.product_pricelist_comp_rule",
+  "name": "product pricelist company rule",
+  "model": "product.pricelist",
+  "domain": "['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+  "groups": [],
+  "perms": {},
+  "addon": "product",
+  "file": "sources/odoo/addons/product/security/product_security.xml"
+ },
+ {
+  "id": "product.product_pricelist_item_comp_rule",
+  "name": "product pricelist item company rule",
+  "model": "product.pricelist.item",
+  "domain": "['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]",
+  "groups": [],
+  "perms": {},
+  "addon": "product",
+  "file": "sources/odoo/addons/product/security/product_security.xml"
+ },
+ {
+  "id": "product.product_supplierinfo_comp_rule",
+  "name": "product supplierinfo company rule",
+  "model": "product.supplierinfo",
+  "domain": "['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "product",
+  "file": "sources/odoo/addons/product/security/product_security.xml"
+ },
+ {
+  "id": "product.product_packaging_comp_rule",
+  "name": "product packaging company rule",
+  "model": "product.packaging",
+  "domain": "['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "product",
+  "file": "sources/odoo/addons/product/security/product_security.xml"
+ },
+ {
+  "id": "product.product_combo_comp_rule",
+  "name": "Product combo multi-company rule",
+  "model": "product.combo",
+  "domain": "['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "product",
+  "file": "sources/odoo/addons/product/security/product_security.xml"
+ },
+ {
+  "id": "analytic.analytic_comp_rule",
+  "name": "Analytic multi company rule",
+  "model": "account.analytic.account",
+  "domain": "['|',('company_id','=',False),('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "analytic",
+  "file": "sources/odoo/addons/analytic/security/analytic_security.xml"
+ },
+ {
+  "id": "analytic.analytic_line_comp_rule",
+  "name": "Analytic line multi company rule",
+  "model": "account.analytic.line",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "analytic",
+  "file": "sources/odoo/addons/analytic/security/analytic_security.xml"
+ },
+ {
+  "id": "analytic.analytic_applicability_comp_rule",
+  "name": "Analytic applicability multi company rule",
+  "model": "account.analytic.applicability",
+  "domain": "['|',('company_id','=',False),('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "analytic",
+  "file": "sources/odoo/addons/analytic/security/analytic_security.xml"
+ },
+ {
+  "id": "analytic.analytic_distribution_model_comp_rule",
+  "name": "Analytic distribution model multi company rule",
+  "model": "account.analytic.distribution.model",
+  "domain": "['|',('company_id','=',False),('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "analytic",
+  "file": "sources/odoo/addons/analytic/security/analytic_security.xml"
+ },
+ {
+  "id": "account.account_analytic_line_rule_billing_user",
+  "name": "account.analytic.line.billing.user",
+  "model": "account.analytic.line",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "account.group_account_invoice"
+  ],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_analytic_line_rule_readonly_user",
+  "name": "account.analytic.line.readonly.user",
+  "model": "account.analytic.line",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "account.group_account_readonly"
+  ],
+  "perms": {
+   "perm_write": "False",
+   "perm_create": "False",
+   "perm_unlink": "False"
+  },
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_move_comp_rule",
+  "name": "Account Entry",
+  "model": "account.move",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_move_line_comp_rule",
+  "name": "Entry lines",
+  "model": "account.move.line",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.journal_group_comp_rule",
+  "name": "Multi-ledger multi-company",
+  "model": "account.journal.group",
+  "domain": "['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.journal_comp_rule",
+  "name": "Journal multi-company",
+  "model": "account.journal",
+  "domain": "[('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_comp_rule",
+  "name": "Account multi-company",
+  "model": "account.account",
+  "domain": "[('company_ids', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_group_comp_rule",
+  "name": "Account Group multi-company",
+  "model": "account.group",
+  "domain": "[('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.tax_group_comp_rule",
+  "name": "Tax group multi-company",
+  "model": "account.tax.group",
+  "domain": "[('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.tax_comp_rule",
+  "name": "Tax multi-company",
+  "model": "account.tax",
+  "domain": "[('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.tax_rep_comp_rule",
+  "name": "Tax Repartition multi-company",
+  "model": "account.tax.repartition.line",
+  "domain": "['|',('company_id','=',False), ('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.invoice_analysis_comp_rule",
+  "name": "Invoice Analysis multi-company",
+  "model": "account.invoice.report",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_fiscal_position_comp_rule",
+  "name": "Account fiscal Mapping company rule",
+  "model": "account.fiscal.position",
+  "domain": "[('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_bank_statement_comp_rule",
+  "name": "Account bank statement company rule",
+  "model": "account.bank.statement",
+  "domain": "[('company_id', 'in', company_ids + [False])]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_bank_statement_line_comp_rule",
+  "name": "Account bank statement line company rule",
+  "model": "account.bank.statement.line",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_reconcile_model_template_comp_rule",
+  "name": "Account reconcile model template company rule",
+  "model": "account.reconcile.model",
+  "domain": "[('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_reconcile_model_line_template_comp_rule",
+  "name": "Account reconcile model_line template company rule",
+  "model": "account.reconcile.model.line",
+  "domain": "[('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_payment_comp_rule",
+  "name": "Account payment company rule",
+  "model": "account.payment",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_payment_term_comp_rule",
+  "name": "Account payment term company rule",
+  "model": "account.payment.term",
+  "domain": "['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_move_see_all",
+  "name": "All Journal Entries",
+  "model": "account.move",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "account.group_account_invoice"
+  ],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_move_line_see_all",
+  "name": "All Journal Items",
+  "model": "account.move.line",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "account.group_account_invoice"
+  ],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_invoice_rule_portal",
+  "name": "Portal Personal Account Invoices",
+  "model": "account.move",
+  "domain": "[('state', 'not in', ('cancel', 'draft')), ('move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')), ('message_partner_ids','child_of',[user.commercial_partner_id.id])]",
+  "groups": [
+   "base.group_portal"
+  ],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_invoice_line_rule_portal",
+  "name": "Portal Invoice Lines",
+  "model": "account.move.line",
+  "domain": "[('parent_state', 'not in', ('cancel', 'draft')), ('move_id.move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')), ('move_id.message_partner_ids','child_of',[user.commercial_partner_id.id])]",
+  "groups": [
+   "base.group_portal"
+  ],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_move_rule_group_readonly",
+  "name": "Readonly Move",
+  "model": "account.move",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "account.group_account_readonly"
+  ],
+  "perms": {
+   "perm_write": "False",
+   "perm_create": "False",
+   "perm_unlink": "False"
+  },
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_move_line_rule_group_readonly",
+  "name": "Readonly Move Line",
+  "model": "account.move.line",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "account.group_account_readonly"
+  ],
+  "perms": {
+   "perm_write": "False",
+   "perm_create": "False",
+   "perm_unlink": "False"
+  },
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_move_rule_group_invoice",
+  "name": "Readonly Move",
+  "model": "account.move",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "account.group_account_invoice"
+  ],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_move_line_rule_group_invoice",
+  "name": "Readonly Move Line",
+  "model": "account.move.line",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "account.group_account_invoice"
+  ],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_move_send_single_rule_group_invoice",
+  "name": "Readonly Invoice Send and Print (single)",
+  "model": "account.move.send.wizard",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "account.group_account_invoice"
+  ],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.account_move_send_batch_rule_group_invoice",
+  "name": "Readonly Invoice Send and Print (batch)",
+  "model": "account.move.send.batch.wizard",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "account.group_account_invoice"
+  ],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.report_external_value_comp_rule",
+  "name": "Report External Value multi-company",
+  "model": "account.report.external.value",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "account.ir_rule_res_partner_bank_billing_officers",
+  "name": "Billing: Allow accessing employee bank accounts",
+  "model": "res.partner.bank",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "account.group_account_invoice"
+  ],
+  "perms": {},
+  "addon": "account",
+  "file": "sources/odoo/addons/account/security/account_security.xml"
+ },
+ {
+  "id": "purchase.purchase_order_comp_rule",
+  "name": "Purchase Order multi-company",
+  "model": "purchase.order",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/security/purchase_security.xml"
+ },
+ {
+  "id": "purchase.purchase_order_line_comp_rule",
+  "name": "Purchase Order Line multi-company",
+  "model": "purchase.order.line",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/security/purchase_security.xml"
+ },
+ {
+  "id": "purchase.portal_purchase_order_user_rule",
+  "name": "Portal Purchase Orders",
+  "model": "purchase.order",
+  "domain": "['|', ('message_partner_ids','child_of',[user.commercial_partner_id.id]),('partner_id', 'child_of', [user.commercial_partner_id.id])]",
+  "groups": [
+   "base.group_portal"
+  ],
+  "perms": {
+   "perm_read": "1",
+   "perm_write": "1",
+   "perm_create": "0",
+   "perm_unlink": "1"
+  },
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/security/purchase_security.xml"
+ },
+ {
+  "id": "purchase.purchase_user_account_move_line_rule",
+  "name": "Purchase User Account Move Line",
+  "model": "account.move.line",
+  "domain": "[('move_id.move_type', 'in', ('in_invoice', 'in_refund', 'in_receipt'))]",
+  "groups": [
+   "purchase.group_purchase_user"
+  ],
+  "perms": {},
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/security/purchase_security.xml"
+ },
+ {
+  "id": "purchase.purchase_user_account_move_rule",
+  "name": "Purchase User Account Move",
+  "model": "account.move",
+  "domain": "[('move_type', 'in', ('in_invoice', 'in_refund', 'in_receipt'))]",
+  "groups": [
+   "purchase.group_purchase_user"
+  ],
+  "perms": {},
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/security/purchase_security.xml"
+ },
+ {
+  "id": "purchase.portal_purchase_order_line_rule",
+  "name": "Portal Purchase Order Lines",
+  "model": "purchase.order.line",
+  "domain": "['|',('order_id.message_partner_ids','child_of',[user.commercial_partner_id.id]),('order_id.partner_id','child_of',[user.commercial_partner_id.id])]",
+  "groups": [
+   "base.group_portal"
+  ],
+  "perms": {},
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/security/purchase_security.xml"
+ },
+ {
+  "id": "purchase.purchase_bill_union_comp_rule",
+  "name": "Purchases & Bills Union multi-company",
+  "model": "purchase.bill.union",
+  "domain": "[('company_id', 'in', company_ids + [False])]",
+  "groups": [],
+  "perms": {},
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/security/purchase_security.xml"
+ },
+ {
+  "id": "purchase.purchase_order_report_comp_rule",
+  "name": "Purchase Order Report multi-company",
+  "model": "purchase.report",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/security/purchase_security.xml"
+ },
+ {
+  "id": "stock.stock_picking_rule",
+  "name": "stock_picking multi-company",
+  "model": null,
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.stock_picking_type_rule",
+  "name": "Stock Operation Type multi-company",
+  "model": null,
+  "domain": "[('company_id','in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.stock_putaway_rule_rule",
+  "name": "Stock Operation Type multi-company",
+  "model": null,
+  "domain": "[('company_id','in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.stock_production_lot_rule",
+  "name": "Stock Production Lot multi-company",
+  "model": null,
+  "domain": "[('company_id', 'in', company_ids + [False])]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.stock_warehouse_comp_rule",
+  "name": "Warehouse multi-company",
+  "model": "stock.warehouse",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.stock_location_comp_rule",
+  "name": "Location multi-company",
+  "model": "stock.location",
+  "domain": "[('company_id', 'in', company_ids + [False])]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.stock_move_rule",
+  "name": "stock_move multi-company",
+  "model": null,
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.stock_move_line_rule",
+  "name": "stock_move_line multi-company",
+  "model": null,
+  "domain": "[('company_id', 'in', company_ids + [False])]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.stock_quant_rule",
+  "name": "stock_quant multi-company",
+  "model": "stock.quant",
+  "domain": "[('company_id', 'in', company_ids + [False])]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.stock_warehouse_orderpoint_rule",
+  "name": "stock_warehouse.orderpoint multi-company",
+  "model": null,
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.product_pulled_flow_comp_rule",
+  "name": "product_pulled_flow multi-company",
+  "model": "stock.rule",
+  "domain": "[('company_id', 'in', company_ids + [False])]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.stock_location_route_comp_rule",
+  "name": "stock_route multi-company",
+  "model": "stock.route",
+  "domain": "[('company_id', 'in', company_ids + [False])]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.stock_quant_package_comp_rule",
+  "name": "stock_quant_package multi-company",
+  "model": "stock.quant.package",
+  "domain": "[('company_id', 'in', company_ids + [False])]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.stock_scrap_company_rule",
+  "name": "stock_scrap_company multi-company",
+  "model": "stock.scrap",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.report_stock_quantity_flow_comp_rule",
+  "name": "report_stock_quantity_flow multi-company",
+  "model": "report.stock.quantity",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock.stock_storage_category_rule",
+  "name": "stock_storage_category multi-company",
+  "model": "stock.storage.category",
+  "domain": "[('company_id', 'in', company_ids + [False])]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/security/stock_security.xml"
+ },
+ {
+  "id": "stock_account.stock_valuation_layer_company_rule",
+  "name": "Stock Valuation Layer Multicompany",
+  "model": null,
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "stock_account",
+  "file": "sources/odoo/addons/stock_account/security/stock_account_security.xml"
+ },
+ {
+  "id": "sales_team.crm_rule_all_salesteam",
+  "name": "All Salesteam",
+  "model": "crm.team",
+  "domain": "[(1,'=',1)]",
+  "groups": [
+   "sales_team.group_sale_salesman_all_leads"
+  ],
+  "perms": {},
+  "addon": "sales_team",
+  "file": "sources/odoo/addons/sales_team/security/sales_team_security.xml"
+ },
+ {
+  "id": "sales_team.sale_team_comp_rule",
+  "name": "Sales Team multi-company",
+  "model": "crm.team",
+  "domain": "[('company_id', 'in', company_ids + [False])]",
+  "groups": [],
+  "perms": {},
+  "addon": "sales_team",
+  "file": "sources/odoo/addons/sales_team/security/sales_team_security.xml"
+ },
+ {
+  "id": "sale.sale_order_comp_rule",
+  "name": "Sales Order multi-company",
+  "model": "sale.order",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_order_line_comp_rule",
+  "name": "Sales Order Line multi-company",
+  "model": "sale.order.line",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_order_report_comp_rule",
+  "name": "Sales Order Analysis multi-company",
+  "model": "sale.report",
+  "domain": "[('company_id', 'in', company_ids)]",
+  "groups": [],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_order_rule_portal",
+  "name": "Portal Personal Quotations/Sales Orders",
+  "model": "sale.order",
+  "domain": "[('message_partner_ids','child_of',[user.commercial_partner_id.id])]",
+  "groups": [
+   "base.group_portal"
+  ],
+  "perms": {
+   "perm_read": "True",
+   "perm_write": "True",
+   "perm_create": "False",
+   "perm_unlink": "True"
+  },
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_order_line_rule_portal",
+  "name": "Portal Sales Orders Line",
+  "model": "sale.order.line",
+  "domain": "[('order_id.message_partner_ids','child_of',[user.commercial_partner_id.id])]",
+  "groups": [
+   "base.group_portal"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_order_personal_rule",
+  "name": "Personal Orders",
+  "model": "sale.order",
+  "domain": "['|',('user_id','=',user.id),('user_id','=',False)]",
+  "groups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_order_see_all",
+  "name": "All Orders",
+  "model": "sale.order",
+  "domain": "[(1,'=',1)]",
+  "groups": [
+   "sales_team.group_sale_salesman_all_leads"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_order_report_personal_rule",
+  "name": "Personal Orders Analysis",
+  "model": "sale.report",
+  "domain": "['|',('user_id','=',user.id),('user_id','=',False)]",
+  "groups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_order_report_see_all",
+  "name": "All Orders Analysis",
+  "model": "sale.report",
+  "domain": "[(1,'=',1)]",
+  "groups": [
+   "sales_team.group_sale_salesman_all_leads"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_order_line_personal_rule",
+  "name": "Personal Order Lines",
+  "model": "sale.order.line",
+  "domain": "['|',('salesman_id','=',user.id),('salesman_id','=',False)]",
+  "groups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_order_line_see_all",
+  "name": "All Orders Lines",
+  "model": "sale.order.line",
+  "domain": "[(1,'=',1)]",
+  "groups": [
+   "sales_team.group_sale_salesman_all_leads"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.account_invoice_report_rule_see_personal",
+  "name": "Personal Invoices Analysis",
+  "model": "account.invoice.report",
+  "domain": "['|', ('invoice_user_id', '=', user.id), ('invoice_user_id', '=', False)]",
+  "groups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.account_invoice_report_rule_see_all",
+  "name": "All Invoices Analysis",
+  "model": "account.invoice.report",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "sales_team.group_sale_salesman_all_leads"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.payment_transaction_salesman_rule",
+  "name": "Access every payment transaction",
+  "model": "payment.transaction",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.payment_token_salesman_rule",
+  "name": "Access every payment token",
+  "model": "payment.model_payment_token",
+  "domain": "[(1, '=', 1)]",
+  "groups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.account_invoice_rule_see_personal",
+  "name": "Personal Invoices",
+  "model": "account.move",
+  "domain": "[('move_type', 'in', ('out_invoice', 'out_refund')), '|', ('invoice_user_id', '=', user.id), ('invoice_user_id', '=', False)]",
+  "groups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.account_invoice_rule_see_all",
+  "name": "All Invoices",
+  "model": "account.move",
+  "domain": "[('move_type', 'in', ('out_invoice', 'out_refund'))]",
+  "groups": [
+   "sales_team.group_sale_salesman_all_leads"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.account_invoice_line_rule_see_personal",
+  "name": "Personal Invoice Lines",
+  "model": "account.move.line",
+  "domain": "[('move_id.move_type', 'in', ('out_invoice', 'out_refund')), '|', ('move_id.invoice_user_id', '=', user.id), ('move_id.invoice_user_id', '=', False)]",
+  "groups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.account_invoice_line_rule_see_all",
+  "name": "All Invoice Lines",
+  "model": "account.move.line",
+  "domain": "[('move_id.move_type', 'in', ('out_invoice', 'out_refund'))]",
+  "groups": [
+   "sales_team.group_sale_salesman_all_leads"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.account_invoice_send_single_rule_see_personal",
+  "name": "Personal Invoice Send and Print (single mode)",
+  "model": "account.move.send.wizard",
+  "domain": "[('move_id.move_type', 'in', ('out_invoice', 'out_refund')), '|', ('move_id.invoice_user_id', '=', user.id), ('move_id.invoice_user_id', '=', False)]",
+  "groups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.account_invoice_send_batch_rule_see_personal",
+  "name": "Personal Invoice Send and Print (batch mode)",
+  "model": "account.move.send.batch.wizard",
+  "domain": "[('move_ids.move_type', 'in', ('out_invoice', 'out_refund')), '|', ('move_ids.invoice_user_id', '=', user.id), ('move_ids.invoice_user_id', '=', False)]",
+  "groups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.account_invoice_send_single_rule_see_all",
+  "name": "All Invoice Send and Print (single mode)",
+  "model": "account.move.send.wizard",
+  "domain": "[('move_id.move_type', 'in', ('out_invoice', 'out_refund'))]",
+  "groups": [
+   "sales_team.group_sale_salesman_all_leads"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.account_invoice_send_batch_rule_see_all",
+  "name": "All Invoice Send and Print (batch mode)",
+  "model": "account.move.send.batch.wizard",
+  "domain": "[('move_ids.move_type', 'in', ('out_invoice', 'out_refund'))]",
+  "groups": [
+   "sales_team.group_sale_salesman_all_leads"
+  ],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_payment_provider_onboarding_wizard_rule",
+  "name": "Payment Provider Onboarding Wizard Rule",
+  "model": "sale.payment.provider.onboarding.wizard",
+  "domain": "[('create_uid', '=', user.id)]",
+  "groups": [],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_advance_payment_inv_rule",
+  "name": "Sales Advance Payment Invoice Rule",
+  "model": "sale.advance.payment.inv",
+  "domain": "[('create_uid', '=', user.id)]",
+  "groups": [],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_order_cancel_rule",
+  "name": "Sales Order Cancel Rule",
+  "model": "sale.order.cancel",
+  "domain": "[('create_uid', '=', user.id)]",
+  "groups": [],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.sale_mass_cancel_orders_rule",
+  "name": "Sales Mass Cancel Orders: access only your own wizard",
+  "model": "sale.mass.cancel.orders",
+  "domain": "[('create_uid', '=', user.id)]",
+  "groups": [],
+  "perms": {},
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.mail_plan_rule_group_sale_manager",
+  "name": "Manager can manage sale order plans",
+  "model": "mail.model_mail_activity_plan",
+  "domain": "[('res_model', '=', 'sale.order')]",
+  "groups": [
+   "sales_team.group_sale_manager"
+  ],
+  "perms": {
+   "perm_read": "False"
+  },
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale.mail_plan_template_rule_group_sale_manager",
+  "name": "Manager can manage sale order plan templates",
+  "model": "mail.model_mail_activity_plan_template",
+  "domain": "[('plan_id.res_model', '=', 'sale.order')]",
+  "groups": [
+   "sales_team.group_sale_manager"
+  ],
+  "perms": {
+   "perm_read": "False"
+  },
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/security/ir_rules.xml"
+ },
+ {
+  "id": "sale_management.sale_order_template_rule_company",
+  "name": "Quotation Template multi-company",
+  "model": "sale.order.template",
+  "domain": "[('company_id', 'in', company_ids + [False])]",
+  "groups": [],
+  "perms": {},
+  "addon": "sale_management",
+  "file": "sources/odoo/addons/sale_management/security/sale_management_security.xml"
+ },
+ {
+  "id": "sale_stock.stock_picking_rule_portal",
+  "name": "Portal Follower Transfers",
+  "model": "stock.picking",
+  "domain": "['|', '|', ('message_partner_ids', 'in', [user.partner_id.id]), ('partner_id', '=', user.partner_id.id), ('sale_id.partner_id', '=', user.partner_id.id)]",
+  "groups": [
+   "base.group_portal"
+  ],
+  "perms": {},
+  "addon": "sale_stock",
+  "file": "sources/odoo/addons/sale_stock/security/sale_stock_security.xml"
+ }
+]

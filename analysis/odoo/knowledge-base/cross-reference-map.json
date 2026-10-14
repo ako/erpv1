@@ -1,0 +1,5022 @@
+{
+ "avatar.mixin": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 9
+ },
+ "decimal.precision": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [
+   "product",
+   "account"
+  ],
+  "screens": [
+   "base.view_decimal_precision_form",
+   "base.view_decimal_precision_tree"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 8
+ },
+ "image.mixin": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 0
+ },
+ "ir.actions.actions": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.action_view",
+   "base.action_view_tree",
+   "base.action_view_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 12
+ },
+ "ir.actions.act_window": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_window_action_tree",
+   "base.view_window_action_form",
+   "base.view_window_action_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 11
+ },
+ "ir.actions.act_window.view": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 1
+ },
+ "ir.actions.act_window_close": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 1
+ },
+ "ir.actions.act_url": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 1
+ },
+ "ir.actions.server": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_server_action_form",
+   "base.view_server_action_tree",
+   "base.view_server_action_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 29
+ },
+ "ir.actions.todo": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.ir_actions_todo_tree",
+   "base.config_wizard_step_view_form",
+   "base.config_wizard_step_view_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 6
+ },
+ "ir.actions.client": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_client_action_form",
+   "base.view_client_action_tree"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 3
+ },
+ "ir.actions.report": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [
+   "account",
+   "purchase",
+   "stock"
+  ],
+  "screens": [
+   "base.act_report_xml_view",
+   "base.act_report_xml_view_tree",
+   "base.act_report_xml_search_view",
+   "account.ir_actions_report_form_inherit_account"
+  ],
+  "menus": [
+   null,
+   "Reports"
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 45
+ },
+ "ir.asset": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.asset_view_form",
+   "base.asset_view_tree",
+   "base.asset_view_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 16
+ },
+ "ir.attachment": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [
+   "product",
+   "account"
+  ],
+  "screens": [
+   "base.view_attachment_form",
+   "base.view_attachment_tree",
+   "base.view_attachment_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "(all users)",
+   "base.group_user"
+  ],
+  "logicCount": 58
+ },
+ "ir.autovacuum": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "ir.binary": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 7
+ },
+ "ir.config_parameter": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [
+   "analytic",
+   "sale"
+  ],
+  "screens": [
+   "base.view_ir_config_search",
+   "base.view_ir_config_list",
+   "base.view_ir_config_form"
+  ],
+  "menus": [
+   "System Parameters"
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 13
+ },
+ "ir.cron": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.ir_cron_view_form",
+   "base.ir_cron_view_tree",
+   "base.ir_cron_view_calendar",
+   "base.ir_cron_view_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 26
+ },
+ "ir.cron.trigger": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.ir_cron_trigger_view_form",
+   "base.ir_cron_trigger_view_tree",
+   "base.ir_cron_trigger_view_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 1
+ },
+ "ir.cron.progress": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 1
+ },
+ "ir.default": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.ir_default_form_view",
+   "base.ir_default_tree_view",
+   "base.ir_default_search_view"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "(all users)",
+   "base.group_system",
+   "base.group_user"
+  ],
+  "logicCount": 12
+ },
+ "ir.demo": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.demo_force_install_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 1
+ },
+ "ir.demo_failure": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.demo_wizard_form_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 0
+ },
+ "ir.demo_failure.wizard": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.demo_failures_dialog"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 2
+ },
+ "ir.embedded.actions": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.embedded_action_form",
+   "base.embedded_action_tree"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_user"
+  ],
+  "logicCount": 6
+ },
+ "ir.exports": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_allow_export"
+  ],
+  "logicCount": 0
+ },
+ "ir.exports.line": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user"
+  ],
+  "logicCount": 0
+ },
+ "ir.fields.converter": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 24
+ },
+ "ir.filters": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.ir_filters_view_form",
+   "base.ir_filters_view_tree",
+   "base.ir_filters_view_search"
+  ],
+  "menus": [
+   "User-defined Filters"
+  ],
+  "aclGroups": [
+   "base.group_erp_manager",
+   "base.group_portal",
+   "base.group_public",
+   "base.group_user"
+  ],
+  "logicCount": 11
+ },
+ "ir.http": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 29
+ },
+ "ir.logging": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.ir_logging_form_view",
+   "base.ir_logging_tree_view",
+   "base.ir_logging_search_view"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_erp_manager"
+  ],
+  "logicCount": 1
+ },
+ "ir.mail_server": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.ir_mail_server_form",
+   "base.ir_mail_server_list",
+   "base.view_ir_mail_server_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 20
+ },
+ "base": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 23
+ },
+ "_unknown": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 0
+ },
+ "ir.model": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_model_form",
+   "base.view_model_tree",
+   "base.view_model_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_erp_manager",
+   "base.group_user"
+  ],
+  "logicCount": 21
+ },
+ "ir.model.fields": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_model_fields_form",
+   "base.view_model_fields_tree",
+   "base.view_model_fields_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_erp_manager",
+   "base.group_user"
+  ],
+  "logicCount": 40
+ },
+ "ir.model.inherit": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "(all users)"
+  ],
+  "logicCount": 1
+ },
+ "ir.model.fields.selection": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_model_fields_selection_form",
+   "base.view_model_fields_selection_tree",
+   "base.view_model_fields_selection_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_erp_manager",
+   "base.group_user"
+  ],
+  "logicCount": 11
+ },
+ "ir.model.constraint": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_model_constraint_form",
+   "base.view_model_constraint_list",
+   "base.view_model_constraint_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_erp_manager"
+  ],
+  "logicCount": 5
+ },
+ "ir.model.relation": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_model_relation_form",
+   "base.view_model_relation_list"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_erp_manager"
+  ],
+  "logicCount": 2
+ },
+ "ir.model.access": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.ir_access_view_tree",
+   "base.ir_access_view_tree_edition",
+   "base.ir_access_view_form",
+   "base.ir_access_view_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_erp_manager"
+  ],
+  "logicCount": 9
+ },
+ "ir.model.data": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_model_data_form",
+   "base.view_model_data_list",
+   "base.view_model_data_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_erp_manager",
+   "base.group_user"
+  ],
+  "logicCount": 21
+ },
+ "wizard.ir.model.menu.create": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_model_menu_create"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 1
+ },
+ "ir.module.category": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_module_category_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_erp_manager"
+  ],
+  "logicCount": 4
+ },
+ "ir.module.module": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [
+   "account"
+  ],
+  "screens": [
+   "base.view_module_filter",
+   "base.module_form",
+   "base.module_tree",
+   "base.module_view_kanban",
+   "account.view_module_filter_inherit_account"
+  ],
+  "menus": [
+   "Main Apps"
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 47
+ },
+ "ir.module.module.dependency": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 4
+ },
+ "ir.module.module.exclusion": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 3
+ },
+ "ir.profile": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.ir_profile_view_search",
+   "base.ir_profile_view_list",
+   "base.ir_profile_view_form"
+  ],
+  "menus": [
+   "Profiling"
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 5
+ },
+ "base.enable.profiling.wizard": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.enable_profiling_wizard"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 2
+ },
+ "ir.qweb": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 69
+ },
+ "ir.qweb.field": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 5
+ },
+ "ir.qweb.field.integer": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 2
+ },
+ "ir.qweb.field.float": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 3
+ },
+ "ir.qweb.field.date": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 2
+ },
+ "ir.qweb.field.datetime": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 2
+ },
+ "ir.qweb.field.text": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "ir.qweb.field.selection": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 3
+ },
+ "ir.qweb.field.many2one": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "ir.qweb.field.many2many": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "ir.qweb.field.one2many": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "ir.qweb.field.html": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "ir.qweb.field.image": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 2
+ },
+ "ir.qweb.field.image_url": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "ir.qweb.field.monetary": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 3
+ },
+ "ir.qweb.field.float_time": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "ir.qweb.field.time": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "ir.qweb.field.duration": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 2
+ },
+ "ir.qweb.field.relative": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 3
+ },
+ "ir.qweb.field.barcode": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 2
+ },
+ "ir.qweb.field.contact": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 2
+ },
+ "ir.qweb.field.qweb": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "ir.rule": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_rule_form",
+   "base.view_rule_tree",
+   "base.view_rule_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_erp_manager"
+  ],
+  "logicCount": 13
+ },
+ "ir.sequence": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.sequence_view",
+   "base.sequence_view_tree",
+   "base.view_sequence_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system",
+   "base.group_user"
+  ],
+  "logicCount": 15
+ },
+ "ir.sequence.date_range": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system",
+   "base.group_user"
+  ],
+  "logicCount": 8
+ },
+ "ir.ui.menu": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [
+   "account"
+  ],
+  "screens": [
+   "base.edit_menu_access",
+   "base.edit_menu",
+   "base.edit_menu_access_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system",
+   "base.group_user"
+  ],
+  "logicCount": 20
+ },
+ "ir.ui.view.custom": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_view_custom_form",
+   "base.view_view_custom_tree",
+   "base.view_view_custom_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 1
+ },
+ "ir.ui.view": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_view_form",
+   "base.view_view_tree",
+   "base.view_view_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "(all users)",
+   "base.group_system"
+  ],
+  "logicCount": 106
+ },
+ "reset.view.arch.wizard": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.reset_view_arch_wizard_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_erp_manager",
+   "base.group_system"
+  ],
+  "logicCount": 3
+ },
+ "report.layout": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user"
+  ],
+  "logicCount": 0
+ },
+ "report.paperformat": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.paperformat_view_tree",
+   "base.paperformat_view_form"
+  ],
+  "menus": [
+   "Paper Format"
+  ],
+  "aclGroups": [
+   "base.group_system",
+   "base.group_user"
+  ],
+  "logicCount": 2
+ },
+ "res.bank": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_res_bank_form",
+   "base.view_res_bank_tree",
+   "base.res_bank_view_search"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_partner_manager",
+   "base.group_system",
+   "base.group_user"
+  ],
+  "logicCount": 4
+ },
+ "res.partner.bank": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [
+   "account"
+  ],
+  "screens": [
+   "base.view_partner_bank_form",
+   "base.view_partner_bank_tree",
+   "base.view_partner_bank_search",
+   "account.view_partner_bank_form_inherit_account",
+   "account.view_partner_bank_search_inherit"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_partner_manager",
+   "base.group_user"
+  ],
+  "logicCount": 41
+ },
+ "res.company": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [
+   "product",
+   "account",
+   "purchase",
+   "stock",
+   "stock_account",
+   "purchase_stock",
+   "sale",
+   "sale_management",
+   "sale_stock"
+  ],
+  "screens": [
+   "base.view_company_form",
+   "base.view_company_tree",
+   "base.view_res_company_kanban",
+   "account.view_company_form",
+   "account.res_company_view_form_terms",
+   "account.res_company_form_view_onboarding",
+   "account.res_company_form_view_onboarding_sale_tax"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_erp_manager",
+   "base.group_portal",
+   "base.group_public",
+   "base.group_user"
+  ],
+  "logicCount": 112
+ },
+ "res.config": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.res_config_view_base"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 7
+ },
+ "res.config.settings": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [
+   "product",
+   "analytic",
+   "account",
+   "purchase",
+   "stock",
+   "stock_account",
+   "purchase_stock",
+   "sale",
+   "sale_management",
+   "sale_stock"
+  ],
+  "screens": [
+   "base.res_config_settings_view_form",
+   "product.res_config_settings_view_form",
+   "account.res_config_settings_view_form",
+   "account.res_config_settings_view_form_base_setup",
+   "purchase.res_config_settings_view_form_purchase",
+   "stock.res_config_settings_view_form",
+   "stock_account.res_config_settings_view_form",
+   "purchase_stock.res_config_settings_view_form_purchase",
+   "purchase_stock.res_config_settings_view_form_stock",
+   "sale.res_config_settings_view_form",
+   "sale_management.res_config_settings_view_form",
+   "sale_stock.res_config_settings_view_form_stock"
+  ],
+  "menus": [
+   "Settings",
+   "Settings",
+   "Settings",
+   "Settings"
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 49
+ },
+ "res.country": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_country_tree",
+   "base.view_country_form",
+   "base.view_country_search"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_partner_manager",
+   "base.group_portal",
+   "base.group_public",
+   "base.group_system",
+   "base.group_user"
+  ],
+  "logicCount": 7
+ },
+ "res.country.group": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [
+   "product"
+  ],
+  "screens": [
+   "base.view_country_group_tree",
+   "base.view_country_group_form",
+   "product.inherits_website_sale_country_group_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_partner_manager",
+   "base.group_portal",
+   "base.group_public",
+   "base.group_user"
+  ],
+  "logicCount": 0
+ },
+ "res.country.state": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_country_state_tree",
+   "base.view_country_state_form",
+   "base.view_country_state_search"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_partner_manager",
+   "base.group_portal",
+   "base.group_public",
+   "base.group_user"
+  ],
+  "logicCount": 4
+ },
+ "res.currency": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [
+   "product",
+   "account"
+  ],
+  "screens": [
+   "base.view_currency_search",
+   "base.view_currency_tree",
+   "base.view_currency_kanban",
+   "base.view_currency_form",
+   "account.res_currency_form_inherit"
+  ],
+  "menus": [
+   "Currencies"
+  ],
+  "aclGroups": [
+   "account.group_account_manager",
+   "base.group_portal",
+   "base.group_public",
+   "base.group_system",
+   "base.group_user"
+  ],
+  "logicCount": 36
+ },
+ "res.currency.rate": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_currency_rate_search",
+   "base.view_currency_rate_tree",
+   "base.view_currency_rate_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_manager",
+   "base.group_portal",
+   "base.group_public",
+   "base.group_system",
+   "base.group_user"
+  ],
+  "logicCount": 15
+ },
+ "res.device.log": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user"
+  ],
+  "logicCount": 9
+ },
+ "res.device": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.res_device_view_form",
+   "base.res_device_view_tree",
+   "base.res_device_view_kanban"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_user"
+  ],
+  "logicCount": 7
+ },
+ "res.lang": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.res_lang_tree",
+   "base.res_lang_form",
+   "base.res_lang_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_portal",
+   "base.group_public",
+   "base.group_system",
+   "base.group_user"
+  ],
+  "logicCount": 24
+ },
+ "format.vat.label.mixin": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "format.address.mixin": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 4
+ },
+ "res.partner.category": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_partner_category_form",
+   "base.view_partner_category_list",
+   "base.res_partner_category_view_search"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_partner_manager",
+   "base.group_user"
+  ],
+  "logicCount": 4
+ },
+ "res.partner.title": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_partner_title_tree",
+   "base.view_partner_title_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_partner_manager",
+   "base.group_user"
+  ],
+  "logicCount": 0
+ },
+ "res.partner": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [
+   "product",
+   "account",
+   "purchase",
+   "stock",
+   "purchase_stock",
+   "sale"
+  ],
+  "screens": [
+   "base.view_partner_tree",
+   "base.view_partner_simple_form",
+   "base.view_partner_address_form",
+   "base.view_partner_form",
+   "base.res_partner_view_form_private",
+   "base.view_res_partner_filter",
+   "base.res_partner_kanban_view",
+   "product.view_partner_property_form",
+   "account.partner_view_buttons",
+   "account.view_partner_property_form",
+   "account.res_partner_view_tree",
+   "account.res_partner_view_search",
+   "account.partner_missing_account_list_view",
+   "purchase.view_partner_property_form",
+   "purchase.purchase_partner_kanban_view",
+   "purchase.res_partner_view_purchase_buttons",
+   "purchase.res_partner_view_purchase_account_buttons",
+   "stock.view_partner_stock_form",
+   "stock.view_partner_stock_warnings_form",
+   "purchase_stock.res_partner_view_purchase_buttons_inherit",
+   "sale.crm_lead_partner_kanban_view",
+   "sale.res_partner_view_buttons",
+   "sale.res_partner_view_form_payment_defaultcreditcard",
+   "sale.res_partner_view_form_property_inherit"
+  ],
+  "menus": [
+   "Customers",
+   "Vendors",
+   "Vendors",
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_manager",
+   "base.group_partner_manager",
+   "base.group_portal",
+   "base.group_public",
+   "base.group_user",
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 142
+ },
+ "res.partner.industry": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.res_partner_industry_view_form",
+   "base.res_partner_industry_view_tree",
+   "base.res_partner_industry_view_search"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system",
+   "base.group_user"
+  ],
+  "logicCount": 0
+ },
+ "res.groups": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [
+   "account"
+  ],
+  "screens": [
+   "base.view_groups_search",
+   "base.view_groups_form"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_erp_manager",
+   "base.group_user"
+  ],
+  "logicCount": 25
+ },
+ "res.users.log": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 1
+ },
+ "res.users": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [
+   "stock",
+   "sales_team",
+   "sale_stock"
+  ],
+  "screens": [
+   "base.view_users_simple_form",
+   "base.view_users_form",
+   "base.view_users_tree",
+   "base.view_res_users_kanban",
+   "base.view_users_search",
+   "base.user_groups_view",
+   "base.view_users_form_simple_modif",
+   "sale_stock.res_users_view_form_preferences",
+   "sale_stock.res_users_view_simple_form",
+   "sale_stock.res_users_view_form"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_erp_manager",
+   "base.group_portal",
+   "base.group_public",
+   "base.group_user"
+  ],
+  "logicCount": 110
+ },
+ "res.users.identitycheck": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.res_users_identitycheck_view_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_portal",
+   "base.group_user"
+  ],
+  "logicCount": 3
+ },
+ "change.password.wizard": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.change_password_wizard_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_erp_manager"
+  ],
+  "logicCount": 2
+ },
+ "change.password.user": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.change_password_wizard_user_tree_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_erp_manager"
+  ],
+  "logicCount": 1
+ },
+ "change.password.own": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.change_password_own_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user"
+  ],
+  "logicCount": 2
+ },
+ "res.users.apikeys": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_apikeys"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_portal",
+   "base.group_user"
+  ],
+  "logicCount": 7
+ },
+ "res.users.apikeys.description": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.form_res_users_key_description"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_portal",
+   "base.group_user"
+  ],
+  "logicCount": 6
+ },
+ "res.users.apikeys.show": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.form_res_users_key_show"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user"
+  ],
+  "logicCount": 0
+ },
+ "res.users.deletion": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "(all users)",
+   "base.group_erp_manager"
+  ],
+  "logicCount": 2
+ },
+ "res.users.settings": {
+  "capability": "C1",
+  "inScope": true,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "(all users)",
+   "base.group_user"
+  ],
+  "logicCount": 5
+ },
+ "report.base.report_irmodulereference": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 3
+ },
+ "base.language.export": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.wizard_lang_export"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_user"
+  ],
+  "logicCount": 2
+ },
+ "base.language.import": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_base_import_language"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 1
+ },
+ "base.language.install": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.language_install_view_form_lang_switch",
+   "base.view_base_language_install"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 5
+ },
+ "base.module.uninstall": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_base_module_uninstall"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 7
+ },
+ "base.module.update": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_base_module_update"
+  ],
+  "menus": [
+   "Update Apps List"
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 2
+ },
+ "base.module.upgrade": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [
+   "base.view_base_module_upgrade",
+   "base.view_base_module_upgrade_install"
+  ],
+  "menus": [
+   "Apply Scheduled Upgrades"
+  ],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 6
+ },
+ "base.partner.merge.line": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_partner_manager"
+  ],
+  "logicCount": 0
+ },
+ "base.partner.merge.automatic.wizard": {
+  "capability": "C12",
+  "inScope": false,
+  "origin": "base",
+  "extendedBy": [
+   "account"
+  ],
+  "screens": [
+   "base.base_partner_merge_automatic_wizard_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_partner_manager"
+  ],
+  "logicCount": 26
+ },
+ "uom.category": {
+  "capability": "C2",
+  "inScope": true,
+  "origin": "uom",
+  "extendedBy": [],
+  "screens": [
+   "uom.product_uom_categ_form_view",
+   "uom.product_uom_categ_tree_view",
+   "uom.uom_categ_view_search"
+  ],
+  "menus": [
+   null,
+   "UoM Categories",
+   null
+  ],
+  "aclGroups": [
+   "base.group_system",
+   "base.group_user",
+   "purchase.group_purchase_manager",
+   "sales_team.group_sale_manager",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 1
+ },
+ "uom.uom": {
+  "capability": "C2",
+  "inScope": true,
+  "origin": "uom",
+  "extendedBy": [
+   "product",
+   "account",
+   "stock"
+  ],
+  "screens": [
+   "uom.product_uom_tree_view",
+   "uom.product_uom_form_view",
+   "uom.uom_uom_view_search",
+   "account.product_uom_form_view_inherit"
+  ],
+  "menus": [
+   null,
+   "UoM",
+   null
+  ],
+  "aclGroups": [
+   "base.group_system",
+   "base.group_user",
+   "purchase.group_purchase_manager",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 21
+ },
+ "product.attribute": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [
+   "product.attribute_tree_view",
+   "product.product_attribute_view_form",
+   "product.product_attribute_search"
+  ],
+  "menus": [
+   "Attributes",
+   null,
+   null
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "product.group_product_manager",
+   "sales_team.group_sale_manager",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 8
+ },
+ "product.attribute.custom.value": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [
+   "sale"
+  ],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user",
+   "product.group_product_manager",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 1
+ },
+ "product.attribute.value": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [
+   "product.product_attribute_value_list"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user",
+   "product.group_product_manager",
+   "sales_team.group_sale_manager",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 11
+ },
+ "product.catalog.mixin": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 9
+ },
+ "product.category": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [
+   "account",
+   "stock",
+   "stock_account",
+   "purchase_stock",
+   "sale"
+  ],
+  "screens": [
+   "product.product_category_form_view",
+   "product.product_category_list_view",
+   "product.product_category_search_view",
+   "account.view_category_property_form",
+   "stock.product_category_form_view_inherit",
+   "stock_account.view_category_property_form_stock",
+   "stock_account.view_category_property_form",
+   "purchase_stock.view_category_property_form",
+   "sale.view_category_property_form"
+  ],
+  "menus": [
+   null,
+   null,
+   null,
+   null
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "product.group_product_manager",
+   "purchase.group_purchase_manager",
+   "sales_team.group_sale_manager",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 16
+ },
+ "product.combo": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [
+   "product.product_combo_view_form",
+   "product.product_combo_view_tree"
+  ],
+  "menus": [
+   "Combo Choices"
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "product.group_product_manager"
+  ],
+  "logicCount": 6
+ },
+ "product.combo.item": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user",
+   "product.group_product_manager"
+  ],
+  "logicCount": 1
+ },
+ "product.document": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [
+   "sale"
+  ],
+  "screens": [
+   "product.product_document_form",
+   "product.product_document_kanban",
+   "product.product_document_list",
+   "product.product_document_search",
+   "sale.product_document_form",
+   "sale.product_document_kanban",
+   "sale.product_document_list",
+   "sale.product_document_search"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user"
+  ],
+  "logicCount": 4
+ },
+ "product.packaging": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [
+   "purchase",
+   "stock",
+   "sale"
+  ],
+  "screens": [
+   "product.product_packaging_tree_view",
+   "product.product_packaging_search_view",
+   "product.product_packaging_tree_view2",
+   "product.product_packaging_form_view",
+   "product.product_packaging_form_view2",
+   "purchase.product_packaging_form_view_purchase",
+   "purchase.product_packaging_tree_view_purchase",
+   "stock.product_packaging_tree_view",
+   "stock.product_packaging_form_view",
+   "sale.product_packaging_form_view_sale",
+   "sale.product_packaging_tree_view_sale"
+  ],
+  "menus": [
+   "Product Packagings"
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "product.group_product_manager",
+   "purchase.group_purchase_manager",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 4
+ },
+ "product.pricelist": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [
+   "product.product_pricelist_view_search",
+   "product.product_pricelist_view_tree",
+   "product.product_pricelist_view_kanban",
+   "product.product_pricelist_view"
+  ],
+  "menus": [
+   "Pricelists"
+  ],
+  "aclGroups": [
+   "base.group_partner_manager",
+   "base.group_user",
+   "product.group_product_manager",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 20
+ },
+ "product.pricelist.item": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [
+   "product.product_pricelist_item_view_search",
+   "product.product_pricelist_item_tree_view",
+   "product.product_pricelist_item_tree_view_from_product",
+   "product.product_pricelist_item_form_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user",
+   "product.group_product_manager",
+   "purchase.group_purchase_manager",
+   "sales_team.group_sale_manager",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 32
+ },
+ "product.product": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [
+   "account",
+   "purchase",
+   "stock",
+   "stock_account",
+   "purchase_stock",
+   "sale"
+  ],
+  "screens": [
+   "product.product_search_form_view",
+   "product.product_variant_easy_edit_view",
+   "product.product_product_tree_view",
+   "product.product_product_view_tree_tag",
+   "product.product_normal_form_view",
+   "product.product_product_view_form_normalized",
+   "product.product_kanban_view",
+   "product.product_product_view_activity",
+   "product.product_view_kanban_catalog",
+   "product.product_view_search_catalog",
+   "account.product_view_search_catalog",
+   "account.product_product_view_form_normalized_account",
+   "purchase.view_product_product_supplier_inherit",
+   "purchase.product_normal_form_view_inherit_purchase",
+   "purchase.product_view_kanban_catalog_purchase_only",
+   "purchase.product_view_search_catalog",
+   "stock.view_stock_product_tree",
+   "stock.stock_product_search_form_view",
+   "stock.product_search_form_view_stock",
+   "stock.product_product_view_form_easy_inherit_stock",
+   "stock.product_view_kanban_catalog",
+   "stock.product_form_view_procurement_button",
+   "stock.product_product_stock_tree",
+   "stock.product_search_form_view_stock_report",
+   "stock_account.product_product_stock_tree_inherit_stock_account",
+   "purchase_stock.product_view_kanban_catalog_purchase_only",
+   "sale.product_form_view_sale_order_button",
+   "sale.product_view_kanban_catalog",
+   "sale.product_view_search_catalog"
+  ],
+  "menus": [
+   "Product Variants",
+   "Product Variants",
+   "Stock",
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_manager",
+   "account.group_account_readonly",
+   "base.group_user",
+   "product.group_product_manager",
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 152
+ },
+ "product.supplierinfo": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [
+   "purchase",
+   "purchase_stock"
+  ],
+  "screens": [
+   "product.product_supplierinfo_form_view",
+   "product.product_supplierinfo_search_view",
+   "product.product_supplierinfo_view_kanban",
+   "product.product_supplierinfo_tree_view",
+   "purchase.product_supplierinfo_tree_view2",
+   "purchase.product_product_supplierinfo_tree_view2",
+   "purchase_stock.product_supplierinfo_replenishment_tree_view"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "product.group_product_manager",
+   "purchase.group_purchase_manager",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 13
+ },
+ "product.tag": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [
+   "product.product_tag_form_view",
+   "product.product_tag_tree_view"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "product.group_product_manager",
+   "purchase.group_purchase_manager",
+   "sales_team.group_sale_manager",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 5
+ },
+ "product.template": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [
+   "account",
+   "purchase",
+   "stock",
+   "stock_account",
+   "purchase_stock",
+   "sale",
+   "sale_stock"
+  ],
+  "screens": [
+   "product.product_template_tree_view",
+   "product.product_template_only_form_view",
+   "product.product_template_kanban_view",
+   "product.product_template_view_activity",
+   "product.product_template_form_view",
+   "product.product_template_search_view",
+   "product.product_template_view_tree_tag",
+   "account.product_template_view_tree",
+   "account.product_template_form_view",
+   "purchase.view_product_supplier_inherit",
+   "purchase.view_product_template_purchase_buttons_from",
+   "purchase.product_template_search_view_purchase",
+   "stock.view_stock_product_template_tree",
+   "stock.product_template_search_form_view_stock",
+   "stock.product_template_search_view_inherit_stock",
+   "stock.view_template_property_form",
+   "stock.product_template_kanban_stock_view",
+   "stock.product_template_form_view_procurement_button",
+   "stock_account.product_template_tree_view",
+   "stock_account.view_template_property_form_stock_account",
+   "purchase_stock.product_template_form_view",
+   "sale.product_template_view_form",
+   "sale.product_template_form_view",
+   "sale.product_template_form_view_sale_order_button"
+  ],
+  "menus": [
+   "Products",
+   "Products",
+   "Products",
+   "Products",
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_manager",
+   "base.group_user",
+   "product.group_product_manager",
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 173
+ },
+ "product.template.attribute.exclusion": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user",
+   "product.group_product_manager",
+   "sales_team.group_sale_manager",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 3
+ },
+ "product.template.attribute.line": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [
+   "product.product_template_attribute_line_form",
+   "product.product_template_attribute_line_view_tree"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user",
+   "product.group_product_manager",
+   "sales_team.group_sale_manager",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 10
+ },
+ "product.template.attribute.value": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [
+   "product.product_template_attribute_value_view_tree",
+   "product.product_template_attribute_value_view_form",
+   "product.product_template_attribute_value_view_search"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user",
+   "product.group_product_manager",
+   "sales_team.group_sale_manager",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 12
+ },
+ "report.product.report_producttemplatelabel2x7": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "report.product.report_producttemplatelabel4x7": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "report.product.report_producttemplatelabel4x12": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "report.product.report_producttemplatelabel4x12noprice": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "report.product.report_producttemplatelabel_dymo": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "report.product.report_pricelist": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 4
+ },
+ "product.label.layout": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [
+   "stock"
+  ],
+  "screens": [
+   "product.product_label_layout_form",
+   "stock.product_label_layout_form_picking"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user"
+  ],
+  "logicCount": 4
+ },
+ "update.product.attribute.value": {
+  "capability": "C3",
+  "inScope": true,
+  "origin": "product",
+  "extendedBy": [],
+  "screens": [
+   "product.update_product_attribute_value_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "product.group_product_manager",
+   "sales_team.group_sale_manager",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 5
+ },
+ "account.analytic.account": {
+  "capability": "C10",
+  "inScope": false,
+  "origin": "analytic",
+  "extendedBy": [
+   "account",
+   "purchase",
+   "stock_account"
+  ],
+  "screens": [
+   "analytic.view_account_analytic_account_form",
+   "analytic.view_account_analytic_account_list",
+   "analytic.view_account_analytic_account_list_select",
+   "analytic.view_account_analytic_account_kanban",
+   "analytic.view_account_analytic_account_search",
+   "account.account_analytic_account_view_form_inherit",
+   "account.account_analytic_account_view_list_inherit",
+   "purchase.account_analytic_account_view_form_purchase"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_user",
+   "analytic.group_analytic_accounting",
+   "base.group_user",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 16
+ },
+ "account.analytic.distribution.model": {
+  "capability": "C10",
+  "inScope": false,
+  "origin": "analytic",
+  "extendedBy": [
+   "account"
+  ],
+  "screens": [
+   "analytic.account_analytic_distribution_model_tree_view",
+   "analytic.account_analytic_distribution_model_form_view",
+   "account.account_analytic_distribution_model_tree_inherit",
+   "account.account_analytic_distribution_model_form_inherit"
+  ],
+  "menus": [
+   "Analytic Distribution Models"
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "analytic.group_analytic_accounting"
+  ],
+  "logicCount": 10
+ },
+ "analytic.plan.fields.mixin": {
+  "capability": "C10",
+  "inScope": false,
+  "origin": "analytic",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 16
+ },
+ "account.analytic.line": {
+  "capability": "C10",
+  "inScope": false,
+  "origin": "analytic",
+  "extendedBy": [
+   "account",
+   "sale"
+  ],
+  "screens": [
+   "analytic.view_account_analytic_line_tree",
+   "analytic.view_account_analytic_line_filter",
+   "analytic.view_account_analytic_line_form",
+   "analytic.view_account_analytic_line_graph",
+   "analytic.view_account_analytic_line_pivot",
+   "analytic.view_account_analytic_line_kanban",
+   "account.view_account_analytic_line_form_inherit_account",
+   "account.view_account_analytic_line_tree_inherit_account",
+   "account.view_account_analytic_line_filter_inherit_account",
+   "account.view_account_analytic_line_pivot"
+  ],
+  "menus": [
+   "Analytic Report"
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_manager",
+   "account.group_account_readonly",
+   "analytic.group_analytic_accounting",
+   "purchase.group_purchase_user"
+  ],
+  "logicCount": 15
+ },
+ "analytic.mixin": {
+  "capability": "C10",
+  "inScope": false,
+  "origin": "analytic",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 18
+ },
+ "account.analytic.plan": {
+  "capability": "C10",
+  "inScope": false,
+  "origin": "analytic",
+  "extendedBy": [
+   "stock_account"
+  ],
+  "screens": [
+   "analytic.account_analytic_plan_form_view",
+   "analytic.account_analytic_plan_tree_view",
+   "account.account_analytic_plan_form_view_inherit_account"
+  ],
+  "menus": [
+   "Analytic Plans"
+  ],
+  "aclGroups": [
+   "account.group_account_user",
+   "analytic.group_analytic_accounting"
+  ],
+  "logicCount": 28
+ },
+ "account.analytic.applicability": {
+  "capability": "C10",
+  "inScope": false,
+  "origin": "analytic",
+  "extendedBy": [
+   "account",
+   "purchase",
+   "sale"
+  ],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_user",
+   "analytic.group_analytic_accounting"
+  ],
+  "logicCount": 4
+ },
+ "account.account": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_account_form",
+   "account.view_account_list",
+   "account.view_account_account_kanban",
+   "account.view_account_search",
+   "account.init_accounts_tree"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_manager",
+   "account.group_account_readonly",
+   "base.group_partner_manager",
+   "base.group_user",
+   "purchase.group_purchase_manager",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 70
+ },
+ "account.group": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_account_group_form",
+   "account.view_account_group_search",
+   "account.view_account_group_tree"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_basic",
+   "account.group_account_manager",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 11
+ },
+ "account.account.tag": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.account_tag_view_form",
+   "account.account_tag_view_tree",
+   "account.account_tag_view_search"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "account.group_account_user",
+   "base.group_user",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 7
+ },
+ "account.bank.statement": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_bank_statement_tree",
+   "account.view_bank_statement_search",
+   "account.account_bank_statement_pivot",
+   "account.account_bank_statement_graph"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_basic",
+   "account.group_account_invoice",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 18
+ },
+ "account.bank.statement.line": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_basic",
+   "account.group_account_invoice",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 25
+ },
+ "account.move": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [
+   "account",
+   "purchase",
+   "stock_account",
+   "purchase_stock",
+   "sale",
+   "sale_stock"
+  ],
+  "screens": [
+   "account.view_move_tree",
+   "account.view_move_tree_multi_edit",
+   "account.view_invoice_tree",
+   "account.view_duplicated_moves_tree_js",
+   "account.view_out_invoice_tree",
+   "account.view_out_credit_note_tree",
+   "account.view_in_invoice_tree",
+   "account.view_in_invoice_bill_tree",
+   "account.view_in_invoice_refund_tree",
+   "account.view_in_invoice_receipt_tree",
+   "account.view_account_move_kanban",
+   "account.view_move_form",
+   "account.account_move_view_activity",
+   "account.view_account_move_filter",
+   "account.view_account_invoice_filter",
+   "account.view_account_bill_filter",
+   "account.view_account_move_with_gaps_in_sequence_filter",
+   "purchase.view_move_form_inherit_purchase",
+   "sale.account_invoice_groupby_inherit",
+   "sale.account_invoice_view_tree",
+   "sale.account_invoice_form"
+  ],
+  "menus": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_manager",
+   "account.group_account_readonly",
+   "base.group_portal",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 363
+ },
+ "account.cash.rounding": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.rounding_form_view",
+   "account.rounding_search_view",
+   "account.rounding_tree_view"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 3
+ },
+ "account.code.mapping": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_manager",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 6
+ },
+ "account.full.reconcile": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_full_reconcile_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "account.group_account_user"
+  ],
+  "logicCount": 2
+ },
+ "account.incoterms": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_incoterms_tree",
+   "account.account_incoterms_form",
+   "account.account_incoterms_view_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_manager",
+   "base.group_user"
+  ],
+  "logicCount": 1
+ },
+ "account.journal.group": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_account_journal_group_tree",
+   "account.view_account_journal_group_form"
+  ],
+  "menus": [
+   "Multi-Ledger"
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_manager",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 0
+ },
+ "account.journal": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.account_journal_dashboard_kanban_view",
+   "account.view_account_journal_tree",
+   "account.view_account_journal_form",
+   "account.account_journal_view_kanban",
+   "account.view_account_journal_search"
+  ],
+  "menus": [
+   "Dashboard",
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_manager",
+   "account.group_account_readonly",
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 93
+ },
+ "account.lock_exception": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_account_lock_exception_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_manager",
+   "base.group_user"
+  ],
+  "logicCount": 18
+ },
+ "account.move.line": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [
+   "purchase",
+   "stock_account",
+   "purchase_stock",
+   "sale",
+   "sale_stock"
+  ],
+  "screens": [
+   "account.view_move_line_form",
+   "account.account_move_line_view_kanban",
+   "account.account_move_line_view_kanban_mobile",
+   "account.view_move_line_pivot",
+   "account.view_move_line_tree",
+   "account.view_move_line_tree_grouped_sales_purchases",
+   "account.view_move_line_tree_grouped_bank_cash",
+   "account.view_move_line_tree_grouped_misc",
+   "account.view_move_line_tree_grouped_general",
+   "account.view_move_line_tree_grouped_partner",
+   "account.view_move_line_tax_audit_tree",
+   "account.account_move_line_graph_date",
+   "account.view_account_move_line_filter",
+   "account.view_move_line_payment_tree",
+   "account.view_account_move_line_payment_filter"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_manager",
+   "account.group_account_readonly",
+   "base.group_portal",
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 169
+ },
+ "account.move.send": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 47
+ },
+ "account.partial.reconcile": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "account.group_account_user",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 17
+ },
+ "account.payment": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_account_payment_tree",
+   "account.view_account_supplier_payment_tree",
+   "account.view_account_various_payment_tree",
+   "account.view_account_payment_kanban",
+   "account.view_account_payment_search",
+   "account.view_account_payment_form",
+   "account.view_account_payment_graph"
+  ],
+  "menus": [
+   "Payments",
+   "Payments"
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 65
+ },
+ "account.payment.method": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "base.group_user"
+  ],
+  "logicCount": 6
+ },
+ "account.payment.method.line": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_account_payment_method_line_tree",
+   "account.view_account_payment_method_line_kanban_mobile"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "base.group_user"
+  ],
+  "logicCount": 5
+ },
+ "account.payment.term": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_payment_term_search",
+   "account.view_payment_term_tree",
+   "account.view_payment_term_form",
+   "account.view_account_payment_term_kanban"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_manager",
+   "base.group_portal",
+   "base.group_user",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 15
+ },
+ "account.payment.term.line": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_manager",
+   "base.group_user"
+  ],
+  "logicCount": 6
+ },
+ "account.reconcile.model.partner.mapping": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "account.group_account_user"
+  ],
+  "logicCount": 1
+ },
+ "account.reconcile.model.line": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_account_reconcile_model_line_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "account.group_account_user"
+  ],
+  "logicCount": 8
+ },
+ "account.reconcile.model": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_account_reconcile_model_tree",
+   "account.view_account_reconcile_model_form",
+   "account.view_account_reconcile_model_search"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "account.group_account_user"
+  ],
+  "logicCount": 6
+ },
+ "account.report": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_basic",
+   "account.group_account_manager",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 14
+ },
+ "account.report.line": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_basic",
+   "account.group_account_manager",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 16
+ },
+ "account.report.expression": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_basic",
+   "account.group_account_manager",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 16
+ },
+ "account.report.column": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_basic",
+   "account.group_account_manager",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 0
+ },
+ "account.report.external.value": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_manager",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 1
+ },
+ "account.root": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_manager",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 4
+ },
+ "account.tax.group": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.account_tax_group_view_search",
+   "account.view_tax_group_tree",
+   "account.view_tax_group_form"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_manager",
+   "account.group_account_readonly",
+   "base.group_user",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 2
+ },
+ "account.tax": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [
+   "purchase"
+  ],
+  "screens": [
+   "account.view_tax_tree",
+   "account.view_onboarding_tax_tree",
+   "account.account_tax_view_tree",
+   "account.view_tax_kanban",
+   "account.view_account_tax_search",
+   "account.account_tax_view_search",
+   "account.view_tax_form"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_manager",
+   "account.group_account_readonly",
+   "base.group_user",
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 105
+ },
+ "account.tax.repartition.line": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.tax_repartition_line_tree"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_manager",
+   "account.group_account_readonly",
+   "base.group_user"
+  ],
+  "logicCount": 5
+ },
+ "account.chart.template": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [
+   "stock_account",
+   "sale"
+  ],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 43
+ },
+ "account.fiscal.position": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_account_position_form",
+   "account.view_account_position_filter",
+   "account.view_account_position_tree"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_manager",
+   "base.group_user",
+   "purchase.group_purchase_user"
+  ],
+  "logicCount": 18
+ },
+ "account.fiscal.position.tax": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_manager",
+   "base.group_user"
+  ],
+  "logicCount": 0
+ },
+ "account.fiscal.position.account": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_manager",
+   "base.group_user"
+  ],
+  "logicCount": 0
+ },
+ "sequence.mixin": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 21
+ },
+ "report.account.report_hash_integrity": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "account.invoice.report": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [
+   "sale"
+  ],
+  "screens": [
+   "account.view_account_invoice_report_pivot",
+   "account.view_account_invoice_report_graph",
+   "account.account_invoice_report_view_tree",
+   "account.view_account_invoice_report_search",
+   "sale.view_account_invoice_report_search_inherit",
+   "sale.account_invoice_report_view_tree"
+  ],
+  "menus": [
+   "Invoice Analysis"
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_manager",
+   "account.group_account_readonly"
+  ],
+  "logicCount": 6
+ },
+ "report.account.report_invoice": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "report.account.report_invoice_with_payments": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "account.automatic.entry.wizard": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.account_automatic_entry_wizard_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_user"
+  ],
+  "logicCount": 28
+ },
+ "account.autopost.bills.wizard": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.autopost_bills_wizard"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice"
+  ],
+  "logicCount": 3
+ },
+ "account.merge.wizard": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.account_merge_wizard_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_manager"
+  ],
+  "logicCount": 8
+ },
+ "account.merge.wizard.line": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_manager"
+  ],
+  "logicCount": 5
+ },
+ "account.move.reversal": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_account_move_reversal"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice"
+  ],
+  "logicCount": 10
+ },
+ "account.move.send.batch.wizard": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.account_move_send_batch_wizard_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 5
+ },
+ "account.move.send.wizard": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.account_move_send_wizard_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 24
+ },
+ "account.payment.register": {
+  "capability": "C8",
+  "inScope": true,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_account_payment_register_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice"
+  ],
+  "logicCount": 52
+ },
+ "account.resequence.wizard": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.account_resequence_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_manager"
+  ],
+  "logicCount": 6
+ },
+ "account.secure.entries.wizard": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_account_secure_entries_wizard"
+  ],
+  "menus": [
+   "Secure Entries"
+  ],
+  "aclGroups": [
+   "account.group_account_manager"
+  ],
+  "logicCount": 10
+ },
+ "validate.account.move": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.validate_account_move_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice"
+  ],
+  "logicCount": 6
+ },
+ "account.accrued.orders.wizard": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.view_account_accrued_orders_wizard"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_user"
+  ],
+  "logicCount": 10
+ },
+ "account.financial.year.op": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.setup_financial_year_opening_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_manager"
+  ],
+  "logicCount": 4
+ },
+ "account.setup.bank.manual.config": {
+  "capability": "C9",
+  "inScope": false,
+  "origin": "account",
+  "extendedBy": [],
+  "screens": [
+   "account.setup_bank_account_wizard"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_manager"
+  ],
+  "logicCount": 9
+ },
+ "purchase.bill.line.match": {
+  "capability": "C5",
+  "inScope": true,
+  "origin": "purchase",
+  "extendedBy": [],
+  "screens": [
+   "purchase.purchase_bill_line_match_tree"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "purchase.group_purchase_user"
+  ],
+  "logicCount": 14
+ },
+ "purchase.order": {
+  "capability": "C5",
+  "inScope": true,
+  "origin": "purchase",
+  "extendedBy": [
+   "purchase_stock"
+  ],
+  "screens": [
+   "purchase.purchase_order_calendar",
+   "purchase.purchase_order_pivot",
+   "purchase.purchase_order_graph",
+   "purchase.purchase_order_form",
+   "purchase.view_purchase_order_filter",
+   "purchase.purchase_order_view_search",
+   "purchase.view_purchase_order_kanban",
+   "purchase.purchase_order_view_kanban_without_dashboard",
+   "purchase.purchase_order_tree",
+   "purchase.purchase_order_kpis_tree",
+   "purchase.purchase_order_view_tree",
+   "purchase.purchase_order_view_activity",
+   "purchase_stock.purchase_order_view_form_inherit",
+   "purchase_stock.purchase_order_view_tree_inherit"
+  ],
+  "menus": [
+   null,
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "base.group_portal",
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 102
+ },
+ "purchase.order.line": {
+  "capability": "C5",
+  "inScope": true,
+  "origin": "purchase",
+  "extendedBy": [
+   "purchase_stock"
+  ],
+  "screens": [
+   "purchase.purchase_order_line_tree",
+   "purchase.purchase_order_line_form2",
+   "purchase.purchase_order_line_search",
+   "purchase.purchase_history_tree",
+   "purchase.purchase_history_pivot",
+   "purchase.purchase_history_graph",
+   "purchase_stock.purchase_order_line_view_form_inherit"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "base.group_portal",
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 65
+ },
+ "purchase.bill.union": {
+  "capability": "C5",
+  "inScope": true,
+  "origin": "purchase",
+  "extendedBy": [],
+  "screens": [
+   "purchase.view_purchase_bill_union_filter",
+   "purchase.view_purchase_bill_union_tree"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "purchase.group_purchase_user"
+  ],
+  "logicCount": 2
+ },
+ "purchase.report": {
+  "capability": "C5",
+  "inScope": true,
+  "origin": "purchase",
+  "extendedBy": [
+   "purchase_stock"
+  ],
+  "screens": [
+   "purchase.view_purchase_order_pivot",
+   "purchase.view_purchase_order_graph",
+   "purchase.purchase_report_view_tree",
+   "purchase.view_purchase_order_search",
+   "purchase_stock.purchase_report_view_search"
+  ],
+  "menus": [
+   "Purchase"
+  ],
+  "aclGroups": [
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user"
+  ],
+  "logicCount": 9
+ },
+ "bill.to.po.wizard": {
+  "capability": "C5",
+  "inScope": true,
+  "origin": "purchase",
+  "extendedBy": [],
+  "screens": [
+   "purchase.bill_to_po_wizard_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "purchase.group_purchase_user"
+  ],
+  "logicCount": 2
+ },
+ "product.removal": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.view_removal"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user"
+  ],
+  "logicCount": 0
+ },
+ "stock.putaway.rule": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.stock_putaway_list",
+   "stock.view_putaway_search"
+  ],
+  "menus": [
+   "Putaway Rules"
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 11
+ },
+ "stock.location": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "stock_account"
+  ],
+  "screens": [
+   "stock.view_location_form",
+   "stock.stock_location_view_form_editable",
+   "stock.view_location_search",
+   "stock.view_location_tree2",
+   "stock.stock_location_view_tree2_editable",
+   "stock_account.view_location_form_inherit"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_partner_manager",
+   "base.group_user",
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 27
+ },
+ "stock.route": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "sale_stock"
+  ],
+  "screens": [
+   "stock.stock_location_route_tree",
+   "stock.stock_location_route_form_view",
+   "stock.stock_location_route_view_search",
+   "sale_stock.stock_location_route_view_form_inherit_sale_stock"
+  ],
+  "menus": [
+   "Routes"
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 6
+ },
+ "stock.lot": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "stock_account",
+   "purchase_stock",
+   "sale_stock"
+  ],
+  "screens": [
+   "stock.view_production_lot_form",
+   "stock.view_production_lot_tree",
+   "stock.view_production_lot_kanban",
+   "stock.search_product_lot_filter",
+   "stock_account.view_production_lot_form_stock_account",
+   "purchase_stock.stock_production_lot_view_form",
+   "sale_stock.stock_production_lot_view_form"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 32
+ },
+ "stock.move": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "stock_account",
+   "purchase_stock",
+   "sale_stock"
+  ],
+  "screens": [
+   "stock.view_move_pivot",
+   "stock.view_move_graph",
+   "stock.view_move_tree",
+   "stock.view_picking_move_tree",
+   "stock.view_move_kandan",
+   "stock.view_stock_move_operations",
+   "stock.view_move_form",
+   "stock.view_move_search",
+   "stock.view_move_tree_receipt_picking",
+   "stock_account.view_move_form_inherit",
+   "purchase_stock.stock_move_purchase"
+  ],
+  "menus": [
+   "Moves Analysis"
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 202
+ },
+ "stock.move.line": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "stock_account",
+   "sale_stock"
+  ],
+  "screens": [
+   "stock.view_move_line_tree",
+   "stock.view_move_line_tree_detailed",
+   "stock.view_move_line_form",
+   "stock.view_move_line_mobile_form",
+   "stock.stock_move_line_view_search",
+   "stock.view_stock_move_line_kanban",
+   "stock.view_stock_move_line_pivot",
+   "stock.view_stock_move_line_operation_tree",
+   "stock.view_stock_move_line_detailed_operation_tree"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 54
+ },
+ "stock.warehouse.orderpoint": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "purchase_stock"
+  ],
+  "screens": [
+   "stock.view_stock_warehouse_orderpoint_kanban",
+   "stock.view_warehouse_orderpoint_tree_editable",
+   "stock.stock_reorder_report_search",
+   "stock.warehouse_orderpoint_search",
+   "stock.view_warehouse_orderpoint_form",
+   "purchase_stock.warehouse_orderpoint_search_inherit",
+   "purchase_stock.view_warehouse_orderpoint_tree_editable_inherited_mrp",
+   "purchase_stock.stock_reorder_report_search_inherited_purchase_stock"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 58
+ },
+ "stock.package_level": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.package_level_form_view",
+   "stock.package_level_form_edit_view",
+   "stock.package_level_tree_view_picking"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user",
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 13
+ },
+ "stock.package.type": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.stock_package_type_form",
+   "stock.stock_package_type_tree"
+  ],
+  "menus": [
+   "Package Types"
+  ],
+  "aclGroups": [
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 5
+ },
+ "stock.picking.type": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.view_pickingtype_filter",
+   "stock.view_picking_type_tree",
+   "stock.view_picking_type_form",
+   "stock.stock_picking_type_kanban"
+  ],
+  "menus": [
+   "Operations Types",
+   "Overview"
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 35
+ },
+ "stock.picking": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "stock_account",
+   "purchase_stock",
+   "sale_stock"
+  ],
+  "screens": [
+   "stock.stock_picking_view_activity",
+   "stock.stock_picking_calendar",
+   "stock.stock_picking_kanban",
+   "stock.vpicktree",
+   "stock.view_picking_form",
+   "stock.view_picking_internal_search",
+   "stock_account.view_picking_form",
+   "stock_account.stock_valuation_layer_picking",
+   "sale_stock.view_picking_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "base.group_portal",
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 109
+ },
+ "stock.quant": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "stock_account"
+  ],
+  "screens": [
+   "stock.quant_search_view",
+   "stock.view_stock_quant_form_editable",
+   "stock.view_stock_quant_tree_editable",
+   "stock.view_stock_quant_tree_simple",
+   "stock.view_stock_quant_tree",
+   "stock.view_stock_quant_pivot",
+   "stock.stock_quant_view_graph",
+   "stock.duplicated_sn_warning",
+   "stock.view_stock_quant_form",
+   "stock.view_stock_quant_tree_inventory_editable",
+   "stock_account.view_stock_quant_tree_inventory_editable_inherit_stock_account",
+   "stock_account.view_stock_quant_tree_inherit",
+   "stock_account.view_stock_quant_tree_editable_inherit"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 80
+ },
+ "stock.quant.package": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.quant_package_search_view",
+   "stock.view_quant_package_form",
+   "stock.view_quant_package_tree",
+   "stock.view_quant_package_kanban"
+  ],
+  "menus": [
+   "Packages"
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 9
+ },
+ "stock.replenish.mixin": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "purchase_stock"
+  ],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 6
+ },
+ "stock.rule": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "purchase_stock",
+   "sale_stock"
+  ],
+  "screens": [
+   "stock.view_stock_rule_filter",
+   "stock.view_stock_rule_tree",
+   "stock.view_stock_rule_form",
+   "stock.view_route_rule_form",
+   "purchase_stock.view_stock_rule_form_stock_inherit_purchase_stock"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 30
+ },
+ "procurement.group": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "purchase_stock",
+   "sale_stock"
+  ],
+  "screens": [
+   "stock.procurement_group_form_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user"
+  ],
+  "logicCount": 14
+ },
+ "stock.scrap": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.stock_scrap_search_view",
+   "stock.stock_scrap_form_view",
+   "stock.stock_scrap_view_kanban",
+   "stock.stock_scrap_tree_view",
+   "stock.stock_scrap_form_view2"
+  ],
+  "menus": [
+   "Scrap"
+  ],
+  "aclGroups": [
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 14
+ },
+ "stock.scrap.reason.tag": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 0
+ },
+ "stock.storage.category": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.stock_storage_category_form",
+   "stock.stock_storage_category_tree"
+  ],
+  "menus": [
+   "Storage Categories"
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 4
+ },
+ "stock.storage.category.capacity": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.stock_storage_category_capacity_tree"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 0
+ },
+ "stock.warehouse": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "purchase_stock",
+   "sale_stock"
+  ],
+  "screens": [
+   "stock.view_warehouse",
+   "stock.view_warehouse_tree",
+   "stock.stock_warehouse_view_search",
+   "purchase_stock.view_warehouse_inherited"
+  ],
+  "menus": [
+   null
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 52
+ },
+ "report.stock.label_product_product_view": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "report.stock.label_lot_template_view": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "report.stock.quantity": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.stock_report_view_graph"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "base.group_user"
+  ],
+  "logicCount": 1
+ },
+ "report.stock.report_reception": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 18
+ },
+ "report.stock.report_stock_rule": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "purchase_stock",
+   "sale_stock"
+  ],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 8
+ },
+ "stock.forecasted_product_product": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "stock_account",
+   "purchase_stock",
+   "sale_stock"
+  ],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 19
+ },
+ "stock.forecasted_product_template": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 1
+ },
+ "stock.lot.report": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.stock_lot_customer_report_view_list",
+   "stock.search_customer_lot_filter"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 7
+ },
+ "stock.traceability.report": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 13
+ },
+ "product.replenish": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "purchase_stock"
+  ],
+  "screens": [
+   "stock.view_product_replenish",
+   "purchase_stock.view_product_replenish_form_inherit_stock"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 22
+ },
+ "stock.backorder.confirmation.line": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 0
+ },
+ "stock.backorder.confirmation": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.view_backorder_confirmation"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 4
+ },
+ "stock.change.product.qty": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.view_change_product_quantity"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 3
+ },
+ "stock.inventory.adjustment.name": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.stock_inventory_adjustment_name_form_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_manager",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 1
+ },
+ "stock.inventory.conflict": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.stock_inventory_conflict_form_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 2
+ },
+ "stock.inventory.warning": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.inventory_warning_reset_view",
+   "stock.inventory_warning_set_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 2
+ },
+ "picking.label.type": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.picking_label_type_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 1
+ },
+ "lot.label.layout": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.lot_label_layout_form_picking"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 1
+ },
+ "stock.orderpoint.snooze": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.view_stock_orderpoint_snooze"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 2
+ },
+ "stock.package.destination": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.stock_package_destination_form_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 3
+ },
+ "stock.return.picking.line": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "stock_account"
+  ],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 3
+ },
+ "stock.return.picking": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "purchase_stock",
+   "sale_stock"
+  ],
+  "screens": [
+   "stock.view_stock_return_picking_form",
+   "stock_account.view_stock_return_picking_form_inherit_stock_account"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 14
+ },
+ "stock.quant.relocate": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.stock_quant_relocate_view_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 5
+ },
+ "stock.quantity.history": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "stock_account"
+  ],
+  "screens": [
+   "stock.view_stock_quantity_history",
+   "stock_account.view_stock_quantity_history_inherit_stock_account"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 2
+ },
+ "stock.replenishment.info": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "purchase_stock"
+  ],
+  "screens": [
+   "stock.view_stock_replenishment_info",
+   "purchase_stock.view_stock_replenishment_info_stock_purchase_inherit"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 4
+ },
+ "stock.replenishment.option": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "purchase_stock"
+  ],
+  "screens": [
+   "stock.replenishment_option_tree_view",
+   "stock.replenishment_option_warning_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 7
+ },
+ "stock.request.count": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "stock_account"
+  ],
+  "screens": [
+   "stock.stock_inventory_request_count_form_view",
+   "stock_account.stock_inventory_request_count_form_view_inherit_stock_account"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 4
+ },
+ "stock.rules.report": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [
+   "sale_stock"
+  ],
+  "screens": [
+   "stock.view_stock_rules_report",
+   "sale_stock.view_stock_rules_report_sale"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 4
+ },
+ "stock.track.confirmation": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.view_stock_track_confirmation"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 2
+ },
+ "stock.track.line": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 1
+ },
+ "stock.warn.insufficient.qty": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.stock_warn_insufficient_qty_form_view"
+  ],
+  "menus": [],
+  "aclGroups": [],
+  "logicCount": 3
+ },
+ "stock.warn.insufficient.qty.scrap": {
+  "capability": "C6",
+  "inScope": true,
+  "origin": "stock",
+  "extendedBy": [],
+  "screens": [
+   "stock.stock_warn_insufficient_qty_scrap_form_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_user"
+  ],
+  "logicCount": 3
+ },
+ "stock.valuation.layer": {
+  "capability": "C11",
+  "inScope": false,
+  "origin": "stock_account",
+  "extendedBy": [
+   "purchase_stock",
+   "sale_stock"
+  ],
+  "screens": [
+   "stock_account.stock_valuation_layer_form",
+   "stock_account.stock_valuation_layer_tree",
+   "stock_account.stock_valuation_layer_valuation_at_date_tree_inherited",
+   "stock_account.stock_valuation_layer_pivot",
+   "stock_account.stock_valuation_layer_graph",
+   "stock_account.view_inventory_valuation_search",
+   "stock_account.stock_valuation_layer_report_tree"
+  ],
+  "menus": [
+   "Valuation"
+  ],
+  "aclGroups": [
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 19
+ },
+ "stock.valuation.layer.revaluation": {
+  "capability": "C11",
+  "inScope": false,
+  "origin": "stock_account",
+  "extendedBy": [],
+  "screens": [
+   "stock_account.stock_valuation_layer_revaluation_form_view"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "stock.group_stock_manager"
+  ],
+  "logicCount": 4
+ },
+ "vendor.delay.report": {
+  "capability": "C7",
+  "inScope": true,
+  "origin": "purchase_stock",
+  "extendedBy": [],
+  "screens": [
+   "purchase_stock.vendor_delay_report_filter",
+   "purchase_stock.vendor_delay_report_view_graph"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "purchase.group_purchase_manager",
+   "purchase.group_purchase_user"
+  ],
+  "logicCount": 3
+ },
+ "crm.tag": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sales_team",
+  "extendedBy": [],
+  "screens": [
+   "sales_team.sales_team_crm_tag_view_form",
+   "sales_team.sales_team_crm_tag_view_tree"
+  ],
+  "menus": [
+   "Tags"
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 1
+ },
+ "crm.team": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sales_team",
+  "extendedBy": [
+   "sale"
+  ],
+  "screens": [
+   "sales_team.crm_team_view_search",
+   "sales_team.crm_team_view_form",
+   "sales_team.crm_team_view_tree",
+   "sales_team.crm_team_view_kanban",
+   "sales_team.crm_team_view_kanban_dashboard",
+   "sale.crm_team_salesteams_view_form",
+   "sale.crm_team_view_kanban_dashboard"
+  ],
+  "menus": [
+   "Sales Teams",
+   "Sales Teams"
+  ],
+  "aclGroups": [
+   "base.group_user",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 43
+ },
+ "crm.team.member": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sales_team",
+  "extendedBy": [],
+  "screens": [
+   "sales_team.crm_team_member_view_search",
+   "sales_team.crm_team_member_view_tree",
+   "sales_team.crm_team_member_view_tree_from_team",
+   "sales_team.crm_team_member_view_kanban",
+   "sales_team.crm_team_member_view_kanban_from_team",
+   "sales_team.crm_team_member_view_form",
+   "sales_team.crm_team_member_view_form_from_team"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "(all users)",
+   "base.group_user",
+   "sales_team.group_sale_manager"
+  ],
+  "logicCount": 9
+ },
+ "sale.order": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sale",
+  "extendedBy": [
+   "sale_management",
+   "sale_stock"
+  ],
+  "screens": [
+   "sale.sale_order_view_activity",
+   "sale.view_sale_order_calendar",
+   "sale.view_sale_order_graph",
+   "sale.view_sale_order_pivot",
+   "sale.view_sale_order_kanban",
+   "sale.sale_order_kanban_upload",
+   "sale.sale_order_tree",
+   "sale.view_order_tree",
+   "sale.sale_order_list_upload",
+   "sale.view_quotation_tree",
+   "sale.view_quotation_tree_with_onboarding",
+   "sale.view_quotation_kanban_with_onboarding",
+   "sale.view_order_form",
+   "sale.view_sales_order_filter",
+   "sale.sale_order_view_search_inherit_quotation",
+   "sale.sale_order_view_search_inherit_sale",
+   "sale_management.sale_order_form_quote",
+   "sale_stock.view_order_form_inherit_sale_stock",
+   "sale_stock.sale_order_tree",
+   "sale_stock.view_order_tree",
+   "sale_stock.view_order_form_inherit_sale_stock_qty"
+  ],
+  "menus": [
+   null,
+   "Orders",
+   null,
+   null
+  ],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "account.group_account_user",
+   "base.group_portal",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 168
+ },
+ "sale.order.line": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sale",
+  "extendedBy": [
+   "sale_management",
+   "sale_stock"
+  ],
+  "screens": [
+   "sale.view_order_line_tree",
+   "sale.sale_order_line_view_form_readonly",
+   "sale.view_sales_order_line_filter",
+   "sale.sale_order_line_view_kanban",
+   "sale_stock.view_order_line_tree_inherit_sale_stock"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "account.group_account_user",
+   "base.group_portal",
+   "sales_team.group_sale_salesman",
+   "stock.group_stock_user"
+  ],
+  "logicCount": 114
+ },
+ "sale.report": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sale",
+  "extendedBy": [
+   "sale_stock"
+  ],
+  "screens": [
+   "sale.view_order_product_pivot",
+   "sale.view_order_product_graph",
+   "sale.sale_report_graph_pie",
+   "sale.sale_report_graph_bar",
+   "sale.sale_report_view_tree",
+   "sale.view_order_product_search"
+  ],
+  "menus": [
+   "Sales",
+   "Salespersons",
+   "Products",
+   "Customers"
+  ],
+  "aclGroups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 15
+ },
+ "sale.mass.cancel.orders": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sale",
+  "extendedBy": [],
+  "screens": [
+   "sale.mass_cancel_orders_view_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 3
+ },
+ "sale.payment.provider.onboarding.wizard": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sale",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "base.group_system"
+  ],
+  "logicCount": 3
+ },
+ "sale.advance.payment.inv": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sale",
+  "extendedBy": [],
+  "screens": [
+   "sale.view_sale_advance_payment_inv"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 17
+ },
+ "sale.order.cancel": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sale",
+  "extendedBy": [
+   "sale_stock"
+  ],
+  "screens": [
+   "sale.sale_order_cancel_view_form",
+   "sale_stock.sale_order_cancel_view_form_inherit"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 8
+ },
+ "sale.order.discount": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sale",
+  "extendedBy": [],
+  "screens": [
+   "sale.sale_order_line_wizard_form"
+  ],
+  "menus": [],
+  "aclGroups": [
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 6
+ },
+ "sale.order.option": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sale_management",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "account.group_account_invoice",
+   "account.group_account_readonly",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 10
+ },
+ "sale.order.template": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sale_management",
+  "extendedBy": [],
+  "screens": [
+   "sale_management.sale_order_template_view_search",
+   "sale_management.sale_order_template_view_form",
+   "sale_management.sale_order_template_view_tree"
+  ],
+  "menus": [
+   "Quotation Templates"
+  ],
+  "aclGroups": [
+   "base.group_system",
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 10
+ },
+ "sale.order.template.line": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sale_management",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 5
+ },
+ "sale.order.template.option": {
+  "capability": "C4",
+  "inScope": true,
+  "origin": "sale_management",
+  "extendedBy": [],
+  "screens": [],
+  "menus": [],
+  "aclGroups": [
+   "sales_team.group_sale_manager",
+   "sales_team.group_sale_salesman"
+  ],
+  "logicCount": 4
+ }
+}

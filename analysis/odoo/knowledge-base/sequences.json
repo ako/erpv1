@@ -1,0 +1,74 @@
+[
+ {
+  "id": "account.seq_account_payment",
+  "name": "Payment",
+  "code": "account.payment",
+  "prefix": "PAY",
+  "padding": "5",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/data/ir_sequence.xml"
+ },
+ {
+  "id": "purchase.seq_purchase_order",
+  "name": "Purchase Order",
+  "code": "purchase.order",
+  "prefix": "P",
+  "padding": "5",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/data/purchase_data.xml"
+ },
+ {
+  "id": "stock.sequence_mrp_op",
+  "name": "Stock orderpoint",
+  "code": "stock.orderpoint",
+  "prefix": "OP/",
+  "padding": "5",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/data/stock_sequence_data.xml"
+ },
+ {
+  "id": "stock.sequence_proc_group",
+  "name": "Procurement Group",
+  "code": "procurement.group",
+  "prefix": "PG/",
+  "padding": "6",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/data/stock_sequence_data.xml"
+ },
+ {
+  "id": "stock.seq_picking_internal",
+  "name": "Picking INT",
+  "code": "stock.picking",
+  "prefix": "INT/",
+  "padding": "5",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/data/stock_sequence_data.xml"
+ },
+ {
+  "id": "stock.sequence_production_lots",
+  "name": "Serial Numbers",
+  "code": "stock.lot.serial",
+  "prefix": "",
+  "padding": "7",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/data/stock_sequence_data.xml"
+ },
+ {
+  "id": "stock.seq_quant_package",
+  "name": "Packages",
+  "code": "stock.quant.package",
+  "prefix": "PACK",
+  "padding": "7",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/data/stock_sequence_data.xml"
+ },
+ {
+  "id": "sale.seq_sale_order",
+  "name": "Sales Order",
+  "code": "sale.order",
+  "prefix": "S",
+  "padding": "5",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/data/ir_sequence_data.xml"
+ }
+]

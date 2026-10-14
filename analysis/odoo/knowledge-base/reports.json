@@ -1,0 +1,298 @@
+[
+ {
+  "id": "base.report_ir_model_overview",
+  "name": "Model Overview",
+  "model": "ir.model",
+  "reportName": "base.report_irmodeloverview",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/base/report/ir_model_report.xml"
+ },
+ {
+  "id": "base.ir_module_reference_print",
+  "name": "Technical guide",
+  "model": "ir.module.module",
+  "reportName": "base.report_irmodulereference",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/base/report/ir_module_reports.xml"
+ },
+ {
+  "id": "product.report_product_template_label_2x7",
+  "name": "Product Label 2x7 (PDF)",
+  "model": "product.template",
+  "reportName": "product.report_producttemplatelabel2x7",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/product/report/product_reports.xml"
+ },
+ {
+  "id": "product.report_product_template_label_4x7",
+  "name": "Product Label 4x7 (PDF)",
+  "model": "product.template",
+  "reportName": "product.report_producttemplatelabel4x7",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/product/report/product_reports.xml"
+ },
+ {
+  "id": "product.report_product_template_label_4x12",
+  "name": "Product Label 4x12 (PDF)",
+  "model": "product.template",
+  "reportName": "product.report_producttemplatelabel4x12",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/product/report/product_reports.xml"
+ },
+ {
+  "id": "product.report_product_template_label_4x12_noprice",
+  "name": "Product Label 4x12 No Price (PDF)",
+  "model": "product.template",
+  "reportName": "product.report_producttemplatelabel4x12noprice",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/product/report/product_reports.xml"
+ },
+ {
+  "id": "product.report_product_packaging",
+  "name": "Product Packaging (PDF)",
+  "model": "product.packaging",
+  "reportName": "product.report_packagingbarcode",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/product/report/product_reports.xml"
+ },
+ {
+  "id": "product.action_report_pricelist",
+  "name": "Pricelist",
+  "model": "product.product",
+  "reportName": "product.report_pricelist",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/product/report/product_reports.xml"
+ },
+ {
+  "id": "product.report_product_template_label_dymo",
+  "name": "Product Label (PDF)",
+  "model": "product.template",
+  "reportName": "product.report_producttemplatelabel_dymo",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/product/report/product_reports.xml"
+ },
+ {
+  "id": "account.account_invoices",
+  "name": "Invoice PDF",
+  "model": "account.move",
+  "reportName": "account.report_invoice_with_payments",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/account/views/account_report.xml"
+ },
+ {
+  "id": "account.action_account_original_vendor_bill",
+  "name": "Original Bills",
+  "model": "account.move",
+  "reportName": "account.report_original_vendor_bill",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/account/views/account_report.xml"
+ },
+ {
+  "id": "account.account_invoices_without_payment",
+  "name": "PDF without Payment",
+  "model": "account.move",
+  "reportName": "account.report_invoice",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/account/views/account_report.xml"
+ },
+ {
+  "id": "account.action_report_payment_receipt",
+  "name": "Payment Receipt",
+  "model": "account.payment",
+  "reportName": "account.report_payment_receipt",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/account/views/account_report.xml"
+ },
+ {
+  "id": "account.action_report_account_statement",
+  "name": "Statement",
+  "model": "account.bank.statement",
+  "reportName": "account.report_statement",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/account/views/account_report.xml"
+ },
+ {
+  "id": "account.action_report_account_hash_integrity",
+  "name": "Hash integrity result PDF",
+  "model": "res.company",
+  "reportName": "account.report_hash_integrity",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/account/views/account_report.xml"
+ },
+ {
+  "id": "purchase.action_report_purchase_order",
+  "name": "Purchase Order",
+  "model": "purchase.order",
+  "reportName": "purchase.report_purchaseorder",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/purchase/report/purchase_reports.xml"
+ },
+ {
+  "id": "purchase.report_purchase_quotation",
+  "name": "Request for Quotation",
+  "model": "purchase.order",
+  "reportName": "purchase.report_purchasequotation",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/purchase/report/purchase_reports.xml"
+ },
+ {
+  "id": "stock.return_label_report",
+  "name": "Return slip",
+  "model": "stock.picking",
+  "reportName": "stock.report_return_slip",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/stock/report/report_return_slip.xml"
+ },
+ {
+  "id": "stock.stock_reception_report_action",
+  "name": "Reception Report",
+  "model": "stock.picking",
+  "reportName": "stock.report_reception",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/stock/report/report_stock_reception.xml"
+ },
+ {
+  "id": "stock.action_report_picking",
+  "name": "Picking Operations",
+  "model": "stock.picking",
+  "reportName": "stock.report_picking",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.action_report_delivery",
+  "name": "Delivery Slip",
+  "model": "stock.picking",
+  "reportName": "stock.report_deliveryslip",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.action_report_picking_packages",
+  "name": "Packages",
+  "model": "stock.picking",
+  "reportName": "stock.report_picking_packages",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.action_report_inventory",
+  "name": "Count Sheet",
+  "model": "stock.quant",
+  "reportName": "stock.report_inventory",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.action_report_quant_package_barcode",
+  "name": "Package Barcode with Contents",
+  "model": "stock.quant.package",
+  "reportName": "stock.report_package_barcode",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.action_report_quant_package_barcode_small",
+  "name": "Package Barcode (PDF)",
+  "model": "stock.quant.package",
+  "reportName": "stock.report_package_barcode_small",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.action_report_location_barcode",
+  "name": "Location Barcode",
+  "model": "stock.location",
+  "reportName": "stock.report_location_barcode",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.action_report_lot_label",
+  "name": "Lot/Serial Number (PDF)",
+  "model": "stock.lot",
+  "reportName": "stock.report_lot_label",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.action_report_picking_type_label",
+  "name": "Operation type (PDF)",
+  "model": "stock.picking.type",
+  "reportName": "stock.report_picking_type_label",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.action_report_stock_rule",
+  "name": "Product Routes Report",
+  "model": "product.template",
+  "reportName": "stock.report_stock_rule",
+  "reportType": "qweb-html",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.label_product_product",
+  "name": "Product Label (ZPL)",
+  "model": "product.product",
+  "reportName": "stock.label_product_product_view",
+  "reportType": "qweb-text",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.label_lot_template",
+  "name": "Lot/Serial Number (ZPL)",
+  "model": "stock.lot",
+  "reportName": "stock.label_lot_template_view",
+  "reportType": "qweb-text",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.label_package_template",
+  "name": "Package Barcode (ZPL)",
+  "model": "stock.quant.package",
+  "reportName": "stock.label_package_template_view",
+  "reportType": "qweb-text",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.label_product_packaging",
+  "name": "Product Packaging (ZPL)",
+  "model": "product.packaging",
+  "reportName": "stock.label_product_packaging_view",
+  "reportType": "qweb-text",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.label_picking_type",
+  "name": "Operation type (ZPL)",
+  "model": "stock.picking.type",
+  "reportName": "stock.label_picking_type_view",
+  "reportType": "qweb-text",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "stock.label_picking",
+  "name": "Reception Report Label",
+  "model": "stock.move",
+  "reportName": "stock.report_reception_report_label",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/stock/report/stock_report_views.xml"
+ },
+ {
+  "id": "sale.action_report_saleorder",
+  "name": "Quotation / Order",
+  "model": "sale.order",
+  "reportName": "sale.report_saleorder",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/sale/report/ir_actions_report.xml"
+ },
+ {
+  "id": "sale.action_report_pro_forma_invoice",
+  "name": "PRO-FORMA Invoice",
+  "model": "sale.order",
+  "reportName": "sale.report_saleorder_pro_forma",
+  "reportType": "qweb-pdf",
+  "file": "sources/odoo/addons/sale/report/ir_actions_report.xml"
+ }
+]

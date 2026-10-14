@@ -1,0 +1,292 @@
+[
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:digest.digest",
+  "uniqueId": "digest.digest",
+  "name": "digest.digest",
+  "label": "digest.digest",
+  "module": "account",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "account",
+   "sale_management"
+  ],
+  "fields": [
+   "kpi_account_total_revenue",
+   "kpi_account_total_revenue_value",
+   "kpi_all_sale_total",
+   "kpi_all_sale_total_value"
+  ],
+  "_source": "sources/odoo/addons/account/models/digest.py",
+  "sourceRef": "sources/odoo/addons/account/models/digest.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:kpi.provider",
+  "uniqueId": "kpi.provider",
+  "name": "kpi.provider",
+  "label": "kpi.provider",
+  "module": "account",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "account"
+  ],
+  "fields": [],
+  "_source": "sources/odoo/addons/account/models/kpi_provider.py",
+  "sourceRef": "sources/odoo/addons/account/models/kpi_provider.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:mail.message",
+  "uniqueId": "mail.message",
+  "name": "mail.message",
+  "label": "mail.message",
+  "module": "account",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "account"
+  ],
+  "fields": [
+   "account_audit_log_preview",
+   "account_audit_log_move_id",
+   "account_audit_log_partner_id",
+   "account_audit_log_account_id",
+   "account_audit_log_tax_id",
+   "account_audit_log_company_id",
+   "account_audit_log_activated"
+  ],
+  "_source": "sources/odoo/addons/account/models/mail_message.py",
+  "sourceRef": "sources/odoo/addons/account/models/mail_message.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:mail.template",
+  "uniqueId": "mail.template",
+  "name": "mail.template",
+  "label": "mail.template",
+  "module": "account",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "account"
+  ],
+  "fields": [],
+  "_source": "sources/odoo/addons/account/models/mail_template.py",
+  "sourceRef": "sources/odoo/addons/account/models/mail_template.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:mail.tracking.value",
+  "uniqueId": "mail.tracking.value",
+  "name": "mail.tracking.value",
+  "label": "mail.tracking.value",
+  "module": "account",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "account"
+  ],
+  "fields": [],
+  "_source": "sources/odoo/addons/account/models/mail_tracking_value.py",
+  "sourceRef": "sources/odoo/addons/account/models/mail_tracking_value.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:onboarding.onboarding",
+  "uniqueId": "onboarding.onboarding",
+  "name": "onboarding.onboarding",
+  "label": "onboarding.onboarding",
+  "module": "account",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "account"
+  ],
+  "fields": [],
+  "_source": "sources/odoo/addons/account/models/onboarding_onboarding.py",
+  "sourceRef": "sources/odoo/addons/account/models/onboarding_onboarding.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:onboarding.onboarding.step",
+  "uniqueId": "onboarding.onboarding.step",
+  "name": "onboarding.onboarding.step",
+  "label": "onboarding.onboarding.step",
+  "module": "account",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "account"
+  ],
+  "fields": [],
+  "_source": "sources/odoo/addons/account/models/onboarding_onboarding_step.py",
+  "sourceRef": "sources/odoo/addons/account/models/onboarding_onboarding_step.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:base.document.layout",
+  "uniqueId": "base.document.layout",
+  "name": "base.document.layout",
+  "label": "base.document.layout",
+  "module": "account",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "account",
+   "sale"
+  ],
+  "fields": [
+   "from_invoice",
+   "qr_code",
+   "vat",
+   "account_number"
+  ],
+  "_source": "sources/odoo/addons/account/wizard/base_document_layout.py",
+  "sourceRef": "sources/odoo/addons/account/wizard/base_document_layout.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:barcode.rule",
+  "uniqueId": "barcode.rule",
+  "name": "barcode.rule",
+  "label": "barcode.rule",
+  "module": "stock",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "stock"
+  ],
+  "fields": [
+   "type"
+  ],
+  "_source": "sources/odoo/addons/stock/models/barcode.py",
+  "sourceRef": "sources/odoo/addons/stock/models/barcode.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:mail.scheduled.message",
+  "uniqueId": "mail.scheduled.message",
+  "name": "mail.scheduled.message",
+  "label": "mail.scheduled.message",
+  "module": "sale",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "sale"
+  ],
+  "fields": [],
+  "_source": "sources/odoo/addons/sale/models/mail_scheduled_message.py",
+  "sourceRef": "sources/odoo/addons/sale/models/mail_scheduled_message.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:payment.provider",
+  "uniqueId": "payment.provider",
+  "name": "payment.provider",
+  "label": "payment.provider",
+  "module": "sale",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "sale"
+  ],
+  "fields": [
+   "so_reference_type"
+  ],
+  "_source": "sources/odoo/addons/sale/models/payment_provider.py",
+  "sourceRef": "sources/odoo/addons/sale/models/payment_provider.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:payment.transaction",
+  "uniqueId": "payment.transaction",
+  "name": "payment.transaction",
+  "label": "payment.transaction",
+  "module": "sale",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "sale"
+  ],
+  "fields": [
+   "sale_order_ids",
+   "sale_order_ids_nbr"
+  ],
+  "_source": "sources/odoo/addons/sale/models/payment_transaction.py",
+  "sourceRef": "sources/odoo/addons/sale/models/payment_transaction.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:utm.campaign",
+  "uniqueId": "utm.campaign",
+  "name": "utm.campaign",
+  "label": "utm.campaign",
+  "module": "sale",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "sale"
+  ],
+  "fields": [
+   "quotation_count",
+   "invoiced_amount",
+   "company_id",
+   "currency_id"
+  ],
+  "_source": "sources/odoo/addons/sale/models/utm_campaign.py",
+  "sourceRef": "sources/odoo/addons/sale/models/utm_campaign.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:mail.compose.message",
+  "uniqueId": "mail.compose.message",
+  "name": "mail.compose.message",
+  "label": "mail.compose.message",
+  "module": "sale",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "sale"
+  ],
+  "fields": [],
+  "_source": "sources/odoo/addons/sale/wizard/mail_compose_message.py",
+  "sourceRef": "sources/odoo/addons/sale/wizard/mail_compose_message.py",
+  "_gaps": [],
+  "_links": []
+ },
+ {
+  "type": "ext-entity",
+  "linkId": "odoo:ext:payment.link.wizard",
+  "uniqueId": "payment.link.wizard",
+  "name": "payment.link.wizard",
+  "label": "payment.link.wizard",
+  "module": "sale",
+  "reason": "defined in an addon that was not imported (Stage 0: declared not implemented)",
+  "extendedBy": [
+   "sale"
+  ],
+  "fields": [
+   "amount_paid",
+   "confirmation_message"
+  ],
+  "_source": "sources/odoo/addons/sale/wizard/payment_link_wizard.py",
+  "sourceRef": "sources/odoo/addons/sale/wizard/payment_link_wizard.py",
+  "_gaps": [],
+  "_links": []
+ }
+]

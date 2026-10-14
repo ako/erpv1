@@ -1,0 +1,2532 @@
+[
+ {
+  "id": "base.demo_force_install_action",
+  "name": "Load demo data",
+  "resModel": "ir.demo",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/data/ir_demo_data.xml"
+ },
+ {
+  "id": "base.action_decimal_precision_form",
+  "name": "Decimal Accuracy",
+  "resModel": "decimal.precision",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/decimal_precision_views.xml"
+ },
+ {
+  "id": "base.ir_sequence_actions",
+  "name": "Actions",
+  "resModel": "ir.actions.actions",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_actions_views.xml"
+ },
+ {
+  "id": "base.ir_action_report",
+  "name": "Reports",
+  "resModel": "ir.actions.report",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_actions_views.xml"
+ },
+ {
+  "id": "base.ir_action_window",
+  "name": "Window Actions",
+  "resModel": "ir.actions.act_window",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_actions_views.xml"
+ },
+ {
+  "id": "base.ir_client_actions_report",
+  "name": "Client Actions",
+  "resModel": "ir.actions.client",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_actions_views.xml"
+ },
+ {
+  "id": "base.action_server_action",
+  "name": "Server Actions",
+  "resModel": "ir.actions.server",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": "{'key':'server_action'}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_actions_views.xml"
+ },
+ {
+  "id": "base.ir_embedded_action",
+  "name": "Embedded Actions",
+  "resModel": "ir.embedded.actions",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_actions_views.xml"
+ },
+ {
+  "id": "base.act_ir_actions_todo_form",
+  "name": "Configuration Wizards",
+  "resModel": "ir.actions.todo",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_actions_views.xml"
+ },
+ {
+  "id": "base.action_asset",
+  "name": "Assets",
+  "resModel": "ir.asset",
+  "viewMode": null,
+  "domain": null,
+  "context": "{'search_default_active': 1}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_asset_views.xml"
+ },
+ {
+  "id": "base.action_attachment",
+  "name": "Attachments",
+  "resModel": "ir.attachment",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_attachment_views.xml"
+ },
+ {
+  "id": "base.ir_config_list_action",
+  "name": "System Parameters",
+  "resModel": "ir.config_parameter",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_config_parameter_views.xml"
+ },
+ {
+  "id": "base.ir_cron_trigger_action",
+  "name": "Scheduled Actions Triggers",
+  "resModel": "ir.cron.trigger",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_cron_trigger_views.xml"
+ },
+ {
+  "id": "base.ir_cron_act",
+  "name": "Scheduled Actions",
+  "resModel": "ir.cron",
+  "viewMode": "list,form,calendar",
+  "domain": null,
+  "context": "{'search_default_all': 1}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_cron_views.xml"
+ },
+ {
+  "id": "base.ir_default_menu_action",
+  "name": "User-defined Defaults",
+  "resModel": "ir.default",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_default_views.xml"
+ },
+ {
+  "id": "base.actions_ir_filters_view",
+  "name": "User-defined Filters",
+  "resModel": "ir.filters",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_filters_views.xml"
+ },
+ {
+  "id": "base.ir_logging_all_act",
+  "name": "Logging",
+  "resModel": "ir.logging",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_logging_views.xml"
+ },
+ {
+  "id": "base.action_ir_mail_server_list",
+  "name": "Outgoing Mail Servers",
+  "resModel": "ir.mail_server",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_mail_server_views.xml"
+ },
+ {
+  "id": "base.act_menu_create",
+  "name": "Create Menu",
+  "resModel": "wizard.ir.model.menu.create",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{'model_id': active_id}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_model_views.xml"
+ },
+ {
+  "id": "base.action_model_model",
+  "name": "Models",
+  "resModel": "ir.model",
+  "viewMode": null,
+  "domain": null,
+  "context": "{}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_model_views.xml"
+ },
+ {
+  "id": "base.action_model_fields",
+  "name": "Fields",
+  "resModel": "ir.model.fields",
+  "viewMode": null,
+  "domain": null,
+  "context": "{}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_model_views.xml"
+ },
+ {
+  "id": "base.action_model_fields_selection",
+  "name": "Fields Selection",
+  "resModel": "ir.model.fields.selection",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_model_views.xml"
+ },
+ {
+  "id": "base.action_model_data",
+  "name": "External Identifiers",
+  "resModel": "ir.model.data",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_model_views.xml"
+ },
+ {
+  "id": "base.action_model_constraint",
+  "name": "Model Constraints",
+  "resModel": "ir.model.constraint",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_model_views.xml"
+ },
+ {
+  "id": "base.action_model_relation",
+  "name": "ManyToMany Relations",
+  "resModel": "ir.model.relation",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_model_views.xml"
+ },
+ {
+  "id": "base.ir_access_act",
+  "name": "Access Rights",
+  "resModel": "ir.model.access",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_model_views.xml"
+ },
+ {
+  "id": "base.open_module_tree",
+  "name": "Apps",
+  "resModel": "ir.module.module",
+  "viewMode": "kanban,list,form",
+  "domain": null,
+  "context": "{'search_default_app':1}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_module_views.xml"
+ },
+ {
+  "id": "base.action_menu_ir_profile",
+  "name": "Ir profile",
+  "resModel": "ir.profile",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": "{'search_default_group_session': 1}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_profile_views.xml"
+ },
+ {
+  "id": "base.action_rule",
+  "name": "Record Rules",
+  "resModel": "ir.rule",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_rule_views.xml"
+ },
+ {
+  "id": "base.ir_sequence_form",
+  "name": "Sequences",
+  "resModel": "ir.sequence",
+  "viewMode": null,
+  "domain": null,
+  "context": "{'active_test': False}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_sequence_views.xml"
+ },
+ {
+  "id": "base.grant_menu_access",
+  "name": "Menu Items",
+  "resModel": "ir.ui.menu",
+  "viewMode": null,
+  "domain": null,
+  "context": "{'ir.ui.menu.full_list':True}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_ui_menu_views.xml"
+ },
+ {
+  "id": "base.action_ui_view",
+  "name": "Views",
+  "resModel": "ir.ui.view",
+  "viewMode": null,
+  "domain": null,
+  "context": "{'search_default_active': 1}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_ui_view_views.xml"
+ },
+ {
+  "id": "base.reset_view_arch_wizard_action",
+  "name": "Compare/Reset",
+  "resModel": "reset.view.arch.wizard",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_ui_view_views.xml"
+ },
+ {
+  "id": "base.action_ui_view_custom",
+  "name": "Customized Views",
+  "resModel": "ir.ui.view.custom",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/ir_ui_view_views.xml"
+ },
+ {
+  "id": "base.paper_format_action",
+  "name": "Paper Format General Configuration",
+  "resModel": "report.paperformat",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/report_paperformat_views.xml"
+ },
+ {
+  "id": "base.reports_action",
+  "name": "Reports",
+  "resModel": "ir.actions.report",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/report_paperformat_views.xml"
+ },
+ {
+  "id": "base.action_res_bank_form",
+  "name": "Banks",
+  "resModel": "res.bank",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_bank_views.xml"
+ },
+ {
+  "id": "base.action_res_partner_bank_account_form",
+  "name": "Bank Accounts",
+  "resModel": "res.partner.bank",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_bank_views.xml"
+ },
+ {
+  "id": "base.action_res_company_form",
+  "name": "Companies",
+  "resModel": "res.company",
+  "viewMode": "list,kanban,form",
+  "domain": "[('parent_id', '=', False)]",
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_company_views.xml"
+ },
+ {
+  "id": "base.res_config_setting_act_window",
+  "name": "Settings",
+  "resModel": "res.config.settings",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_config_settings_views.xml"
+ },
+ {
+  "id": "base.action_country",
+  "name": "Countries",
+  "resModel": "res.country",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_country_views.xml"
+ },
+ {
+  "id": "base.action_country_group",
+  "name": "Country Group",
+  "resModel": "res.country.group",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_country_views.xml"
+ },
+ {
+  "id": "base.action_country_state",
+  "name": "Fed. States",
+  "resModel": "res.country.state",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_country_views.xml"
+ },
+ {
+  "id": "base.act_view_currency_rates",
+  "name": "Show Currency Rates",
+  "resModel": "res.currency.rate",
+  "viewMode": "list,form",
+  "domain": "[('currency_id','=', active_id)]",
+  "context": "{'default_currency_id': active_id}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_currency_views.xml"
+ },
+ {
+  "id": "base.action_currency_form",
+  "name": "Currencies",
+  "resModel": "res.currency",
+  "viewMode": "list,kanban,form",
+  "domain": null,
+  "context": "{'active_test': False}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_currency_views.xml"
+ },
+ {
+  "id": "base.action_user_device",
+  "name": "User Devices",
+  "resModel": "res.device",
+  "viewMode": "list,kanban,form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_device_views.xml"
+ },
+ {
+  "id": "base.res_lang_act_window",
+  "name": "Languages",
+  "resModel": "res.lang",
+  "viewMode": null,
+  "domain": null,
+  "context": "{'active_test': False}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_lang_views.xml"
+ },
+ {
+  "id": "base.action_partner_title_contact",
+  "name": "Contact Titles",
+  "resModel": "res.partner.title",
+  "viewMode": null,
+  "domain": "[]",
+  "context": "{}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_partner_views.xml"
+ },
+ {
+  "id": "base.action_partner_form",
+  "name": "Customers",
+  "resModel": "res.partner",
+  "viewMode": "kanban,list,form",
+  "domain": null,
+  "context": "{'res_partner_search_mode': 'customer'}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_partner_views.xml"
+ },
+ {
+  "id": "base.action_partner_customer_form",
+  "name": "Customers",
+  "resModel": "res.partner",
+  "viewMode": "kanban,list,form",
+  "domain": "[]",
+  "context": "{'res_partner_search_mode': 'customer', 'default_is_company': True}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_partner_views.xml"
+ },
+ {
+  "id": "base.action_partner_supplier_form",
+  "name": "Vendors",
+  "resModel": "res.partner",
+  "viewMode": "kanban,list,form",
+  "domain": "[]",
+  "context": "{'res_partner_search_mode': 'supplier', 'default_is_company': True}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_partner_views.xml"
+ },
+ {
+  "id": "base.action_partner_category_form",
+  "name": "Contact Tags",
+  "resModel": "res.partner.category",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_partner_views.xml"
+ },
+ {
+  "id": "base.res_partner_industry_action",
+  "name": "Industries",
+  "resModel": "res.partner.industry",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_partner_views.xml"
+ },
+ {
+  "id": "base.change_password_wizard_action",
+  "name": "Change Password",
+  "resModel": "change.password.wizard",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_users_views.xml"
+ },
+ {
+  "id": "base.action_res_groups",
+  "name": "Groups",
+  "resModel": "res.groups",
+  "viewMode": null,
+  "domain": null,
+  "context": "{'search_default_filter_no_share': 1, 'ir.ui.menu.full_list': 1}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_users_views.xml"
+ },
+ {
+  "id": "base.action_res_users",
+  "name": "Users",
+  "resModel": "res.users",
+  "viewMode": "list,kanban,form",
+  "domain": null,
+  "context": "{'search_default_filter_no_share': 1, 'show_user_group_warning': True}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_users_views.xml"
+ },
+ {
+  "id": "base.action_res_users_keys_description",
+  "name": "API Key: description input wizard",
+  "resModel": "res.users.apikeys.description",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_users_views.xml"
+ },
+ {
+  "id": "base.action_res_users_my",
+  "name": "Change My Preferences",
+  "resModel": "res.users",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_users_views.xml"
+ },
+ {
+  "id": "base.action_apikeys_admin",
+  "name": "API Keys Listing",
+  "resModel": "res.users.apikeys",
+  "viewMode": "list",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/views/res_users_views.xml"
+ },
+ {
+  "id": "base.action_wizard_lang_export",
+  "name": "Export Translation",
+  "resModel": "base.language.export",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/wizard/base_export_language_views.xml"
+ },
+ {
+  "id": "base.action_view_base_import_language",
+  "name": "Import Translation",
+  "resModel": "base.language.import",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/wizard/base_import_language_views.xml"
+ },
+ {
+  "id": "base.action_view_base_language_install",
+  "name": "Add Languages",
+  "resModel": "base.language.install",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/wizard/base_language_install_views.xml"
+ },
+ {
+  "id": "base.action_view_base_module_update",
+  "name": "Module Update",
+  "resModel": "base.module.update",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/wizard/base_module_update_views.xml"
+ },
+ {
+  "id": "base.action_view_base_module_upgrade",
+  "name": "Apply Schedule Upgrade",
+  "resModel": "base.module.upgrade",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/wizard/base_module_upgrade_views.xml"
+ },
+ {
+  "id": "base.action_view_base_module_upgrade_install",
+  "name": "Module Upgrade Install",
+  "resModel": "base.module.upgrade",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/wizard/base_module_upgrade_views.xml"
+ },
+ {
+  "id": "base.action_partner_deduplicate",
+  "name": "Deduplicate Contacts",
+  "resModel": "base.partner.merge.automatic.wizard",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{'active_test': False}",
+  "addon": "base",
+  "file": "sources/odoo/addons/base/wizard/base_partner_merge_views.xml"
+ },
+ {
+  "id": "base.action_partner_merge",
+  "name": "Merge",
+  "resModel": "base.partner.merge.automatic.wizard",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "base",
+  "file": "sources/odoo/addons/base/wizard/base_partner_merge_views.xml"
+ },
+ {
+  "id": "uom.product_uom_form_action",
+  "name": "Units of Measure",
+  "resModel": "uom.uom",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "uom",
+  "file": "sources/odoo/addons/uom/views/uom_uom_views.xml"
+ },
+ {
+  "id": "uom.product_uom_categ_form_action",
+  "name": "Units of Measure Categories",
+  "resModel": "uom.category",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": "{'allow_to_change_reference': 1}",
+  "addon": "uom",
+  "file": "sources/odoo/addons/uom/views/uom_uom_views.xml"
+ },
+ {
+  "id": "product.attribute_action",
+  "name": "Attributes",
+  "resModel": "product.attribute",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_attribute_views.xml"
+ },
+ {
+  "id": "product.product_category_action_form",
+  "name": "Product Categories",
+  "resModel": "product.category",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_category_views.xml"
+ },
+ {
+  "id": "product.product_combo_action",
+  "name": "Combo Choices",
+  "resModel": "product.combo",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_combo_views.xml"
+ },
+ {
+  "id": "product.action_packaging_view",
+  "name": "Product Packagings",
+  "resModel": "product.packaging",
+  "viewMode": null,
+  "domain": "[]",
+  "context": null,
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_packaging_views.xml"
+ },
+ {
+  "id": "product.product_pricelist_action2",
+  "name": "Pricelists",
+  "resModel": "product.pricelist",
+  "viewMode": "list,kanban,form",
+  "domain": null,
+  "context": "{\"default_base\":'list_price'}",
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_pricelist_views.xml"
+ },
+ {
+  "id": "product.product_pricelist_item_action",
+  "name": "Price Rules",
+  "resModel": "product.pricelist.item",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_pricelist_views.xml"
+ },
+ {
+  "id": "product.product_supplierinfo_type_action",
+  "name": "Vendor Pricelists",
+  "resModel": "product.supplierinfo",
+  "viewMode": "list,form,kanban",
+  "domain": null,
+  "context": "{'visible_product_tmpl_id': False, 'search_default_active_products': True}",
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_supplierinfo_views.xml"
+ },
+ {
+  "id": "product.product_tag_action",
+  "name": "Product Tags",
+  "resModel": "product.tag",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": "{'create': True}",
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_tag_views.xml"
+ },
+ {
+  "id": "product.product_template_action",
+  "name": "Products",
+  "resModel": "product.template",
+  "viewMode": "kanban,list,form",
+  "domain": null,
+  "context": "{\"search_default_filter_to_sell\":1}",
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_template_views.xml"
+ },
+ {
+  "id": "product.product_template_action_all",
+  "name": "Products",
+  "resModel": "product.template",
+  "viewMode": "kanban,list,form",
+  "domain": null,
+  "context": "{}",
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_views.xml"
+ },
+ {
+  "id": "product.product_normal_action",
+  "name": "Product Variants",
+  "resModel": "product.product",
+  "viewMode": "list,form,kanban,activity",
+  "domain": null,
+  "context": null,
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_views.xml"
+ },
+ {
+  "id": "product.product_variant_action",
+  "name": "Product Variants",
+  "resModel": "product.product",
+  "viewMode": null,
+  "domain": null,
+  "context": "{'search_default_product_tmpl_id': [active_id], 'default_product_tmpl_id': active_id, 'create': False}",
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_views.xml"
+ },
+ {
+  "id": "product.product_normal_action_sell",
+  "name": "Product Variants",
+  "resModel": "product.product",
+  "viewMode": "kanban,list,form,activity",
+  "domain": null,
+  "context": "{\"search_default_filter_to_sell\":1}",
+  "addon": "product",
+  "file": "sources/odoo/addons/product/views/product_views.xml"
+ },
+ {
+  "id": "product.action_open_label_layout",
+  "name": "Choose Labels Layout",
+  "resModel": "product.label.layout",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "product",
+  "file": "sources/odoo/addons/product/wizard/product_label_layout_views.xml"
+ },
+ {
+  "id": "analytic.action_analytic_account_form",
+  "name": "Chart of Analytic Accounts",
+  "resModel": "account.analytic.account",
+  "viewMode": "list,kanban,form",
+  "domain": null,
+  "context": "{'search_default_active':1}",
+  "addon": "analytic",
+  "file": "sources/odoo/addons/analytic/views/analytic_account_views.xml"
+ },
+ {
+  "id": "analytic.action_account_analytic_account_form",
+  "name": "Analytic Accounts",
+  "resModel": "account.analytic.account",
+  "viewMode": "list,kanban,form",
+  "domain": null,
+  "context": "{'search_default_active':1}",
+  "addon": "analytic",
+  "file": "sources/odoo/addons/analytic/views/analytic_account_views.xml"
+ },
+ {
+  "id": "analytic.action_analytic_distribution_model",
+  "name": "Analytic Distribution Models",
+  "resModel": "account.analytic.distribution.model",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "analytic",
+  "file": "sources/odoo/addons/analytic/views/analytic_distribution_model_views.xml"
+ },
+ {
+  "id": "analytic.account_analytic_line_action",
+  "name": "Gross Margin",
+  "resModel": "account.analytic.line",
+  "viewMode": "list,form,graph,pivot",
+  "domain": "[('auto_account_id','=', active_id)]",
+  "context": "{'search_default_group_date': 1, 'default_auto_account_id': active_id}",
+  "addon": "analytic",
+  "file": "sources/odoo/addons/analytic/views/analytic_line_views.xml"
+ },
+ {
+  "id": "analytic.account_analytic_line_action_entries",
+  "name": null,
+  "resModel": null,
+  "viewMode": null,
+  "domain": null,
+  "context": "{\n                'search_default_group_by_analytic_account': 1,\n                'search_default_fiscal_date': 1,\n                'search_default_profit_loss_accounts': 1,\n            }",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_analytic_line_views.xml"
+ },
+ {
+  "id": "analytic.account_analytic_plan_action",
+  "name": "Analytic Plans",
+  "resModel": "account.analytic.plan",
+  "viewMode": "list,form",
+  "domain": "[('parent_id', '=', False)]",
+  "context": null,
+  "addon": "analytic",
+  "file": "sources/odoo/addons/analytic/views/analytic_plan_views.xml"
+ },
+ {
+  "id": "account.action_open_settings",
+  "name": "Settings",
+  "resModel": "res.config.settings",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{'module': 'general_settings', 'bin_size': False}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/data/account_data.xml"
+ },
+ {
+  "id": "account.action_account_invoice_report_all_supp",
+  "name": "Invoices Analysis",
+  "resModel": "account.invoice.report",
+  "viewMode": "graph,pivot",
+  "domain": null,
+  "context": "{'search_default_current':1, 'search_default_supplier': 1, 'group_by':['invoice_date:month']}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/report/account_invoice_report_view.xml"
+ },
+ {
+  "id": "account.action_account_invoice_report_all",
+  "name": "Invoices Analysis",
+  "resModel": "account.invoice.report",
+  "viewMode": "graph,pivot",
+  "domain": null,
+  "context": "{'search_default_current':1, 'search_default_customer': 1, 'group_by':['invoice_date:month']}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/report/account_invoice_report_view.xml"
+ },
+ {
+  "id": "account.action_account_form",
+  "name": "Chart of Accounts",
+  "resModel": "account.account",
+  "viewMode": "list,kanban,form",
+  "domain": null,
+  "context": "{'search_default_activeacc': True}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_account_views.xml"
+ },
+ {
+  "id": "account.action_analytic_reporting",
+  "name": "Analytic Reporting",
+  "resModel": "account.analytic.line",
+  "viewMode": null,
+  "domain": null,
+  "context": "{\n                'search_default_group_by_analytic_account': 1,\n                'search_default_fiscal_date': 1,\n                'search_default_profit_loss_accounts': 1,\n            }",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_analytic_line_views.xml"
+ },
+ {
+  "id": "account.action_bank_statement_tree",
+  "name": "Bank Statements",
+  "resModel": "account.bank.statement",
+  "viewMode": "list,pivot,graph,form",
+  "domain": "[('journal_id.type', '=', 'bank')]",
+  "context": "{'journal_type':'bank'}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_bank_statement_views.xml"
+ },
+ {
+  "id": "account.action_credit_statement_tree",
+  "name": "Credit Statements",
+  "resModel": "account.bank.statement",
+  "viewMode": "list,pivot,graph,form",
+  "domain": "[('journal_id.type', '=', 'credit')]",
+  "context": "{'journal_type': 'credit'}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_bank_statement_views.xml"
+ },
+ {
+  "id": "account.action_view_bank_statement_tree",
+  "name": "Cash Registers",
+  "resModel": "account.bank.statement",
+  "viewMode": "list,pivot,graph,form",
+  "domain": "[('journal_id.type', '=', 'cash')]",
+  "context": "{'journal_type':'cash'}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_bank_statement_views.xml"
+ },
+ {
+  "id": "account.rounding_list_action",
+  "name": "Cash Roundings",
+  "resModel": "account.cash.rounding",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_cash_rounding_view.xml"
+ },
+ {
+  "id": "account.action_incoterms_tree",
+  "name": "Incoterms",
+  "resModel": "account.incoterms",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_incoterms_view.xml"
+ },
+ {
+  "id": "account.open_account_journal_dashboard_kanban",
+  "name": "Dashboard",
+  "resModel": "account.journal",
+  "viewMode": "kanban,form",
+  "domain": "[]",
+  "context": "{'search_default_dashboard':1}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_journal_dashboard_view.xml"
+ },
+ {
+  "id": "account.action_account_journal_form",
+  "name": "Journals",
+  "resModel": "account.journal",
+  "viewMode": "list,kanban,form",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_journal_views.xml"
+ },
+ {
+  "id": "account.action_account_journal_group_list",
+  "name": "Multi-ledger",
+  "resModel": "account.journal.group",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_journal_views.xml"
+ },
+ {
+  "id": "account.action_move_line_select",
+  "name": "Journal Items",
+  "resModel": "account.move.line",
+  "viewMode": null,
+  "domain": null,
+  "context": "{'search_default_account_id': [active_id], 'search_default_posted': 1}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_account_moves_all_a",
+  "name": "Journal Items",
+  "resModel": "account.move.line",
+  "viewMode": "list,pivot,graph,kanban",
+  "domain": "[('display_type', 'not in', ('line_section', 'line_note'))]",
+  "context": "{'journal_type':'general', 'search_default_group_by_move': 1, 'search_default_posted':1, 'create':0}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_account_moves_all_grouped_matching",
+  "name": "Journal Items",
+  "resModel": "account.move.line",
+  "viewMode": "list,pivot,graph,kanban",
+  "domain": "[('display_type', 'not in', ('line_section', 'line_note'))]",
+  "context": "{'journal_type':'general', 'search_default_posted':1, 'expand':'1'}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_account_moves_journal_sales",
+  "name": "Sales",
+  "resModel": "account.move.line",
+  "viewMode": "list,pivot,graph,kanban",
+  "domain": "[('display_type', 'not in', ('line_section', 'line_note'))]",
+  "context": "{'journal_type':'sales', 'search_default_group_by_move': 1, 'search_default_posted':1, 'search_default_sales':1, 'expand': 1}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_account_moves_journal_purchase",
+  "name": "Purchases",
+  "resModel": "account.move.line",
+  "viewMode": "list,pivot,graph,kanban",
+  "domain": "[('display_type', 'not in', ('line_section', 'line_note'))]",
+  "context": "{'journal_type':'purchase', 'search_default_group_by_move': 1, 'search_default_posted':1, 'search_default_purchases':1, 'expand': 1}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_account_moves_journal_bank_cash",
+  "name": "Bank and Cash",
+  "resModel": "account.move.line",
+  "viewMode": "list,pivot,graph,kanban",
+  "domain": "[('display_type', 'not in', ('line_section', 'line_note'))]",
+  "context": "{'journal_type':'bank', 'search_default_group_by_move': 1, 'search_default_posted':1, 'search_default_bank':1, 'search_default_cash':1, 'expand': 1}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_account_moves_journal_misc",
+  "name": "Miscellaneous",
+  "resModel": "account.move.line",
+  "viewMode": "list,pivot,graph,kanban",
+  "domain": "[('display_type', 'not in', ('line_section', 'line_note'))]",
+  "context": "{'journal_type':'general', 'search_default_group_by_move': 1, 'search_default_posted':1, 'search_default_misc_filter':1, 'expand': 1}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_account_moves_ledger_partner",
+  "name": "Partner Ledger",
+  "resModel": "account.move.line",
+  "viewMode": "list,pivot,graph",
+  "domain": "[('display_type', 'not in', ('line_section', 'line_note'))]",
+  "context": "{'journal_type':'general', 'search_default_group_by_partner': 1, 'search_default_posted':1, 'search_default_trade_payable':1, 'search_default_trade_receivable':1, 'search_default_unreconciled':1}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_account_moves_all_tree",
+  "name": "Journal Items",
+  "resModel": "account.move.line",
+  "viewMode": null,
+  "domain": "[('display_type', 'not in', ('line_section', 'line_note'))]",
+  "context": "{'search_default_partner_id': [active_id], 'default_partner_id': active_id, 'search_default_posted':1}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_account_moves_all",
+  "name": "Journal Items",
+  "resModel": "account.move.line",
+  "viewMode": "list,pivot,graph,kanban",
+  "domain": "[('display_type', 'not in', ('line_section', 'line_note')), ('parent_state', '!=', 'cancel')]",
+  "context": "{'journal_type':'general', 'search_default_posted':1}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_journal_line",
+  "name": "Journal Entries",
+  "resModel": "account.move",
+  "viewMode": "list,kanban,form,activity",
+  "domain": null,
+  "context": "{'default_move_type': 'entry', 'search_default_posted':1, 'view_no_maturity': True}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_out_invoice_type",
+  "name": "Invoices",
+  "resModel": "account.move",
+  "viewMode": "list,kanban,form,activity",
+  "domain": "[('move_type', 'in', ['out_invoice', 'out_refund'])]",
+  "context": "{'default_move_type': 'out_invoice'}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_out_invoice",
+  "name": "Invoices",
+  "resModel": "account.move",
+  "viewMode": "list,kanban,form,activity",
+  "domain": "[('move_type', 'in', ['out_invoice', 'out_refund'])]",
+  "context": "{'search_default_out_invoice': 1, 'default_move_type': 'out_invoice'}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_out_refund_type",
+  "name": "Credit Notes",
+  "resModel": "account.move",
+  "viewMode": "list,kanban,form,activity",
+  "domain": "[('move_type', 'in', ['out_invoice', 'out_refund'])]",
+  "context": "{'search_default_out_refund': 1, 'default_move_type': 'out_refund', 'display_account_trust': True}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_in_invoice_type",
+  "name": "Bills",
+  "resModel": "account.move",
+  "viewMode": "list,kanban,form,activity",
+  "domain": "[('move_type', 'in', ['in_invoice', 'in_refund'])]",
+  "context": "{'default_move_type': 'in_invoice', 'display_account_trust': True}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_in_invoice",
+  "name": "Bills",
+  "resModel": "account.move",
+  "viewMode": "list,kanban,form,activity",
+  "domain": "[('move_type', 'in', ['in_invoice', 'in_refund'])]",
+  "context": "{'search_default_in_invoice': 1, 'default_move_type': 'in_invoice', 'display_account_trust': True}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_in_refund_type",
+  "name": "Refunds",
+  "resModel": "account.move",
+  "viewMode": "list,kanban,form,activity",
+  "domain": "[('move_type', 'in', ['in_invoice', 'in_refund'])]",
+  "context": "{'search_default_in_refund': 1, 'default_move_type': 'in_refund'}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_amounts_to_settle",
+  "name": "Amounts to Settle",
+  "resModel": "account.move.line",
+  "viewMode": "list",
+  "domain": "[('parent_state', '=', 'posted'), ('date_maturity', '!=', False), ('amount_residual', '!=', 0), ('account_id.reconcile', '=', True)]",
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_out_receipt_type",
+  "name": "Receipts",
+  "resModel": "account.move",
+  "viewMode": "list,kanban,form,activity",
+  "domain": "[('move_type', '=', 'out_receipt')]",
+  "context": "{'default_move_type': 'out_receipt'}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_in_receipt_type",
+  "name": "Receipts",
+  "resModel": "account.move",
+  "viewMode": "list,kanban,form,activity",
+  "domain": "[('move_type', '=', 'in_receipt')]",
+  "context": "{'default_move_type': 'in_receipt', 'display_account_trust': True}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_move_line_form",
+  "name": "Entries",
+  "resModel": "account.move",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_move_views.xml"
+ },
+ {
+  "id": "account.action_payment_term_form",
+  "name": "Payment Terms",
+  "resModel": "account.payment.term",
+  "viewMode": "list,kanban,form",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_payment_term_views.xml"
+ },
+ {
+  "id": "account.action_account_all_payments",
+  "name": "Payments",
+  "resModel": "account.payment",
+  "viewMode": "list,kanban,form,graph,activity",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_payment_view.xml"
+ },
+ {
+  "id": "account.action_account_payments",
+  "name": "Customer Payments",
+  "resModel": "account.payment",
+  "viewMode": "list,kanban,form,graph,activity",
+  "domain": null,
+  "context": "{\n                'default_payment_type': 'inbound',\n                'default_partner_type': 'customer',\n                'search_default_inbound_filter': 1,\n                'default_move_journal_types': ('bank', 'cash'),\n                'display_account_trust': True,\n            }",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_payment_view.xml"
+ },
+ {
+  "id": "account.action_account_payments_payable",
+  "name": "Vendor Payments",
+  "resModel": "account.payment",
+  "viewMode": "list,kanban,form,graph,activity",
+  "domain": null,
+  "context": "{\n                'default_payment_type': 'outbound',\n                'default_partner_type': 'supplier',\n                'search_default_outbound_filter': 1,\n                'default_move_journal_types': ('bank', 'cash'),\n                'display_account_trust': True,\n            }",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_payment_view.xml"
+ },
+ {
+  "id": "account.action_account_payments_transfer",
+  "name": "Internal Transfers",
+  "resModel": "account.payment",
+  "viewMode": "list,kanban,form,graph",
+  "domain": "[]",
+  "context": "{'default_payment_type': 'outbound', 'search_default_transfers_filter': 1, 'display_account_trust': True}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_payment_view.xml"
+ },
+ {
+  "id": "account.account_send_payment_receipt_by_email_action",
+  "name": "Send receipt by email",
+  "resModel": "mail.compose.message",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{                 'mail_post_autofollow': True,                 'default_composition_mode': 'comment',                 'default_template_id': ref('account.mail_template_data_payment_receipt'),                 'default_email_layout_xmlid': 'mail.mail_notification_light',             }",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_payment_view.xml"
+ },
+ {
+  "id": "account.account_send_payment_receipt_by_email_action_multi",
+  "name": "Send receipts by email",
+  "resModel": "mail.compose.message",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{                 'mailing_document_based': True,                 'mail_post_autofollow': True,                 'default_composition_mode': 'mass_mail',                 'default_template_id': ref('account.mail_template_data_payment_receipt'),                 'default_email_layout_xmlid': 'mail.mail_notification_light',             }",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_payment_view.xml"
+ },
+ {
+  "id": "account.action_account_reconcile_model",
+  "name": "Reconciliation Models",
+  "resModel": "account.reconcile.model",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_reconcile_model_views.xml"
+ },
+ {
+  "id": "account.action_tax_form",
+  "name": "Taxes",
+  "resModel": "account.tax",
+  "viewMode": "list,kanban,form",
+  "domain": null,
+  "context": "{'search_default_sale': True, 'search_default_purchase': True, 'active_test': False}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_tax_views.xml"
+ },
+ {
+  "id": "account.action_tax_group",
+  "name": "Tax Groups",
+  "resModel": "account.tax.group",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/account_tax_views.xml"
+ },
+ {
+  "id": "account.action_base_document_layout_configurator",
+  "name": "Configure your document layout",
+  "resModel": "base.document.layout",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{\"dialog_size\": \"extra-large\"}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/base_document_layout_views.xml"
+ },
+ {
+  "id": "account.action_account_audit_trail_report",
+  "name": "Audit Trail",
+  "resModel": "mail.message",
+  "viewMode": "list",
+  "domain": "[\n            ('message_type', '=', 'notification'),\n            ('account_audit_log_activated', '=', True),\n        ]",
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/mail_message_views.xml"
+ },
+ {
+  "id": "account.res_partner_action_supplier_bills",
+  "name": "Vendor Bills",
+  "resModel": "account.move",
+  "viewMode": "list,form,graph",
+  "domain": "[('move_type','in',('in_invoice', 'in_refund'))]",
+  "context": "{'search_default_partner_id': active_id, 'default_move_type': 'in_invoice', 'default_partner_id': active_id}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/partner_view.xml"
+ },
+ {
+  "id": "account.action_account_fiscal_position_form",
+  "name": "Fiscal Positions",
+  "resModel": "account.fiscal.position",
+  "viewMode": "list,kanban,form",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/partner_view.xml"
+ },
+ {
+  "id": "account.res_partner_action_customer",
+  "name": "Customers",
+  "resModel": "res.partner",
+  "viewMode": "kanban,list,form",
+  "domain": null,
+  "context": "{'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/partner_view.xml"
+ },
+ {
+  "id": "account.res_partner_action_supplier",
+  "name": "Vendors",
+  "resModel": "res.partner",
+  "viewMode": "kanban,list,form",
+  "domain": null,
+  "context": "{'search_default_supplier': 1,'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/partner_view.xml"
+ },
+ {
+  "id": "account.product_product_action_sellable",
+  "name": "Products",
+  "resModel": "product.template",
+  "viewMode": "kanban,list,form,activity",
+  "domain": null,
+  "context": "{'search_default_filter_to_sell': 1}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/product_view.xml"
+ },
+ {
+  "id": "account.product_product_action_purchasable",
+  "name": "Products",
+  "resModel": "product.template",
+  "viewMode": "kanban,list,form,activity",
+  "domain": null,
+  "context": "{'search_default_filter_to_purchase': 1}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/product_view.xml"
+ },
+ {
+  "id": "account.open_account_charts_modules",
+  "name": "Chart Templates",
+  "resModel": "ir.module.module",
+  "viewMode": "kanban,list,form",
+  "domain": null,
+  "context": "{                 'search_default_category_id': ref('base.module_category_accounting_localizations_account_charts'),                 'searchpanel_default_category_id': ref('base.module_category_accounting_localizations_account_charts'),             }",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/res_config_settings_views.xml"
+ },
+ {
+  "id": "account.action_account_config",
+  "name": "Settings",
+  "resModel": "res.config.settings",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{'module' : 'account', 'bin_size': False}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/res_config_settings_views.xml"
+ },
+ {
+  "id": "account.action_account_supplier_accounts",
+  "name": "Bank Accounts",
+  "resModel": "res.partner.bank",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/views/res_partner_bank_views.xml"
+ },
+ {
+  "id": "account.account_automatic_entry_wizard_action",
+  "name": "Transfer Journal Items",
+  "resModel": "account.automatic.entry.wizard",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/wizard/account_automatic_entry_wizard_views.xml"
+ },
+ {
+  "id": "account.account_merge_wizard_action",
+  "name": "Merge accounts",
+  "resModel": "account.merge.wizard",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/wizard/account_merge_wizard_views.xml"
+ },
+ {
+  "id": "account.action_view_account_move_reversal",
+  "name": "Reverse",
+  "resModel": "account.move.reversal",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/wizard/account_move_reversal_view.xml"
+ },
+ {
+  "id": "account.action_account_resequence",
+  "name": "Resequence",
+  "resModel": "account.resequence.wizard",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/wizard/account_resequence_views.xml"
+ },
+ {
+  "id": "account.action_view_account_secure_entries_wizard",
+  "name": "Secure Journal Entries",
+  "resModel": "account.secure.entries.wizard",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "account",
+  "file": "sources/odoo/addons/account/wizard/account_secure_entries_wizard.xml"
+ },
+ {
+  "id": "account.action_validate_account_move",
+  "name": "Confirm Entries",
+  "resModel": "validate.account.move",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{}",
+  "addon": "account",
+  "file": "sources/odoo/addons/account/wizard/account_validate_move_view.xml"
+ },
+ {
+  "id": "purchase.action_purchase_order_report_all",
+  "name": "Purchase Analysis",
+  "resModel": "purchase.report",
+  "viewMode": "graph,pivot",
+  "domain": null,
+  "context": "{\n                'search_default_orders': 1,\n                'search_default_filter_date_approve': 1}",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/report/purchase_report_views.xml"
+ },
+ {
+  "id": "purchase.product_normal_action_puchased",
+  "name": "Products",
+  "resModel": "product.template",
+  "viewMode": "kanban,list,form,activity",
+  "domain": null,
+  "context": "{\"search_default_filter_to_purchase\":1, \"purchase_product_template\": 1}",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/purchase_views.xml"
+ },
+ {
+  "id": "purchase.product_product_action",
+  "name": "Product Variants",
+  "resModel": "product.product",
+  "viewMode": "list,kanban,form,activity",
+  "domain": null,
+  "context": "{\"search_default_filter_to_purchase\": 1}",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/purchase_views.xml"
+ },
+ {
+  "id": "purchase.purchase_rfq",
+  "name": "Requests for Quotation",
+  "resModel": "purchase.order",
+  "viewMode": "list,kanban,form,pivot,graph,calendar,activity",
+  "domain": "[]",
+  "context": "{'quotation_only': True}",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/purchase_views.xml"
+ },
+ {
+  "id": "purchase.purchase_form_action",
+  "name": "Purchase Orders",
+  "resModel": "purchase.order",
+  "viewMode": "list,kanban,form,pivot,graph,calendar,activity",
+  "domain": "[('state','in',('purchase', 'done'))]",
+  "context": "{}",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/purchase_views.xml"
+ },
+ {
+  "id": "purchase.action_purchase_history",
+  "name": null,
+  "resModel": "purchase.order.line",
+  "viewMode": "list,pivot,graph",
+  "domain": null,
+  "context": "{\n                'search_default_purchase_state': 1,\n                'search_default_order_date_last_year': 1,\n                'search_default_groupby_supplier': 1,\n        }",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/purchase_views.xml"
+ },
+ {
+  "id": "purchase.action_accrued_expense_entry",
+  "name": "Accrued Expense Entry",
+  "resModel": "account.accrued.orders.wizard",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/purchase_views.xml"
+ },
+ {
+  "id": "purchase.action_rfq_form",
+  "name": "Requests for Quotation",
+  "resModel": "purchase.order",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/purchase_views.xml"
+ },
+ {
+  "id": "purchase.action_purchase_configuration",
+  "name": "Settings",
+  "resModel": "res.config.settings",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{'module' : 'purchase', 'bin_size': False}",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/res_config_settings_views.xml"
+ },
+ {
+  "id": "purchase.act_res_partner_2_purchase_order",
+  "name": "RFQs and Purchases",
+  "resModel": "purchase.order",
+  "viewMode": "list,kanban,form,graph",
+  "domain": null,
+  "context": "{'search_default_partner_id': active_id, 'default_partner_id': active_id}",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/res_partner_views.xml"
+ },
+ {
+  "id": "purchase.act_res_partner_2_supplier_invoices",
+  "name": "Vendor Bills",
+  "resModel": "account.move",
+  "viewMode": "list,form,graph",
+  "domain": "[('move_type','in',('in_invoice', 'in_refund'))]",
+  "context": "{'search_default_partner_id': active_id, 'default_move_type': 'in_invoice', 'default_partner_id': active_id}",
+  "addon": "purchase",
+  "file": "sources/odoo/addons/purchase/views/res_partner_views.xml"
+ },
+ {
+  "id": "stock.action_lot_report",
+  "name": "Customer lots",
+  "resModel": "stock.lot.report",
+  "viewMode": "list",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/report/stock_lot_customer.xml"
+ },
+ {
+  "id": "stock.action_putaway_tree",
+  "name": "Putaways Rules",
+  "resModel": "stock.putaway.rule",
+  "viewMode": "list",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/product_strategy_views.xml"
+ },
+ {
+  "id": "stock.category_open_putaway",
+  "name": "Putaway Rules",
+  "resModel": "stock.putaway.rule",
+  "viewMode": null,
+  "domain": null,
+  "context": "{\n            'search_default_category_id': [active_id],\n            'fixed_category': True,\n        }",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/product_strategy_views.xml"
+ },
+ {
+  "id": "stock.location_open_putaway",
+  "name": "Putaway Rules",
+  "resModel": "stock.putaway.rule",
+  "viewMode": null,
+  "domain": "['|', ('location_out_id', '=', active_id), ('location_in_id', '=', active_id)]",
+  "context": "{'fixed_location': True}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/product_strategy_views.xml"
+ },
+ {
+  "id": "stock.action_inventory_at_date",
+  "name": "Inventory at Date",
+  "resModel": "stock.quantity.history",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/product_views.xml"
+ },
+ {
+  "id": "stock.action_product_stock_view",
+  "name": "Stock",
+  "resModel": "product.product",
+  "viewMode": "list,form",
+  "domain": "[('is_storable', '=', True)]",
+  "context": "{'default_is_storable': True}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/product_views.xml"
+ },
+ {
+  "id": "stock.product_template_action_product",
+  "name": "Products",
+  "resModel": "product.template",
+  "viewMode": "kanban,list,form",
+  "domain": null,
+  "context": "{\"search_default_goods\": 1, 'default_is_storable': True}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/product_views.xml"
+ },
+ {
+  "id": "stock.stock_product_normal_action",
+  "name": "Product Variants",
+  "resModel": "product.product",
+  "viewMode": "list,form,kanban",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/product_views.xml"
+ },
+ {
+  "id": "stock.action_stock_config_settings",
+  "name": "Settings",
+  "resModel": "res.config.settings",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{'module' : 'stock', 'bin_size': False}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/res_config_settings_views.xml"
+ },
+ {
+  "id": "stock.act_product_location_open",
+  "name": "Products",
+  "resModel": "product.product",
+  "viewMode": null,
+  "domain": null,
+  "context": "{'location': active_id, 'search_default_real_stock_available': 1, 'search_default_virtual_stock_available': 1,\n                    'search_default_virtual_stock_negative': 1, 'search_default_real_stock_negative': 1, 'create': False}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_location_views.xml"
+ },
+ {
+  "id": "stock.action_storage_category_locations",
+  "name": "Locations",
+  "resModel": "stock.location",
+  "viewMode": "list,form",
+  "domain": "[('storage_category_id', '=', active_id)]",
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_location_views.xml"
+ },
+ {
+  "id": "stock.action_location_form",
+  "name": "Locations",
+  "resModel": "stock.location",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": "{'search_default_in_location':1}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_location_views.xml"
+ },
+ {
+  "id": "stock.action_prod_inv_location_form",
+  "name": "Locations",
+  "resModel": "stock.location",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": "{'search_default_prod_inv_location': 1}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_location_views.xml"
+ },
+ {
+  "id": "stock.action_routes_form",
+  "name": "Routes",
+  "resModel": "stock.route",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_location_views.xml"
+ },
+ {
+  "id": "stock.action_production_lot_form",
+  "name": "Lots / Serial Numbers",
+  "resModel": "stock.lot",
+  "viewMode": null,
+  "domain": "['|', ('location_id', '=', False), ('location_id.company_id', 'in', allowed_company_ids + [False])]",
+  "context": "{'search_default_group_by_location': True, 'display_complete': True}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_lot_views.xml"
+ },
+ {
+  "id": "stock.action_product_production_lot_form",
+  "name": "Lots/Serial Numbers",
+  "resModel": "stock.lot",
+  "viewMode": null,
+  "domain": "['|', ('location_id', '=', False), ('location_id.company_id', 'in', allowed_company_ids + [False])]",
+  "context": "{'search_default_group_by_product': 1, 'display_complete': True, 'default_company_id': allowed_company_ids[0]}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_lot_views.xml"
+ },
+ {
+  "id": "stock.stock_move_line_action",
+  "name": "Moves History",
+  "resModel": "stock.move.line",
+  "viewMode": "list,kanban,pivot,form",
+  "domain": null,
+  "context": "{'search_default_done': 1, 'create': 0, 'pivot_measures': ['quantity_product_uom', '__count__']}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_move_line_views.xml"
+ },
+ {
+  "id": "stock.stock_move_action",
+  "name": "Moves Analysis",
+  "resModel": "stock.move",
+  "viewMode": null,
+  "domain": null,
+  "context": "{'search_default_done': 1,\n                'pivot_measures': ['quantity', '__count__'],\n                }",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_move_views.xml"
+ },
+ {
+  "id": "stock.action_orderpoint_replenish",
+  "name": "Replenishment",
+  "resModel": "stock.warehouse.orderpoint",
+  "viewMode": "list,kanban,form",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_orderpoint_views.xml"
+ },
+ {
+  "id": "stock.action_orderpoint",
+  "name": "Reordering Rules",
+  "resModel": "stock.warehouse.orderpoint",
+  "viewMode": "list,kanban,form",
+  "domain": null,
+  "context": "{'search_default_trigger': 'auto'}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_orderpoint_views.xml"
+ },
+ {
+  "id": "stock.action_package_type_view",
+  "name": "Package Types",
+  "resModel": "stock.package.type",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_package_type_view.xml"
+ },
+ {
+  "id": "stock.action_picking_type_list",
+  "name": "Operations Types",
+  "resModel": "stock.picking.type",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_type_views.xml"
+ },
+ {
+  "id": "stock.stock_picking_type_action",
+  "name": "Inventory Overview",
+  "resModel": "stock.picking.type",
+  "viewMode": "kanban,form",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_type_views.xml"
+ },
+ {
+  "id": "stock.action_picking_tree_all",
+  "name": "Transfers",
+  "resModel": "stock.picking",
+  "viewMode": "list,kanban,form,calendar",
+  "domain": "",
+  "context": "{'contact_display': 'partner_address', 'default_company_id': allowed_company_ids[0]}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_picking_tree_incoming",
+  "name": "Receipts",
+  "resModel": "stock.picking",
+  "viewMode": "list,kanban,form,calendar,activity",
+  "domain": "",
+  "context": "{'contact_display': 'partner_address', 'restricted_picking_type_code': 'incoming', 'search_default_reception': 1}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_picking_tree_outgoing",
+  "name": "Deliveries",
+  "resModel": "stock.picking",
+  "viewMode": "list,kanban,form,calendar,activity",
+  "domain": "",
+  "context": "{'contact_display': 'partner_address', 'restricted_picking_type_code': 'outgoing', 'search_default_delivery': 1}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_picking_tree_internal",
+  "name": "Internal Transfers",
+  "resModel": "stock.picking",
+  "viewMode": "list,kanban,form,calendar",
+  "domain": "",
+  "context": "{'contact_display': 'partner_address', 'restricted_picking_type_code': 'internal', 'search_default_internal': 1}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_lead_mass_mail",
+  "name": "Send email",
+  "resModel": "mail.compose.message",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{\n                'default_composition_mode': 'mass_mail',\n            }",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.stock_picking_action_picking_type",
+  "name": "All Transfers",
+  "resModel": "stock.picking",
+  "viewMode": null,
+  "domain": null,
+  "context": "{'contact_display': 'partner_address'}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_picking_tree_ready",
+  "name": "To Do",
+  "resModel": "stock.picking",
+  "viewMode": "list,kanban,form,calendar",
+  "domain": "",
+  "context": "{'contact_display': 'partner_address', 'search_default_available': 1}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_picking_tree_graph",
+  "name": "To Do",
+  "resModel": "stock.picking",
+  "viewMode": "list,kanban,form,calendar",
+  "domain": "",
+  "context": "{'contact_display': 'partner_address', 'search_default_available': 1, 'search_default_waiting': 1}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_picking_tree_waiting",
+  "name": "Waiting Transfers",
+  "resModel": "stock.picking",
+  "viewMode": "list,kanban,form,calendar",
+  "domain": "",
+  "context": "{'contact_display': 'partner_address', 'search_default_waiting': 1}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_picking_tree_late",
+  "name": "Late Transfers",
+  "resModel": "stock.picking",
+  "viewMode": "list,kanban,form,calendar",
+  "domain": "",
+  "context": "{'contact_display': 'partner_address', 'search_default_late': 1}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_picking_tree_backorder",
+  "name": "Backorders",
+  "resModel": "stock.picking",
+  "viewMode": "list,kanban,form,calendar",
+  "domain": "",
+  "context": "{'contact_display': 'partner_address', 'search_default_backorder': 1}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_get_picking_type_ready_moves",
+  "name": "Ready Moves",
+  "resModel": "stock.move",
+  "viewMode": null,
+  "domain": "[('picking_type_id', '=', active_id)]",
+  "context": "{'search_default_ready': 1}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_get_picking_type_operations",
+  "name": "Operations",
+  "resModel": "stock.move.line",
+  "viewMode": null,
+  "domain": "[('picking_type_id', '=', active_id), ('picking_id', '!=', False)]",
+  "context": "{\n                'search_default_todo': '1',\n            }",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.action_picking_form",
+  "name": "New Transfer",
+  "resModel": "stock.picking",
+  "viewMode": "form",
+  "domain": "",
+  "context": "{\n                    'search_default_picking_type_id': [active_id],\n                    'default_picking_type_id': active_id,\n                    'contact_display': 'partner_address',\n            }",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.do_view_pickings",
+  "name": "Transfers for Groups",
+  "resModel": "stock.picking",
+  "viewMode": "list,form",
+  "domain": "[('group_id','=',active_id)]",
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_picking_views.xml"
+ },
+ {
+  "id": "stock.dashboard_open_quants",
+  "name": "Update Quantity",
+  "resModel": "stock.quant",
+  "viewMode": null,
+  "domain": null,
+  "context": "{'search_default_internal_loc': 1, 'search_default_productgroup':1, 'search_default_locationgroup':1, 'inventory_mode':True}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_quant_views.xml"
+ },
+ {
+  "id": "stock.location_open_quants",
+  "name": "Current Stock",
+  "resModel": "stock.quant",
+  "viewMode": null,
+  "domain": "[('location_id', 'child_of', active_ids)]",
+  "context": "{'search_default_productgroup': 1}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_quant_views.xml"
+ },
+ {
+  "id": "stock.action_package_view",
+  "name": "Packages",
+  "resModel": "stock.quant.package",
+  "viewMode": "kanban,list,form",
+  "domain": null,
+  "context": "{\n            'search_default_location': True,\n            'search_default_internal': True,\n            }",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_quant_views.xml"
+ },
+ {
+  "id": "stock.action_rules_form",
+  "name": "Rules",
+  "resModel": "stock.rule",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_rule_views.xml"
+ },
+ {
+  "id": "stock.action_stock_scrap",
+  "name": "Scrap Orders",
+  "resModel": "stock.scrap",
+  "viewMode": "list,form,kanban,pivot,graph",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_scrap_views.xml"
+ },
+ {
+  "id": "stock.action_storage_category",
+  "name": "Storage Categories",
+  "resModel": "stock.storage.category",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_storage_category_views.xml"
+ },
+ {
+  "id": "stock.action_storage_category_capacity",
+  "name": "Storage Category Capacity",
+  "resModel": "stock.storage.category.capacity",
+  "viewMode": "list",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_storage_category_views.xml"
+ },
+ {
+  "id": "stock.action_warehouse_form",
+  "name": "Warehouses",
+  "resModel": "stock.warehouse",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/views/stock_warehouse_views.xml"
+ },
+ {
+  "id": "stock.action_product_replenish",
+  "name": "Low on stock? Let's replenish.",
+  "resModel": "product.replenish",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/wizard/product_replenish_views.xml"
+ },
+ {
+  "id": "stock.action_change_product_quantity",
+  "name": "Change Product Quantity",
+  "resModel": "stock.change.product.qty",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/wizard/stock_change_product_qty_views.xml"
+ },
+ {
+  "id": "stock.action_stock_inventory_adjustement_name",
+  "name": "Inventory Adjustment",
+  "resModel": "stock.inventory.adjustment.name",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{\n            'default_quant_ids': active_ids\n        }",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/wizard/stock_inventory_adjustment_name.xml"
+ },
+ {
+  "id": "stock.action_orderpoint_snooze",
+  "name": "Snooze",
+  "resModel": "stock.orderpoint.snooze",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/wizard/stock_orderpoint_snooze_views.xml"
+ },
+ {
+  "id": "stock.act_stock_return_picking",
+  "name": "Return",
+  "resModel": "stock.return.picking",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/wizard/stock_picking_return_views.xml"
+ },
+ {
+  "id": "stock.action_stock_replenishment_info",
+  "name": "Replenishment Information",
+  "resModel": "stock.replenishment.info",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{'default_orderpoint_id': active_id}",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/wizard/stock_replenishment_info.xml"
+ },
+ {
+  "id": "stock.action_stock_request_count",
+  "name": "Request a Count",
+  "resModel": "stock.request.count",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{\n            'default_quant_ids': active_ids\n        }",
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/wizard/stock_request_count.xml"
+ },
+ {
+  "id": "stock.action_stock_rules_report",
+  "name": "Stock Rules Report",
+  "resModel": "stock.rules.report",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "stock",
+  "file": "sources/odoo/addons/stock/wizard/stock_rules_report_views.xml"
+ },
+ {
+  "id": "stock_account.stock_valuation_layer_action",
+  "name": "Stock Valuation",
+  "resModel": "stock.valuation.layer",
+  "viewMode": "list,form,pivot,graph",
+  "domain": "[('product_id.is_storable', '=', True)]",
+  "context": "{\n            'pivot_column_groupby': ['create_date:month'],\n            'pivot_row_groupby': ['categ_id'],\n            'pivot_measures': ['remaining_qty', 'remaining_value'],\n            'graph_groupbys': ['create_date:day'],\n            }",
+  "addon": "stock_account",
+  "file": "sources/odoo/addons/stock_account/views/stock_valuation_layer_views.xml"
+ },
+ {
+  "id": "stock_account.stock_valuation_layer_report_action",
+  "name": "Stock Valuation",
+  "resModel": "stock.valuation.layer",
+  "viewMode": "list,form,pivot",
+  "domain": "[('product_id.is_storable', '=', True)]",
+  "context": "{'search_default_has_remaining_qty': 1}",
+  "addon": "stock_account",
+  "file": "sources/odoo/addons/stock_account/views/stock_valuation_layer_views.xml"
+ },
+ {
+  "id": "stock_account.action_revalue_layers",
+  "name": "Adjust Valuation",
+  "resModel": "stock.valuation.layer.revaluation",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "stock_account",
+  "file": "sources/odoo/addons/stock_account/wizard/stock_valuation_layer_revaluation_views.xml"
+ },
+ {
+  "id": "purchase_stock.action_purchase_vendor_delay_report",
+  "name": "On-time Delivery",
+  "resModel": "vendor.delay.report",
+  "viewMode": "graph",
+  "domain": null,
+  "context": "{'search_default_later_than_a_year_ago':1}",
+  "addon": "purchase_stock",
+  "file": "sources/odoo/addons/purchase_stock/report/vendor_delay_report.xml"
+ },
+ {
+  "id": "sales_team.sales_team_crm_tag_action",
+  "name": "Tags",
+  "resModel": "crm.tag",
+  "viewMode": null,
+  "domain": null,
+  "context": null,
+  "addon": "sales_team",
+  "file": "sources/odoo/addons/sales_team/views/crm_tag_views.xml"
+ },
+ {
+  "id": "sales_team.crm_team_member_action",
+  "name": "Team Members",
+  "resModel": "crm.team.member",
+  "viewMode": "kanban,list,form",
+  "domain": null,
+  "context": null,
+  "addon": "sales_team",
+  "file": "sources/odoo/addons/sales_team/views/crm_team_member_views.xml"
+ },
+ {
+  "id": "sales_team.crm_team_action_sales",
+  "name": "Sales Teams",
+  "resModel": "crm.team",
+  "viewMode": "kanban,form",
+  "domain": null,
+  "context": "{'in_sales_app': True}",
+  "addon": "sales_team",
+  "file": "sources/odoo/addons/sales_team/views/crm_team_views.xml"
+ },
+ {
+  "id": "sales_team.crm_team_action_pipeline",
+  "name": "Teams",
+  "resModel": "crm.team",
+  "viewMode": "kanban,form",
+  "domain": null,
+  "context": "{}",
+  "addon": "sales_team",
+  "file": "sources/odoo/addons/sales_team/views/crm_team_views.xml"
+ },
+ {
+  "id": "sales_team.crm_team_action_config",
+  "name": "Sales Teams",
+  "resModel": "crm.team",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": "{}",
+  "addon": "sales_team",
+  "file": "sources/odoo/addons/sales_team/views/crm_team_views.xml"
+ },
+ {
+  "id": "sales_team.mail_activity_type_action_config_sales",
+  "name": null,
+  "resModel": null,
+  "viewMode": null,
+  "domain": "['|', ('res_model', '=', False), ('res_model', 'in', ['sale.order', 'res.partner', 'product.template', 'product.product'])]",
+  "context": null,
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/crm_team_views.xml"
+ },
+ {
+  "id": "sale.action_account_invoice_report_salesteam",
+  "name": "Invoices Analysis",
+  "resModel": "account.invoice.report",
+  "viewMode": "graph",
+  "domain": "[('state', 'not in', ['draft', 'cancel'])]",
+  "context": "{'search_default_month':1, 'search_default_team_id': [active_id]}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/report/account_invoice_report_views.xml"
+ },
+ {
+  "id": "sale.action_order_report_all",
+  "name": "Sales Analysis",
+  "resModel": "sale.report",
+  "viewMode": "graph,pivot,list,form",
+  "domain": "[('state', '!=', 'cancel')]",
+  "context": "{'search_default_Sales':1,'group_by':[], 'search_default_filter_order_date': 1}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/report/sale_report_views.xml"
+ },
+ {
+  "id": "sale.action_order_report_salesperson",
+  "name": "Sales Analysis By Salespersons",
+  "resModel": "sale.report",
+  "viewMode": "graph,pivot",
+  "domain": null,
+  "context": "{'search_default_User': 1, 'group_by': 'user_id', 'search_default_filter_order_date': 1}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/report/sale_report_views.xml"
+ },
+ {
+  "id": "sale.action_order_report_products",
+  "name": "Sales Analysis By Products",
+  "resModel": "sale.report",
+  "viewMode": "graph,pivot",
+  "domain": null,
+  "context": "{'search_default_Sales': 1, 'search_default_Product': 1, 'group_by': 'product_id', 'search_default_filter_order_date': 1}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/report/sale_report_views.xml"
+ },
+ {
+  "id": "sale.action_order_report_customers",
+  "name": "Sales Analysis By Customers",
+  "resModel": "sale.report",
+  "viewMode": "graph,pivot",
+  "domain": null,
+  "context": "{'search_default_Customer': 1, 'group_by': 'partner_id', 'search_default_filter_order_date': 1}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/report/sale_report_views.xml"
+ },
+ {
+  "id": "sale.report_all_channels_sales_action",
+  "name": "Sales Analysis",
+  "resModel": "sale.report",
+  "viewMode": "list,pivot,graph,form",
+  "domain": null,
+  "context": null,
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/report/sale_report_views.xml"
+ },
+ {
+  "id": "sale.action_order_report_quotation_salesteam",
+  "name": "Quotations Analysis",
+  "resModel": "sale.report",
+  "viewMode": "graph,list",
+  "domain": "[('state','=','draft'),('team_id', '=', active_id)]",
+  "context": "{'search_default_order_month':1}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/report/sale_report_views.xml"
+ },
+ {
+  "id": "sale.action_order_report_so_salesteam",
+  "name": "Sales Analysis",
+  "resModel": "sale.report",
+  "viewMode": "graph,list",
+  "domain": "[('state','not in',('draft','cancel'))]",
+  "context": "{\n            'search_default_Sales': 1,\n            'search_default_filter_date': 1,\n            'search_default_team_id': [active_id]}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/report/sale_report_views.xml"
+ },
+ {
+  "id": "sale.action_invoice_salesteams",
+  "name": "Invoices",
+  "resModel": "account.move",
+  "viewMode": "list,form,kanban",
+  "domain": "[\n            ('state', '=', 'posted'),\n            ('move_type', 'in', ['out_invoice', 'out_refund'])]",
+  "context": "{\n                'search_default_team_id': [active_id],\n                'default_team_id': active_id,\n                'default_move_type':'out_invoice',\n                'move_type':'out_invoice',\n                'journal_type': 'sale',\n            }",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/account_views.xml"
+ },
+ {
+  "id": "sale.action_quotations_salesteams",
+  "name": "Quotations",
+  "resModel": "sale.order",
+  "viewMode": "list,form,calendar,graph,kanban,pivot",
+  "domain": "[]",
+  "context": "{\n                'search_default_team_id': [active_id],\n                'default_team_id': active_id,\n                'show_address': 1,\n            }",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/crm_team_views.xml"
+ },
+ {
+  "id": "sale.action_quotation_form",
+  "name": "New Quotation",
+  "resModel": "sale.order",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{\n                'search_default_team_id': [active_id],\n                'default_team_id': active_id,\n                'default_user_id': uid,\n        }",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/crm_team_views.xml"
+ },
+ {
+  "id": "sale.action_orders_salesteams",
+  "name": "Sales Orders",
+  "resModel": "sale.order",
+  "viewMode": "list,form,calendar,graph,kanban,pivot",
+  "domain": "[('state','not in',('draft','sent','cancel'))]",
+  "context": "{\n                'search_default_team_id': [active_id],\n                'default_team_id': active_id,\n            }",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/crm_team_views.xml"
+ },
+ {
+  "id": "sale.action_orders_to_invoice_salesteams",
+  "name": "Sales Orders",
+  "resModel": "sale.order",
+  "viewMode": "list,form,calendar,graph,kanban,pivot",
+  "domain": "[('invoice_status','=','to invoice')]",
+  "context": "{\n                'search_default_team_id': [active_id],\n                'default_team_id': active_id,\n            }",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/crm_team_views.xml"
+ },
+ {
+  "id": "sale.mail_activity_plan_action_sale_order",
+  "name": "Sale Order Plans",
+  "resModel": "mail.activity.plan",
+  "viewMode": "list,kanban,form",
+  "domain": "[('res_model', '=', 'sale.order')]",
+  "context": "{'default_res_model': 'sale.order'}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/mail_activity_plan_views.xml"
+ },
+ {
+  "id": "sale.mail_activity_type_action_config_sale",
+  "name": "Activity Types",
+  "resModel": "mail.activity.type",
+  "viewMode": "list,kanban,form",
+  "domain": "['|', ('res_model', '=', False), ('res_model', '=', 'sale.order')]",
+  "context": "{'default_res_model': 'sale.order'}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/mail_activity_views.xml"
+ },
+ {
+  "id": "sale.product_template_action",
+  "name": "Products",
+  "resModel": "product.template",
+  "viewMode": "kanban,list,form,activity",
+  "domain": null,
+  "context": "{\"search_default_filter_to_sell\":1, \"sale_multi_pricelist_product_template\": 1}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/product_views.xml"
+ },
+ {
+  "id": "sale.act_res_partner_2_sale_order",
+  "name": "Quotations and Sales",
+  "resModel": "sale.order",
+  "viewMode": "list,kanban,form,graph",
+  "domain": null,
+  "context": "{'default_partner_id': active_id}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/res_partner_views.xml"
+ },
+ {
+  "id": "sale.action_orders",
+  "name": "Sales Orders",
+  "resModel": "sale.order",
+  "viewMode": "list,kanban,form,calendar,pivot,graph,activity",
+  "domain": "[('state', 'not in', ('draft', 'sent', 'cancel'))]",
+  "context": "{}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/sale_order_views.xml"
+ },
+ {
+  "id": "sale.action_quotations_with_onboarding",
+  "name": "Quotations",
+  "resModel": "sale.order",
+  "viewMode": "list,kanban,form,calendar,pivot,graph,activity",
+  "domain": null,
+  "context": "{'search_default_my_quotation': 1}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/sale_order_views.xml"
+ },
+ {
+  "id": "sale.action_quotations",
+  "name": "Quotations",
+  "resModel": "sale.order",
+  "viewMode": "list,kanban,form,calendar,pivot,graph,activity",
+  "domain": null,
+  "context": "{'search_default_my_quotation': 1}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/sale_order_views.xml"
+ },
+ {
+  "id": "sale.action_orders_to_invoice",
+  "name": "Orders to Invoice",
+  "resModel": "sale.order",
+  "viewMode": "list,form,calendar,graph,pivot,kanban,activity",
+  "domain": "[('invoice_status','=','to invoice')]",
+  "context": "{'create': False}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/sale_order_views.xml"
+ },
+ {
+  "id": "sale.action_orders_upselling",
+  "name": "Orders to Upsell",
+  "resModel": "sale.order",
+  "viewMode": "list,form,calendar,graph,pivot,kanban,activity",
+  "domain": "[('invoice_status','=','upselling')]",
+  "context": "{'create': False}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/views/sale_order_views.xml"
+ },
+ {
+  "id": "sale.action_accrued_revenue_entry",
+  "name": "Accrued Revenue Entry",
+  "resModel": "account.accrued.orders.wizard",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/wizard/account_accrued_orders_wizard_views.xml"
+ },
+ {
+  "id": "sale.action_mass_cancel_orders",
+  "name": "Cancel",
+  "resModel": "sale.mass.cancel.orders",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/wizard/mass_cancel_orders_views.xml"
+ },
+ {
+  "id": "sale.action_sale_order_generate_link",
+  "name": "Generate a Payment Link",
+  "resModel": "payment.link.wizard",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/wizard/payment_link_wizard_views.xml"
+ },
+ {
+  "id": "sale.action_sale_config_settings",
+  "name": "Settings",
+  "resModel": "res.config.settings",
+  "viewMode": "form",
+  "domain": null,
+  "context": "{'module' : 'sale_management', 'bin_size': False}",
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/wizard/res_config_settings_views.xml"
+ },
+ {
+  "id": "sale.action_view_sale_advance_payment_inv",
+  "name": "Create invoice(s)",
+  "resModel": "sale.advance.payment.inv",
+  "viewMode": "form",
+  "domain": null,
+  "context": null,
+  "addon": "sale",
+  "file": "sources/odoo/addons/sale/wizard/sale_make_invoice_advance_views.xml"
+ },
+ {
+  "id": "sale_management.sale_order_template_action",
+  "name": "Quotation Templates",
+  "resModel": "sale.order.template",
+  "viewMode": "list,form",
+  "domain": null,
+  "context": null,
+  "addon": "sale_management",
+  "file": "sources/odoo/addons/sale_management/views/sale_order_template_views.xml"
+ }
+]
