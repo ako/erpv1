@@ -1,0 +1,41 @@
+{
+  "allow": [
+    "Bash(./bin/*.sh:*)",
+    "Bash(./bin/exec.sh:*)",
+    "Bash(bash bin/*.sh:*)",
+    "Bash(bash bin/exec.sh:*)",
+    "Bash(bin/*.sh:*)",
+    "Bash(bin/exec.sh:*)",
+    "Bash(docker compose:*)",
+    "Bash(docker logs:*)",
+    "Bash(docker ps:*)",
+    "Bash(git add:*)",
+    "Bash(git commit:*)",
+    "Bash(git mv:*)",
+    "Bash(node tests/*)",
+    "Bash(npm ci:*)",
+    "Bash(npm install:*)",
+    "Bash(npx playwright *)",
+    "Bash(python3 bin/*)",
+    "Bash(python3 tests/*)",
+    "Bash(~/.mxcli/mxbuild/*/modeler/mx:*)",
+    "Edit(/**)"
+  ],
+  "deny": [
+    "Bash(./mxcli exec:*)",
+    "Bash(./mxcli.exe exec:*)",
+    "Bash(mxcli exec:*)"
+  ],
+  "ask": [
+    "Bash(git clean *)",
+    "Bash(git push* -f*)",
+    "Bash(git push*--force*)",
+    "Bash(git reset --hard*)",
+    "Bash(sudo *)"
+  ],
+  "hook": true,
+  "hooks": [
+    "bash bin/look-ledger.sh seen || true",
+    "bash bin/session-check.sh || true"
+  ]
+}

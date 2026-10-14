@@ -1,0 +1,895 @@
+#!/usr/bin/env node
+// page-fidelity.js — score one drafted/built page's MDL against its wireframe, model-side.
+//
+// Promoted from process/prototypes/first-build-fidelity.proto.js after the topbar-portal
+// field run (2026-08-27). The prototype assumed ToeicBuddy's wireframe shape on two axes
+// that do not travel:
+//
+//   * content boundary — ToeicBuddy wireframes wrap page content in <main>; the topbar portal's
+//     wrap popup content in .dialog and full-page content in bare divs, with annotation
+//     chrome (wf-bar, wf-note, wf-section, the .bind table, DESCOPED banners) as
+//     siblings. Scoring the whole body counts the annotation against the page.
+//   * MDL case — the prototype matched CREATE...PAGE uppercase only; the topbar portal's scripts
+//     write it lowercase (same bug fixed in check-page-shell.sh, commit e0588e3).
+//
+// Usage:
+//   page-fidelity.js <wireframe.html> <page-name> <mdl-file> [mdl-file...]
+//   page-fidelity.js <wireframe.html> <page-name> -        (MDL on stdin, e.g. DESCRIBE output)
+//   --chrome a,b,c   classes the page's layout renders (not the page's to declare); or pass the
+//                    layout's MDL (`describe layout <Mod.Layout>`) as another input — see layoutChrome
+//
+// Scoring: headings 25%, action labels 30%, content blocks 25%, structural classes 20%,
+// bindings 25% (normalized over the dimensions the wireframe actually uses — one it
+// doesn't use is dropped from the denominator). Prints per-dimension hits and every miss.
+// It is an instrument, not a gate (the gate is check-page-shell.sh), but it does not
+// print a number it did not measure. Exit codes:
+//   0  scored (a low score is still 0 — the number is the verdict)
+//   2  usage / no such wireframe / no declaration of the page in the input
+//   3  UNMEASURED — nothing to compare; printed with the reason, NOT logged
+//   4  STUB IN MODEL — a `Stub:` caption scored without --stub; logged as 0%
+//
+// THE LABEL IS `text-match`, NOT `fidelity` (renamed 2026-10-02). Two field builds on one
+// template read "fidelity 100%" as "the page looks like the wireframe" and never opened a
+// screenshot. The number is identifier overlap between two texts; it cannot see placement,
+// nesting, size or colour. The LOOK (skills/ui-loop.md) is the fidelity check; this is its
+// cheap pre-filter. The file and TSV keep their names so existing projects and the
+// fidelity obligation keep working.
+//
+// Third field run (ToeicBuddy Reading_Part, 2026-08-27) added bind-table awareness:
+// on a data-heavy page nearly all visible copy is BOUND (passages, stems, options),
+// and scoring it as literal text put a screenshot-verified faithful page at 43%.
+// Now: wireframe-local mock classes (defined in the wireframe's own <style>) mark
+// bound-data regions whose sample text leaves the text dimensions, and the binding-
+// annotation table's Datasource identifiers are scored as their own dimension.
+//
+// STATED LIMITATION: identifier presence cannot see NESTING. The pre-fix Reading_Part
+// (passage re-rendered per question instead of once per group — the script 64 defect)
+// scores identically to the fixed page: same identifiers, same classes, wrong tree.
+// List-nesting faithfulness stays with the LOOK pass (ui-review-loop.md) — this
+// instrument will not catch it, by construction. Verified, not assumed: scored the
+// pre-64 script set and the post-64 set; both 100%.
+//
+// EVERY RUN IS RECORDED. A score printed to a terminal evaporates — the MarkUseCase field
+// run (2026-08-27) built its first pages with no fidelity trace at all, and "what went
+// wrong" had to be reconstructed from a session status line. So the scorer appends each
+// run to <project>/docs/PAGE-FIDELITY.tsv (project root = nearest .mpr above the
+// wireframe). The FIRST NON-STUB row for a page is its first-build score of record — the
+// number the 80% target judges; later rows show the rework curve. A forward-reference
+// stub page (iterative-build-loop.md § Forward references — created only so a later
+// script's references resolve) is scored with --stub: its row lands marked `stub` and
+// is exempt from the target, because the stub is deliberately not the build. The
+// exemption is the flag, never inferred — a bare page that someone forgot to finish
+// scores as what it is. --no-log suppresses logging entirely (for scoring fixtures or
+// another project's files); an unloggable run says so on stderr rather than logging
+// silently nowhere.
+//
+// A SCREEN IN THE CLICKABLE PROTOTYPE. The wireframe argument may also be a route into the
+// assembled prototype, `design/prototype.html#/order-list` (assemble-prototype.js). The one
+// section is read back out through prototype-route.js, which undoes the only transform that
+// matters to this scorer (scoped screen CSS, where localMockClasses looks), so a screen scores
+// the same as a file and as a route. test-prototype-route.sh pins that. An unknown route exits
+// 2 and names the routes the prototype does have.
+'use strict';
+const fs = require('fs');
+const path = require('path');
+const proto = require(path.join(__dirname, 'prototype-route.js'));
+
+const argv = process.argv.slice(2);
+const NOLOG = argv.includes('--no-log');
+const STUB = argv.includes('--stub');
+// --chrome a,b,c — classes the page's layout renders, when the layout's MDL cannot be passed
+// (see layoutChrome below). `--chrome=a,b` works too.
+const CHROME = [];
+const rest = [];
+for (let i = 0; i < argv.length; i++) {
+  const a = argv[i];
+  if (a === '--no-log' || a === '--stub') continue;
+  if (a === '--chrome') { (argv[++i] || '').split(/[\s,]+/).filter(Boolean).forEach(c => CHROME.push(c)); continue; }
+  if (a.startsWith('--chrome=')) { a.slice(9).split(/[\s,]+/).filter(Boolean).forEach(c => CHROME.push(c)); continue; }
+  rest.push(a);
+}
+const [WF, PAGE, ...MDLS] = rest;
+if (!WF || !PAGE || !MDLS.length) {
+  console.error('usage: page-fidelity.js [--no-log] [--stub] [--chrome a,b,c] <wireframe.html | prototype.html#/route> <page-name> <mdl-file...|->');
+  process.exit(2);
+}
+const WF_REF = proto.parseRef(WF);
+const WF_FILE = WF_REF ? WF_REF.file : WF;
+
+function readWireframe() {
+  if (!fs.existsSync(WF_FILE)) { console.error('page-fidelity: no such wireframe: ' + WF_FILE); process.exit(2); }
+  const html = fs.readFileSync(WF_FILE, 'utf8');
+  if (!WF_REF) return html;
+  const doc = proto.standalone(html, WF_REF.route);
+  if (doc === null) { console.error('page-fidelity: ' + proto.unknownRouteMessage(WF_FILE, WF_REF.route, html)); process.exit(2); }
+  return doc;
+}
+
+// ---- wireframe side -------------------------------------------------------------------
+
+// Remove an element and its balanced subtree wherever the opening tag matches `openRe`.
+// The prototype's non-greedy `[\s\S]*?<\/div>` stopped at the first close tag and left
+// the tail of every nested annotation block in the denominator.
+function dropBalanced(html, openRe) {
+  let out = html, m;
+  while ((m = out.match(openRe))) {
+    const start = m.index;
+    const tag = m[1].toLowerCase();
+    const re = new RegExp('<' + tag + '\\b|</' + tag + '>', 'gi');
+    re.lastIndex = start + 1;
+    let depth = 1, end = out.length, t;
+    while (depth > 0 && (t = re.exec(out))) {
+      depth += t[0][1] === '/' ? -1 : 1;
+      end = re.lastIndex;
+    }
+    out = out.slice(0, start) + ' ' + out.slice(end);
+  }
+  return out;
+}
+
+// Inner HTML of the first element whose opening tag matches `openRe` (balanced).
+function innerBalanced(html, openRe) {
+  const m = html.match(openRe);
+  if (!m) return null;
+  const tag = m[1].toLowerCase();
+  const open = html.indexOf('>', m.index) + 1;
+  const re = new RegExp('<' + tag + '\\b|</' + tag + '>', 'gi');
+  re.lastIndex = open;
+  let depth = 1, end = html.length, t;
+  while (depth > 0 && (t = re.exec(html))) {
+    depth += t[0][1] === '/' ? -1 : 1;
+    if (depth === 0) end = t.index;
+  }
+  return html.slice(open, end);
+}
+
+function contentOf(html) {
+  // Boundary preference, most-specific first:
+  //   <main>            ToeicBuddy shape — content-only wireframes
+  //   div.main          the topbar portal full-page shape — the wireframe mocks the WHOLE app
+  //                     shell; the sidebar is layout chrome, but div.main holds the
+  //                     page title (the topbar portal titles pages from the top bar), so it is
+  //                     the boundary and the user chip is stripped below
+  //   div.wf-screen     a deal-management PoC shape — the wireframe is an annotated DOCUMENT, and the
+  //   div.wf-shell      screen is one labelled block inside it, with the annotation
+  //   div.mockup-frame  apparatus (meta header, binding tables, scope crosschecks) as
+  //                     siblings. A wireframe that names its own screen has told us
+  //                     where the boundary is; falling through to <body> scores the
+  //                     annotation against the page. See the null-score note below.
+  //                     Three names because one project's own wireframes were not
+  //                     internally consistent: 02/03 .wf-screen, 04 .wf-shell,
+  //                     06/07 .mockup-frame. Measured, not assumed — every one of them
+  //                     fell through to <body> before this list existed.
+  //   div.content       same shape when the wireframe has no .main wrapper
+  //   <body>            popup/dialog wireframes with annotation siblings
+  // then strip annotation chrome either way.
+  const m = html.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
+  let s = m ? m[1]
+    : innerBalanced(html, /<(div)[^>]*class="[^"]*\bwf-screen\b[^"]*"/i)
+    || innerBalanced(html, /<(div)[^>]*class="[^"]*\bwf-shell\b[^"]*"/i)
+    || innerBalanced(html, /<(div)[^>]*class="[^"]*\bmockup-frame\b[^"]*"/i)
+    || innerBalanced(html, /<(div)[^>]*class="[^"]*\bmain\b[^"]*"/i)
+    || innerBalanced(html, /<(div)[^>]*class="[^"]*\bcontent\b[^"]*"/i)
+    || (html.match(/<body[^>]*>([\s\S]*)<\/body>/i) || [, html])[1];
+  s = dropBalanced(s, /<(div)[^>]*class="[^"]*\buserchip\b[^"]*"/i);
+  // The top bar is layout chrome and `chromeSet` below already drops the class `topbar`
+  // itself from the denominator — but only that one NAME, so everything the bar CONTAINS
+  // (brand, logo, right, lang, the signed-in email) stayed in, scored as page content the
+  // page had failed to declare. Field case, 2026-08-31: 4 of 22 classes and 1 of 3 content
+  // blocks marked missing on a correct page, all of them children of a bar the scorer had
+  // already decided not to score.
+  //
+  // GUARDED, because the comment on chromeSet is right that some designs title the page
+  // FROM the top bar (the topbar portal does): the subtree is dropped only when it contains no h1/h2,
+  // so a wireframe whose page title lives in the bar keeps it and keeps being scored on it.
+  {
+    const bar = innerBalanced(s, /<(div|header)[^>]*class="[^"]*\btopbar\b[^"]*"/i);
+    if (bar && !/<h[12][\s>]/i.test(bar))
+      s = dropBalanced(s, /<(div|header)[^>]*class="[^"]*\btopbar\b[^"]*"/i);
+  }
+  // ANY `wf-*` div is annotation chrome, not page content. This used to name three
+  // specific ones (wf-bar, wf-note, wf-section) and missed `wf-bind` — the class a
+  // dashboard-publishing migration's wireframes put their binding tables in. The tables'
+  // own headings and cells then scored as page content the page had failed to reproduce:
+  // "heading: Binding annotations — the build checklist" and "content: Mendix widget"
+  // counted against a page whose job is emphatically NOT to render the build checklist.
+  // Measured 2026-08-31: 39% before, 71% after, on an unchanged page script. A scorer that
+  // marks documentation as missing content does not measure fidelity, it measures how much
+  // annotation the wireframe carries — and the ≥80% target is read off this number.
+  // The prefix rule matches the class convention itself (`wf-` = wireframe annotation),
+  // so a wireframe that invents `wf-legend` tomorrow is handled without another edit.
+  s = dropBalanced(s, /<(div|p)[^>]*class="[^"]*\bwf-[a-z-]*[^"]*"/i);
+  s = dropBalanced(s, /<(div|p)[^>]*class="[^"]*\bwf-[a-z-]*[^"]*"/i);
+  s = dropBalanced(s, /<(div|p)[^>]*class="[^"]*\bwf-[a-z-]*[^"]*"/i);
+  // Annotation apparatus that does not carry the wf- prefix: section captions, the
+  // binding/scope-crosscheck table wrappers, and "out of scope for this wireframe"
+  // callouts. Vocabulary, like .userchip and table.bind above — extend as shapes arrive.
+  s = dropBalanced(s, /<(div)[^>]*class="[^"]*\bsection-h\b[^"]*"/i);
+  s = dropBalanced(s, /<(div)[^>]*class="[^"]*\banno-wrap\b[^"]*"/i);
+  s = dropBalanced(s, /<(div)[^>]*class="[^"]*\brail-note\b[^"]*"/i);
+  s = dropBalanced(s, /<(div)[^>]*class="[^"]*\bannot\b[^"]*"/i);
+  // `.anno` — NOT reached by the `annot` pattern above, because \b after "anno" needs a
+  // non-word character and "t" is one. Measured 2026-09-09 on a MOC/PSSR app
+  // replacement, whose annotation block is `div.anno`: every page scored its own
+  // annotation as missing page content, reporting "heading: Annotation" as the first
+  // miss on a page whose real H1 is correct. Two faithful pages at 9%.
+  s = dropBalanced(s, /<(div)[^>]*class="[^"]*\banno\b[^"]*"/i);
+  s = dropBalanced(s, /<(table)[^>]*class="[^"]*\bbind\b[^"]*"/i);
+  // `.bound` — THE AUTHOR SAYING "this text is a sample of bound data".
+  //
+  // The scorer already has this concept and applies it structurally: `<td>` is excluded
+  // from the text corpus because a wireframe's table cells are sample rows, and a page that
+  // correctly BINDS them contains none of that literal text. The same is true of any bound
+  // value anywhere else on the screen, and there the structure gives nothing away — an
+  // `<h1>` holding a project's number and name looks exactly like an `<h1>` holding page
+  // copy, and a chip holding a filename looks exactly like a chip holding a label.
+  //
+  // Measured 2026-09-09 on a MOC/PSSR app replacement's project detail page: 54%, with all
+  // three misses being sample values a correctly binding page cannot contain — the record's
+  // own title, and a mocked attachment's filename, twice. The page was right; the
+  // denominator was.
+  //
+  // So this is DECLARED, not guessed. A wireframe marks its bound sample values
+  // `class="bound"` and they leave both the text corpus and the class denominator. Guessing
+  // was the alternative and it does not work: a heading is bound or it is not, and only the
+  // person who drew the screen knows which. Any element may carry it — the drop is on the
+  // tag the class sits on, so `<h1 class="bound">` leaves no heading behind and
+  // `<span class="bound">` inside a chip leaves the chip.
+  for (let i = 0; i < 12; i++) s = dropBalanced(s, /<([a-z][a-z0-9]*)[^>]*class="[^"]*\bbound\b[^"]*"/i);
+  // A "this screen is descoped/annotation-only" banner is chrome, not page copy.
+  s = dropBalanced(s, /<(div)[^>]*class="[^"]*alert[^"]*"(?=[\s\S]{0,400}?DESCOPED)/i);
+  return s;
+}
+
+const strip = s => s.replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/g, ' ').replace(/\s+/g, ' ').trim();
+const norm  = s => s.toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+const words = s => norm(s).split(' ').filter(w => w.length > 3);
+
+// Classes defined in the wireframe's OWN <style> block are wireframe-local mock
+// scaffolding, not design-system classes (those live in ds.css, which wireframes
+// link). Measured (ToeicBuddy Reading_Part, 2026-08-27): .passage/.qcard exist
+// only to mock the bound-data list items — passage bodies, question stems,
+// option buttons — whose literal text a correctly-BINDING page contains none of
+// (same reasoning as the <td> exclusion). Their subtrees leave the text
+// dimensions and the classes leave the class denominator; both are REPORTED.
+// ...but a wireframe's own <style> also defines its STRUCTURE and its ANNOTATION
+// apparatus, and those are not mocks of bound data. Treating them as mocks does not
+// merely mis-score — dropBalanced removes the matched subtree, so classing the
+// wireframe's outer wrapper as a mock DELETES THE ENTIRE PAGE, and every dimension
+// then reports 0-of-0, which normalizes to a null score rather than to a low one.
+//
+// Measured (a deal-management PoC, 2026-08-28): wireframes shaped .wf-wrap > .wf-screen scored `null%`
+// on all seven pages. Nothing failed and nothing said "unmeasured" — the run printed a
+// clean report over an empty corpus. That is the failure mode worth fixing: the
+// instrument is the score of record, and it was silently scoring nothing.
+//
+// The wf- prefix is already the annotation vocabulary elsewhere in this file (see the
+// class-denominator filter in wfFacts), so the rule is the prefix, not a name list.
+// The unprefixed entries are vocabulary, same as .userchip and table.bind in contentOf.
+const SCAFFOLD_CLASSES = ['bind', 'bt', 'section-h', 'anno-wrap', 'rail-note', 'anno'];
+const isScaffoldClass = c => /^wf-/.test(c) || SCAFFOLD_CLASSES.includes(c);
+
+function localMockClasses(html) {
+  const out = new Set();
+  for (const st of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)) {
+    // Comments first. A wireframe's <style> is commented prose as much as it is CSS, and
+    // that prose NAMES CLASSES: "same bug class as .card/.right/.chat earlier this
+    // session" harvested .card — a design-system class the wireframe only mentions —
+    // whose subtree is every card on the page. Scoring then ran over what was left of a
+    // gutted page. Cause and cure are both one line; the symptom was a 0% on a page that
+    // screenshots as faithful.
+    const css = st[1].replace(/\/\*[\s\S]*?\*\//g, ' ');
+    for (const sel of css.matchAll(/\.([a-z][a-z0-9-]*)/gi)) out.add(sel[1]);
+  }
+  return out;
+}
+
+// The binding-annotation table (table.bind / table.bt) is dropped from the text
+// corpus — but its Datasource column names real model identifiers, and whether
+// the page actually references them is the fidelity backbone of a data-heavy
+// page. One row per binding; a row scores when every identifier-looking token
+// in its datasource cell (CamelCase words, Entity.Attr paths) appears in the
+// page MDL. Rows whose cell names no identifier are annotation prose and skip.
+//
+// A row the author struck through (<s>) or whose fifth (Verdict) cell says CUT / NOT
+// BUILDABLE is not owed. bindRows used to skip only header rows, so a wireframe's
+// `<s>Demo chip (curated tiles)</s>` row (verdict "CUT — would be empty on 15 of the 16
+// tiles") was scored as a missed binding on a page that correctly left it out
+// (a field project's catalog page, 2026-09-23).
+const notOwed = trInner => {
+  if (/<s>/i.test(trInner)) return true;
+  const raw = [...trInner.matchAll(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi)].map(c => c[1]);
+  return raw.length >= 5 && /NOT BUILDABLE|\bCUT\b|NOT from the CLI/i.test(strip(raw[4]));
+};
+function bindRows(html) {
+  const t = innerBalanced(html, /<(table)[^>]*class="[^"]*\b(?:bind|bt)\b[^"]*"/i);
+  if (!t) return [];
+  const rows = [];
+  for (const tr of t.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)) {
+    const cells = [...tr[1].matchAll(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi)].map(c => strip(c[1]));
+    if (!cells.length || /<th/i.test(tr[1]) || notOwed(tr[1])) continue;
+    const src = cells[2] || '';
+    const ids = new Set();
+    for (const m of src.matchAll(/\b([A-Z][A-Za-z0-9]*\.[A-Z][A-Za-z0-9_]*)\b/g))
+      m[1].split('.').forEach(x => ids.add(x));
+    for (const m of src.matchAll(/\b([A-Z][a-z0-9]+(?:[A-Z][A-Za-z0-9]*)+)\b/g)) ids.add(m[1]);
+    if (ids.size) rows.push({ label: (cells[0] || '?').slice(0, 40), ids: [...ids], image: /\bIMAGE\b/.test(cells[1] || '') });
+  }
+  return rows;
+}
+
+function wfFacts(html) {
+  // HTML COMMENTS ARE NOT PAGE. contentOf() picks its boundary with a regex, and a template
+  // whose header comment says "put the screen inside <main> … the bind table goes AFTER
+  // </main>" handed it the comment text as the page. Field case, 2026-10-02, two builds
+  // on one template: every page scored headings/actions/content/classes 0/0, so the only
+  // dimension left was bindings — "100%" on a page with 1 of 1 bindings, "0%" on another,
+  // neither describing the page. Strip comments before anything reads the document.
+  html = html.replace(/<!--[\s\S]*?-->/g, ' ');
+  const mock = localMockClasses(html);
+  let main = contentOf(html);
+  const mockUsed = [];
+  const structural = [];
+  for (const c of mock) {
+    if (isScaffoldClass(c)) continue;
+    const re = new RegExp('<(div|button|span|p)[^>]*class="[^"]*\\b' + c + '\\b[^"]*"', 'i');
+    if (!re.test(main)) continue;
+    const after = dropBalanced(main, re);
+    // STRUCTURE IS NOT A MOCK, AND THE TEST IS REPETITION ALONE. A bound-data mock is a
+    // repeated REGION of the page — .passage/.qcard occur once per list item, which is
+    // what makes their sample text bound data. A class used ONCE is the wireframe's own
+    // scaffolding: a wrapper, a page header, a toolbar. It is not a sample of anything,
+    // because there is nothing for it to be one of.
+    //
+    // This test used to be `uses === 1 && kept < 0.4` — once-used AND dominant — which
+    // contradicted the paragraph above it: a once-used class whose subtree was SMALL fell
+    // through and was dropped as a mock. Measured 2026-09-09 on a MOC/PSSR app
+    // replacement's project overview, whose `.page-head` is used once and measures
+    // kept=0.513: the header subtree was deleted, taking the page's only <h1> with it, and
+    // every dimension reported 0 of 0. That normalizes to `null%`, so the run printed a
+    // clean report over an empty corpus — the exact failure the note further down this
+    // file says was worth fixing, arriving a second time through the other conjunct.
+    //
+    // `.toolbar` (uses=1, kept=0.825) went the same way in the same run. Both are page
+    // furniture the page script must declare, and both were scored as sample data.
+    //
+    // The 0.4 threshold is gone rather than retuned: it was a guess, and any value for it
+    // splits once-used wrappers into two classes on a measurement that has nothing to do
+    // with whether their content is bound data. A repeated region is still a mock at any
+    // size, which is the half that was always right.
+    const uses = (main.match(new RegExp(re.source, 'gi')) || []).length;
+    if (uses === 1) { structural.push(c); continue; }
+    mockUsed.push(c); main = after;
+  }
+  const grab = re => [...main.matchAll(re)].map(x => strip(x[1])).filter(Boolean);
+  const headings = grab(/<h[1-4][^>]*>([\s\S]*?)<\/h[1-4]>/gi);
+  const buttons  = grab(/<button[^>]*>([\s\S]*?)<\/button>/gi);
+  // <th> (column captions) is page-owned copy; <td> deliberately is NOT — a
+  // wireframe's table cells are sample rows of BOUND data, and a page that
+  // correctly binds them contains none of the literal text (same reasoning as
+  // check-page-shell.sh's "bound content" non-check).
+  const blocks   = [...grab(/<p[^>]*>([\s\S]*?)<\/p>/gi), ...grab(/<li[^>]*>([\s\S]*?)<\/li>/gi),
+                    ...grab(/<label[^>]*>([\s\S]*?)<\/label>/gi), ...grab(/<th[^>]*>([\s\S]*?)<\/th>/gi),
+                    ...grab(/<span[^>]*>([\s\S]*?)<\/span>/gi),
+                    ...grab(/<div class="muted"[^>]*>([\s\S]*?)<\/div>/gi)];
+  const classes = new Set();
+  for (const x of main.matchAll(/class="([^"]+)"/g))
+    x[1].split(/\s+/).forEach(c => { if (c && c !== 'bound' && !/^(wf-|ann|crosscheck|alert-ic|x-btn|req)/.test(c)) classes.add(c); });
+  // Classes confined to the wireframe's table.grid mock describe markup the
+  // DATAGRID widget renders itself (wrapper, filter row, cell emphasis) — a page
+  // cannot declare them. Curated: pill/status classes stay scored, because a page
+  // CAN declare those (Class/DynamicClasses on in-column widgets).
+  const GRID_OWN = ['grid', 'table-wrap', 'filter-row', 'actions', 'key', 'mono', 'input', 'row-blocked'];
+  const outside = new Set();
+  const noGrids = dropBalanced(main, /<(table)[^>]*class="[^"]*\bgrid\b[^"]*"/i);
+  for (const x of noGrids.matchAll(/class="([^"]+)"/g)) x[1].split(/\s+/).forEach(c => outside.add(c));
+  const gridOnly = GRID_OWN.filter(c => classes.has(c) && !outside.has(c));
+  const mockCls = [...classes].filter(c => mockUsed.includes(c) || mock.has(c));
+  mockCls.forEach(c => classes.delete(c));
+  return { headings, buttons, blocks: blocks.filter(b => b.length > 12), classes: [...classes],
+           gridOnly, mockUsed, structural, mockCls, binds: bindRows(html) };
+}
+
+// ---- MDL side -------------------------------------------------------------------------
+
+// MODULE is captured alongside the page body so the run can be RECORDED against a module
+// (see below: the fidelity obligation in bin/lib/obligations.tsv is `match=names`, which
+// greps docs/PAGE-FIDELITY.tsv for the literal module name — a row naming only the page
+// can never satisfy it). Set from the first CREATE PAGE match found; a page declared
+// identically in two modules across the MDLS list keeps the first module seen.
+let MODULE = null;
+
+// ALTER PAGE bodies for the page are read too, after the declaration(s). mxcli DESCRIBE
+// (v0.23.0) renders an IMAGE widget's ImageUrl as its bare template — `ImageUrl: '{1}'` —
+// and DROPS the template's attribute parameters, although the model holds them
+// (Forms$ClientTemplate.Parameters → DomainModels$AttributeRef, verified in the .mpr BSON).
+// Measured on a field project's catalog page, 2026-09-23: a script bound both card images
+// with `set ImageUrl = [Attr] on <widget>`, the app shows the logos, and DESCRIBE still
+// printed `'{1}'` — indistinguishable from the unbound pre-fix page, so the scorer reported
+// two bindings missed. Guessing from `'{1}'` would credit exactly the unbound defect that
+// script fixed, so it does not; instead the binding script is passed as another input
+// (`… - path/to/alter.mdl < describe.mdl`) and its ALTER body counts. An ALTER-only input
+// is not a page: without a CREATE the run still exits 2.
+const SRCS = MDLS.map(f => f === '-' ? fs.readFileSync(0, 'utf8') : fs.readFileSync(f, 'utf8'));
+function pageMdl() {
+  let out = '', alters = '';
+  for (const src of SRCS) {
+    const re = new RegExp(
+      'CREATE(\\s+OR\\s+(MODIFY|REPLACE))?\\s+PAGE\\s+"?([A-Za-z0-9_]+)"?\\."?' + PAGE + '"?\\b', 'gi');
+    for (const m of src.matchAll(re)) {
+      if (!MODULE) MODULE = m[3];
+      out += pageBody(src, m.index) + '\n';
+    }
+    const alt = new RegExp('ALTER\\s+PAGE\\s+"?[A-Za-z0-9_]+"?\\."?' + PAGE + '"?\\b', 'gi');
+    for (const m of src.matchAll(alt)) alters += pageBody(src, m.index) + '\n';
+  }
+  return out && out + alters;
+}
+
+// SNIPPETS ARE PAGE. A page assembled from snippet calls carries its headings, buttons and
+// classes in the snippet bodies, so scoring the page body alone marks all of it missing —
+// and the cheapest way to raise that number is to inline the text into the page, which
+// undoes the reuse the snippets were for. Snippet bodies found in ANY input (the build
+// script, or `mxcli describe snippet` output passed as another file) are added to the
+// corpus, nested calls included. A call whose body is not in the input is NAMED, and the
+// run is marked partial — the number is then a floor, and says so.
+const SNIP_CALL = /\bsnippetcall\s+"?[A-Za-z0-9_]+"?\s*\(\s*snippet\s*:\s*"?([A-Za-z0-9_]+)"?\."?([A-Za-z0-9_]+)"?/gi;
+function expandSnippets(body) {
+  let extra = '';
+  const seen = new Set(), missing = [];
+  let frontier = body;
+  for (let depth = 0; depth < 4 && frontier; depth++) {
+    let next = '';
+    for (const m of frontier.matchAll(SNIP_CALL)) {
+      const q = m[1] + '.' + m[2];
+      if (seen.has(q)) continue;
+      seen.add(q);
+      const re = new RegExp('CREATE(\\s+OR\\s+(MODIFY|REPLACE))?\\s+SNIPPET\\s+"?' + m[1] + '"?\\."?' + m[2] + '"?\\b', 'i');
+      let found = null;
+      for (const src of SRCS) { const d = src.match(re); if (d) { found = pageBody(src, d.index); break; } }
+      if (found) { extra += found + '\n'; next += found + '\n'; } else missing.push(q);
+    }
+    frontier = next;
+  }
+  return { extra, missing };
+}
+
+// The page's OWN widgets, with its declaration header and snippet calls removed: if nothing
+// text-bearing is left and a called snippet is missing, there is nothing to score at all.
+function ownsContent(body) {
+  const open = body.indexOf('{');
+  const inner = (open < 0 ? '' : body.slice(open)).replace(new RegExp(SNIP_CALL.source + '[^)]*\\)', 'gi'), ' ');
+  return /'[^']+'|\b(attribute|datasource)\s*:/i.test(inner);
+}
+
+// A FORWARD-REFERENCE STUB IN THE MODEL. iterative-build-loop.md § Forward references marks a
+// stub page with a caption that starts `Stub:` or `Stub -`. Scored WITHOUT --stub, such a
+// page is being reported as the build — field case, 2026-10-02: a stub answer page scored
+// 100% on its one binding and was counted as done. Scored as what it is: 0%, logged
+// `stub-in-model`, exit 4. With --stub it is the declared forward reference and scores
+// normally, exempt from the target as before.
+const STUB_MARK = /'\s*stub\s*(:|-|\u2013|\u2014)/i;
+
+// Known limit: the counter does not skip quoted strings, so an UNBALANCED brace inside a
+// string literal truncates the body early (balanced placeholders like '{1} of {2}' are fine).
+// The page body, from its declaration to the brace that MATCHES the body's opening
+// one, counted per character with parens tracked.
+//
+// It used to be a regex ending at '\n\}' — a closing brace at COLUMN 0 — which finds
+// nothing at all for an indented page. Measured 2026-09-09 on a MOC/PSSR app
+// replacement: two wizard pages whose bodies are wrapped in a LAYOUTGRID (which
+// mxcli's own MPR010 advises for any DataView holding inputs) close at two spaces of
+// indent, so the scan matched nothing and the tool exited 2 with 'no declaration of
+// page "X" found in input' for a page that is plainly there. A project that follows
+// that advice could not score any page.
+//
+// The parens matter because a multi-line declaration carries
+// `Params: { $X: Mod.Entity }`, which opens and closes a brace before the body does —
+// the identical pair of cases that took two wrong attempts in check-page-shell.sh,
+// whose header records them.
+function pageBody(src, from) {
+  let pd = 0, bd = 0, started = false;
+  for (let i = from; i < src.length; i++) {
+    const c = src[i];
+    if (!started) {
+      if (c === '(') pd++;
+      else if (c === ')') { if (pd > 0) pd--; }
+      else if (c === '{' && pd === 0) { started = true; bd = 1; }
+    } else if (c === '{') bd++;
+    else if (c === '}') { bd--; if (bd <= 0) return src.slice(from, i + 1); }
+  }
+  return src.slice(from);
+}
+
+// ---- what the page SHOWS: its caption-like string literals, by widget kind ---------------
+//
+// TEXT IS MATCHED AGAINST WHAT THE PAGE DISPLAYS, NOT AGAINST THE WHOLE MDL (#158). The three
+// text dimensions used to test a wireframe string against the entire normalised page MDL —
+// page name, entity, attribute and microflow names, comments — as a SUBSTRING, with 60% of
+// its >3-char words enough. So a wireframe H2 "Case overview" was present on any page NAMED
+// Case_Overview whether or not it rendered that heading, "case" was present inside
+// `CustomerCase`, and a three-word label needed only two words anywhere. The dimension read
+// green for headings and buttons the page did not show.
+//
+// Now each wireframe string is matched against the page's string literals of the kind that
+// renders it:
+//   headings  the page/snippet Title, Content of text widgets, Caption of non-button widgets
+//             (a group box, a tab) — never a data-grid column caption or a button caption
+//   actions   Caption of actionbutton / linkbutton
+//   content   every displayed literal (Title, Content, Caption, Label, Placeholder)
+// ALTER PAGE `set Caption = '…' on w` counts for w's kind when w is declared in the input,
+// for every kind when it is not. Matching is per literal and on WHOLE words: a label with
+// fewer than three kept words needs all of them in one literal; a longer one needs 60% (a
+// sentence may be reworded). A label whose words are all ≤3 chars ("New", "OK") used to be
+// an automatic hit; its short words are now kept and required. Bindings keep the identifier
+// corpus — there identifiers are the point.
+const ACTION_TYPES = new Set(['actionbutton', 'linkbutton']);
+const NOT_HEADING  = new Set(['actionbutton', 'linkbutton', 'column', 'textbox', 'textarea', 'datepicker',
+  'combobox', 'checkbox', 'radiobuttons', 'dropdown', 'referenceselector', 'textfilter', 'numberfilter',
+  'datefilter', 'dropdownfilter']);
+const LIT = "'((?:[^']|'')*)'";
+const unq = s => s.replace(/''/g, "'");
+
+// The MDL with comments removed and string CONTENTS blanked (same length, so indexes line up):
+// widget openers are then found only in code, never in a caption that happens to contain
+// "word word (".
+function maskMdl(mdl) {
+  let out = '', i = 0;
+  while (i < mdl.length) {
+    const c = mdl[i];
+    if (c === "'") {
+      let j = i + 1;
+      for (; j < mdl.length; j++) { if (mdl[j] === "'") { if (mdl[j + 1] === "'") { j++; continue; } break; } }
+      out += "'" + ' '.repeat(Math.max(0, j - i - 1)) + (j < mdl.length ? "'" : ''); i = j + 1;
+    } else if (c === '-' && mdl[i + 1] === '-') {
+      const e = mdl.indexOf('\n', i); const end = e < 0 ? mdl.length : e;
+      out += ' '.repeat(end - i); i = end;
+    } else if (c === '/' && mdl[i + 1] === '*') {
+      const e = mdl.indexOf('*/', i + 2); const end = e < 0 ? mdl.length : e + 2;
+      out += mdl.slice(i, end).replace(/[^\n]/g, ' '); i = end;
+    } else { out += c; i++; }
+  }
+  return out;
+}
+
+// Widgets: `<type> <name> ( props )`, props balanced on the masked text. Returns
+// [{ type, name, props }] with props sliced from the ORIGINAL text (literals intact).
+function mdlWidgets(mdl) {
+  const masked = maskMdl(mdl);
+  const out = [];
+  // The name may be qualified — `create page Mod.Page (Title: …)` is a declaration whose Title
+  // is the page's own heading — and is then keyed by its last part.
+  for (const m of masked.matchAll(/\b([A-Za-z]+)\s+(?:"?[A-Za-z_][A-Za-z0-9_]*"?\.)?"?([A-Za-z_][A-Za-z0-9_]*)"?\s*\(/g)) {
+    const open = m.index + m[0].length;
+    let depth = 1, i = open;
+    for (; i < masked.length && depth; i++) { if (masked[i] === '(') depth++; else if (masked[i] === ')') depth--; }
+    out.push({ type: m[1].toLowerCase(), name: m[2], props: mdl.slice(open, i - 1), at: m.index });
+  }
+  return { widgets: out, masked };
+}
+
+// One ALTER `set` statement, on the MASKED text (string contents blank): from `set` to its
+// `on <widget>`, or — page-level, no `on` — to the `;`/`}` or the next ALTER operation that ends
+// it. NOT to the end of the line: mxcli accepts the parenthesised form over several lines
+// (`set (\n  Caption = '…',\n  ButtonStyle = Success\n) on btnApprove`), and a segment that
+// stopped at the first newline dropped that caption.
+const ALTER_OP = '\\b(?:set|insert|drop|replace)\\b';
+const SET_STMT = new RegExp('\\bset\\b((?:(?!' + ALTER_OP + ')[^;{}])*?)(?:\\bon\\s+"?([A-Za-z_][A-Za-z0-9_]*)"?|(?=[;}]|' + ALTER_OP + '))', 'gi');
+
+function mdlTexts(mdl) {
+  const { widgets, masked } = mdlWidgets(mdl);
+  const t = { headings: [], actions: [], content: [] };
+  const kind = {};
+  const add = (type, prop, val) => {
+    if (!val.trim()) return;
+    prop = prop.toLowerCase();
+    if (prop === 'title') { t.headings.push(val); t.content.push(val); return; }
+    if (prop === 'label' || prop === 'placeholder') { t.content.push(val); return; }
+    if (prop !== 'caption' && prop !== 'content') return;
+    t.content.push(val);
+    if (type === null) { t.headings.push(val); t.actions.push(val); return; }
+    if (ACTION_TYPES.has(type)) t.actions.push(val);
+    else if (!NOT_HEADING.has(type)) t.headings.push(val);
+  };
+  for (const w of widgets) {
+    kind[w.name] = w.type;
+    for (const p of w.props.matchAll(new RegExp('\\b(Title|Caption|Content|Label|Placeholder)\\s*:\\s*' + LIT, 'gi')))
+      add(w.type, p[1], unq(p[2]));
+  }
+  // ALTER … set (Caption = '…', …) on w   /   set Title = '…' (page-level, no `on`). mxcli
+  // accepts `:` inside the parenthesised form too (`set (Content: '…') on brandText`).
+  for (const m of masked.matchAll(SET_STMT)) {
+    const seg = mdl.slice(m.index, m.index + m[0].length);
+    const type = m[2] ? (kind[m[2]] || null) : null;
+    for (const p of seg.matchAll(new RegExp('\\b(Title|Caption|Content|Label|Placeholder)\\s*[:=]\\s*' + LIT, 'gi')))
+      add(p[1].toLowerCase() === 'title' && !m[2] ? 'page' : type, p[1], unq(p[2]));
+  }
+  return t;
+}
+
+// The words a wireframe string must show: the >3-char words, or — when it has none ("New",
+// "OK", "Add") — all of its words, so a short label is matched instead of passing vacuously.
+// Whole words, with a light SYMMETRIC plural fold (applied to both sides): "Open tasks" is the
+// caption "Open task", "Orders" the title "Order", "Boxes" the label "Box". The substring test
+// credited those for free; whole-word matching without the fold read them as missing.
+const stem = w => w.length > 3 && /(ss|x|z|ch|sh)es$/.test(w) ? w.slice(0, -2)
+  : w.length > 3 && /[^s]s$/.test(w) ? w.slice(0, -1) : w;
+const keyWords = txt => { const w = words(txt); return (w.length ? w : norm(txt).split(' ').filter(Boolean)).map(stem); };
+function makeHit(lits) {
+  const sets = lits.map(l => new Set(norm(l).split(' ').filter(Boolean).map(stem)));
+  return txt => {
+    const w = keyWords(txt);
+    if (!w.length) return true;
+    const need = w.length < 3 ? w.length : Math.ceil(0.6 * w.length - 1e-9);
+    return sets.some(s => w.filter(x => s.has(x)).length >= need);
+  };
+}
+
+// ButtonStyle → rendered classes (#157). An ACTIONBUTTON renders `<button class="btn mx-button
+// … btn-<style>">` — measured with getComputedStyle in a running Mendix 11.13 app with Atlas
+// Core (skills/learned-stylegallery.md → "The Mendix DOM contract": `btn … btn-default`), and
+// DESCRIBE omits the property for the Default style, so an actionbutton with no ButtonStyle
+// still carries btn-default. A wireframe that draws `button.btn.btn-primary` was reading as
+// two missing classes on every page whose buttons are styled through the property, which is
+// the only way a page script styles a button. Link buttons are NOT mapped: their rendered
+// classes have not been measured.
+function buttonClasses(mdl) {
+  const { widgets, masked } = mdlWidgets(mdl);
+  const kind = {}, style = {};            // style: actionbutton name -> its CURRENT ButtonStyle
+  for (const w of widgets) {
+    kind[w.name] = w.type;
+    if (w.type !== 'actionbutton') continue;
+    const st = w.props.match(/\bButtonStyle\s*:\s*"?([A-Za-z]+)"?/i);
+    style[w.name] = (st ? st[1] : 'default').toLowerCase();
+  }
+  // An ALTER that sets ButtonStyle REPLACES the button's style (the old btn-<x> is gone from the
+  // DOM); on a button not declared in the input it can only add.
+  for (const m of masked.matchAll(SET_STMT)) {
+    if (!m[2] || (kind[m[2]] && kind[m[2]] !== 'actionbutton')) continue;
+    const st = m[1].match(/\bButtonStyle\s*[:=]\s*"?([A-Za-z]+)"?/i);
+    if (st) style[m[2]] = st[1].toLowerCase();
+  }
+  const out = new Set();
+  for (const k of Object.keys(style)) { out.add('btn'); out.add('btn-' + style[k]); }
+  return out;
+}
+
+// LAYOUT CHROME FROM THE LAYOUT (#157). Classes the page's layout renders are not the page's
+// to declare. The default set below is the guess this scorer has always made; a project's own
+// layout (rail, sidebar, brand) renders more than four names, and each read as missing on every
+// page. Two ways to tell the scorer what the layout renders, both ADDED to the defaults:
+//   * pass the layout's MDL as another input — `create layout` from the build script, or
+//     `./mxcli -p <app>.mpr -c "describe layout <Mod.Layout>"` (mxcli ≥ v0.20 authors layouts);
+//     the layout is the one the page names in `Layout:`, and its Class/DynamicClasses count;
+//   * `--chrome a,b,c` for a layout that cannot be described (a marketplace one).
+// Chrome classes stay REPORTED ("chrome (layout-supplied, not scored)"), never silently dropped.
+function layoutChrome(srcs, ownMdl) {
+  const ref = ownMdl.match(/\bLayout\s*:\s*"?([A-Za-z0-9_]+)"?\."?([A-Za-z0-9_]+)"?/i);
+  if (!ref) return { name: null, found: false, classes: new Set() };
+  const re = new RegExp('CREATE(\\s+OR\\s+(MODIFY|REPLACE))?\\s+LAYOUT\\s+"?' + ref[1] + '"?\\."?' + ref[2] + '"?\\b', 'i');
+  for (const src of srcs) {
+    const d = src.match(re);
+    if (d) return { name: ref[1] + '.' + ref[2], found: true, classes: classesIn(pageBody(src, d.index)) };
+  }
+  return { name: ref[1] + '.' + ref[2], found: false, classes: new Set() };
+}
+
+function classesIn(mdl) {
+  const cls = new Set();
+  // `Class:` in a declaration, `Class =` in an ALTER PAGE SET.
+  for (const m of mdl.matchAll(/\bClass\s*[:=]\s*['"]([^'"]+)['"]/gi)) m[1].split(/\s+/).forEach(c => cls.add(c));
+  // DynamicClasses expressions emit class names conditionally — every quoted
+  // token that looks like a class name lands in the DOM on some branch.
+  for (const m of mdl.matchAll(/DynamicClasses\s*[:=]\s*'((?:[^']|'')*)'/gi))
+    for (const t of m[1].matchAll(/''([a-z][a-z0-9-]*)''|'([a-z][a-z0-9-]*)'/gi))
+      cls.add(t[1] || t[2]);
+  // mxcli ≥ v0.25 DESCRIBE prints the expression BARE, under --mdl 0 too (verbatim, v0.25.0):
+  //   container ctnStatus (Class: 'card', DynamicClasses: if 1 = 1 then 'is-active' else 'is-idle') {
+  // The quoted-form regex above never matches that, so on v0.25 every dynamic class read as
+  // undeclared. Scan the bare expression to the `,` / `)` / newline that ends the property.
+  for (const m of mdl.matchAll(/DynamicClasses\s*[:=]\s*(?!['\s])/gi)) {
+    const from = m.index + m[0].length;
+    let i = from, depth = 0, inStr = false;
+    for (; i < mdl.length; i++) {
+      const c = mdl[i];
+      if (inStr) { if (c === "'") inStr = false; continue; }   // `''` closes and reopens: harmless
+      if (c === "'") inStr = true;
+      else if (c === '(') depth++;
+      else if (c === ')') { if (depth-- === 0) break; }
+      else if ((c === ',' || c === '\n') && depth === 0) break;
+    }
+    for (const t of mdl.slice(from, i).matchAll(/'([a-z][a-z0-9-]*)'/gi)) cls.add(t[1]);
+  }
+  return cls;
+}
+
+function score(wf, mdl, chromeExtra) {
+  const corpus = norm(mdl);
+  const cls = classesIn(mdl);
+  buttonClasses(mdl).forEach(c => cls.add(c));
+  const lits = mdlTexts(mdl);
+  const dim = (arr, hit) => ({ n: arr.length, ok: arr.filter(hit).length, miss: arr.filter(x => !hit(x)) });
+  const h = dim(wf.headings, makeHit(lits.headings)), b = dim(wf.buttons, makeHit(lits.actions)),
+        k = dim(wf.blocks, makeHit(lits.content));
+  // Platform-supplied classes are not the page's to declare, so they leave the
+  // denominator — REPORTED, never silently dropped (see the printout below):
+  //   * on a popup layout, the dialog frame (dialog/dialog-head/-body/-foot) is
+  //     rendered by the layout; a page that restated it would be duplicating
+  //     chrome (learned-page-patterns.md, "Never Duplicate the Chrome Title").
+  //   * a wireframe's <label>/<input> pair IS the MDL textbox widget — the widget
+  //     emits both elements itself, so a textbox on the page satisfies them.
+  //   * on a full-page layout, the top bar itself (its page title is still scored
+  //     — the heading and crumb live in the page's own header block).
+  const popup = /Layout:\s*[^,)\n]*Popup/i.test(mdl);
+  const chromeSet = new Set(popup ? ['dialog', 'dialog-head', 'dialog-body', 'dialog-foot']
+                                  : ['topbar', 'userchip', 'avatar', 'content']);
+  chromeExtra.forEach(x => chromeSet.add(x));
+  const intrinsic = new Set(/\btextbox\b|\btextfilter\b/i.test(mdl) ? ['label', 'input'] : []);
+  if (/\bdatagrid\b/i.test(mdl)) wf.gridOnly.forEach(x => intrinsic.add(x));
+  const scoredCls = wf.classes.filter(x => !chromeSet.has(x));
+  const cMiss = scoredCls.filter(x => !cls.has(x) && !intrinsic.has(x));
+  const c = { n: scoredCls.length, ok: scoredCls.length - cMiss.length, miss: cMiss,
+              chrome: wf.classes.filter(x => chromeSet.has(x)) };
+  // Bindings: every identifier the annotation row names must appear in the MDL.
+  const bindMiss = wf.binds.filter(r => !r.ids.every(id => corpus.includes(norm(id))));
+  const bd = { n: wf.binds.length, ok: wf.binds.length - bindMiss.length, miss: bindMiss };
+  const parts = [[h, .25], [b, .30], [k, .25], [c, .20], [bd, .25]];
+  let num = 0, den = 0;
+  for (const [d, w] of parts) if (d.n) { num += w * (d.ok / d.n); den += w; }
+  return { pct: den ? Math.round(100 * num / den) : null, h, b, k, c, bd };
+}
+
+const wf = wfFacts(readWireframe());
+const ownMdl = pageMdl();
+if (!ownMdl.trim()) { console.error('page-fidelity: no declaration of page "' + PAGE + '" found in input'); process.exit(2); }
+const snips = expandSnippets(ownMdl);
+const mdl = ownMdl + snips.extra;
+const lay = layoutChrome(SRCS, ownMdl);
+const s = score(wf, mdl, [...lay.classes, ...CHROME]);
+const dims = '   headings ' + s.h.ok + '/' + s.h.n + '  actions ' + s.b.ok + '/' + s.b.n +
+  '  content ' + s.k.ok + '/' + s.k.n + '  classes ' + s.c.ok + '/' + s.c.n +
+  (s.bd.n ? '  bindings ' + s.bd.ok + '/' + s.bd.n : '');
+const snipNote = () => console.log('  snippets not in input (their content is not scored): ' + snips.missing.join(' ') +
+  '\n  pass their bodies as more inputs: ./mxcli -p <app>.mpr -c "describe snippet <Mod.Name>" > snip.mdl');
+
+// UNMEASURED IS NOT A SCORE. Two ways to have nothing to compare, both reported and neither
+// logged, because a logged row is what the fidelity obligation counts as the page measured:
+//   * the wireframe yields no heading, action, content block or class — the content
+//     boundary landed on the wrong element (the comment case above, a missing <main>), so a
+//     number off bindings alone would be a number about the annotation table;
+//   * the page's own body has no text-bearing widget and the snippets it calls are not in
+//     the input — the page is somewhere this run cannot see.
+// Exit 3, so a loop that scores pages cannot read either case as a pass.
+const unmeasured = !(s.h.n + s.b.n + s.k.n + s.c.n)
+  ? 'the wireframe gave no headings, actions, content or classes to compare' +
+    (s.bd.n ? ' (only ' + s.bd.n + ' binding row(s))' : '') +
+    ' — its content boundary is likely the wrong element; open the wireframe and check where <main> / .wf-screen is'
+  : (snips.missing.length && !snips.extra && !ownsContent(ownMdl))
+    ? 'the page is built from snippet calls whose bodies are not in the input' : null;
+if (unmeasured) {
+  console.log(PAGE + '  text-match UNMEASURED — ' + unmeasured + dims);
+  if (snips.missing.length) snipNote();
+  console.log('  not logged: an unmeasured page has no score of record');
+  process.exit(3);
+}
+const stubHit = !STUB && (ownMdl.match(STUB_MARK) || [])[0];
+if (stubHit) s.pct = 0;
+console.log(PAGE + '  text-match ' + s.pct + '%' + dims + (snips.missing.length ? '  (partial)' : ''));
+if (stubHit)
+  console.log('  STUB IN MODEL: a caption starts ' + stubHit.trim() + "' — this page is a forward-reference stub," +
+    ' not the build. Scored 0%. Build the page, or score it with --stub while it is still a stub.');
+const miss = [...s.h.miss.map(x => 'heading: ' + x), ...s.b.miss.map(x => 'action:  ' + x),
+              ...s.k.miss.map(x => 'content: ' + x.slice(0, 78)),
+              ...(s.c.miss.length ? ['classes: ' + s.c.miss.join(' ')] : []),
+              ...s.bd.miss.map(r => 'binding: ' + r.label + ' (' + r.ids.join(' ') + ')')];
+if (miss.length) console.log('  missed:\n  ' + miss.join('\n  '));
+// Say so when a binding miss may be DESCRIBE's blind spot rather than the page's (see pageMdl).
+const bareImg = (mdl.match(/ImageUrl:\s*'\{\d+\}'/g) || []).length;
+if (bareImg && s.bd.miss.some(r => r.image))
+  console.log('  note: ' + bareImg + ' image widget(s) show ImageUrl as a bare \'{n}\' template — DESCRIBE drops' +
+    ' ImageUrl parameters, so their attribute bindings cannot be seen here; pass the script that' +
+    ' set them (ALTER PAGE … set ImageUrl = [Attr]) as another input');
+if (s.c.chrome.length) console.log('  chrome (layout-supplied, not scored): ' + s.c.chrome.join(' '));
+if (lay.found) console.log('  layout ' + lay.name + ' read from input: ' + lay.classes.size + ' class(es) treated as chrome');
+// Only when a missed class LOOKS like frame chrome — a hint on every page with any miss is noise.
+else if (lay.name && !CHROME.length && s.c.miss.some(c => /(^|-)(topbar|sidebar|rail|nav|navbar|navigation|menu|menubar|brand|region|layout|shell|appbar|userchip|avatar)(-|$)/.test(c)))
+  console.log('  layout ' + lay.name + ' is not in the input — if a missed class is one it renders, pass' +
+    ' `describe layout ' + lay.name + '` output as another input, or name it with --chrome a,b');
+if (wf.mockUsed.length) console.log('  bound-data mocks (wireframe-local, text not scored): ' + wf.mockUsed.join(' '));
+if (wf.structural.length) console.log('  wireframe structure (kept as page content, not a mock): ' + wf.structural.join(' '));
+if (wf.mockCls.length) console.log('  wireframe-local classes (not scored): ' + wf.mockCls.join(' '));
+if (STUB) console.log('  stub — forward-reference target, exempt from the 80% target; the first non-stub row is the score of record');
+if (snips.missing.length) snipNote();
+// The number above is identifier overlap between two texts. It cannot see placement,
+// nesting, size or colour, so it is not a LOOK and never stands in for one.
+console.log('  text-match compares identifiers, not pixels — it is not a LOOK. Screenshot the page and' +
+  ' check it against the wireframe (skills/ui-loop.md).');
+
+// ---- record the run (see header: EVERY RUN IS RECORDED) -------------------------------
+if (!NOLOG) {
+  try {
+    // Project root = nearest directory containing a .mpr, walking up from the wireframe.
+    // On a TWO-TREE checkout (repo at the root, `mxcli new` app under app/) no ancestor of
+    // design/wireframes/ contains a .mpr, so this walk found nothing and the run went
+    // unlogged — "score NOT logged", on the very project the score was for. Since the TSV is
+    // what makes a first-build score of record exist at all, a silent non-log is the whole
+    // instrument failing. Same layout class as the snapshot/exec/restore fix of the same day.
+    // Resolution order: MPR_FILE (what the shell tools already honour), then an ancestor
+    // holding a .mpr, then an ancestor holding a subdirectory that holds one.
+    // WF_FILE, not WF: a route's `#/a/b` would otherwise be walked as two directories.
+    let root = null, d = path.resolve(path.dirname(WF_FILE));
+    if (process.env.MPR_FILE) {
+      const cand = path.resolve(process.env.MPR_FILE);
+      if (fs.existsSync(cand)) {
+        // The project root is above the model dir on a two-tree layout; prefer the ancestor
+        // of the model dir that is also an ancestor of the wireframe, so docs/ lands once.
+        let m = path.dirname(cand);
+        while (m !== path.dirname(m)) {
+          if (d === m || d.startsWith(m + path.sep)) { root = m; break; }
+          m = path.dirname(m);
+        }
+      }
+    }
+    for (let i = 0; !root && i < 12; i++) {
+      let entries = [];
+      try { entries = fs.readdirSync(d); } catch (e) { break; }
+      if (entries.some(f => f.endsWith('.mpr'))) { root = d; break; }
+      const up = path.dirname(d);
+      if (up === d) break;
+      d = up;
+    }
+    if (!root) {
+      let e = path.resolve(path.dirname(WF_FILE));
+      for (let i = 0; i < 12 && !root; i++) {
+        let subs = [];
+        try {
+          subs = fs.readdirSync(e, { withFileTypes: true })
+                   .filter(x => x.isDirectory() && !x.name.startsWith('.'))
+                   .map(x => path.join(e, x.name));
+        } catch (err) { break; }
+        for (const sub of subs) {
+          let inner = [];
+          try { inner = fs.readdirSync(sub); } catch (err) { continue; }
+          if (inner.some(f => f.endsWith('.mpr'))) { root = e; break; }
+        }
+        const up = path.dirname(e);
+        if (up === e) break;
+        e = up;
+      }
+    }
+    if (!root) {
+      console.error('page-fidelity: score NOT logged — no .mpr found above ' + WF +
+        ' (pass --no-log to silence this when scoring fixtures)');
+    } else {
+      const tsv = path.join(root, 'docs', 'PAGE-FIDELITY.tsv');
+      fs.mkdirSync(path.join(root, 'docs'), { recursive: true });
+      if (!fs.existsSync(tsv)) {
+        fs.writeFileSync(tsv,
+          '# PAGE-FIDELITY.tsv — appended by project-bin/page-fidelity.js on every run.\n' +
+          '# The first NON-STUB row for a page is its first-build score of record (target:\n' +
+          '# >=80%); later rows for the same page show the rework curve. Rows with source\n' +
+          '# `stub` are forward-reference targets (scored with --stub) and are exempt from\n' +
+          '# the target. `module` is the page\'s module as declared in its CREATE PAGE\n' +
+          '# statement — this is what the fidelity obligation (bin/lib/obligations.tsv)\n' +
+          '# greps for; a blank module leaves that module\'s obligation PENDING forever, so\n' +
+          '# never blank it by hand. Do not edit rows by hand.\n' +
+          'date\tpage\tmodule\tscore\theadings\tactions\tcontent\tclasses\tbindings\tsource\twireframe\n');
+      }
+      const frac = x => x.n ? x.ok + '/' + x.n : '-';
+      const row = [
+        new Date().toISOString().slice(0, 16).replace('T', ' '),
+        PAGE, MODULE || '-', s.pct === null ? '-' : s.pct + '%',
+        frac(s.h), frac(s.b), frac(s.k), frac(s.c), frac(s.bd),
+        (STUB ? 'stub' : stubHit ? 'stub-in-model'
+          : MDLS.includes('-') ? (MDLS.length > 1 ? 'describe+script' : 'describe') : 'draft') +
+          (snips.missing.length ? '+partial' : ''),
+        path.relative(root, path.resolve(WF_FILE)) + (WF_REF ? '#/' + WF_REF.route : ''),
+      ].join('\t');
+      fs.appendFileSync(tsv, row + '\n');
+      console.log('  logged: ' + path.relative(process.cwd(), tsv));
+    }
+  } catch (e) {
+    console.error('page-fidelity: score NOT logged (' + e.message + ')');
+  }
+}
+if (stubHit) process.exit(4);

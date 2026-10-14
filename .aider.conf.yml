@@ -1,0 +1,65 @@
+yes-always: true
+# Mendix MDL Project: erpv1
+# Configuration for Aider AI coding assistant
+
+# Files to read for context
+read-files:
+  - AGENTS.md
+  - .ai-context/skills/*/SKILL.md
+
+# Project description
+description: |
+  Mendix project with MDL (Mendix Definition Language) support.
+  Use ./mxcli for all project operations.
+
+# Custom commands
+commands:
+  check: "./mxcli check {file}"
+  check-refs: "./mxcli check {file} -p project.mpr --references"
+  execute: "./mxcli exec {file} -p project.mpr"
+  search: "./mxcli search -p project.mpr {query}"
+
+# Patterns to recognize
+recognize:
+  - "*.mdl files use MDL syntax (see .ai-context/skills/)"
+  - "Always use ./mxcli (local binary) not mxcli"
+  - "Microflows: LOOP BEGIN/END LOOP, CHANGE (attr=val)"
+  - "Pages: { } blocks, (Prop: value)"
+
+# <!-- mxtk:wiring:start — written by mxcli-project-toolkit/bin/wire-agents.sh.
+#      Edit that script, not this block: it is replaced wholesale on every re-run. -->
+#
+# ## Start here (all AI agents, every session)
+#
+# 1. **Read `docs/progress/RESUME.md` first, and nothing else yet.** Where we are, the next
+#    actions, and a table saying which larger file to open for the task at hand. Do NOT read
+#    `PROJECT.md` to get oriented — it is a decision register, not a resume doc.
+#    If that file is not there: `bin/init-project.sh` scaffolds it and `bin/close-task.sh`
+#    overwrites it at the end of each session, so its absence means neither has run here. Get
+#    oriented from `CLAUDE.local.md` (wiring + baseline routing) and `intake.md` instead, and
+#    say in chat that you did — never from `PROJECT.md`.
+# 2. **`CLAUDE.md` is the canonical project instruction file** regardless of which agent you
+#    are. Every other instruction file in this repo, including this one, is a pointer to it.
+# 3. **Exec approval defaults to `auto` (2026-09-16).** State the resolved mode once, at session
+#    start: "Exec approval: auto — I run scripts through bin/exec.sh and log them; say 'ask before
+#    exec' to switch." Before any `./mxcli exec`, `./bin/exec.sh`, `mxcli test`, `mxcli docker
+#    check`, or any `--mcp` write against the real `.mpr` — all of those mutate the model, the
+#    last two despite sounding read-only — check `/root/Mendix/mxcli-project-toolkit/bin/exec-approval.sh <project-root>`. Under
+#    `auto`, run it without asking and say in chat what ran; under `ask`, ask first, every time.
+#    The user switches either way by saying so — only then run
+#    `bin/exec-approval.sh <project-root> --set auto` / `--set ask`, never on your own judgement.
+#    Even on `auto`, SAY in chat (don't ask) before a STOP-table operation — drops on entities
+#    with data, `ALTER SETTINGS`, security level changes, cross-module moves — see
+#    `skills/learned-mdl-preflight.md`'s STOP table.
+# 4. **`./mxcli`, not `mxcli`.** The binary is in the project root, never on PATH.
+# 5. **Every model write goes through `./bin/exec.sh <script.mdl>` — never a bare `mxcli exec`.**
+#    exec.sh is the only thing that runs the mxbuild gate (`mxcli check` cannot see a consistency
+#    error such as CE0117), and it refuses to write when that gate cannot run. A bare exec leaves
+#    no gate row and no verification stamp, and the pre-commit hook then refuses the model until
+#    `./bin/verify-model.sh` has passed it.
+# 6. **No new `.md`/`.html` in the project root.** Use docs/ architecture/ analysis/ design/.
+#    `bin/check-root-clean.sh` fails the build on strays.
+#
+# Skill guides live in `.ai-context/skills/` — read the relevant one before writing MDL.
+#
+# <!-- mxtk:wiring:end -->

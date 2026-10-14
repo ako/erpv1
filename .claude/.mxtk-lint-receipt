@@ -1,0 +1,18 @@
+# md5 of each toolkit lint rule AS INSTALLED, and its kind. Written by bin/lib/install-lint-rules.sh.
+# Do not edit. Deleting this file makes a revert-to-stock look like a first install.
+conv010_act_microflow_content.star  cef7a07d07413867ba3b6e993e382ec2  stock
+data_change_microflows.star  a65c2598e784088fc778c237b7e58c73  stock
+entity_business_key.star  33eac40e97e9eb1111ebcbb75f62a942  stock
+conv009_max_microflow_objects.star  3d3a3a45cca660bf263ecb6c82fee39e  stock
+ux001_confirm_before_destructive.star  7fe10c1ea6a3407bd9ee9edf4b7120af  toolkit
+ux002_decisions_captioned.star  3ddf09efb008138b1258e1b232dbe924  toolkit
+err001_error_swallowed.star  b7705e67e332aff733735115365902b6  toolkit
+loop001_expensive_action_in_loop.star  913e516f21207b897e7fe9ac005fbeb3  toolkit
+perf001_generalization_depth.star  a46b2d15e1776574597b18d8fe80cb1c  toolkit
+perf002_nested_data_widgets.star  643c68b9d9f1cfa1ec2098006a9a4208  toolkit
+perf004_npe_system_user_assoc.star  66cb7b18d437a1fc0cca29553ce4ecbb  toolkit
+txt001_build_words_in_user_text.star  bbade14ce9ebf5e755b4800df1365c26  toolkit
+txt002_non_iso_date_in_user_text.star  f7e3d75e5a4325ce85dd66756b054b0a  toolkit
+ui001_widget_layout_traps.star  db26e6844e8bf03f63dcebb5fec6fe81  toolkit
+sec014_external_role_write.star  e9f4f260d4dc57dd0c00315c3be69727  toolkit
+conv020_action_user_feedback.star  215582a999ed3194c03922d6c4c40797  configurable

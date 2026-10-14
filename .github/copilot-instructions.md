@@ -1,0 +1,89 @@
+# Mendix MDL Project: erpv1
+
+This project uses **mxcli** to read and modify Mendix model files (`.mpr`) via MDL (Mendix Definition Language) — a SQL-like text format for Mendix applications.
+
+## Critical: mxcli Location
+
+The mxcli binary is in the **project root**, not on PATH:
+- ✅ `./mxcli ...`
+- ❌ `mxcli ...` (will fail)
+
+MPR file: `project.mpr`
+
+## Quick Commands
+
+```bash
+# Explore project structure
+./mxcli -p project.mpr -c "DESCRIBE STRUCTURE"
+
+# Validate an MDL script (always do this before executing)
+./mxcli check script.mdl -p project.mpr --references
+
+# Execute an MDL script
+./mxcli exec script.mdl -p project.mpr
+
+# Search the project
+./mxcli search -p project.mpr "keyword"
+```
+
+## Where to Look First
+
+- **`AGENTS.md`** — full mxcli reference, MDL command list, workflow examples.
+- **`.ai-context/skills/`** — focused syntax guides for microflows, pages, domain models, security, etc. **Read the relevant skill before writing MDL.**
+
+## MDL Syntax Reminders
+
+- **Entities:** `CREATE PERSISTENT ENTITY Mod.Customer (Name: String(200), Age: Integer);`
+- **Microflow variables:** start with `$` (e.g., `$Customer`, `$List`).
+- **Page widgets:** nest with `{ }`, properties use `(Key: value, ...)`.
+- **Single quotes in expressions:** escape by doubling — `'it''s here'`.
+- **No `AS` keyword** in entity attribute declarations.
+- **Scripts** start with `mdl 1;`, and every statement ends with `;`. A script without the header is the
+  older mdl 0: upgrade it before editing (`./mxcli fmt --upgrade --header -p project.mpr -w file.mdl`, then check it),
+  and never mix the two in one file.
+
+## Workflow
+
+1. Explore: read `AGENTS.md` and the relevant `.ai-context/skills/` file first.
+2. Write MDL in a `.mdl` file that starts with `mdl 1;`.
+3. Validate: `./mxcli check <file>.mdl -p project.mpr --references`.
+4. Execute: `./mxcli exec <file>.mdl -p project.mpr`.
+5. Verify: `./mxcli -p project.mpr -c "DESCRIBE ENTITY Mod.Name"`. Execute the script again: the second run must write nothing (unchanged).
+
+<!-- mxtk:wiring:start — written by mxcli-project-toolkit/bin/wire-agents.sh.
+     Edit that script, not this block: it is replaced wholesale on every re-run. -->
+
+## Start here (all AI agents, every session)
+
+1. **Read `docs/progress/RESUME.md` first, and nothing else yet.** Where we are, the next
+   actions, and a table saying which larger file to open for the task at hand. Do NOT read
+   `PROJECT.md` to get oriented — it is a decision register, not a resume doc.
+   If that file is not there: `bin/init-project.sh` scaffolds it and `bin/close-task.sh`
+   overwrites it at the end of each session, so its absence means neither has run here. Get
+   oriented from `CLAUDE.local.md` (wiring + baseline routing) and `intake.md` instead, and
+   say in chat that you did — never from `PROJECT.md`.
+2. **`CLAUDE.md` is the canonical project instruction file** regardless of which agent you
+   are. Every other instruction file in this repo, including this one, is a pointer to it.
+3. **Exec approval defaults to `auto` (2026-09-16).** State the resolved mode once, at session
+   start: "Exec approval: auto — I run scripts through bin/exec.sh and log them; say 'ask before
+   exec' to switch." Before any `./mxcli exec`, `./bin/exec.sh`, `mxcli test`, `mxcli docker
+   check`, or any `--mcp` write against the real `.mpr` — all of those mutate the model, the
+   last two despite sounding read-only — check `/root/Mendix/mxcli-project-toolkit/bin/exec-approval.sh <project-root>`. Under
+   `auto`, run it without asking and say in chat what ran; under `ask`, ask first, every time.
+   The user switches either way by saying so — only then run
+   `bin/exec-approval.sh <project-root> --set auto` / `--set ask`, never on your own judgement.
+   Even on `auto`, SAY in chat (don't ask) before a STOP-table operation — drops on entities
+   with data, `ALTER SETTINGS`, security level changes, cross-module moves — see
+   `skills/learned-mdl-preflight.md`'s STOP table.
+4. **`./mxcli`, not `mxcli`.** The binary is in the project root, never on PATH.
+5. **Every model write goes through `./bin/exec.sh <script.mdl>` — never a bare `mxcli exec`.**
+   exec.sh is the only thing that runs the mxbuild gate (`mxcli check` cannot see a consistency
+   error such as CE0117), and it refuses to write when that gate cannot run. A bare exec leaves
+   no gate row and no verification stamp, and the pre-commit hook then refuses the model until
+   `./bin/verify-model.sh` has passed it.
+6. **No new `.md`/`.html` in the project root.** Use docs/ architecture/ analysis/ design/.
+   `bin/check-root-clean.sh` fails the build on strays.
+
+Skill guides live in `.ai-context/skills/` — read the relevant one before writing MDL.
+
+<!-- mxtk:wiring:end -->

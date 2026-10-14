@@ -1,0 +1,77 @@
+{
+  "env": {
+    "MXCLI_QUIET": "1"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "sh .claude/bootstrap-mxcli.sh || true",
+            "type": "command"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash bin/session-check.sh || true"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash bin/look-ledger.sh seen || true"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(mxcli:*)",
+      "Bash(./mxcli:*)",
+      "Bash(./mxcli *)",
+      "Bash(playwright-cli:*)",
+      "Bash(playwright-cli *)",
+      "Bash(./bin/exec.sh:*)",
+      "Bash(bin/exec.sh:*)",
+      "Bash(bash bin/exec.sh:*)",
+      "Bash(./bin/*.sh:*)",
+      "Bash(bin/*.sh:*)",
+      "Bash(bash bin/*.sh:*)",
+      "Bash(~/.mxcli/mxbuild/*/modeler/mx:*)",
+      "Edit(/**)",
+      "Bash(node tests/*)",
+      "Bash(npx playwright *)",
+      "Bash(npm install:*)",
+      "Bash(npm ci:*)",
+      "Bash(docker compose:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker logs:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git mv:*)",
+      "Bash(python3 bin/*)",
+      "Bash(python3 tests/*)"
+    ],
+    "deny": [
+      "Bash(./mxcli exec:*)",
+      "Bash(mxcli exec:*)",
+      "Bash(./mxcli.exe exec:*)"
+    ],
+    "ask": [
+      "Bash(git push*--force*)",
+      "Bash(git push* -f*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean *)",
+      "Bash(sudo *)"
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "allow": [
+    "Bash(/root/Mendix/mxcli-project-toolkit/bin/*.sh:*)",
+    "Bash(bash /root/Mendix/mxcli-project-toolkit/bin/*.sh:*)"
+  ],
+  "deny": []
+}

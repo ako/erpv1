@@ -1,0 +1,108 @@
+{
+  "$comment": [
+    "example.journey.json — a worked example of the journey shape, shipped WITH the engine.",
+    "",
+    "Two jobs. First, journey-runner.selftest.js falls back to this file when a project has",
+    "no journeys/ of its own, so the instrument that proves the assertions can fail is itself",
+    "runnable on day one instead of dying ENOENT before its first check.",
+    "",
+    "Second, it is the reference for the shape — in particular for rung 4, where the three",
+    "claims are easy to confuse. They are NOT interchangeable:",
+    "  delta          something was saved.",
+    "  assocMustBeSet something was saved WITH its association filled in.",
+    "  mustPointAt    ...and that association points at the RIGHT row.",
+    "Set-ness is not correctness. A journey that stops at delta passes over a record that",
+    "saved with a null link, and one that stops at assocMustBeSet passes over a record",
+    "linked to the wrong parent. Both read as green.",
+    "",
+    "scope is MANDATORY whenever assocMustBeSet or mustPointAt is present: without a",
+    "watermark the query grades every row in the table, including rows that predate the run,",
+    "so a single good historical row carries the assertion. A data block that carries",
+    "assocMustBeSet with no scope must be reported [WEAK EVIDENCE], never silently accepted.",
+    "",
+    "Names below are placeholders. Replace <Module>/<Entity>/<Widget>/<Microflow> with your own.",
+    "Every key here is one journey-runner.js reads (examples/validate-journeys.js reports 0",
+    "problems on this file). The field-by-field tour is skills/journey-examples.md.",
+    "Add \"persona\": \"<TEST_USER>\" when the journey proves one role's access path — a run signed in as anyone else records the journey INVALID and does not walk it."
+  ],
+  "id": "J-EXAMPLE-01",
+  "title": "Example — open the overview, submit the form, see the row on its parent",
+  "requirement": [],
+  "seeds": [
+    {
+      "name": "parentKey",
+      "$comment": "Referenced later as {{parentKey}}. Seeds are the only values a step may assume exist; they are read from the live DB, never hardcoded. Every OQL column is aliased.",
+      "sql": "SELECT p.<KeyAttribute> AS k FROM <Module>.<Parent> AS p LIMIT 1"
+    }
+  ],
+  "steps": [
+    {
+      "name": "Open the overview and see the seeded row",
+      "$comment": "rung 1 landing guard + rung 2 what the screen says. Without the guard an assertion grades the PREVIOUS page.",
+      "actions": [
+        {
+          "do": "nav",
+          "item": "<menu item title>"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-<overviewGrid>",
+        "textPresent": [
+          "{{parentKey}}"
+        ]
+      }
+    },
+    {
+      "name": "Submit the form",
+      "$comment": "rung 3 ordered spans, rung 4 data effects. A capture with zero spans is a fault, never a pass — [].every() is true. A step whose only proof is that something did NOT run declares mustNotFire alone (plus spans.liveness); see journey-examples.md.",
+      "actions": [
+        {
+          "do": "click",
+          "widget": "<btnSubmit>"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-<detailView>"
+      },
+      "spans": {
+        "ordered": [
+          "<Module>.<Microflow>"
+        ],
+        "mustNotFire": [
+          "<Microflow that must not run, e.g. a delete>"
+        ]
+      },
+      "data": {
+        "creates": "<Module>.<Entity>",
+        "delta": 1,
+        "scope": {
+          "newRowsBy": "id"
+        },
+        "assocMustBeSet": [
+          {
+            "entity": "<Module>.<Entity>",
+            "assoc": "<Module>.<Entity>_<Parent>",
+            "target": "<Module>.<Parent>",
+            "mustPointAt": {
+              "attr": "<KeyAttribute>",
+              "value": "{{parentKey}}"
+            }
+          }
+        ],
+        "oql": [
+          {
+            "label": "the new row exists and is not a draft",
+            "sql": "SELECT COUNT(e.ID) AS n FROM <Module>.<Entity> AS e WHERE e.<Status> != 'Draft'",
+            "atLeast": 1
+          }
+        ]
+      }
+    }
+  ],
+  "outcome": {
+    "$comment": "rung 5. The thing the user actually came for, asserted once, in their terms.",
+    "label": "the parent shows the submitted row",
+    "sql": "SELECT COUNT(e.ID) AS n FROM <Module>.<Entity> AS e WHERE e/<Module>.<Entity>_<Parent>/<Module>.<Parent>/<KeyAttribute> = '{{parentKey}}'",
+    "atLeast": 1
+  }
+}

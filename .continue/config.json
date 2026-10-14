@@ -1,0 +1,47 @@
+{
+  "name": "erpv1 - Mendix MDL",
+  "systemMessage": "You are helping with Mendix development using MDL (Mendix Definition Language). The mxcli tool is located in the project root - always use './mxcli' not 'mxcli'.",
+  "docs": [
+    "AGENTS.md",
+    ".ai-context/skills/"
+  ],
+  "customCommands": [
+    {
+      "name": "check-mdl",
+      "description": "Check MDL script syntax",
+      "prompt": "Run: ./mxcli check {filename}"
+    },
+    {
+      "name": "check-mdl-refs",
+      "description": "Check MDL with reference validation",
+      "prompt": "Run: ./mxcli check {filename} -p project.mpr --references"
+    },
+    {
+      "name": "execute-mdl",
+      "description": "Execute MDL script",
+      "prompt": "Run: ./mxcli exec {filename} -p project.mpr"
+    },
+    {
+      "name": "show-entities",
+      "description": "Show all entities in project",
+      "prompt": "Run: ./mxcli -p project.mpr -c \"SHOW ENTITIES\""
+    },
+    {
+      "name": "search-project",
+      "description": "Search project with catalog",
+      "prompt": "Run: ./mxcli search -p project.mpr \"{query}\""
+    }
+  ],
+  "slashCommands": [
+    {
+      "name": "mdl-syntax",
+      "description": "Show MDL syntax reference",
+      "prompt": "Read and summarize: .ai-context/skills/write-microflows/SKILL.md"
+    },
+    {
+      "name": "page-syntax",
+      "description": "Show page creation syntax",
+      "prompt": "Read and summarize: .ai-context/skills/create-page/SKILL.md"
+    }
+  ]
+}
