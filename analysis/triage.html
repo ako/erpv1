@@ -1,0 +1,107 @@
+<title>Source triage — erpv1</title>
+<style>
+  :root {
+    --bg:#f6f7f9; --panel:#ffffff; --fg:#11141a; --muted:#5b6472; --line:#e0e4ea;
+    --accent:#3b5bdb; --todo-bg:#fdf0d5; --todo-fg:#7a4b00; --todo-line:#d9a441;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:#101319; --panel:#171b22; --fg:#e6e9ef; --muted:#939cab; --line:#272d37;
+      --accent:#7b95f0; --todo-bg:#3a2c12; --todo-fg:#e7c07a; --todo-line:#8a6a2a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#101319; --panel:#171b22; --fg:#e6e9ef; --muted:#939cab; --line:#272d37;
+    --accent:#7b95f0; --todo-bg:#3a2c12; --todo-fg:#e7c07a; --todo-line:#8a6a2a;
+  }
+  * { box-sizing:border-box; }
+  body { background:var(--bg); color:var(--fg); margin:0; padding:3rem 1.25rem 4rem;
+         font:15px/1.6 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         font-variant-numeric:tabular-nums; }
+  main { max-width:62rem; margin:0 auto; }
+  .eyebrow { font-size:.7rem; text-transform:uppercase; letter-spacing:.14em; font-weight:700;
+              color:var(--muted); margin:0 0 .5rem; }
+  h1 { font-size:1.75rem; line-height:1.15; letter-spacing:-.02em; margin:0 0 .4rem;
+        text-wrap:balance; }
+  h2 { font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; font-weight:700;
+        margin:2.75rem 0 .75rem; color:var(--muted); }
+  h3 { font-size:1rem; margin:1.75rem 0 .5rem; }
+  h4 { font-size:.92rem; margin:1.25rem 0 .4rem; color:var(--muted); }
+  p { margin:0 0 .9rem; max-width:52rem; }
+  ul { margin:0 0 1rem; padding-left:1.15rem; max-width:52rem; }
+  li { margin:.25rem 0; }
+  hr { border:0; border-top:1px solid var(--line); margin:2.25rem 0; }
+  table { width:100%; border-collapse:collapse; font-size:.88rem; margin:0 0 1rem;
+           background:var(--panel); }
+  .scroll { overflow-x:auto; }
+  th { text-align:left; font-size:.68rem; text-transform:uppercase; letter-spacing:.1em;
+        font-weight:700; color:var(--muted); border-bottom:1px solid var(--line);
+        padding:.5rem .7rem; white-space:nowrap; }
+  td { border-bottom:1px solid var(--line); padding:.7rem; vertical-align:top; }
+  code { font-size:.85em; background:var(--panel); border:1px solid var(--line);
+          border-radius:3px; padding:.05rem .3rem; }
+  .todo { background:var(--todo-bg); color:var(--todo-fg); border:1px dashed var(--todo-line);
+           border-radius:3px; padding:.05rem .35rem; font-size:.85em; }
+  .banner { border-left:3px solid var(--accent); background:var(--panel); border-radius:0 3px 3px 0;
+             padding:.9rem 1.1rem; margin:0 0 2rem; color:var(--muted); font-size:.88rem; }
+  .banner p { margin:0; }
+  footer { margin-top:3rem; padding-top:1.1rem; border-top:1px solid var(--line);
+            color:var(--muted); font-size:.8rem; max-width:46rem; }
+</style>
+<main>
+  <p class="eyebrow">Stage 0 · source triage</p>
+  <div class="banner">
+    <p>Rendered 2026-10-14 from <code>./triage.md</code>. This page is a view of that file and
+       nothing else — it does not check, score or approve anything in it. The verdict on Stage 0
+       comes from <code>bin/gate-check.sh erpv1 0</code>, which asks one question: has a
+       human signed this off. Dashed boxes are placeholders still in the source.</p>
+  </div>
+  <h1>Source Triage: erpv1 (Odoo 18.0 Community → Mendix 11.15)</h1>
+  <p><strong>Stage 0 — migration mode.</strong> Follows <code>skills/source-triage.md</code>. Source: <code>sources/odoo/</code> (13 addons, 825 files, provenance in <code>sources/odoo/SOURCE.md</code>). Source grade: <code>analysis/source-sufficiency.html</code> — band <strong>SPECIFICATION</strong>, 7/10 dimensions specified or better, 0 contradictions, 0 shape-changing gaps.</p>
+  <p>Framing from Stage P: <strong>POC/demo</strong>, <strong>Odoo-inspired, Mendix-native</strong> (Odoo is the functional reference, not the model to copy). Sizes below are Odoo&#x27;s; the Mendix model will be smaller by design.</p>
+  <hr>
+  <h2>Extraction Approach</h2>
+  <div class="scroll"><table><thead><tr><th>Decision</th><th>Chosen?</th><th>Which pipeline / what has to be built</th></tr></thead><tbody><tr><td><strong>Reuse existing pipeline</strong></td><td>no</td><td>No toolkit pipeline reads Python/Odoo: <code>pipelines/</code> has <code>outsystems</code>, <code>java-angular</code>, <code>node-express-react</code> only, and none of their layout assumptions (OML/XML, Java/TS source trees) fit an Odoo addon tree.</td></tr><tr><td><strong>Build new pipeline</strong></td><td><strong>proposed — awaiting user</strong></td><td>A small <code>pipelines/odoo/</code> extractor in this project: Python <code>ast</code> over <code>models/</code>, <code>wizard/</code>, <code>report/*.py</code> → models, fields (type, required, relation, compute/depends, selection values), <code>_inherit</code>/<code>_inherits</code>, <code>_sql_constraints</code>, <code>@api.constrains</code>, <code>action_*</code> methods; XML over <code>views/</code> → views per model, menus, actions; <code>security/</code> → ACL matrix (model × group × CRUD) and <code>ir.rule</code> domains; <code>__manifest__.py</code> → dependency graph. Output JSON into <code>analysis/odoo/knowledge-base/</code>. Validated against hand-built ground truth for 5 models (<code>res.partner</code>, <code>product.template</code>, <code>sale.order</code>, <code>sale.order.line</code>, <code>stock.picking</code>) per <code>qa-loop-goal-pattern.md</code>.</td></tr></tbody></table></div>
+  <p>Reasoning: Odoo is unusually extractor-friendly — models, fields, relations, security and menus are all declarative, so a few hundred lines of Python cover the structure. What it cannot extract is method *behaviour* (what <code>action_confirm</code> does); that is read per method at Stage 1/2 for the in-scope flows only. ~300 models × ~20 fields each is far beyond a reliable hand read.</p>
+  <p>Who chose it, and when: _pending — put to the user at the Stage 0 gate, 2026-10-14._</p>
+  <hr>
+  <h2>Business Capability Map</h2>
+  <div class="scroll"><table><thead><tr><th>#</th><th>Business capability</th><th>Source components (Odoo addon → models)</th><th>Rough size in Odoo (models / wizards / form views)</th><th>Owner / team</th></tr></thead><tbody><tr><td>C1</td><td>Contacts, companies &amp; users</td><td><code>base</code> → res.partner (+category, industry, title), res.company, res.users, res.currency(+rate), res.country(+state), res.bank, res.partner.bank</td><td>20 / 8 / ~6 relevant</td><td>user (SME)</td></tr><tr><td>C2</td><td>Units of measure</td><td><code>uom</code> → uom.category, uom.uom</td><td>2 / 0 / 2</td><td>user</td></tr><tr><td>C3</td><td>Product catalogue &amp; pricing</td><td><code>product</code> → product.template, product.product (variants), product.category, attributes/values, product.pricelist(+item), product.supplierinfo, product.packaging, product.tag</td><td>24 / 2 / 18</td><td>user</td></tr><tr><td>C4</td><td>Sales (quotations → orders)</td><td><code>sales_team</code> → crm.team(+member); <code>sale</code> → sale.order, sale.order.line, cancel/discount/advance-payment wizards; <code>sale_management</code> → sale.order.template(+line, option)</td><td>11 / 5 / 15</td><td>user</td></tr><tr><td>C5</td><td>Purchasing (RFQ → PO, approval)</td><td><code>purchase</code> → purchase.order, purchase.order.line, purchase.report, bill matching</td><td>8 / 1 / 4</td><td>user</td></tr><tr><td>C6</td><td>Inventory &amp; warehouse operations</td><td><code>stock</code> → stock.warehouse, stock.location, stock.picking(+type), stock.move, stock.move.line, stock.quant, stock.lot, stock.route/rule, stock.warehouse.orderpoint, scrap, packages, backorder/return/inventory wizards</td><td>31 / 23 / 42</td><td>user</td></tr><tr><td>C7</td><td>Order fulfilment (sales → delivery, purchase → receipt)</td><td><code>sale_stock</code>, <code>purchase_stock</code> → extensions of sale.order(.line), purchase.order(.line), stock.move/picking, procurement</td><td>3 / 0 / 0 (extension-only: 22 + 27 <code>_inherit</code>s)</td><td>user</td></tr><tr><td>C8</td><td>Customer invoices, vendor bills &amp; payments</td><td><code>account</code> → account.move (invoice/bill types), account.move.line, account.tax(+group, repartition), account.payment.term, account.payment, account.payment.register, account.journal (sales/purchase/bank only)</td><td>~15 of 47 / 4 / ~12</td><td>user</td></tr><tr><td>C9</td><td>General ledger &amp; accounting core</td><td><code>account</code> → account.account, chart template, reconciliation (full/partial, reconcile models), bank statements, fiscal positions, lock dates, hash integrity, account.report</td><td>~32 of 47 / 10 / ~26</td><td>user</td></tr><tr><td>C10</td><td>Analytic accounting</td><td><code>analytic</code> → account.analytic.plan/account/line/distribution model</td><td>7 / 0 / 4</td><td>user</td></tr><tr><td>C11</td><td>Stock valuation</td><td><code>stock_account</code> → stock.valuation.layer, revaluation, accounting entries on moves</td><td>3 / 1 / 2</td><td>user</td></tr><tr><td>C12</td><td>Platform / framework</td><td><code>base</code> → ir.* (models, views, actions, cron, sequences, attachments, rules), res.config.settings, res.lang, res.groups, modules, QWeb, translations</td><td>96 / ~8 / ~70</td><td>n/a — Mendix platform provides the equivalents</td></tr></tbody></table></div>
+  <hr>
+  <h2>Coverage Matrix</h2>
+  <p>No extractor exists yet, so nothing can be <strong>Ready</strong> today: every in-scope capability is <strong>Unknown</strong> until the new Odoo extractor has run and been checked against ground truth (it then moves to Ready or Extract-only). Out-of-scope capabilities are <strong>Defer</strong>.</p>
+  <div class="scroll"><table><thead><tr><th>Capability</th><th>Extractable?</th><th>Mapper → BRD?</th><th>Reliable?</th><th>Verdict</th></tr></thead><tbody><tr><td>C1 Contacts, companies &amp; users</td><td>Yes, once built (declarative ORM)</td><td>Build with extractor (fields → entity tables)</td><td>Untested</td><td><strong>Unknown</strong> — extractor spike</td></tr><tr><td>C2 Units of measure</td><td>Yes, once built</td><td>as C1</td><td>Untested</td><td><strong>Unknown</strong> — extractor spike</td></tr><tr><td>C3 Product catalogue &amp; pricing</td><td>Yes, once built</td><td>as C1; pricelist rules need a method read</td><td>Untested</td><td><strong>Unknown</strong> — extractor spike</td></tr><tr><td>C4 Sales</td><td>Structure yes; flow from <code>action_*</code> methods needs reading</td><td>as C1 + state machine listing</td><td>Untested</td><td><strong>Unknown</strong> — extractor spike</td></tr><tr><td>C5 Purchasing</td><td>as C4</td><td>as C4</td><td>Untested</td><td><strong>Unknown</strong> — extractor spike</td></tr><tr><td>C6 Inventory &amp; warehouse</td><td>Structure yes; routes/rules/reservation logic is method-heavy</td><td>as C4</td><td>Untested</td><td><strong>Unknown</strong> — extractor spike</td></tr><tr><td>C7 Order fulfilment bridges</td><td>Yes (extension-only addons, read through <code>_inherit</code>)</td><td>as C4</td><td>Untested</td><td><strong>Unknown</strong> — extractor spike</td></tr><tr><td>C8 Invoices, bills &amp; payments</td><td>Structure yes; tax computation is method-heavy</td><td>as C4</td><td>Untested</td><td><strong>Unknown</strong> — extractor spike</td></tr><tr><td>C9 General ledger core</td><td>Yes</td><td>—</td><td>—</td><td><strong>Defer</strong> — POC needs invoices, not a ledger</td></tr><tr><td>C10 Analytic accounting</td><td>Yes</td><td>—</td><td>—</td><td><strong>Defer</strong></td></tr><tr><td>C11 Stock valuation</td><td>Yes</td><td>—</td><td>—</td><td><strong>Defer</strong></td></tr><tr><td>C12 Platform / framework</td><td>Yes</td><td>—</td><td>—</td><td><strong>Defer</strong> — replaced by Mendix platform features (security, scheduled events, sequences as microflows/auto-number), never ported</td></tr></tbody></table></div>
+  <h3>Missing dependencies (imported addons depend on addons NOT imported)</h3>
+  <p>Each needs a policy — <strong>acquire / stub / declare-not-implemented</strong> — signed off at the gate.</p>
+  <div class="scroll"><table><thead><tr><th>Missing addon</th><th>Needed by</th><th>What it provides</th><th>Proposed policy</th></tr></thead><tbody><tr><td><code>mail</code></td><td>product, sales_team, analytic (and <code>mail.thread</code>/<code>mail.activity.mixin</code> on most documents)</td><td>Chatter, followers, activities, email templates</td><td><strong>Declare not implemented</strong> (chatter out of scope)</td></tr><tr><td><code>portal</code></td><td>account (portal.mixin on sale/purchase/invoices)</td><td>Customer/vendor self-service pages</td><td><strong>Declare not implemented</strong></td></tr><tr><td><code>account_payment</code> → <code>payment</code></td><td>sale</td><td>Online payment providers, payment links</td><td><strong>Declare not implemented</strong>; manual payment registration (C8) stays</td></tr><tr><td><code>utm</code></td><td>sale</td><td>Marketing campaign/source/medium tags on orders</td><td><strong>Declare not implemented</strong></td></tr><tr><td><code>barcodes_gs1_nomenclature</code></td><td>stock</td><td>Barcode scanning rules</td><td><strong>Declare not implemented</strong></td></tr><tr><td><code>digest</code>, <code>onboarding</code>, <code>base_setup</code></td><td>account, sale_management, stock</td><td>KPI digest emails, setup tours, settings UI</td><td><strong>Declare not implemented</strong> (no functional content)</td></tr></tbody></table></div>
+  <hr>
+  <h2>Recommended Scope Subset</h2>
+  <p>Order confirmed at Stage P (four waves); this records it per capability. A slice is an ordering — deferred capabilities are not dropped from the source, only from this POC&#x27;s build.</p>
+  <ul>
+  <li>C1 Contacts, companies &amp; users → <strong>Unknown</strong> → <strong>yes, wave 1</strong> → everything references partners; single company only.</li>
+  <li>C2 Units of measure → <strong>Unknown</strong> → <strong>yes, wave 1</strong> → products and order lines need it; tiny.</li>
+  <li>C3 Product catalogue &amp; pricing → <strong>Unknown</strong> → <strong>yes, wave 1</strong> → prerequisite of every document; variants/pricelists simplified at Stage 3.</li>
+  <li>C4 Sales → <strong>Unknown</strong> → <strong>yes, wave 2</strong> → highest demo value (quote → order); templates optional.</li>
+  <li>C5 Purchasing → <strong>Unknown</strong> → <strong>yes, wave 2</strong> → mirror of sales; approval step is a natural Mendix workflow.</li>
+  <li>C6 Inventory &amp; warehouse → <strong>Unknown</strong> → <strong>yes, wave 3</strong> → one warehouse, receipts/deliveries/stock levels; routes, lots, packages, multi-step flows simplified or deferred at Stage 3.</li>
+  <li>C7 Order fulfilment bridges → <strong>Unknown</strong> → <strong>yes, wave 3</strong> → connects waves 2 and 3 (confirm order → delivery/receipt).</li>
+  <li>C8 Invoices, bills &amp; payments → <strong>Unknown</strong> → <strong>yes, wave 4</strong> → closes quote-to-cash and procure-to-pay; simplified taxes.</li>
+  <li>C9 General ledger core → <strong>Defer</strong> → deferred → not needed to demo order-to-invoice.</li>
+  <li>C10 Analytic accounting → <strong>Defer</strong> → deferred.</li>
+  <li>C11 Stock valuation → <strong>Defer</strong> → deferred.</li>
+  <li>C12 Platform / framework → <strong>Defer</strong> → never ported; Mendix equivalents used.</li>
+  </ul>
+  <hr>
+  <h2>Architecture Scale Flag</h2>
+  <div class="scroll"><table><thead><tr><th>Trigger</th><th>Fired?</th><th>Evidence</th></tr></thead><tbody><tr><td>Capabilities with clearly independent release cadences, ownership, or security/regulatory domains</td><td>no</td><td>One owner (the user), one POC, one release cadence.</td></tr><tr><td>In-scope entity/screen count large enough that <code>modularize-domain.md</code> would still land on 8–10+ modules after its own merge criteria</td><td>no</td><td>In-scope Odoo models ≈ 115 (C1–C8, excl. wizards), expected to shrink to roughly 40–60 Mendix entities under &quot;Mendix-native&quot;; that suggests ~6–7 modules (Core/Partners, Products, Sales, Purchasing, Inventory, Invoicing).</td></tr></tbody></table></div>
+  <p>Verdict: <strong>No concern</strong> — one Mendix app.</p>
+  <hr>
+  <h2>Sign-off</h2>
+  <p>Confirmed by: [user] on [date] — required before Phase 2/3 proceed.</p>
+  <footer>
+    The reasoning behind every section here lives in <code>skills/source-triage.md</code>; the
+    fill-in-me source is scaffolded by <code>bin/init-project.sh</code> from
+    <code>bin/lib/triage-template.sh</code>. Edit <code>triage.md</code> and re-run
+    <code>bin/triage-report.sh</code> — never edit this page.
+  </footer>
+</main>
