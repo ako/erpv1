@@ -52,7 +52,11 @@
     "purchase.order._amount_all"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/purchase-order-overview",
+    "#/purchase-order-new-edit"
+   ]
   },
   {
    "id": "UC002",
@@ -78,7 +82,10 @@
     "purchase.order.action_rfq_send"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/purchase-order-new-edit"
+   ]
   },
   {
    "id": "UC003",
@@ -108,7 +115,10 @@
     "purchase.order._add_supplier_to_product"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/purchase-order-new-edit"
+   ]
   },
   {
    "id": "UC004",
@@ -130,6 +140,7 @@
    ],
    "alternativeFlows": [],
    "screens": [
+    "PurchaseApproval_Inbox",
     "PurchaseApproval_Task"
    ],
    "odooRefs": [
@@ -137,7 +148,11 @@
    ],
    "status": "proposed",
    "reviewStatus": "pending",
-   "signOff": "Q-F005-1"
+   "signOff": "Q-F005-1",
+   "routes": [
+    "#/purchase-approval-inbox",
+    "#/purchase-approval-task"
+   ]
   },
   {
    "id": "UC005",
@@ -170,7 +185,10 @@
     "purchase.order.button_unlock"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/purchase-order-new-edit"
+   ]
   },
   {
    "id": "UC006",
@@ -196,7 +214,10 @@
    ],
    "status": "proposed",
    "reviewStatus": "pending",
-   "signOff": "Q-F004-3"
+   "signOff": "Q-F004-3",
+   "routes": [
+    "#/purchase-analysis-report"
+   ]
   },
   {
    "id": "UC007",
@@ -224,7 +245,10 @@
     "product.product._select_seller"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/vendor-price-overview"
+   ]
   }
  ],
  "domainEntities": [
@@ -1136,7 +1160,8 @@
     "purchase.purchase_order_kpis_tree",
     "purchase.purchase_order_view_tree",
     "purchase.view_purchase_order_filter"
-   ]
+   ],
+   "route": "#/purchase-order-overview"
   },
   {
    "name": "PurchaseOrder_NewEdit",
@@ -1161,7 +1186,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "purchase.purchase_order_form"
-   ]
+   ],
+   "route": "#/purchase-order-new-edit"
   },
   {
    "name": "PurchaseApproval_Task",
@@ -1178,7 +1204,8 @@
     "Reject"
    ],
    "layout": "Atlas_Core.Atlas_Default",
-   "odooRefs": []
+   "odooRefs": [],
+   "route": "#/purchase-approval-task"
   },
   {
    "name": "VendorPrice_Overview",
@@ -1196,7 +1223,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "product.product_supplierinfo_tree_view"
-   ]
+   ],
+   "route": "#/vendor-price-overview"
   },
   {
    "name": "PurchaseAnalysis_Report",
@@ -1212,7 +1240,25 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "purchase.view_purchase_order_pivot"
-   ]
+   ],
+   "route": "#/purchase-analysis-report"
+  },
+  {
+   "name": "PurchaseApproval_Inbox",
+   "purpose": "Workflow Commons task inbox filtered to purchase approvals: one row per PO waiting, opens the task page.",
+   "dataContext": "Purchasing.PurchaseOrder",
+   "pattern": "inbox",
+   "sections": [
+    "Tasks"
+   ],
+   "actions": [
+    "Open task"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "purchase.purchase_order_view_tree"
+   ],
+   "route": "#/purchase-approval-inbox"
   }
  ],
  "timers": [],
@@ -1280,7 +1326,7 @@
   "entities": 3,
   "enumerations": 4,
   "microflows": 12,
-  "pages": 5,
+  "pages": 6,
   "openQuestions": 1
  }
 }

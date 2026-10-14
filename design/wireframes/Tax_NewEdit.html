@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tax — wireframe</title><link rel="stylesheet" href="../ds.css"></head>
+<body class="lg-body" data-route="tax-new-edit">
+<div class="wf-contract"><p>Page parameter: Core.Tax</p><p>Reached from: row / New on Tax_Overview</p><p>Drawn as role: InvoicingManager</p><p>Data view source: page parameter</p></div>
+<div class="lg-backdrop"><div class="lg-dialog" role="dialog" aria-label="Tax"><header><h1>Tax</h1></header><div class="lg-dialog-body"><section class="lg-section"><h2>Tax</h2><div class="lg-field"><label for="f-b1" class="is-required">Name</label><input class="lg-input" id="f-b1" data-bind="b1" value=""></div><div class="lg-field"><label for="f-b2" class="is-required">Scope</label><select class="lg-select" id="f-b2" data-bind="b2"><option selected>Sales</option><option>Purchases</option></select></div><div class="lg-field"><label for="f-b3" class="is-required">Computation</label><select class="lg-select" id="f-b3" data-bind="b3"><option selected>Percentage of price</option><option>Fixed amount per unit</option></select></div><div class="lg-field"><label for="f-b4" class="is-required">Amount</label><input class="lg-input is-num" id="f-b4" data-bind="b4" value="0.00"></div><div class="lg-field"><label for="f-b5">Included in price</label><input type="checkbox" class="lg-check" id="f-b5" data-bind="b5"></div><div class="lg-field"><label for="f-b6">Label on invoice</label><input class="lg-input" id="f-b6" data-bind="b6" value=""></div><div class="lg-field"><label for="f-b7" class="is-required">Sequence</label><input class="lg-input is-num" id="f-b7" data-bind="b7" value="0"></div></section></div><footer><button class="lg-btn is-primary" data-bind="b8">Save</button><a class="lg-btn" href="#/tax-overview">Discard</a></footer></div></div>
+<table class="bind"><caption>Bindings — Tax_NewEdit</caption><thead><tr><th>Source field / element</th><th>Mendix widget</th><th>Datasource</th><th>Required</th><th>Read-only</th><th>Conditional</th></tr></thead><tbody>
+<tr id="b1" data-row="b1"><td>Core.Tax.Name ← account.tax.name</td><td>Text box</td><td>String(200)</td><td>yes</td><td></td><td></td></tr>
+<tr id="b2" data-row="b2"><td>Core.Tax.Scope ← account.tax.type_tax_use</td><td>Drop-down (enumeration)</td><td>Core.ENUM_TaxScope</td><td>yes</td><td></td><td></td></tr>
+<tr id="b3" data-row="b3"><td>Core.Tax.Computation ← account.tax.amount_type</td><td>Drop-down (enumeration)</td><td>Core.ENUM_TaxComputation</td><td>yes</td><td></td><td></td></tr>
+<tr id="b4" data-row="b4"><td>Core.Tax.Amount ← account.tax.amount</td><td>Text box (numeric)</td><td>Decimal</td><td>yes</td><td></td><td></td></tr>
+<tr id="b5" data-row="b5"><td>Core.Tax.IncludedInPrice ← account.tax.price_include_override</td><td>Check box</td><td>Boolean</td><td></td><td></td><td></td></tr>
+<tr id="b6" data-row="b6"><td>Core.Tax.LabelOnInvoice ← account.tax.invoice_label</td><td>Text box</td><td>String(200)</td><td></td><td></td><td></td></tr>
+<tr id="b7" data-row="b7"><td>Core.Tax.Sequence ← account.tax.sequence</td><td>Text box (numeric)</td><td>Integer</td><td>yes</td><td></td><td></td></tr>
+<tr id="b8" data-row="b8"><td>Save — commit object and close page</td><td>Action button (Save changes)</td><td>Core.Tax</td><td></td><td></td><td></td></tr>
+</tbody></table>
+</body></html>

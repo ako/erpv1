@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create backorder? — wireframe</title><link rel="stylesheet" href="../ds.css"></head>
+<body class="lg-body" data-route="validate-transfer-popup">
+<div class="wf-contract"><p>Page parameter: Inventory.ValidateTransferRequest</p><p>Reached from: Validate on Transfer_NewEdit when a move has quantity &lt; demand</p><p>Drawn as role: InventoryUser</p><p>Data view source: page parameter</p></div>
+<div class="lg-backdrop"><div class="lg-dialog" role="dialog" aria-label="Create backorder?"><header><h1>Create backorder?</h1></header><div class="lg-dialog-body"><div class="lg-note">You have processed less than the initial demand. Create a backorder for the remaining products, or cancel them?</div></div><footer><button class="lg-btn is-primary" data-bind="b1">Create backorder</button><button class="lg-btn" data-bind="b2">No backorder</button><a class="lg-btn" href="#/transfer-new-edit">Discard</a></footer></div></div>
+<table class="bind"><caption>Bindings — ValidateTransfer_Popup</caption><thead><tr><th>Source field / element</th><th>Mendix widget</th><th>Datasource</th><th>Required</th><th>Read-only</th><th>Conditional</th></tr></thead><tbody>
+<tr id="b1" data-row="b1"><td>Create backorder — microflow SUB_Transfer_Done</td><td>Action button (call microflow)</td><td>SUB_Transfer_Done</td><td></td><td></td><td></td></tr>
+<tr id="b2" data-row="b2"><td>No backorder — microflow SUB_Transfer_Done</td><td>Action button (call microflow)</td><td>SUB_Transfer_Done</td><td></td><td></td><td></td></tr>
+</tbody></table>
+</body></html>

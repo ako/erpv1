@@ -58,7 +58,11 @@
     "sale.order._compute_amounts"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/sales-order-overview",
+    "#/sales-order-new-edit"
+   ]
   },
   {
    "id": "UC002",
@@ -86,7 +90,10 @@
     "sale.order.action_quotation_sent"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/sales-order-new-edit"
+   ]
   },
   {
    "id": "UC003",
@@ -117,7 +124,10 @@
     "sale.order._confirmation_error_message"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/sales-order-new-edit"
+   ]
   },
   {
    "id": "UC004",
@@ -148,7 +158,10 @@
     "sale.order.action_draft"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/sales-order-new-edit"
+   ]
   },
   {
    "id": "UC005",
@@ -175,7 +188,10 @@
     "sale.order.action_unlock"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/sales-order-new-edit"
+   ]
   },
   {
    "id": "UC006",
@@ -202,7 +218,10 @@
     "sale.action_orders_to_invoice"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/sales-order-overview"
+   ]
   },
   {
    "id": "UC007",
@@ -229,7 +248,10 @@
    ],
    "status": "proposed",
    "reviewStatus": "pending",
-   "signOff": "Q-F004-3"
+   "signOff": "Q-F004-3",
+   "routes": [
+    "#/sales-analysis-report"
+   ]
   },
   {
    "id": "UC008",
@@ -248,7 +270,9 @@
    ],
    "alternativeFlows": [],
    "screens": [
+    "QuotationTemplate_Overview",
     "QuotationTemplate_NewEdit",
+    "SalesTeam_Overview",
     "SalesTeam_NewEdit"
    ],
    "odooRefs": [
@@ -256,7 +280,13 @@
     "sales_team.crm_team_view_form"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/quotation-template-overview",
+    "#/quotation-template-new-edit",
+    "#/sales-team-overview",
+    "#/sales-team-new-edit"
+   ]
   }
  ],
  "domainEntities": [
@@ -1242,7 +1272,8 @@
     "sale.view_quotation_tree",
     "sale.view_order_tree",
     "sale.view_sales_order_filter"
-   ]
+   ],
+   "route": "#/sales-order-overview"
   },
   {
    "name": "SalesOrder_NewEdit",
@@ -1267,7 +1298,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "sale.view_order_form"
-   ]
+   ],
+   "route": "#/sales-order-new-edit"
   },
   {
    "name": "QuotationTemplate_NewEdit",
@@ -1285,7 +1317,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "sale_management.sale_order_template_view_form"
-   ]
+   ],
+   "route": "#/quotation-template-new-edit"
   },
   {
    "name": "SalesTeam_NewEdit",
@@ -1303,7 +1336,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "sales_team.crm_team_view_form"
-   ]
+   ],
+   "route": "#/sales-team-new-edit"
   },
   {
    "name": "SalesAnalysis_Report",
@@ -1320,7 +1354,44 @@
    "odooRefs": [
     "sale.view_order_product_pivot",
     "sale.view_order_product_graph"
-   ]
+   ],
+   "route": "#/sales-analysis-report"
+  },
+  {
+   "name": "QuotationTemplate_Overview",
+   "purpose": "Quotation templates.",
+   "dataContext": "Sales.QuotationTemplate",
+   "pattern": "list",
+   "sections": [
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Open"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "sale_management.sale_order_template_view_tree"
+   ],
+   "route": "#/quotation-template-overview"
+  },
+  {
+   "name": "SalesTeam_Overview",
+   "purpose": "Sales teams.",
+   "dataContext": "Sales.SalesTeam",
+   "pattern": "list",
+   "sections": [
+    "Grid"
+   ],
+   "actions": [
+    "New",
+    "Open"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "sales_team.crm_team_view_tree"
+   ],
+   "route": "#/sales-team-overview"
   }
  ],
  "timers": [],
@@ -1432,7 +1503,7 @@
   "entities": 5,
   "enumerations": 4,
   "microflows": 10,
-  "pages": 5,
+  "pages": 7,
   "openQuestions": 3
  }
 }

@@ -337,6 +337,13 @@ def main():
         b = json.load(open(path, encoding='utf-8'))
         src = C.BRDS[row['id']]
         b['microflows'] = src['microflows']; b['workflows'] = src.get('workflows', [])
+        # prototype routes (brd-validation.md check 8): use case walks its screens; page names its screen route
+        import ui_spec as U
+        for uc in b['useCases']:
+            uc['routes'] = ['#/' + U.route(sc) for sc in uc['screens'] if sc in U.S]
+        for p in b['pages']:
+            if p['name'] in U.S:
+                p['route'] = '#/' + U.route(p['name'])
         json.dump(b, open(path, 'w', encoding='utf-8'), indent=1, ensure_ascii=False)
     unowned = [n for n, v in ent_out.items() if v['brd'] not in C.BRDS]
     for u in unowned:

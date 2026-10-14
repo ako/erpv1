@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>User profile — wireframe</title><link rel="stylesheet" href="../ds.css"></head>
+<body class="lg-body" data-route="user-profile-edit">
+<div class="wf-contract"><p>Page parameter: Partners.UserProfile</p><p>Reached from: row of Account_Overview (Administration); Users link on Company_Edit (prototype stand-in for Account_Overview)</p><p>Drawn as role: Administrator</p><p>Data view source: page parameter</p></div>
+<div class="lg-backdrop"><div class="lg-dialog" role="dialog" aria-label="User profile"><header><h1>User profile</h1></header><div class="lg-dialog-body"><section class="lg-section"><h2>Profile</h2><div class="lg-field"><label for="f-b1">Display name</label><input class="lg-input" id="f-b1" data-bind="b1" value=""></div><div class="lg-field"><label for="f-b2" class="is-required">Partner</label><select class="lg-select" id="f-b2" data-bind="b2"><option>Mitchell Admin</option></select></div><div class="lg-field"><label for="f-b3">Account</label><select class="lg-select" id="f-b3" data-bind="b3"><option>Mitchell Admin</option></select></div></section></div><footer><button class="lg-btn is-primary" data-bind="b4">Save</button><a class="lg-btn" href="#/company-edit">Discard</a></footer></div></div>
+<table class="bind"><caption>Bindings — UserProfile_Edit</caption><thead><tr><th>Source field / element</th><th>Mendix widget</th><th>Datasource</th><th>Required</th><th>Read-only</th><th>Conditional</th></tr></thead><tbody>
+<tr id="b1" data-row="b1"><td>Partners.UserProfile.DisplayName ← res.users (framework, not extracted field-level)</td><td>Text box</td><td>String(200)</td><td></td><td></td><td></td></tr>
+<tr id="b2" data-row="b2"><td>Partners.UserProfile.UserProfile_Partner ← res.users.partner_id</td><td>Combo box (reference)</td><td>Partners.Partner</td><td>yes</td><td></td><td></td></tr>
+<tr id="b3" data-row="b3"><td>Partners.UserProfile.UserProfile_Account (new)</td><td>Combo box (reference)</td><td>Administration.Account</td><td></td><td></td><td></td></tr>
+<tr id="b4" data-row="b4"><td>Save — commit object and close page</td><td>Action button (Save changes)</td><td>Partners.UserProfile</td><td></td><td></td><td></td></tr>
+</tbody></table>
+</body></html>

@@ -1,0 +1,218 @@
+/* erpv1 design system — ds.css
+   Source of every token and component used by design-system.html and design/wireframes/*.html.
+   Basis: mxcli built-in theme "ledger" (PROJECT.md Stage 3, CONFIRMED 2026-10-14) — the --mxt-* values
+   below are copied verbatim from `mxcli theme apply ledger` (custom-variables.scss / _mxcli-ledger.scss),
+   so the built app (theme/web) and these wireframes paint with the same palette. Light = :root;
+   dark = :root.theme-dark (mxcli --variant auto honours it) and prefers-color-scheme unless .theme-light.
+   All component sizes in px: Atlas sets html { font-size: 10px }, so rem would render at 62.5%. */
+
+/* ── Fonts (vendored from the ledger theme, SIL OFL 1.1 — fonts/OFL-ledger.txt) ── */
+@font-face { font-family: "Source Sans 3"; src: url("fonts/source-sans-3-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Source Sans 3"; src: url("fonts/source-sans-3-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Source Sans 3"; src: url("fonts/source-sans-3-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Source Sans 3"; src: url("fonts/source-sans-3-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Source Serif 4"; src: url("fonts/source-serif-4-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Source Serif 4"; src: url("fonts/source-serif-4-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Source Serif 4"; src: url("fonts/source-serif-4-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+
+/* ── Tier 1: ledger tokens (light) ── */
+:root {
+  --mxt-brand: #1f3a5f; --mxt-brand-hover: #2b4f7d; --mxt-brand-ink: #ffffff; --mxt-accent: #b4531f;
+  --mxt-success: #2f6b4f; --mxt-warning: #a66a15; --mxt-danger: #9b2c1f; --mxt-info: #1f3a5f;
+  --mxt-ground: #f7f4ee; --mxt-surface: #fffdf9; --mxt-surface-alt: #f3efe7; --mxt-surface-hover: #efe9dd; --mxt-surface-selected: #e8eef5;
+  --mxt-ink: #1c1917; --mxt-ink-muted: #6b6257; --mxt-ink-faint: #9b9082; --mxt-line: #e2dbce;
+  --mxt-rail: #211e1a; --mxt-rail-line: #35302a; --mxt-rail-ink: #c3baa9; --mxt-rail-ink-active: #ffffff;
+  --mxt-tint-ok: rgba(47, 107, 79, 0.12); --mxt-tone-ok: #285b43;
+  --mxt-tint-warn: rgba(166, 106, 21, 0.12); --mxt-tone-warn: #855511;
+  --mxt-tint-risk: rgba(155, 44, 31, 0.12); --mxt-tone-risk: #7d2419;
+  --mxt-tint-info: rgba(31, 58, 95, 0.12); --mxt-tone-info: #1f3a5f; --mxt-tint-neutral: #ebe5d9;
+  --mxt-radius: 2px; --mxt-radius-lg: 2px; --mxt-row-height: 30px; --mxt-control-height: 30px; --mxt-shadow: none;
+  --mxt-focus-halo: 0 0 0 3px rgba(31, 58, 95, 0.18);
+  --mxt-font: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mxt-font-heading: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mxt-font-mono: "Source Sans 3", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --mxt-font-size: 14px; --mxt-line-height: 1.5;
+
+  /* ── Tier 2: app semantics (only names the components below read) ── */
+  --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px; --sp-6: 48px;   /* design-spacing.md 8/16/24/32/48 */
+  --rail-width: 216px; --topbar-height: 48px;
+  --fs-xs: 12px; --fs-sm: 13px; --fs-md: 14px; --fs-lg: 18px; --fs-xl: 24px; --fs-2xl: 30px;
+}
+/* ── Tier 1: ledger tokens (dark) ── */
+:root.theme-dark {
+  --mxt-brand: #7fa3cc; --mxt-brand-hover: #9dbadd; --mxt-brand-ink: #0e1a26; --mxt-accent: #e08a4f;
+  --mxt-success: #6fbf93; --mxt-warning: #d9a441; --mxt-danger: #e0715c; --mxt-info: #7fa3cc;
+  --mxt-ground: #171614; --mxt-surface: #1f1d1a; --mxt-surface-alt: #262320; --mxt-surface-hover: #2d2925; --mxt-surface-selected: #23303d;
+  --mxt-ink: #ede8df; --mxt-ink-muted: #a69c8d; --mxt-ink-faint: #7a7164; --mxt-line: #35302a;
+  --mxt-rail: #12110f; --mxt-rail-line: #2a2621; --mxt-rail-ink: #c3baa9; --mxt-rail-ink-active: #ffffff;
+  --mxt-tint-ok: rgba(111, 191, 147, 0.16); --mxt-tone-ok: #8ed3ac; --mxt-tint-warn: rgba(217, 164, 65, 0.16); --mxt-tone-warn: #e6bc6b;
+  --mxt-tint-risk: rgba(224, 113, 92, 0.16); --mxt-tone-risk: #ec9280; --mxt-tint-info: rgba(127, 163, 204, 0.16); --mxt-tone-info: #9dbadd;
+  --mxt-tint-neutral: #2b2723; --mxt-shadow: none; --mxt-focus-halo: 0 0 0 3px rgba(127, 163, 204, 0.28);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.theme-light) {
+    --mxt-brand: #7fa3cc; --mxt-brand-hover: #9dbadd; --mxt-brand-ink: #0e1a26; --mxt-accent: #e08a4f;
+    --mxt-success: #6fbf93; --mxt-warning: #d9a441; --mxt-danger: #e0715c; --mxt-info: #7fa3cc;
+    --mxt-ground: #171614; --mxt-surface: #1f1d1a; --mxt-surface-alt: #262320; --mxt-surface-hover: #2d2925; --mxt-surface-selected: #23303d;
+    --mxt-ink: #ede8df; --mxt-ink-muted: #a69c8d; --mxt-ink-faint: #7a7164; --mxt-line: #35302a;
+    --mxt-rail: #12110f; --mxt-rail-line: #2a2621; --mxt-rail-ink: #c3baa9; --mxt-rail-ink-active: #ffffff;
+    --mxt-tint-ok: rgba(111, 191, 147, 0.16); --mxt-tone-ok: #8ed3ac; --mxt-tint-warn: rgba(217, 164, 65, 0.16); --mxt-tone-warn: #e6bc6b;
+    --mxt-tint-risk: rgba(224, 113, 92, 0.16); --mxt-tone-risk: #ec9280; --mxt-tint-info: rgba(127, 163, 204, 0.16); --mxt-tone-info: #9dbadd;
+    --mxt-tint-neutral: #2b2723; --mxt-shadow: none; --mxt-focus-halo: 0 0 0 3px rgba(127, 163, 204, 0.28);
+  }
+}
+
+/* ── Base ── */
+*, *::before, *::after { box-sizing: border-box; }
+body.lg-body { margin: 0; background: var(--mxt-ground); color: var(--mxt-ink); font: var(--fs-md)/var(--mxt-line-height) var(--mxt-font); }
+.lg-body h1, .lg-body h2, .lg-body h3 { font-family: var(--mxt-font-heading); font-weight: 600; margin: 0; color: var(--mxt-ink); }
+.lg-body a { color: var(--mxt-brand); }
+.lg-body :focus-visible { outline: none; box-shadow: var(--mxt-focus-halo); }
+
+/* ── App shell: rail + top bar + content ── */
+.lg-shell { display: grid; grid-template-columns: var(--rail-width) 1fr; min-height: 100vh; }
+.lg-rail { background: var(--mxt-rail); color: var(--mxt-rail-ink); padding: var(--sp-2) 0; border-right: 1px solid var(--mxt-rail-line); }
+.lg-rail .lg-appname { font-family: var(--mxt-font-heading); font-size: var(--fs-lg); color: var(--mxt-rail-ink-active); padding: 0 var(--sp-2) var(--sp-2); }
+.lg-rail .lg-navgroup { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.06em; padding: var(--sp-2) var(--sp-2) 4px; color: var(--mxt-ink-faint); }
+.lg-rail a { display: block; padding: 5px var(--sp-2); color: var(--mxt-rail-ink); text-decoration: none; font-size: var(--fs-md); border-left: 2px solid transparent; }
+.lg-rail a:hover { color: var(--mxt-rail-ink-active); }
+.lg-rail a.is-active { color: var(--mxt-rail-ink-active); border-left-color: var(--mxt-accent); background: rgba(255, 255, 255, 0.04); }
+.lg-main { min-width: 0; }
+.lg-topbar { height: var(--topbar-height); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--sp-3);
+  border-bottom: 1px solid var(--mxt-line); background: var(--mxt-surface); font-size: var(--fs-sm); color: var(--mxt-ink-muted); }
+.lg-content { padding: var(--sp-3); max-width: 1320px; }
+
+/* ── Page header ── */
+.lg-pagehead { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--sp-2); margin-bottom: var(--sp-2);
+  padding-bottom: var(--sp-1); border-bottom: 1px solid var(--mxt-line); flex-wrap: wrap; }
+.lg-pagehead h1 { font-size: var(--fs-xl); }
+.lg-pagehead .lg-docno { font-family: var(--mxt-font-heading); font-size: var(--fs-2xl); }
+.lg-eyebrow { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--mxt-ink-muted); }
+.lg-actions { display: flex; gap: var(--sp-1); flex-wrap: wrap; align-items: center; }
+
+/* ── Buttons ── */
+.lg-btn { display: inline-flex; align-items: center; gap: 6px; height: var(--mxt-control-height); padding: 0 12px; border-radius: var(--mxt-radius);
+  border: 1px solid var(--mxt-line); background: var(--mxt-surface); color: var(--mxt-ink); font: 500 var(--fs-md) var(--mxt-font); cursor: pointer; text-decoration: none; }
+.lg-btn:hover { background: var(--mxt-surface-hover); }
+.lg-btn.is-primary { background: var(--mxt-brand); border-color: var(--mxt-brand); color: var(--mxt-brand-ink); }
+.lg-btn.is-primary:hover { background: var(--mxt-brand-hover); }
+.lg-btn.is-danger { color: var(--mxt-danger); }
+.lg-btn.is-link { border-color: transparent; background: transparent; color: var(--mxt-brand); padding: 0 4px; }
+
+/* ── Status bar (document lifecycle) ── */
+.lg-statusbar { display: flex; border: 1px solid var(--mxt-line); border-radius: var(--mxt-radius); overflow: hidden; }
+.lg-statusbar span { padding: 4px 12px; font-size: var(--fs-sm); color: var(--mxt-ink-muted); border-right: 1px solid var(--mxt-line); background: var(--mxt-surface); }
+.lg-statusbar span:last-child { border-right: 0; }
+.lg-statusbar span.is-current { background: var(--mxt-brand); color: var(--mxt-brand-ink); font-weight: 600; }
+.lg-toolbar { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-2); padding: var(--sp-1) 0; margin-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--mxt-line); flex-wrap: wrap; }
+
+/* ── Smart buttons (counts that link to related documents) ── */
+.lg-smart { display: flex; gap: var(--sp-1); margin-bottom: var(--sp-2); }
+.lg-smart a { display: inline-flex; flex-direction: column; min-width: 96px; padding: 6px 12px; border: 1px solid var(--mxt-line); border-radius: var(--mxt-radius);
+  background: var(--mxt-surface); text-decoration: none; color: var(--mxt-ink-muted); font-size: var(--fs-xs); }
+.lg-smart a b { font: 600 var(--fs-lg) var(--mxt-font); color: var(--mxt-ink); }
+
+/* ── Sheet: the document surface — hairline rules, no card shadow ── */
+.lg-sheet { background: var(--mxt-surface); border: 1px solid var(--mxt-line); border-radius: var(--mxt-radius-lg); padding: var(--sp-3); }
+.lg-section { margin-bottom: var(--sp-3); }
+.lg-section > h2 { font-size: var(--fs-lg); padding-bottom: 6px; margin-bottom: var(--sp-2); border-bottom: 1px solid var(--mxt-line); }
+.lg-grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--sp-4); }
+
+/* ── Fields ── */
+.lg-field { display: grid; grid-template-columns: 168px minmax(0, 1fr); align-items: center; gap: var(--sp-1); min-height: 34px; }
+.lg-field label { color: var(--mxt-ink-muted); font-size: var(--fs-sm); }
+.lg-field label.is-required::after { content: " *"; color: var(--mxt-danger); }
+.lg-input, .lg-select, .lg-textarea { width: 100%; height: var(--mxt-control-height); padding: 0 8px; border: 1px solid var(--mxt-line); border-radius: var(--mxt-radius);
+  background: var(--mxt-surface); color: var(--mxt-ink); font: var(--fs-md) var(--mxt-font); }
+.lg-select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--mxt-ink-muted) 50%), linear-gradient(135deg, var(--mxt-ink-muted) 50%, transparent 50%);
+  background-position: calc(100% - 14px) 13px, calc(100% - 9px) 13px; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 24px; }
+.lg-textarea { height: 72px; padding: 6px 8px; resize: vertical; }
+.lg-input.is-num { text-align: right; font-variant-numeric: tabular-nums; }
+.lg-readonly { padding: 4px 0; }
+.lg-check { width: 16px; height: 16px; accent-color: var(--mxt-brand); }
+.lg-tags { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; min-height: var(--mxt-control-height); border: 1px solid var(--mxt-line);
+  border-radius: var(--mxt-radius); padding: 2px 6px; background: var(--mxt-surface); }
+
+/* ── Pills (status) — tone names follow ledger's tint/tone pairs ── */
+.lg-pill { display: inline-block; padding: 0 8px; border-radius: 10px; font-size: var(--fs-xs); font-weight: 600; line-height: 20px; white-space: nowrap;
+  background: var(--mxt-tint-neutral); color: var(--mxt-ink-muted); }
+.lg-pill.is-ok { background: var(--mxt-tint-ok); color: var(--mxt-tone-ok); }
+.lg-pill.is-warn { background: var(--mxt-tint-warn); color: var(--mxt-tone-warn); }
+.lg-pill.is-risk { background: var(--mxt-tint-risk); color: var(--mxt-tone-risk); }
+.lg-pill.is-info { background: var(--mxt-tint-info); color: var(--mxt-tone-info); }
+
+/* ── Data grid ── */
+.lg-tabs { display: flex; gap: var(--sp-3); border-bottom: 1px solid var(--mxt-line); margin-bottom: var(--sp-2); }
+.lg-tabs a { padding: 6px 0; color: var(--mxt-ink-muted); text-decoration: none; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.lg-tabs a.is-active { color: var(--mxt-ink); border-bottom-color: var(--mxt-accent); font-weight: 600; }
+.lg-filters { display: flex; gap: var(--sp-1); flex-wrap: wrap; margin-bottom: var(--sp-1); }
+.lg-filters .lg-input { width: 240px; }
+.lg-filters .lg-select { width: 160px; }
+.lg-gridwrap { overflow-x: auto; }
+.lg-table { width: 100%; border-collapse: collapse; background: var(--mxt-surface); }
+.lg-table th { text-align: left; font-size: var(--fs-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--mxt-ink-muted);
+  padding: 6px 8px; border-bottom: 1px solid var(--mxt-ink-faint); white-space: nowrap; }
+.lg-table td { height: var(--mxt-row-height); padding: 2px 8px; border-bottom: 1px solid var(--mxt-line); }
+.lg-table td.is-num { white-space: nowrap; }
+.lg-table tbody tr:hover { background: var(--mxt-surface-hover); }
+.lg-table .is-num { text-align: right; font-variant-numeric: tabular-nums; }
+.lg-table tr.is-section td { font-weight: 600; background: var(--mxt-surface-alt); }
+.lg-table a.lg-rowlink { color: var(--mxt-ink); text-decoration: none; font-weight: 600; }
+.lg-table a.lg-rowlink:hover { color: var(--mxt-brand); text-decoration: underline; }
+.lg-addline { display: inline-block; margin-top: 6px; }
+.lg-pager { display: flex; justify-content: flex-end; gap: var(--sp-1); color: var(--mxt-ink-muted); font-size: var(--fs-sm); padding-top: var(--sp-1); }
+
+/* ── Totals block ── */
+.lg-totals { margin-left: auto; width: 320px; margin-top: var(--sp-2); }
+.lg-totals div { display: flex; justify-content: space-between; padding: 4px 0; font-variant-numeric: tabular-nums; }
+.lg-totals div.is-grand { border-top: 1px solid var(--mxt-ink); font: 600 var(--fs-lg) var(--mxt-font-heading); padding-top: 8px; }
+
+/* ── KPI / stat tiles + dashboard tiles ── */
+.lg-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--sp-2); margin-bottom: var(--sp-3); }
+.lg-kpi { border-top: 2px solid var(--mxt-ink); padding-top: var(--sp-1); }
+.lg-kpi .lg-kpi-label { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--mxt-ink-muted); }
+.lg-kpi .lg-kpi-value { font: 600 var(--fs-2xl) var(--mxt-font-heading); font-variant-numeric: tabular-nums; }
+.lg-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--sp-2); }
+.lg-tile { background: var(--mxt-surface); border: 1px solid var(--mxt-line); border-radius: var(--mxt-radius-lg); padding: var(--sp-2); }
+.lg-tile h2 { font-size: var(--fs-lg); margin-bottom: 4px; }
+.lg-tile .lg-counts { display: flex; gap: var(--sp-2); margin-top: var(--sp-1); }
+.lg-tile .lg-counts a { text-decoration: none; color: var(--mxt-ink-muted); font-size: var(--fs-sm); }
+.lg-tile .lg-counts a b { display: block; font: 600 var(--fs-xl) var(--mxt-font-heading); color: var(--mxt-ink); }
+
+/* ── Chart frame (series colours come from the dataviz palette at build time; frame only here) ── */
+.lg-chart { border: 1px solid var(--mxt-line); border-radius: var(--mxt-radius); background: var(--mxt-surface); padding: var(--sp-2); min-height: 200px; }
+.lg-chart h3 { font-size: var(--fs-md); margin-bottom: var(--sp-1); }
+.lg-chart .lg-chart-bars { display: flex; align-items: flex-end; gap: 10px; height: 130px; border-bottom: 1px solid var(--mxt-ink-faint); }
+.lg-chart .lg-chart-bars i { flex: 1; background: var(--mxt-brand); opacity: 0.85; }
+.lg-charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--sp-2); margin-bottom: var(--sp-3); }
+
+/* ── Dialog (popup page) ── */
+.lg-backdrop { min-height: 100vh; background: rgba(28, 25, 23, 0.35); display: flex; align-items: flex-start; justify-content: center; padding: 72px var(--sp-2); }
+.lg-dialog { width: 560px; max-width: 100%; background: var(--mxt-surface); border: 1px solid var(--mxt-line); border-radius: var(--mxt-radius-lg); }
+.lg-dialog header { padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid var(--mxt-line); }
+.lg-dialog header h1 { font-size: var(--fs-lg); }
+.lg-dialog .lg-dialog-body { padding: var(--sp-3); }
+.lg-dialog footer { padding: var(--sp-2) var(--sp-3); border-top: 1px solid var(--mxt-line); display: flex; justify-content: flex-end; gap: var(--sp-1); }
+.lg-note { padding: var(--sp-1) var(--sp-2); background: var(--mxt-tint-info); color: var(--mxt-tone-info); border-radius: var(--mxt-radius); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
+
+/* ── Image slot ── */
+.lg-image { width: 96px; height: 96px; border: 1px dashed var(--mxt-ink-faint); border-radius: var(--mxt-radius); display: flex; align-items: center;
+  justify-content: center; color: var(--mxt-ink-faint); font-size: var(--fs-xs); float: right; margin-left: var(--sp-2); }
+
+/* ── Wireframe annotation apparatus (wf-*): hidden behind "Show bindings" in prototype.html ── */
+.wf-contract, .wf-notes { font: var(--fs-xs)/1.5 var(--mxt-font-mono); background: var(--mxt-surface-alt); border: 1px dashed var(--mxt-ink-faint);
+  padding: var(--sp-1) var(--sp-2); margin: var(--sp-2) var(--sp-3); color: var(--mxt-ink-muted); }
+.wf-contract p { margin: 0; }
+table.bind { font: var(--fs-xs)/1.4 var(--mxt-font-mono); border-collapse: collapse; margin: var(--sp-1) var(--sp-3) var(--sp-4); color: var(--mxt-ink-muted); }
+table.bind th, table.bind td { border: 1px solid var(--mxt-line); padding: 2px 6px; text-align: left; vertical-align: top; }
+table.bind caption { text-align: left; font-weight: 600; padding: 4px 0; }
+
+/* ── Small screens ── */
+@media (max-width: 760px) {
+  .lg-shell { grid-template-columns: 1fr; }
+  .lg-rail { display: none; }
+  .lg-grid2 { grid-template-columns: 1fr; }
+  .lg-field { grid-template-columns: 1fr; gap: 2px; }
+  .lg-content { padding: var(--sp-2); }
+}

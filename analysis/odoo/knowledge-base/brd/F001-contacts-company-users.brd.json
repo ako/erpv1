@@ -70,7 +70,11 @@
     "res.partner.create"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/partner-overview",
+    "#/partner-new-edit"
+   ]
   },
   {
    "id": "UC002",
@@ -101,7 +105,11 @@
     "res.partner._compute_commercial_partner"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/partner-new-edit",
+    "#/partner-child-new-edit"
+   ]
   },
   {
    "id": "UC003",
@@ -130,7 +138,10 @@
     "base.view_partner_form"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/partner-new-edit"
+   ]
   },
   {
    "id": "UC004",
@@ -159,7 +170,10 @@
     "res.company.write"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/company-edit"
+   ]
   },
   {
    "id": "UC005",
@@ -189,7 +203,10 @@
    ],
    "status": "proposed",
    "reviewStatus": "pending",
-   "signOff": "Q-F001-3"
+   "signOff": "Q-F001-3",
+   "routes": [
+    "#/user-profile-edit"
+   ]
   },
   {
    "id": "UC006",
@@ -216,7 +233,10 @@
    ],
    "status": "proposed",
    "reviewStatus": "pending",
-   "signOff": "Q-F001-3"
+   "signOff": "Q-F001-3",
+   "routes": [
+    "#/sequence-overview"
+   ]
   }
  ],
  "domainEntities": [
@@ -1477,7 +1497,8 @@
    "odooRefs": [
     "base.view_partner_tree",
     "base.view_res_partner_filter"
-   ]
+   ],
+   "route": "#/partner-overview"
   },
   {
    "name": "Partner_NewEdit",
@@ -1499,7 +1520,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "base.view_partner_form"
-   ]
+   ],
+   "route": "#/partner-new-edit"
   },
   {
    "name": "PartnerChild_NewEdit",
@@ -1518,7 +1540,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "base.view_partner_form"
-   ]
+   ],
+   "route": "#/partner-child-new-edit"
   },
   {
    "name": "Company_Edit",
@@ -1538,7 +1561,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "base.view_company_form"
-   ]
+   ],
+   "route": "#/company-edit"
   },
   {
    "name": "UserProfile_Edit",
@@ -1554,7 +1578,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "base.view_users_form"
-   ]
+   ],
+   "route": "#/user-profile-edit"
   },
   {
    "name": "Sequence_Overview",
@@ -1570,7 +1595,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "base.sequence_view_tree"
-   ]
+   ],
+   "route": "#/sequence-overview"
   }
  ],
  "timers": [],

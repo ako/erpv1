@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Register payment — wireframe</title><link rel="stylesheet" href="../ds.css"></head>
+<body class="lg-body" data-route="register-payment-popup">
+<div class="wf-contract"><p>Page parameter: Invoicing.RegisterPaymentRequest</p><p>Reached from: Register payment on Invoice_NewEdit / selection on Invoice_Overview</p><p>Drawn as role: Billing</p><p>Data view source: page parameter</p></div>
+<div class="lg-backdrop"><div class="lg-dialog" role="dialog" aria-label="Register payment"><header><h1>Register payment</h1></header><div class="lg-dialog-body"><section class="lg-section"><h2>Payment</h2><div class="lg-field"><label for="f-b1">Amount</label><input class="lg-input is-num" id="f-b1" data-bind="b1" value="244.50"></div><div class="lg-field"><label for="f-b2" class="is-required">Payment date</label><input class="lg-input" id="f-b2" data-bind="b2" value="2026-10-14"></div><div class="lg-field"><label for="f-b3">Method</label><select class="lg-select" id="f-b3" data-bind="b3"><option selected>Bank transfer</option><option>Cash</option></select></div><div class="lg-field"><label for="f-b4">Memo</label><input class="lg-input" id="f-b4" data-bind="b4" value="INV/2026/00020"></div><div class="lg-field"><label for="f-b5">Invoices</label><div class="lg-tags" id="f-b5" data-bind="b5"><span class="lg-pill">INV/2026/00020</span></div></div></section></div><footer><button class="lg-btn is-primary" data-bind="b6">Create payment</button><a class="lg-btn" href="#/invoice-new-edit">Discard</a></footer></div></div>
+<table class="bind"><caption>Bindings — RegisterPayment_Popup</caption><thead><tr><th>Source field / element</th><th>Mendix widget</th><th>Datasource</th><th>Required</th><th>Read-only</th><th>Conditional</th></tr></thead><tbody>
+<tr id="b1" data-row="b1"><td>Invoicing.RegisterPaymentRequest.Amount ← account.payment.register.amount</td><td>Text box (numeric)</td><td>Decimal</td><td></td><td></td><td></td></tr>
+<tr id="b2" data-row="b2"><td>Invoicing.RegisterPaymentRequest.PaymentDate ← account.payment.register.payment_date</td><td>Date picker</td><td>DateTime</td><td>yes</td><td></td><td></td></tr>
+<tr id="b3" data-row="b3"><td>Invoicing.RegisterPaymentRequest.Method ← account.payment.register (framework, not extracted field-level)</td><td>Drop-down (enumeration)</td><td>Invoicing.ENUM_PaymentMethod</td><td></td><td></td><td></td></tr>
+<tr id="b4" data-row="b4"><td>Invoicing.RegisterPaymentRequest.Memo ← account.payment.register.communication</td><td>Text box</td><td>String(200)</td><td></td><td></td><td></td></tr>
+<tr id="b5" data-row="b5"><td>Invoicing.RegisterPaymentRequest.RegisterPaymentRequest_Invoices ← account.payment.register.line_ids</td><td>Combo box (reference set, tags)</td><td>Invoicing.Invoice</td><td></td><td></td><td></td></tr>
+<tr id="b6" data-row="b6"><td>Create payment — microflow SUB_Payment_Create</td><td>Action button (call microflow)</td><td>SUB_Payment_Create</td><td></td><td></td><td></td></tr>
+</tbody></table>
+</body></html>

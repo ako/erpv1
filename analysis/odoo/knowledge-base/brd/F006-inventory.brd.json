@@ -43,6 +43,7 @@
    ],
    "alternativeFlows": [],
    "screens": [
+    "Inventory_Dashboard",
     "Transfer_Overview",
     "Transfer_NewEdit"
    ],
@@ -53,7 +54,12 @@
     "stock.move._action_done"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/inventory-dashboard",
+    "#/transfer-overview",
+    "#/transfer-new-edit"
+   ]
   },
   {
    "id": "UC002",
@@ -83,7 +89,10 @@
     "stock.picking.button_validate"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/transfer-new-edit"
+   ]
   },
   {
    "id": "UC003",
@@ -109,7 +118,10 @@
     "stock.picking.action_confirm"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/transfer-new-edit"
+   ]
   },
   {
    "id": "UC004",
@@ -138,7 +150,10 @@
     "stock.picking._create_backorder"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/validate-transfer-popup"
+   ]
   },
   {
    "id": "UC005",
@@ -164,7 +179,10 @@
     "stock.picking.action_cancel"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/transfer-new-edit"
+   ]
   },
   {
    "id": "UC006",
@@ -194,7 +212,10 @@
     "stock.quant._apply_inventory"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/stock-level-overview"
+   ]
   },
   {
    "id": "UC007",
@@ -225,7 +246,42 @@
     "stock.warehouse.orderpoint._compute_qty_to_order_computed"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/reorder-rule-overview"
+   ]
+  },
+  {
+   "id": "UC008",
+   "title": "Configure the warehouse",
+   "actors": [
+    "InventoryManager",
+    "Administrator"
+   ],
+   "preconditions": [
+    "Warehouse seeded at startup (ASU_Core_SeedData)"
+   ],
+   "postconditions": [
+    "Warehouse name, address, stock location and operation types (numbering, default locations, backorder policy) set"
+   ],
+   "mainFlow": [
+    "1. Manager opens Configuration > Warehouse",
+    "2. Edits name, short name and address",
+    "3. Edits the operation types: name, sequence code, default source/destination location, create backorder"
+   ],
+   "alternativeFlows": [],
+   "screens": [
+    "Warehouse_Edit"
+   ],
+   "odooRefs": [
+    "stock.view_warehouse",
+    "stock.view_picking_type_form"
+   ],
+   "status": "code-inferred",
+   "reviewStatus": "pending",
+   "routes": [
+    "#/warehouse-edit"
+   ]
   }
  ],
  "domainEntities": [
@@ -1334,7 +1390,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "stock.stock_picking_type_kanban"
-   ]
+   ],
+   "route": "#/inventory-dashboard"
   },
   {
    "name": "Transfer_Overview",
@@ -1353,7 +1410,8 @@
    "odooRefs": [
     "stock.vpicktree",
     "stock.view_picking_internal_search"
-   ]
+   ],
+   "route": "#/transfer-overview"
   },
   {
    "name": "Transfer_NewEdit",
@@ -1375,7 +1433,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "stock.view_picking_form"
-   ]
+   ],
+   "route": "#/transfer-new-edit"
   },
   {
    "name": "ValidateTransfer_Popup",
@@ -1393,7 +1452,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "stock.view_backorder_confirmation"
-   ]
+   ],
+   "route": "#/validate-transfer-popup"
   },
   {
    "name": "StockLevel_Overview",
@@ -1410,7 +1470,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "stock.view_stock_quant_tree_inventory_editable"
-   ]
+   ],
+   "route": "#/stock-level-overview"
   },
   {
    "name": "ReorderRule_Overview",
@@ -1428,7 +1489,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "stock.view_warehouse_orderpoint_tree_editable"
-   ]
+   ],
+   "route": "#/reorder-rule-overview"
   },
   {
    "name": "Warehouse_Edit",
@@ -1446,7 +1508,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "stock.view_warehouse"
-   ]
+   ],
+   "route": "#/warehouse-edit"
   }
  ],
  "timers": [
@@ -1713,7 +1776,7 @@
  "confidence": "high",
  "confidenceBasis": "0 extractor gap(s) on mapped models outside the declared-not-implemented addons; 2 gap(s) point at not-implemented addons (mail/portal/utm/...)",
  "summaryCounts": {
-  "useCases": 7,
+  "useCases": 8,
   "entities": 8,
   "enumerations": 3,
   "microflows": 8,

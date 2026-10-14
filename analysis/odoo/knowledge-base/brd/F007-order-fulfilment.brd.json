@@ -56,7 +56,11 @@
     "sale.order._compute_picking_ids"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/sales-order-new-edit",
+    "#/transfer-new-edit"
+   ]
   },
   {
    "id": "UC002",
@@ -84,7 +88,10 @@
     "sale.order._compute_delivery_status"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/sales-order-new-edit"
+   ]
   },
   {
    "id": "UC003",
@@ -110,7 +117,10 @@
     "sale.order.line.write"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/sales-order-new-edit"
+   ]
   },
   {
    "id": "UC004",
@@ -137,7 +147,11 @@
     "purchase.order.line._prepare_stock_moves"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/purchase-order-new-edit",
+    "#/transfer-new-edit"
+   ]
   },
   {
    "id": "UC005",
@@ -164,7 +178,10 @@
     "purchase.order._compute_receipt_status"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/purchase-order-new-edit"
+   ]
   }
  ],
  "domainEntities": [
@@ -446,7 +463,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "sale_stock.view_order_form_inherit_sale_stock"
-   ]
+   ],
+   "route": "#/sales-order-new-edit"
   },
   {
    "name": "PurchaseOrder_NewEdit",
@@ -463,7 +481,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "purchase_stock.purchase_order_view_form_inherit"
-   ]
+   ],
+   "route": "#/purchase-order-new-edit"
   },
   {
    "name": "Transfer_NewEdit",
@@ -479,7 +498,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "stock.view_picking_form"
-   ]
+   ],
+   "route": "#/transfer-new-edit"
   }
  ],
  "timers": [],

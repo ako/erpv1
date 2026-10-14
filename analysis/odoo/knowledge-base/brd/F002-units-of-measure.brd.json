@@ -56,7 +56,11 @@
     "uom.uom._check_category_reference_uniqueness"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/uo-m-category-overview",
+    "#/uo-m-category-new-edit"
+   ]
   },
   {
    "id": "UC002",
@@ -84,7 +88,8 @@
     "uom.uom._compute_price"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": []
   }
  ],
  "domainEntities": [
@@ -317,7 +322,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "uom.product_uom_categ_tree_view"
-   ]
+   ],
+   "route": "#/uo-m-category-overview"
   },
   {
    "name": "UoMCategory_NewEdit",
@@ -335,7 +341,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "uom.product_uom_categ_form_view"
-   ]
+   ],
+   "route": "#/uo-m-category-new-edit"
   }
  ],
  "timers": [],

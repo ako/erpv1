@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create invoice — wireframe</title><link rel="stylesheet" href="../ds.css"></head>
+<body class="lg-body" data-route="create-invoice-popup">
+<div class="wf-contract"><p>Page parameter: Sales.CreateInvoiceRequest</p><p>Reached from: Create invoice on SalesOrder_NewEdit / selection on SalesOrder_Overview</p><p>Drawn as role: SalesUser</p><p>Data view source: page parameter</p></div>
+<div class="lg-backdrop"><div class="lg-dialog" role="dialog" aria-label="Create invoice"><header><h1>Create invoice</h1></header><div class="lg-dialog-body"><div class="lg-note">Regular invoice for the quantities to invoice of the selected orders (down payments are not in scope).</div><section class="lg-section"><h2>Options</h2><div class="lg-field"><label for="f-b1">Consolidate per customer</label><input type="checkbox" class="lg-check" id="f-b1" data-bind="b1"></div><div class="lg-field"><label for="f-b2">Sales orders</label><div class="lg-tags" id="f-b2" data-bind="b2"><span class="lg-pill">S00042</span></div></div></section></div><footer><button class="lg-btn is-primary" data-bind="b3">Create invoice</button><a class="lg-btn" href="#/sales-order-new-edit">Discard</a></footer></div></div>
+<table class="bind"><caption>Bindings — CreateInvoice_Popup</caption><thead><tr><th>Source field / element</th><th>Mendix widget</th><th>Datasource</th><th>Required</th><th>Read-only</th><th>Conditional</th></tr></thead><tbody>
+<tr id="b1" data-row="b1"><td>Sales.CreateInvoiceRequest.ConsolidatePerCustomer ← sale.advance.payment.inv (framework, not extracted field-level)</td><td>Check box</td><td>Boolean</td><td></td><td></td><td></td></tr>
+<tr id="b2" data-row="b2"><td>Sales.CreateInvoiceRequest.CreateInvoiceRequest_SalesOrders ← sale.advance.payment.inv.sale_order_ids</td><td>Combo box (reference set, tags)</td><td>Sales.SalesOrder</td><td></td><td></td><td></td></tr>
+<tr id="b3" data-row="b3"><td>Create invoice — microflow SUB_SalesOrders_CreateInvoices</td><td>Action button (call microflow)</td><td>SUB_SalesOrders_CreateInvoices</td><td></td><td></td><td></td></tr>
+</tbody></table>
+</body></html>

@@ -4,18 +4,20 @@
 
 ## Where we are
 
-Stage 2 (Requirements) gate PASSES — 2026-10-14; 15 BRD questions raised in chat, awaiting answers.
+Stage 3 (Architecture & Design) gate PASSES — 2026-10-14; awaiting the user's ✋ sign-off (close-out pasted in chat).
 
-- BRDs: `analysis/odoo/knowledge-base/brd/F001..F008` — regenerate with `python3 -I pipelines/odoo/brd_generator.py`
-  (design in `pipelines/odoo/brd_spec.py`, narrative in `brd_content.py`; generator fails on any unresolved Odoo ref).
-- Validation: `analysis/odoo/knowledge-base/reports/validation-report.md` (Clean). Surface: `analysis/brd-report.html`.
+- Architecture (generated): `pipelines/odoo/arch_render.py` → module-design.html + erd.md; `arch_blueprint.py` → modules/*/definition.md,
+  blueprint.md/.html, fit-gap.md. Design: `design/ds.css` (ledger tokens), design-system.html, brand.md;
+  `pipelines/odoo/wf_render.py` (from `ui_spec.py`) → 46 wireframes + Home, target-ui.md, interaction-model.md;
+  `node bin/assemble-prototype.js` → design/prototype.html; `node bin/check-prototype-links.js --brd analysis/odoo/knowledge-base/brd/` = 0 failures.
+- Regenerate order after a design change: brd_generator.py → wf_render.py → assemble-prototype.js → check-prototype-links.js → arch_render.py → arch_blueprint.py.
+- Open ASSUMED: navigation layout (side rail), OI-6 (no SCSS port; theme = mxcli ledger).
 
 ## Next actions, in order
 
-1. Record the answers: set each question's status to `Resolved` + `answer` in brd_content.py, regenerate,
-   flip the Stage 2 ASSUMED rows in PROJECT.md to CONFIRMED; apply any design change to brd_spec.py first.
-2. Stage 3: modularize (7 modules as in the BRDs), blueprint + fit-gap, security model, CAC-4 design brainstorm,
-   design system + one wireframe per screen (38 pages) + prototype.
+1. On sign-off: flip Stage 3 ASSUMED rows the user accepts to CONFIRMED.
+2. Stage 4 (build plan): `skills/brd-to-build-plan.md` + `skills/module-brief.md` — Step 0 marketplace installs,
+   `mxcli new` with Mendix 11.15.0, `mxcli theme apply ledger`, module briefs in architecture/modules/<M>/.
 
 ## Do not lose
 

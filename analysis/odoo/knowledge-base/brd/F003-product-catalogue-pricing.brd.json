@@ -55,7 +55,9 @@
    "alternativeFlows": [],
    "screens": [
     "Product_Overview",
-    "Product_NewEdit"
+    "Product_NewEdit",
+    "ProductCategory_Overview",
+    "ProductCategory_NewEdit"
    ],
    "odooRefs": [
     "product.product_template_form_view",
@@ -63,7 +65,13 @@
     "product.template._check_uom"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/product-overview",
+    "#/product-new-edit",
+    "#/product-category-overview",
+    "#/product-category-new-edit"
+   ]
   },
   {
    "id": "UC002",
@@ -92,7 +100,11 @@
     "product.pricelist._compute_price_rule"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/pricelist-overview",
+    "#/pricelist-new-edit"
+   ]
   },
   {
    "id": "UC003",
@@ -120,7 +132,8 @@
     "product.pricelist.item._is_applicable_for"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": []
   },
   {
    "id": "UC004",
@@ -146,7 +159,10 @@
     "product.product_template_form_view"
    ],
    "status": "code-inferred",
-   "reviewStatus": "pending"
+   "reviewStatus": "pending",
+   "routes": [
+    "#/product-new-edit"
+   ]
   }
  ],
  "domainEntities": [
@@ -882,7 +898,8 @@
    "odooRefs": [
     "product.product_template_tree_view",
     "product.product_template_kanban_view"
-   ]
+   ],
+   "route": "#/product-overview"
   },
   {
    "name": "Product_NewEdit",
@@ -903,7 +920,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "product.product_template_form_view"
-   ]
+   ],
+   "route": "#/product-new-edit"
   },
   {
    "name": "ProductCategory_Overview",
@@ -920,7 +938,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "product.product_category_list_view"
-   ]
+   ],
+   "route": "#/product-category-overview"
   },
   {
    "name": "Pricelist_Overview",
@@ -937,7 +956,8 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "product.product_pricelist_view_tree"
-   ]
+   ],
+   "route": "#/pricelist-overview"
   },
   {
    "name": "Pricelist_NewEdit",
@@ -955,7 +975,26 @@
    "layout": "Atlas_Core.Atlas_Default",
    "odooRefs": [
     "product.product_pricelist_view"
-   ]
+   ],
+   "route": "#/pricelist-new-edit"
+  },
+  {
+   "name": "ProductCategory_NewEdit",
+   "purpose": "Popup: category name and parent.",
+   "dataContext": "Products.ProductCategory",
+   "pattern": "popup",
+   "sections": [
+    "Category"
+   ],
+   "actions": [
+    "Save",
+    "Cancel"
+   ],
+   "layout": "Atlas_Core.Atlas_Default",
+   "odooRefs": [
+    "product.product_category_form_view"
+   ],
+   "route": "#/product-category-new-edit"
   }
  ],
  "timers": [],
@@ -1103,7 +1142,7 @@
   "entities": 6,
   "enumerations": 5,
   "microflows": 3,
-  "pages": 5,
+  "pages": 6,
   "openQuestions": 2
  }
 }

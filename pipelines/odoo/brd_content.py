@@ -754,3 +754,39 @@ MF_MODULE = {
     'SCE_ReorderRules_Run': 'Inventory', 'ASU_Core_SeedData': 'Core', 'WF_PurchaseOrderApproval': 'Purchasing',
     'SUB_Sequence_NextNumber': 'Core', 'SUB_Tax_ComputeLine': 'Core', 'SUB_UoM_ConvertQuantity': 'Products', 'SUB_UoM_ConvertPrice': 'Products',
 }
+
+# ── Stage 3 screen walk (design-artifacts.md Step 2 / interaction-model.md rule 2): pages the BRDs
+#    needed but did not list — an object page must be reached from a list, never from the menu.
+BRDS['F003']['pages'] += [
+    pg('ProductCategory_NewEdit', 'Popup: category name and parent.', 'Products.ProductCategory', ['Category'], ['Save', 'Cancel'],
+       ['product.product_category_form_view'], 'popup'),
+]
+BRDS['F004']['pages'] += [
+    pg('QuotationTemplate_Overview', 'Quotation templates.', 'Sales.QuotationTemplate', ['Grid'], ['New', 'Open'],
+       ['sale_management.sale_order_template_view_tree'], 'list'),
+    pg('SalesTeam_Overview', 'Sales teams.', 'Sales.SalesTeam', ['Grid'], ['New', 'Open'], ['sales_team.crm_team_view_tree'], 'list'),
+]
+BRDS['F005']['pages'] += [
+    pg('PurchaseApproval_Inbox', 'Workflow Commons task inbox filtered to purchase approvals: one row per PO waiting, opens the task page.',
+       'Purchasing.PurchaseOrder', ['Tasks'], ['Open task'], ['purchase.purchase_order_view_tree'], 'inbox'),
+]
+BRDS['F008']['pages'] += [
+    pg('Payment_View', 'Payment detail: amount, method, partner, allocations to invoices.', 'Invoicing.Payment', ['Header', 'Allocations'],
+       ['Open invoice'], ['account.view_account_payment_form'], 'form'),
+    pg('Tax_NewEdit', 'Popup: tax definition.', 'Core.Tax', ['Tax'], ['Save', 'Cancel'], ['account.view_tax_form'], 'popup'),
+    pg('PaymentTerm_Overview', 'Payment terms.', 'Core.PaymentTerm', ['Grid'], ['New', 'Open'], ['account.view_payment_term_tree'], 'list'),
+]
+BRDS['F008']['useCases'][8]['screens'] = ['Tax_Overview', 'Tax_NewEdit', 'PaymentTerm_Overview', 'PaymentTerm_NewEdit']
+BRDS['F008']['useCases'][7]['screens'] = ['Invoice_Overview', 'Payment_Overview', 'Payment_View', 'InvoiceAnalysis_Report']
+BRDS['F005']['useCases'][3]['screens'] = ['PurchaseApproval_Inbox', 'PurchaseApproval_Task']
+BRDS['F004']['useCases'][7]['screens'] = ['QuotationTemplate_Overview', 'QuotationTemplate_NewEdit', 'SalesTeam_Overview', 'SalesTeam_NewEdit']
+BRDS['F003']['useCases'][0]['screens'] = ['Product_Overview', 'Product_NewEdit', 'ProductCategory_Overview', 'ProductCategory_NewEdit']
+
+# Stage 3 prototype cross-check (check-prototype-links --brd): every screen is walked by a use case
+BRDS['F006']['useCases'][0]['screens'] = ['Inventory_Dashboard', 'Transfer_Overview', 'Transfer_NewEdit']
+BRDS['F006']['useCases'].append(uc(
+    'UC008', 'Configure the warehouse', ['InventoryManager', 'Administrator'], ['Warehouse seeded at startup (ASU_Core_SeedData)'],
+    ['Warehouse name, address, stock location and operation types (numbering, default locations, backorder policy) set'],
+    ['1. Manager opens Configuration > Warehouse', '2. Edits name, short name and address',
+     '3. Edits the operation types: name, sequence code, default source/destination location, create backorder'],
+    ['Warehouse_Edit'], ['stock.view_warehouse', 'stock.view_picking_type_form']))

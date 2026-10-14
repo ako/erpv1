@@ -5,7 +5,7 @@ Every gate decision lands here as `CONFIRMED` or `ASSUMED`, never silently decid
 
 ## Current stage
 
-**Stage 3 — Architecture & Design**, in progress — gates passed: P, 0, 1, 2 (derived by gate-check on 2026-10-14; re-run it rather than editing this line).
+**Stage 4 — Build Plan**, in progress — gates passed: P, 0, 1, 2, 3 (derived by gate-check on 2026-10-14; re-run it rather than editing this line).
 
 Toolkit commit: d16f578
 Interview mode: assist
@@ -48,8 +48,15 @@ Opt-in artifact erd: user asked for the target-domain ERD at Stage 2 close (chat
 | 1 | Extraction scope (CAC-1b): extraction covers all 13 imported addons; **BRDs only for C1–C8** (89 entities, 56 structures, 504 views in scope). C9–C12 output (76 entities, 68 structures, 208 views) stays in the KB as reference, no BRDs. Nothing missing for an in-scope capability | ASSUMED | Follows from the CAC-1 decision; stated in chat 2026-10-14 (assist mode) |
 | 2 | BRD set F001–F008 (one per capability C1–C8), generated from `pipelines/odoo/brd_spec.py` + `brd_content.py` by `brd_generator.py`: 7 modules (Core, Partners, Products, Sales, Purchasing, Inventory, Invoicing), 43 entities, 27 enumerations, 4 view entities, 48 use cases, 60 microflows, 1 workflow (PO approval); 338 of 358 members traced to Odoo fields; 89/89 in-scope Odoo models mapped (39) or dropped with reason (50); validation clean | CONFIRMED | User accepted all 15 Stage 2 questions as proposed, chat 2026-10-14 (no variants, no lots/packages/multi-step, no ledger, single currency, 9 roles, PO approval workflow, on-screen documents, view-entity reports, templates + reorder rules in, returns/scrap/down payments out) |
 | 2 | Mendix conventions in BRDs: system members (createdDate/changedDate/owner/changedBy) instead of hand-made audit attributes; `Active` only where Odoo archives; document numbers via Core.Sequence | ASSUMED | Deviation from brd-generation.md template, recorded in brd_spec.py header |
-| 3 | Module boundaries: 7 modules in a strict layer stack Core → Products → Partners → Sales/Purchasing → Inventory/Invoicing; associations only point down (acyclic, checked by brd_generator.py); upward calls only Sales/Purchasing → Inventory/Invoicing bridge microflows. Tax/PaymentTerm → Core, UserProfile → Partners, VendorPrice → Purchasing, PO deliver-to dropped, reorder-rule link reversed. Rationale: `architecture/module-design.html` | ASSUMED | Proposed 2026-10-14; awaiting sign-off + modularize-domain.md Step 1 answers |
-| 3 | ERD (opt-in) generated: `architecture/erd.md`, 8 Mermaid diagrams, all render (mermaid-cli 11.4.2) | ASSUMED | Generated from brd_spec.py; review with the module design |
+| 3 | Module boundaries: 7 modules in a strict layer stack Core → Products → Partners → Sales/Purchasing → Inventory/Invoicing; associations only point down (acyclic, checked by brd_generator.py); upward calls only Sales/Purchasing → Inventory/Invoicing bridge microflows. Tax/PaymentTerm → Core, UserProfile → Partners, VendorPrice → Purchasing, PO deliver-to dropped, reorder-rule link reversed. Rationale: `architecture/module-design.html` | CONFIRMED | User 2026-10-14 ("A–D as proposed"); Step 1: one owner, no reuse intent, no independent cadence, no segregation beyond the 9 roles |
+| 3 | ERD (opt-in) generated: `architecture/erd.md`, 8 Mermaid diagrams, all render (mermaid-cli 11.4.2) | CONFIRMED | Accepted with the module design, user 2026-10-14 |
+| 3 | One Mendix app (Stage 0 flag not raised) | CONFIRMED | triage.md Architecture Scale Flag: no concern; user 2026-10-14 |
+| 3 | Role model: 9 user roles mapped from Odoo groups (Q-F001-2); no anonymous/guest access; no PII/regulatory segregation | CONFIRMED | User 2026-10-14 (Q-F001-2 + "A–D as proposed") |
+| 3 | Volumes / NFRs: demo data (tens–hundreds of rows per entity), ≤ 5 concurrent users, no SLA → paged data grids, indexes only on number/date/status attributes, no batching | CONFIRMED | User 2026-10-14 ("B as proposed") |
+| 3 | Integrations: none live; email, portal, payment providers, EDI and barcodes declared not implemented | CONFIRMED | Stage 0 decision; user 2026-10-14 ("C as proposed") |
+| 3 | Marketplace: Buy Administration, Atlas Core, Data Widgets, Charts, Workflow Commons; build everything else | CONFIRMED | User 2026-10-14 ("D as proposed") |
+| 3 | Branding: no client brand; design direction = mxcli built-in theme **ledger** (warm paper, hairline rules, Source Serif headings / Source Sans body, 2px radius, 30px rows, light + dark) — ideation library not used | CONFIRMED | User 2026-10-14: "use the ledger theme provided by mxcli, no branding" |
+| 3 | Navigation layout: side rail (ledger's --mxt-rail tokens), one menu group per app area (Sales, Purchase, Inventory, Invoicing, Contacts, Products, Reporting, Configuration), filtered by role | ASSUMED | Not asked separately — chosen to match the ledger theme's rail and Odoo's app menus; reported in chat 2026-10-14 for veto |
 | P | Source is committed to git (`sources/` tracked) | ASSUMED | LGPL-3.0 public code; container is ephemeral so an ignored copy would be lost (cloud-dev-environment.md step 5) |
 | 3 | Odoo in-place extension (`_inherit` without new `_name`): fields go into the owning Mendix entity; 1–1 extension entity only where the module must stay optional; method overrides → explicit sub-microflow hooks | ASSUMED | Discussed in chat 2026-10-14, to confirm at Stage 3 |
 | 3 | Odoo mixins (`_inherit` with new `_name`, e.g. `mail.thread`): no multiple inheritance in Mendix; at most one shared generalization (e.g. `Core.BusinessDocument`), otherwise associations; chatter out of scope | ASSUMED | Chat 2026-10-14 |
@@ -62,6 +69,19 @@ Feedback and change requests, one row each, written BEFORE any edit (`skills/cha
 
 | CR | Date | Source | Verbatim ask | Class | Size | Entry artifact | Status | Closed-by |
 |---|---|---|---|---|---|---|---|---|
+
+## Dependencies & open issues
+
+Carried into the build plan (architecture-blueprint.md Step 5). Numbered OI-n on purpose (gate-check reads a bare number as a stage).
+
+| ID | Item | Type | Resolution / owner |
+|---|---|---|---|
+| OI-1 | BRD openQuestions | Decision | none open — all 15 answered 2026-10-14 |
+| OI-2 | 53 cross-module associations (list in `analysis/odoo/knowledge-base/brd/module-graph.json`) | Scripted via mxcli | each created in the referencing module's domain-model script; build order Core → Products → Partners → Sales → Purchasing → Inventory → Invoicing |
+| OI-3 | Marketplace Buy: Administration, Atlas Core, Data Widgets, Charts, Workflow Commons | Dependency | CONFIRMED; install at build-plan Step 0, versions matching Mendix 11.15 |
+| OI-4 | mxcli known bugs on this app's shape (workflows, view entities, Data Grid 2 inline edit) | Handoff | check `bin/bug-lookup.sh` per module at Stage 4/5 |
+| OI-5 | Behaviour changes vs Odoo (simplifications listed per BRD; no ledger, no variants, single warehouse one-step, explicit recomputation) | Faithful-rebuild risk | documented in BRDs + fit-gap; signed off via the 15 Stage 2 answers |
+| OI-6 | Theme: no SCSS port of ds.css; app styled by `mxcli theme apply ledger` (portability check findings apply to a port that will not happen) | Decision | ASSUMED, `design/brand.md`; StyleGallery (design-artifacts 5b) to be decided at Stage 4 |
 
 ## Open questions
 

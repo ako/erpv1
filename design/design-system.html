@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Design system — erpv1 (ledger)</title>
+<link rel="stylesheet" href="ds.css">
+<style>
+  /* showcase-only layout; every token and component comes from ds.css */
+  .ds-wrap { max-width: 1100px; margin: 0 auto; padding: 32px 16px; }
+  .ds-wrap > section { margin: 0 0 40px; }
+  .ds-wrap h2 { font-size: 22px; margin-bottom: 12px; }
+  .ds-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .ds-swatch { border: 1px solid var(--mxt-line); background: var(--mxt-surface); }
+  .ds-swatch i { display: block; height: 48px; border-bottom: 1px solid var(--mxt-line); }
+  .ds-swatch span { display: block; padding: 6px 8px; font-size: 12px; color: var(--mxt-ink-muted); }
+  .ds-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+  .ds-caption { font-size: 12px; color: var(--mxt-ink-muted); margin-top: 6px; }
+  .ds-themebar { position: sticky; top: 0; z-index: 2; display: flex; gap: 8px; justify-content: flex-end; padding: 8px 16px;
+    background: var(--mxt-surface); border-bottom: 1px solid var(--mxt-line); }
+</style>
+</head>
+<body class="lg-body">
+<div class="ds-themebar"><span class="lg-eyebrow" style="margin-right:auto;align-self:center">erpv1 design system · mxcli theme "ledger"</span>
+  <button class="lg-btn" type="button" onclick="document.documentElement.className='theme-light'">Light</button>
+  <button class="lg-btn" type="button" onclick="document.documentElement.className='theme-dark'">Dark</button>
+  <button class="lg-btn" type="button" onclick="document.documentElement.className=''">Follow OS</button></div>
+<div class="ds-wrap">
+<section>
+  <div class="lg-eyebrow">Basis</div>
+  <h1 style="font-size:34px;margin:4px 0 8px">Ledger — warm paper, hairline rules, serif headings</h1>
+  <p>Tokens are the <code>--mxt-*</code> values written by <code>mxcli theme apply ledger</code>; the app gets them from the theme,
+  wireframes from <code>ds.css</code>. Decisions and mapping: <code>design/brand.md</code>.</p>
+</section>
+
+<section>
+  <h2>Colour tokens</h2>
+  <div class="ds-swatches">
+    <div class="ds-swatch"><i style="background:var(--mxt-brand)"></i><span>--mxt-brand</span></div>
+    <div class="ds-swatch"><i style="background:var(--mxt-accent)"></i><span>--mxt-accent</span></div>
+    <div class="ds-swatch"><i style="background:var(--mxt-ground)"></i><span>--mxt-ground</span></div>
+    <div class="ds-swatch"><i style="background:var(--mxt-surface)"></i><span>--mxt-surface</span></div>
+    <div class="ds-swatch"><i style="background:var(--mxt-surface-alt)"></i><span>--mxt-surface-alt</span></div>
+    <div class="ds-swatch"><i style="background:var(--mxt-surface-selected)"></i><span>--mxt-surface-selected</span></div>
+    <div class="ds-swatch"><i style="background:var(--mxt-ink)"></i><span>--mxt-ink</span></div>
+    <div class="ds-swatch"><i style="background:var(--mxt-ink-muted)"></i><span>--mxt-ink-muted</span></div>
+    <div class="ds-swatch"><i style="background:var(--mxt-line)"></i><span>--mxt-line</span></div>
+    <div class="ds-swatch"><i style="background:var(--mxt-rail)"></i><span>--mxt-rail</span></div>
+    <div class="ds-swatch"><i style="background:var(--mxt-success)"></i><span>--mxt-success</span></div>
+    <div class="ds-swatch"><i style="background:var(--mxt-warning)"></i><span>--mxt-warning</span></div>
+    <div class="ds-swatch"><i style="background:var(--mxt-danger)"></i><span>--mxt-danger</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Type</h2>
+  <h1 style="font-size:30px">S00042 — Source Serif 4, 30px (document number)</h1>
+  <h2 style="font-size:24px;margin-top:8px">Quotations &amp; sales orders — page title, 24px</h2>
+  <h3 style="font-size:18px;margin:8px 0">Section heading, 18px</h3>
+  <p>Body text in Source Sans 3, 14px / 1.5. Numbers in grids use tabular figures: <span style="font-variant-numeric:tabular-nums">1 263.24 · 544.50</span></p>
+  <p class="lg-eyebrow">Eyebrow / grid header, 12px uppercase</p>
+</section>
+
+<section>
+  <h2>Buttons</h2>
+  <div class="ds-row">
+    <button class="lg-btn is-primary" type="button">Confirm</button>
+    <button class="lg-btn" type="button">Send (mark as sent)</button>
+    <button class="lg-btn is-danger" type="button">Cancel</button>
+    <button class="lg-btn is-link" type="button">+ Add a line</button>
+  </div>
+  <p class="ds-caption">One primary action per toolbar, chosen by the document status; destructive actions in danger ink.</p>
+</section>
+
+<section>
+  <h2>Status bar and pills</h2>
+  <div class="ds-row"><div class="lg-statusbar"><span>Quotation</span><span>Quotation sent</span><span class="is-current">Sales order</span></div></div>
+  <div class="ds-row">
+    <span class="lg-pill">Quotation</span><span class="lg-pill is-info">Quotation sent</span><span class="lg-pill is-ok">Sales order</span>
+    <span class="lg-pill is-warn">To approve</span><span class="lg-pill is-warn">Partially paid</span><span class="lg-pill is-risk">Cancelled</span>
+  </div>
+</section>
+
+<section>
+  <h2>Smart buttons and fields</h2>
+  <div class="lg-smart"><a href="#"><b>1</b>Delivery</a><a href="#"><b>2</b>Invoices</a></div>
+  <div class="lg-sheet">
+    <div class="lg-grid2">
+      <section class="lg-section"><h2>Customer</h2>
+        <div class="lg-field"><label class="is-required" for="d1">Customer</label><select class="lg-select" id="d1"><option>Azure Interior</option></select></div>
+        <div class="lg-field"><label for="d2">Expiration date</label><input class="lg-input" id="d2" value="2026-11-11"></div>
+        <div class="lg-field"><label for="d3">Tags</label><div class="lg-tags" id="d3"><span class="lg-pill">VIP</span><span class="lg-pill">Office</span></div></div>
+      </section>
+      <section class="lg-section"><h2>Read-only</h2>
+        <div class="lg-field"><label>Invoice status</label><div class="lg-readonly"><span class="lg-pill is-warn">To invoice</span></div></div>
+        <div class="lg-field"><label>Locked</label><div class="lg-readonly">No</div></div>
+        <div class="lg-field"><label for="d4">Unit price</label><input class="lg-input is-num" id="d4" value="450.00"></div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Data grid with tabs, filters and totals</h2>
+  <div class="lg-tabs"><a class="is-active" href="#">All (11)</a><a href="#">Quotations (4)</a><a href="#">To invoice (2)</a></div>
+  <div class="lg-filters"><input class="lg-input" placeholder="Search…" aria-label="Search"><select class="lg-select" aria-label="Status"><option>Status: all</option></select></div>
+  <div class="lg-gridwrap"><table class="lg-table"><thead><tr><th>Number</th><th>Customer</th><th class="is-num">Total</th><th>Status</th></tr></thead>
+    <tbody><tr><td><a class="lg-rowlink" href="#">S00042</a></td><td>Azure Interior</td><td class="is-num">1 263.24</td><td><span class="lg-pill is-ok">Sales order</span></td></tr>
+      <tr class="is-section"><td colspan="4">Section row (order lines)</td></tr>
+      <tr><td><a class="lg-rowlink" href="#">S00043</a></td><td>Wood Corner</td><td class="is-num">544.50</td><td><span class="lg-pill">Quotation</span></td></tr></tbody></table></div>
+  <div class="lg-totals"><div><span>Amount untaxed</span><span>1 044.00</span></div><div><span>Amount tax</span><span>219.24</span></div><div class="is-grand"><span>Amount total</span><span>1 263.24</span></div></div>
+</section>
+
+<section>
+  <h2>KPI tiles, dashboard tiles, chart frame</h2>
+  <div class="lg-kpis"><div class="lg-kpi"><div class="lg-kpi-label">Revenue</div><div class="lg-kpi-value">84 210.00</div></div>
+    <div class="lg-kpi"><div class="lg-kpi-label">Orders</div><div class="lg-kpi-value">37</div></div></div>
+  <div class="lg-tiles"><div class="lg-tile"><div class="lg-eyebrow">WH/IN</div><h2>Receipts</h2><div class="lg-counts"><a href="#"><b>3</b>Ready</a><a href="#"><b>1</b>Waiting</a></div></div></div>
+  <div class="lg-charts" style="margin-top:16px"><div class="lg-chart"><h3>Revenue per month</h3><div class="lg-chart-bars"><i style="height:40%"></i><i style="height:70%"></i><i style="height:55%"></i></div></div></div>
+  <p class="ds-caption">Chart series colours come from the dataviz palette at build time; the frame here is a placeholder.</p>
+</section>
+
+<section>
+  <h2>Dialog</h2>
+  <div class="lg-dialog" role="dialog" aria-label="Register payment"><header><h1>Register payment</h1></header>
+    <div class="lg-dialog-body"><div class="lg-note">Information note inside a dialog.</div>
+      <div class="lg-field"><label for="d5">Amount</label><input class="lg-input is-num" id="d5" value="244.50"></div></div>
+    <footer><button class="lg-btn is-primary" type="button">Create payment</button><button class="lg-btn" type="button">Discard</button></footer></div>
+</section>
+</div>
+</body>
+</html>
