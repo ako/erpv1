@@ -1,0 +1,25 @@
+mdl 1;
+-- 311-core-page-home.mdl — Core.Home_Web, the "Home" menu item. Replaces the mxcli-new placeholder.
+-- design/wireframes/Home.html is the prototype's role chooser; in the app each user role lands on its own
+-- home page (navigation, ui_spec.ROLE_HOME), so this page is only the neutral landing every role can open.
+
+/** Landing page reachable by every signed-in user from the Home menu item. */
+create or modify page Core.Home_Web
+(
+  Title: 'Home',
+  Layout: Core.App_Default,
+  Url: 'home'
+)
+{
+  container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+    container ctnPageHeadTitle (Class: 'page-head-title') {
+      dynamictext txtCrumb (Content: 'erpv1', RenderMode: Text, Class: 'crumb')
+      dynamictext txtTitle (Content: 'Welcome', RenderMode: H1)
+    }
+  }
+  container ctnIntro (Class: 'spacing-outer-bottom-large') {
+    dynamictext txtIntro (Content: 'Sales, purchasing, inventory and invoicing in one place. Use the menu to open the work your role covers; your own start page opens after sign-in.', RenderMode: Paragraph)
+  }
+};
+
+grant view on page Core.Home_Web to Core.User;

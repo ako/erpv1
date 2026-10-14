@@ -1,0 +1,6 @@
+kind	a	b	c
+wiring	Core	52	32|11
+orphan	Core.ASU_Core_SeedData	5	
+orphan	Core.SUB_PaymentTerm_ComputeDueDate	4	
+orphan	Core.SUB_Sequence_NextNumber	8	
+orphan	Core.SUB_Tax_ComputeLine	8	

@@ -151,12 +151,12 @@ const DISPLAY_NAME = process.env.PROJECT_DISPLAY_NAME || ID.replace(/[-_]+/g, ' 
 // ── CONFIGURED: credentials ──────────────────────────────────────────────────
 // The demo accounts this app was seeded with. Prefer a non-admin identity so the
 // harness exercises the role grants a real user has.
-const DEFAULT_USER = 'demo_test_user';
-const DEFAULT_PASS = 'Demo2025!';
+const DEFAULT_USER = 'sales.user';          // erpv1 demo users: architecture/build-plan.md row 14
+const DEFAULT_PASS = 'Erpv1-Demo-2026!';
 // Last-resort identity so a credential problem degrades to a reported finding
 // instead of a zero-coverage run. Set FALLBACK_USER='' to disable.
-const DEFAULT_FALLBACK_USER = 'MxAdmin';
-const DEFAULT_FALLBACK_PASS = 'Mendix1!';
+const DEFAULT_FALLBACK_USER = '';           // no fallback identity: a credential problem must fail loudly
+const DEFAULT_FALLBACK_PASS = '';
 
 // DEFECT FIXED 2026-08-18: the same two credentials were read under two different
 // env names — TEST_USER/TEST_PASS in config.js and APP_USER/APP_PASS in
@@ -188,7 +188,7 @@ function credentials() {
 // Two instruments in one harness disagreeing about which app they are testing is
 // exactly the failure test-stack-up.sh's ownership check exists to catch. One
 // fallback, one place. It is still only a guess — stack.env is the measurement.
-const DEFAULT_PORT = '8081';
+const DEFAULT_PORT = '8080';               // mxcli run --local default for erpv1
 
 // ── CONFIGURED: post-login readiness selectors ───────────────────────────────
 // Proof that the SPA finished routing into the app shell. The first two are
@@ -198,9 +198,7 @@ const DEFAULT_PORT = '8081';
 //   Read the real names with: ./mxcli -p <mpr> -c "DESCRIBE PAGE <Module>.<Page>"
 const READY_SELECTORS = [
   '.mx-navigationtree',
-  '.mx-name-btnSendMessage',
-  '.mx-name-tileMove',
-  '.mx-name-bM',
+  '.phone-menu',
   '.mx-page',
 ];
 
@@ -223,14 +221,31 @@ const DS_CSS = designPath('design', 'ds.css');
 // must match the menu captions EXACTLY.
 //   Produce the right answer with: ./mxcli -p <mpr> -c "DESCRIBE NAVIGATION"
 const NAV = {
-  dashboard:    ['Dashboard'],
-  equipment:    ['Assets & Barcodes', 'Equipment'],
-  locations:    ['Assets & Barcodes', 'Locations'],
-  fieldScan:    ['Assets & Barcodes', 'Field Scan'],
-  barcodeLabel: ['Assets & Barcodes', 'Barcode Labels'],
-  aiAssistant:  ['AI', 'AI Assistant'],
-  aiAdmin:      ['AI', 'AI Admin'],
-  designSystem: ['Configuration', 'Design System'],
+  salesOrderOverview: ['Sales', 'Quotations & orders'],
+  quotationTemplateOverview: ['Sales', 'Quotation templates'],
+  salesTeamOverview: ['Sales', 'Sales teams'],
+  purchaseOrderOverview: ['Purchase', 'RFQs & orders'],
+  purchaseApprovalInbox: ['Purchase', 'Approvals'],
+  vendorPriceOverview: ['Purchase', 'Vendor prices'],
+  inventoryDashboard: ['Inventory', 'Overview'],
+  transferOverview: ['Inventory', 'Transfers'],
+  stockLevelOverview: ['Inventory', 'Stock'],
+  reorderRuleOverview: ['Inventory', 'Reorder rules'],
+  invoiceOverview: ['Invoicing', 'Invoices & bills'],
+  paymentOverview: ['Invoicing', 'Payments'],
+  partnerOverview: ['Contacts', 'Contacts'],
+  productOverview: ['Products', 'Products'],
+  pricelistOverview: ['Products', 'Pricelists'],
+  salesAnalysisReport: ['Reporting', 'Sales analysis'],
+  purchaseAnalysisReport: ['Reporting', 'Purchase analysis'],
+  invoiceAnalysisReport: ['Reporting', 'Invoice analysis'],
+  companyEdit: ['Configuration', 'Company'],
+  warehouseEdit: ['Configuration', 'Warehouse'],
+  sequenceOverview: ['Configuration', 'Numbering'],
+  taxOverview: ['Configuration', 'Taxes'],
+  paymentTermOverview: ['Configuration', 'Payment terms'],
+  uoMCategoryOverview: ['Configuration', 'Units of measure'],
+  productCategoryOverview: ['Configuration', 'Product categories'],
 };
 
 // ── CONFIGURED: full-app walkthrough steps ───────────────────────────────────
@@ -354,25 +369,53 @@ const TARGETS = {
 //   Produce the candidate list with: ls design/wireframes
 //   Confirm each pairing by reading that wireframe's <title>.
 const PAGE_WIREFRAME = {
-  'Analytics.Dashboard_Home': 'home.html',                                 // "Home Dashboard"
-  'Equipment.Item_Overview': 'item-management.html',                       // "Equipment"
-  'Equipment.Item_Detail': 'item-edit.html',                               // "Item Edit modal"
-  'Equipment.BarcodeLabel_Overview': 'barcode-labels.html',                // "Barcode Label Renderer"
-  'Location.Location_Overview': 'location-management.html',
-  'Location.Location_Detail': 'location-detail.html',
-  'FieldScan.MobileScan_Count': 'mobile-scan.html',                        // "Mobile Field-Scan"
-  'FieldScan.Receive_Scan': 'movement-scan.html',                          // "Movement Scan (Receive · Move)"
-  'FieldScan.Move_Scan': 'movement-scan.html',
-  'RoutingManagement.Route_List': 'route-list.html',
-  'RoutingManagement.Route_Detail': 'route-detail.html',
-  'OperationManagement.Operation_List': 'operation-list.html',
-  'ProcessVariant.ProcessVariant_List': 'processvariant-list.html',
-  'ReworkDeviationRouting.ReworkRoute_List': 'reworkroute-list.html',
-  // Deliberately unmapped — no wireframe was ever drawn for these five. Not a
-  // mapping bug, a coverage gap, and reported as a finding on each page rather
-  // than silently omitted:
-  //   AIAssistant.Chat_Home, AIAssistant.AIAdmin_Home, StyleGallery.Gallery_Home,
-  //   Equipment.Item_Overview_Lab, FieldScan.FieldScan_Home
+  // exact page-name = wireframe-file pairs (design/wireframes/PAGE-MAP.tsv), never fuzzy
+  'Core.Company_Edit': 'Company_Edit.html',
+  'Core.PaymentTerm_NewEdit': 'PaymentTerm_NewEdit.html',
+  'Core.PaymentTerm_Overview': 'PaymentTerm_Overview.html',
+  'Core.Sequence_Overview': 'Sequence_Overview.html',
+  'Core.Tax_NewEdit': 'Tax_NewEdit.html',
+  'Core.Tax_Overview': 'Tax_Overview.html',
+  'Inventory.Inventory_Dashboard': 'Inventory_Dashboard.html',
+  'Inventory.ReorderRule_Overview': 'ReorderRule_Overview.html',
+  'Inventory.StockLevel_Overview': 'StockLevel_Overview.html',
+  'Inventory.Transfer_NewEdit': 'Transfer_NewEdit.html',
+  'Inventory.Transfer_Overview': 'Transfer_Overview.html',
+  'Inventory.ValidateTransfer_Popup': 'ValidateTransfer_Popup.html',
+  'Inventory.Warehouse_Edit': 'Warehouse_Edit.html',
+  'Invoicing.CreditNote_Popup': 'CreditNote_Popup.html',
+  'Invoicing.InvoiceAnalysis_Report': 'InvoiceAnalysis_Report.html',
+  'Invoicing.Invoice_NewEdit': 'Invoice_NewEdit.html',
+  'Invoicing.Invoice_Overview': 'Invoice_Overview.html',
+  'Invoicing.Payment_Overview': 'Payment_Overview.html',
+  'Invoicing.Payment_View': 'Payment_View.html',
+  'Invoicing.RegisterPayment_Popup': 'RegisterPayment_Popup.html',
+  'Partners.PartnerChild_NewEdit': 'PartnerChild_NewEdit.html',
+  'Partners.Partner_NewEdit': 'Partner_NewEdit.html',
+  'Partners.Partner_Overview': 'Partner_Overview.html',
+  'Partners.UserProfile_Edit': 'UserProfile_Edit.html',
+  'Products.Pricelist_NewEdit': 'Pricelist_NewEdit.html',
+  'Products.Pricelist_Overview': 'Pricelist_Overview.html',
+  'Products.ProductCategory_NewEdit': 'ProductCategory_NewEdit.html',
+  'Products.ProductCategory_Overview': 'ProductCategory_Overview.html',
+  'Products.Product_NewEdit': 'Product_NewEdit.html',
+  'Products.Product_Overview': 'Product_Overview.html',
+  'Products.UoMCategory_NewEdit': 'UoMCategory_NewEdit.html',
+  'Products.UoMCategory_Overview': 'UoMCategory_Overview.html',
+  'Purchasing.PurchaseAnalysis_Report': 'PurchaseAnalysis_Report.html',
+  'Purchasing.PurchaseApproval_Inbox': 'PurchaseApproval_Inbox.html',
+  'Purchasing.PurchaseApproval_Task': 'PurchaseApproval_Task.html',
+  'Purchasing.PurchaseOrder_NewEdit': 'PurchaseOrder_NewEdit.html',
+  'Purchasing.PurchaseOrder_Overview': 'PurchaseOrder_Overview.html',
+  'Purchasing.VendorPrice_Overview': 'VendorPrice_Overview.html',
+  'Sales.CreateInvoice_Popup': 'CreateInvoice_Popup.html',
+  'Sales.QuotationTemplate_NewEdit': 'QuotationTemplate_NewEdit.html',
+  'Sales.QuotationTemplate_Overview': 'QuotationTemplate_Overview.html',
+  'Sales.SalesAnalysis_Report': 'SalesAnalysis_Report.html',
+  'Sales.SalesOrder_NewEdit': 'SalesOrder_NewEdit.html',
+  'Sales.SalesOrder_Overview': 'SalesOrder_Overview.html',
+  'Sales.SalesTeam_NewEdit': 'SalesTeam_NewEdit.html',
+  'Sales.SalesTeam_Overview': 'SalesTeam_Overview.html',
 };
 
 // ── CONFIGURED: the live positive-control probe page ─────────────────────────
@@ -384,7 +427,7 @@ const PAGE_WIREFRAME = {
 // choice because it may happen to be fully readable.
 //   Find a candidate with: ./mxcli -p <mpr> describe --format elk page <Module>.<Page>
 //   and compare the tree node count against the page's own mdlSource.
-const PROBE_PAGE = process.env.PROBE_PAGE || 'RoutingManagement.Route_List';
+const PROBE_PAGE = process.env.PROBE_PAGE || 'Core.Tax_Overview';   // grid with column filters describe cannot read
 
 function probePage(scopeFile) {
   if (PROBE_PAGE) return PROBE_PAGE;
@@ -402,9 +445,9 @@ function probePage(scopeFile) {
 // right. Repoint these at the equivalent pages of a new project — an exemplar
 // naming a page that does not exist is worse than no exemplar.
 const EXEMPLARS = {
-  listPage:     'RoutingManagement.Route_List',
-  overviewPage: 'Equipment.Item_Overview',
-  detailPage:   'Equipment.Item_Detail',
+  listPage:     'Core.Tax_Overview',
+  overviewPage: 'Core.PaymentTerm_Overview',
+  detailPage:   'Core.PaymentTerm_NewEdit',
 };
 
 // ── CONFIGURED: the roles the business process passes through ────────────────
@@ -417,14 +460,14 @@ const EXEMPLARS = {
 // Env overrides exist so CI can inject credentials without editing this file.
 const ROLES = {
   requester: {
-    label: 'Manufacturing Engineer',
-    user: process.env.ROLE_REQUESTER_USER || 'erika.engineer',
-    pass: process.env.ROLE_REQUESTER_PASS || 'Engineer2025!',
+    label: 'Purchaser',
+    user: process.env.ROLE_REQUESTER_USER || 'purchaser',
+    pass: process.env.ROLE_REQUESTER_PASS || 'Erpv1-Demo-2026!',
   },
   approver: {
-    label: 'Production Planner',
-    user: process.env.ROLE_APPROVER_USER || 'paul.planner',
-    pass: process.env.ROLE_APPROVER_PASS || 'Planner2025!',
+    label: 'Purchase manager',
+    user: process.env.ROLE_APPROVER_USER || 'purchase.manager',
+    pass: process.env.ROLE_APPROVER_PASS || 'Erpv1-Demo-2026!',
   },
 };
 

@@ -1,0 +1,1065 @@
+{
+  "capturedAt": "2026-10-14T23:26:02.178Z",
+  "configuredUser": "invoicing.manager",
+  "actualUser": "invoicing.manager",
+  "usedFallback": false,
+  "baseUrl": "http://localhost:8080",
+  "positiveControl": true,
+  "mutants": {
+    "expectedPerJourney": 7,
+    "expected": 7,
+    "supported": 4,
+    "proven": 4,
+    "unsupported": [
+      {
+        "journey": "J-CORE-01",
+        "rung": "trace-order",
+        "why": "this journey declares nothing this mutant can break"
+      },
+      {
+        "journey": "J-CORE-01",
+        "rung": "trace-negative",
+        "why": "this journey declares nothing this mutant can break"
+      },
+      {
+        "journey": "J-CORE-01",
+        "rung": "data-target",
+        "why": "this journey declares nothing this mutant can break"
+      }
+    ]
+  },
+  "results": [
+    {
+      "rung": "ui",
+      "name": "login",
+      "verdict": "PASS",
+      "detail": "invoicing.manager",
+      "requirement": ""
+    },
+    {
+      "rung": "ui",
+      "name": "Open Configuration > Taxes and see the seeded taxes: reached",
+      "verdict": "FAIL",
+      "detail": "\".mx-name-__this_widget_does_not_exist__\" never appeared — screenshot J-CORE-01-CTL-ui-landing-step1-NOT-REACHED.png",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Open Configuration > Taxes and see the seeded taxes: downstream rungs",
+      "verdict": "INVALID",
+      "detail": "not reached; nothing measured",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "control",
+      "name": "J-CORE-01 · ui-landing: first step lands on a widget that does not exist",
+      "verdict": "PASS",
+      "detail": "caught by \"Open Configuration > Taxes and see the seeded taxes: reached\"",
+      "requirement": ""
+    },
+    {
+      "rung": "ui",
+      "name": "Open Configuration > Taxes and see the seeded taxes: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Open Configuration > Taxes and see the seeded taxes: page says \"__text_this_page_will_never_render__\"",
+      "verdict": "FAIL",
+      "detail": "not found in rendered text",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-txtName",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "data",
+      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: Core.Tax +0",
+      "verdict": "PASS",
+      "detail": "before=12 after=12 delta=0",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbScope committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Sales",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbComputation committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Percentage of price",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: page says \"Journey tax 5%\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "data",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: Core.Tax +1",
+      "verdict": "PASS",
+      "detail": "before=12 after=13 delta=1",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "data",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: the new tax is a 5% sales tax computed as a percentage",
+      "verdict": "PASS",
+      "detail": "got 10, need >= 1",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "outcome",
+      "name": "J-CORE-01-CTL-ui-text end state",
+      "verdict": "PASS",
+      "detail": "got 10, need >= 1",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "control",
+      "name": "J-CORE-01 · ui-text: expect text the page never renders",
+      "verdict": "PASS",
+      "detail": "caught by \"Open Configuration > Taxes and see the seeded taxes: page says \"__text_this_page_will_never_render__\"\"",
+      "requirement": ""
+    },
+    {
+      "rung": "control",
+      "name": "J-CORE-01 · trace-order: expect a microflow that never fires",
+      "verdict": "INVALID",
+      "detail": "this journey declares nothing this mutant can break — this rung is UNPROVEN for J-CORE-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)",
+      "requirement": ""
+    },
+    {
+      "rung": "control",
+      "name": "J-CORE-01 · trace-negative: assert a microflow that DID run must not have run",
+      "verdict": "INVALID",
+      "detail": "this journey declares nothing this mutant can break — this rung is UNPROVEN for J-CORE-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)",
+      "requirement": ""
+    },
+    {
+      "rung": "ui",
+      "name": "Open Configuration > Taxes and see the seeded taxes: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Open Configuration > Taxes and see the seeded taxes: page says \"21% (sales)\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-txtName",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "data",
+      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: Core.Tax +1",
+      "verdict": "FAIL",
+      "detail": "before=13 after=13 delta=0",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbScope committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Sales",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbComputation committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Percentage of price",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: page says \"Journey tax 5%\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "data",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: Core.Tax +1",
+      "verdict": "PASS",
+      "detail": "before=13 after=14 delta=1",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "data",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: the new tax is a 5% sales tax computed as a percentage",
+      "verdict": "PASS",
+      "detail": "got 11, need >= 1",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "outcome",
+      "name": "J-CORE-01-CTL-data-delta end state",
+      "verdict": "PASS",
+      "detail": "got 11, need >= 1",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "control",
+      "name": "J-CORE-01 · data-delta: expect +2 rows from a +1 action",
+      "verdict": "PASS",
+      "detail": "caught by \"New tax, Save with every field empty: refused, message shown, nothing stored: Core.Tax +1\"",
+      "requirement": ""
+    },
+    {
+      "rung": "control",
+      "name": "J-CORE-01 · data-target: association must point at a value the journey never picked",
+      "verdict": "INVALID",
+      "detail": "this journey declares nothing this mutant can break — this rung is UNPROVEN for J-CORE-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)",
+      "requirement": ""
+    },
+    {
+      "rung": "ui",
+      "name": "Open Configuration > Taxes and see the seeded taxes: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Open Configuration > Taxes and see the seeded taxes: page says \"21% (sales)\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-txtName",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "data",
+      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: Core.Tax +0",
+      "verdict": "PASS",
+      "detail": "before=14 after=14 delta=0",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbScope committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Sales",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbComputation committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Percentage of price",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: page says \"Journey tax 5%\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "data",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: Core.Tax +1",
+      "verdict": "PASS",
+      "detail": "before=14 after=15 delta=1",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "data",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: the new tax is a 5% sales tax computed as a percentage",
+      "verdict": "PASS",
+      "detail": "got 12, need >= 1",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "outcome",
+      "name": "J-CORE-01-CTL-outcome end state",
+      "verdict": "FAIL",
+      "detail": "got 12, need >= 999999",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "control",
+      "name": "J-CORE-01 · outcome: outcome query with an unreachable floor or exact value",
+      "verdict": "PASS",
+      "detail": "caught by \"J-CORE-01-CTL-outcome end state\"",
+      "requirement": ""
+    }
+  ],
+  "walks": [
+    {
+      "journey": "J-CORE-01-CTL-ui-landing",
+      "title": "(positive control · ui-landing — first step lands on a widget that does not exist; MUST fail)",
+      "persona": "invoicing.manager",
+      "requirement": [
+        "F008-UC009"
+      ],
+      "seeds": {
+        "existingTax": "21% (sales)"
+      },
+      "steps": [
+        {
+          "n": 1,
+          "name": "Open Configuration > Taxes and see the seeded taxes",
+          "requirement": [
+            "F008-UC009"
+          ],
+          "actions": [
+            {
+              "verb": "Navigate",
+              "target": "Configuration › Taxes",
+              "selector": null
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-__this_widget_does_not_exist__",
+            "pageSays": [
+              "{{existingTax}}"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-CORE-01-CTL-ui-landing-step1-NOT-REACHED.png",
+            "title": "Mendix - Taxes",
+            "url": "http://localhost:8080/p/tax-overview",
+            "at": "2026-10-14T23:25:20.556Z"
+          },
+          "reached": false,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open Configuration > Taxes and see the seeded taxes: reached",
+              "verdict": "FAIL",
+              "detail": "\".mx-name-__this_widget_does_not_exist__\" never appeared — screenshot J-CORE-01-CTL-ui-landing-step1-NOT-REACHED.png"
+            },
+            {
+              "rung": "ui",
+              "name": "Open Configuration > Taxes and see the seeded taxes: downstream rungs",
+              "verdict": "INVALID",
+              "detail": "not reached; nothing measured"
+            }
+          ],
+          "ms": 1113
+        }
+      ]
+    },
+    {
+      "journey": "J-CORE-01-CTL-ui-text",
+      "title": "(positive control · ui-text — expect text the page never renders; MUST fail)",
+      "persona": "invoicing.manager",
+      "requirement": [
+        "F008-UC009"
+      ],
+      "seeds": {
+        "existingTax": "21% (sales)"
+      },
+      "steps": [
+        {
+          "n": 1,
+          "name": "Open Configuration > Taxes and see the seeded taxes",
+          "requirement": [
+            "F008-UC009"
+          ],
+          "actions": [
+            {
+              "verb": "Navigate",
+              "target": "Configuration › Taxes",
+              "selector": null
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-gridMain",
+            "pageSays": [
+              "__text_this_page_will_never_render__"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-CORE-01-CTL-ui-text-step1.png",
+            "title": "Mendix - Taxes",
+            "url": "http://localhost:8080/p/tax-overview",
+            "at": "2026-10-14T23:25:23.226Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open Configuration > Taxes and see the seeded taxes: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Open Configuration > Taxes and see the seeded taxes: page says \"__text_this_page_will_never_render__\"",
+              "verdict": "FAIL",
+              "detail": "not found in rendered text"
+            }
+          ],
+          "ms": 1146
+        },
+        {
+          "n": 2,
+          "name": "New tax, Save with every field empty: refused, message shown, nothing stored",
+          "requirement": [
+            "F008-UC009"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "New",
+              "selector": ".mx-name-btnNew"
+            },
+            {
+              "verb": "Wait",
+              "target": "800ms",
+              "selector": null
+            },
+            {
+              "verb": "Click",
+              "target": "Save",
+              "selector": ".mx-name-btnSave0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-txtName",
+            "pageSays": [
+              "Name is required."
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Core.Tax",
+              "delta": 0,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-CORE-01-CTL-ui-text-step2.png",
+            "title": "Mendix - Taxes",
+            "url": "http://localhost:8080/p/tax-overview",
+            "at": "2026-10-14T23:25:26.427Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-txtName"
+            },
+            {
+              "rung": "ui",
+              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: Core.Tax +0",
+              "verdict": "PASS",
+              "detail": "before=12 after=12 delta=0"
+            }
+          ],
+          "ms": 3262
+        },
+        {
+          "n": 3,
+          "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed",
+          "requirement": [
+            "F008-UC009"
+          ],
+          "actions": [
+            {
+              "verb": "Type",
+              "target": "\"Journey tax 5%\" into txtName",
+              "selector": ".mx-name-txtName"
+            },
+            {
+              "verb": "Select",
+              "target": "\"Sales\" in cmbScope",
+              "selector": ".mx-name-cmbScope"
+            },
+            {
+              "verb": "Select",
+              "target": "\"Percentage of price\" in cmbComputation",
+              "selector": ".mx-name-cmbComputation"
+            },
+            {
+              "verb": "Type",
+              "target": "\"5\" into txtAmount",
+              "selector": ".mx-name-txtAmount"
+            },
+            {
+              "verb": "Click",
+              "target": "Save",
+              "selector": ".mx-name-btnSave0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-gridMain",
+            "pageSays": [
+              "Journey tax 5%"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Core.Tax",
+              "delta": 1,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-CORE-01-CTL-ui-text-step3.png",
+            "title": "Mendix - Taxes",
+            "url": "http://localhost:8080/p/tax-overview",
+            "at": "2026-10-14T23:25:34.114Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbScope committed the seeded value",
+              "verdict": "PASS",
+              "detail": "Sales"
+            },
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbComputation committed the seeded value",
+              "verdict": "PASS",
+              "detail": "Percentage of price"
+            },
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: page says \"Journey tax 5%\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: Core.Tax +1",
+              "verdict": "PASS",
+              "detail": "before=12 after=13 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: the new tax is a 5% sales tax computed as a percentage",
+              "verdict": "PASS",
+              "detail": "got 10, need >= 1"
+            }
+          ],
+          "ms": 7736
+        }
+      ]
+    },
+    {
+      "journey": "J-CORE-01-CTL-data-delta",
+      "title": "(positive control · data-delta — expect +2 rows from a +1 action; MUST fail)",
+      "persona": "invoicing.manager",
+      "requirement": [
+        "F008-UC009"
+      ],
+      "seeds": {
+        "existingTax": "21% (sales)"
+      },
+      "steps": [
+        {
+          "n": 1,
+          "name": "Open Configuration > Taxes and see the seeded taxes",
+          "requirement": [
+            "F008-UC009"
+          ],
+          "actions": [
+            {
+              "verb": "Navigate",
+              "target": "Configuration › Taxes",
+              "selector": null
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-gridMain",
+            "pageSays": [
+              "{{existingTax}}"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-CORE-01-CTL-data-delta-step1.png",
+            "title": "Mendix - Taxes",
+            "url": "http://localhost:8080/p/tax-overview",
+            "at": "2026-10-14T23:25:36.964Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open Configuration > Taxes and see the seeded taxes: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Open Configuration > Taxes and see the seeded taxes: page says \"21% (sales)\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1140
+        },
+        {
+          "n": 2,
+          "name": "New tax, Save with every field empty: refused, message shown, nothing stored",
+          "requirement": [
+            "F008-UC009"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "New",
+              "selector": ".mx-name-btnNew"
+            },
+            {
+              "verb": "Wait",
+              "target": "800ms",
+              "selector": null
+            },
+            {
+              "verb": "Click",
+              "target": "Save",
+              "selector": ".mx-name-btnSave0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-txtName",
+            "pageSays": [
+              "Name is required."
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Core.Tax",
+              "delta": 1,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-CORE-01-CTL-data-delta-step2.png",
+            "title": "Mendix - Taxes",
+            "url": "http://localhost:8080/p/tax-overview",
+            "at": "2026-10-14T23:25:40.000Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-txtName"
+            },
+            {
+              "rung": "ui",
+              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: Core.Tax +1",
+              "verdict": "FAIL",
+              "detail": "before=13 after=13 delta=0"
+            }
+          ],
+          "ms": 3110
+        },
+        {
+          "n": 3,
+          "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed",
+          "requirement": [
+            "F008-UC009"
+          ],
+          "actions": [
+            {
+              "verb": "Type",
+              "target": "\"Journey tax 5%\" into txtName",
+              "selector": ".mx-name-txtName"
+            },
+            {
+              "verb": "Select",
+              "target": "\"Sales\" in cmbScope",
+              "selector": ".mx-name-cmbScope"
+            },
+            {
+              "verb": "Select",
+              "target": "\"Percentage of price\" in cmbComputation",
+              "selector": ".mx-name-cmbComputation"
+            },
+            {
+              "verb": "Type",
+              "target": "\"5\" into txtAmount",
+              "selector": ".mx-name-txtAmount"
+            },
+            {
+              "verb": "Click",
+              "target": "Save",
+              "selector": ".mx-name-btnSave0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-gridMain",
+            "pageSays": [
+              "Journey tax 5%"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Core.Tax",
+              "delta": 1,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-CORE-01-CTL-data-delta-step3.png",
+            "title": "Mendix - Taxes",
+            "url": "http://localhost:8080/p/tax-overview",
+            "at": "2026-10-14T23:25:47.741Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbScope committed the seeded value",
+              "verdict": "PASS",
+              "detail": "Sales"
+            },
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbComputation committed the seeded value",
+              "verdict": "PASS",
+              "detail": "Percentage of price"
+            },
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: page says \"Journey tax 5%\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: Core.Tax +1",
+              "verdict": "PASS",
+              "detail": "before=13 after=14 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: the new tax is a 5% sales tax computed as a percentage",
+              "verdict": "PASS",
+              "detail": "got 11, need >= 1"
+            }
+          ],
+          "ms": 7784
+        }
+      ]
+    },
+    {
+      "journey": "J-CORE-01-CTL-outcome",
+      "title": "(positive control · outcome — outcome query with an unreachable floor or exact value; MUST fail)",
+      "persona": "invoicing.manager",
+      "requirement": [
+        "F008-UC009"
+      ],
+      "seeds": {
+        "existingTax": "21% (sales)"
+      },
+      "steps": [
+        {
+          "n": 1,
+          "name": "Open Configuration > Taxes and see the seeded taxes",
+          "requirement": [
+            "F008-UC009"
+          ],
+          "actions": [
+            {
+              "verb": "Navigate",
+              "target": "Configuration › Taxes",
+              "selector": null
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-gridMain",
+            "pageSays": [
+              "{{existingTax}}"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-CORE-01-CTL-outcome-step1.png",
+            "title": "Mendix - Taxes",
+            "url": "http://localhost:8080/p/tax-overview",
+            "at": "2026-10-14T23:25:50.600Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open Configuration > Taxes and see the seeded taxes: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Open Configuration > Taxes and see the seeded taxes: page says \"21% (sales)\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1146
+        },
+        {
+          "n": 2,
+          "name": "New tax, Save with every field empty: refused, message shown, nothing stored",
+          "requirement": [
+            "F008-UC009"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "New",
+              "selector": ".mx-name-btnNew"
+            },
+            {
+              "verb": "Wait",
+              "target": "800ms",
+              "selector": null
+            },
+            {
+              "verb": "Click",
+              "target": "Save",
+              "selector": ".mx-name-btnSave0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-txtName",
+            "pageSays": [
+              "Name is required."
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Core.Tax",
+              "delta": 0,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-CORE-01-CTL-outcome-step2.png",
+            "title": "Mendix - Taxes",
+            "url": "http://localhost:8080/p/tax-overview",
+            "at": "2026-10-14T23:25:53.709Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-txtName"
+            },
+            {
+              "rung": "ui",
+              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: Core.Tax +0",
+              "verdict": "PASS",
+              "detail": "before=14 after=14 delta=0"
+            }
+          ],
+          "ms": 3172
+        },
+        {
+          "n": 3,
+          "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed",
+          "requirement": [
+            "F008-UC009"
+          ],
+          "actions": [
+            {
+              "verb": "Type",
+              "target": "\"Journey tax 5%\" into txtName",
+              "selector": ".mx-name-txtName"
+            },
+            {
+              "verb": "Select",
+              "target": "\"Sales\" in cmbScope",
+              "selector": ".mx-name-cmbScope"
+            },
+            {
+              "verb": "Select",
+              "target": "\"Percentage of price\" in cmbComputation",
+              "selector": ".mx-name-cmbComputation"
+            },
+            {
+              "verb": "Type",
+              "target": "\"5\" into txtAmount",
+              "selector": ".mx-name-txtAmount"
+            },
+            {
+              "verb": "Click",
+              "target": "Save",
+              "selector": ".mx-name-btnSave0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-gridMain",
+            "pageSays": [
+              "Journey tax 5%"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Core.Tax",
+              "delta": 1,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-CORE-01-CTL-outcome-step3.png",
+            "title": "Mendix - Taxes",
+            "url": "http://localhost:8080/p/tax-overview",
+            "at": "2026-10-14T23:26:01.904Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbScope committed the seeded value",
+              "verdict": "PASS",
+              "detail": "Sales"
+            },
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbComputation committed the seeded value",
+              "verdict": "PASS",
+              "detail": "Percentage of price"
+            },
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: page says \"Journey tax 5%\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: Core.Tax +1",
+              "verdict": "PASS",
+              "detail": "before=14 after=15 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: the new tax is a 5% sales tax computed as a percentage",
+              "verdict": "PASS",
+              "detail": "got 12, need >= 1"
+            }
+          ],
+          "ms": 8241
+        }
+      ]
+    }
+  ],
+  "appDown": [],
+  "appDiedIn": []
+}

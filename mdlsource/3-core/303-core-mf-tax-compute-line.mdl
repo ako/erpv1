@@ -1,0 +1,39 @@
+mdl 1;
+-- 303-core-mf-tax-compute-line.mdl — build-plan row 18 (F008). Owns Core.SUB_Tax_ComputeLine.
+
+/**
+ * Line amounts for a price, quantity, discount and taxes (Odoo account.tax.compute_all, simplified).
+ * Percentage taxes included in the price are extracted first: base = gross / (1 + included rate).
+ * Percentage excluded: tax = base * rate. Fixed: tax = amount * quantity. Rounded to 2 decimals per line.
+ *
+ * @param $UnitPrice price per unit as entered on the line
+ * @param $Quantity quantity in the line's unit
+ * @param $DiscountPercent discount 0..100
+ * @param $Taxes taxes on the line (may be empty)
+ * @returns Core.LineAmounts with Subtotal (untaxed), TaxAmount and Total
+ */
+create or modify microflow Core.SUB_Tax_ComputeLine ($UnitPrice: Decimal, $Quantity: Decimal, $DiscountPercent: Decimal, $Taxes: list of Core.Tax)
+returns Core.LineAmounts as $Amounts
+folder 'Taxes/Microflows'
+begin
+  declare $Gross Decimal = (if $UnitPrice = empty then 0 else $UnitPrice) * (if $Quantity = empty then 0 else $Quantity)
+    * (1 - (if $DiscountPercent = empty then 0 else $DiscountPercent) div 100);
+  declare $IncludedRate Decimal = 0;
+  declare $ExcludedRate Decimal = 0;
+  declare $FixedPerUnit Decimal = 0;
+  loop $Tax in $Taxes begin
+    if $Tax/Computation = Core.ENUM_TaxComputation.Fixed then
+      set $FixedPerUnit = $FixedPerUnit + $Tax/Amount;
+    else
+      if $Tax/IncludedInPrice then
+        set $IncludedRate = $IncludedRate + $Tax/Amount;
+      else
+        set $ExcludedRate = $ExcludedRate + $Tax/Amount;
+      end if;
+    end if;
+  end loop;
+  declare $Base Decimal = round($Gross div (1 + $IncludedRate div 100), 2);
+  declare $TaxTotal Decimal = round($Base * ($IncludedRate + $ExcludedRate) div 100 + $FixedPerUnit * (if $Quantity = empty then 0 else $Quantity), 2);
+  $Amounts = create Core.LineAmounts (Subtotal = $Base, TaxAmount = $TaxTotal, Total = $Base + $TaxTotal);
+  return $Amounts;
+end;

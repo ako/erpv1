@@ -1,0 +1,52 @@
+{
+  "id": "J-CORE-01",
+  "title": "Invoicing manager adds a tax: an empty save is refused with a message, a valid save lands in the list",
+  "requirement": ["F008-UC009"],
+  "persona": "invoicing.manager",
+  "seeds": [
+    { "name": "existingTax", "sql": "SELECT t.Name AS k FROM Core.Tax AS t WHERE t.Name = '21% (sales)'" }
+  ],
+  "steps": [
+    {
+      "name": "Open Configuration > Taxes and see the seeded taxes",
+      "actions": [ { "do": "nav", "group": "Configuration", "item": "Taxes" } ],
+      "ui": { "ready": ".mx-name-gridMain", "textPresent": ["{{existingTax}}"] }
+    },
+    {
+      "name": "New tax, Save with every field empty: refused, message shown, nothing stored",
+      "actions": [
+        { "do": "click", "widget": "btnNew", "label": "New" },
+        { "do": "wait", "ms": 800 },
+        { "do": "click", "widget": "btnSave0", "label": "Save" }
+      ],
+      "ui": { "ready": ".mx-name-txtName", "textPresent": ["Name is required."] },
+      "data": { "creates": "Core.Tax", "delta": 0, "scope": { "newRowsBy": "id" } }
+    },
+    {
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed",
+      "actions": [
+        { "do": "fill", "widget": "txtName", "value": "Journey tax 5%" },
+        { "do": "combobox", "widget": "cmbScope", "match": "Sales" },
+        { "do": "combobox", "widget": "cmbComputation", "match": "Percentage of price" },
+        { "do": "fill", "widget": "txtAmount", "value": "5" },
+        { "do": "click", "widget": "btnSave0", "label": "Save" }
+      ],
+      "ui": { "ready": ".mx-name-gridMain", "textPresent": ["Journey tax 5%"] },
+      "data": {
+        "creates": "Core.Tax",
+        "delta": 1,
+        "scope": { "newRowsBy": "id" },
+        "oql": [
+          { "label": "the new tax is a 5% sales tax computed as a percentage",
+            "sql": "SELECT COUNT(t.ID) AS n FROM Core.Tax AS t WHERE t.Name = 'Journey tax 5%' AND t.Amount = 5 AND t.Scope = 'Sales' AND t.Computation = 'Percentage'",
+            "atLeast": 1 }
+        ]
+      }
+    }
+  ],
+  "outcome": {
+    "label": "the tax is stored and usable",
+    "sql": "SELECT COUNT(t.ID) AS n FROM Core.Tax AS t WHERE t.Name = 'Journey tax 5%' AND t.Active = true",
+    "atLeast": 1
+  }
+}

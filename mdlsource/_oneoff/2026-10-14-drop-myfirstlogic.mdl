@@ -1,0 +1,3 @@
+mdl 1;
+-- One-off: the mxcli-new scaffold's sample microflow, called from nowhere (lint QUAL004, CUSTOM002).
+drop microflow Core.MyFirstLogic;

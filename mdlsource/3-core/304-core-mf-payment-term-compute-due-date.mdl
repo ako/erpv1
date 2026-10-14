@@ -1,0 +1,30 @@
+mdl 1;
+-- 304-core-mf-payment-term-compute-due-date.mdl — build-plan row 18 (F008). Owns Core.SUB_PaymentTerm_ComputeDueDate.
+
+/**
+ * Due date of the last instalment of a payment term (Odoo account.payment.term._compute_terms).
+ * Each line is due Days after the invoice date, or after the end of the invoice month.
+ *
+ * @param $PaymentTerm the term (empty = due on the invoice date)
+ * @param $InvoiceDate the invoice date
+ * @returns the latest instalment due date
+ */
+create or modify microflow Core.SUB_PaymentTerm_ComputeDueDate ($PaymentTerm: Core.PaymentTerm, $InvoiceDate: DateTime)
+returns DateTime as $DueDate
+folder 'Payment terms/Microflows'
+begin
+  declare $DueDate DateTime = $InvoiceDate;
+  if $PaymentTerm = empty then
+    return $DueDate;
+  end if;
+  retrieve $Lines from $PaymentTerm/Core.PaymentTermLine_PaymentTerm;
+  loop $Line in $Lines begin
+    declare $LineDue DateTime = if $Line/DelayType = Core.ENUM_PaymentTermDelay.DaysAfterEndOfMonth
+      then addDays(addDays(addMonths(trimToMonths($InvoiceDate), 1), -1), $Line/Days)
+      else addDays($InvoiceDate, $Line/Days);
+    if $LineDue > $DueDate then
+      set $DueDate = $LineDue;
+    end if;
+  end loop;
+  return $DueDate;
+end;

@@ -1,0 +1,2081 @@
+{
+  "schemaVersion": "1.1",
+  "instrument": "design-audit",
+  "positiveControl": false,
+  "run": {
+    "startedAt": "2026-10-14T23:29:08.592Z",
+    "finishedAt": "2026-10-14T23:29:29.306Z",
+    "mode": "full",
+    "pages": 9,
+    "reproduce": {
+      "command": "node tests/e2e/design-audit.js"
+    }
+  },
+  "tally": {
+    "pass": 67,
+    "skipped": 1,
+    "fault": 16,
+    "fail": 8
+  },
+  "summary": {
+    "pagesRead": 9,
+    "pagesFault": 0,
+    "partiallyRead": 1,
+    "inventedClassPages": 0,
+    "inventedClasses": [],
+    "neverPromotedPages": 0,
+    "neverPromotedClasses": [],
+    "wireframeChromePages": 0,
+    "wireframeChromeClasses": [],
+    "rawClassPages": 0,
+    "rawClassHits": 0,
+    "wireframeMatched": 8,
+    "wireframeUnmatched": 1
+  },
+  "perPage": [
+    {
+      "page": "Core.Company_Edit",
+      "read": true,
+      "partiallyRead": false,
+      "classes": 5,
+      "invented": [],
+      "neverPromoted": [],
+      "chrome": [],
+      "wireframe": "Company_Edit.html",
+      "rawClassHits": 0
+    },
+    {
+      "page": "Core.Home_Web",
+      "read": true,
+      "partiallyRead": false,
+      "classes": 4,
+      "invented": [],
+      "neverPromoted": [],
+      "chrome": [],
+      "wireframe": null,
+      "rawClassHits": 0
+    },
+    {
+      "page": "Core.PaymentTerm_NewEdit",
+      "read": true,
+      "partiallyRead": false,
+      "classes": 8,
+      "invented": [],
+      "neverPromoted": [],
+      "chrome": [],
+      "wireframe": "PaymentTerm_NewEdit.html",
+      "rawClassHits": 0
+    },
+    {
+      "page": "Core.PaymentTerm_Overview",
+      "read": true,
+      "partiallyRead": false,
+      "classes": 5,
+      "invented": [],
+      "neverPromoted": [],
+      "chrome": [],
+      "wireframe": "PaymentTerm_Overview.html",
+      "rawClassHits": 0
+    },
+    {
+      "page": "Core.Sequence_Overview",
+      "read": true,
+      "partiallyRead": false,
+      "classes": 6,
+      "invented": [],
+      "neverPromoted": [],
+      "chrome": [],
+      "wireframe": "Sequence_Overview.html",
+      "rawClassHits": 0
+    },
+    {
+      "page": "Core.Tax_NewEdit",
+      "read": true,
+      "partiallyRead": false,
+      "classes": 1,
+      "invented": [],
+      "neverPromoted": [],
+      "chrome": [],
+      "wireframe": "Tax_NewEdit.html",
+      "rawClassHits": 0
+    },
+    {
+      "page": "Core.Tax_Overview",
+      "read": true,
+      "partiallyRead": true,
+      "classes": 5,
+      "invented": [],
+      "neverPromoted": [],
+      "chrome": [],
+      "wireframe": "Tax_Overview.html",
+      "rawClassHits": 0
+    },
+    {
+      "page": "Partners.Partner_NewEdit",
+      "read": true,
+      "partiallyRead": false,
+      "classes": 5,
+      "invented": [],
+      "neverPromoted": [],
+      "chrome": [],
+      "wireframe": "Partner_NewEdit.html",
+      "rawClassHits": 0
+    },
+    {
+      "page": "Partners.Partner_Overview",
+      "read": true,
+      "partiallyRead": false,
+      "classes": 4,
+      "invented": [],
+      "neverPromoted": [],
+      "chrome": [],
+      "wireframe": "Partner_Overview.html",
+      "rawClassHits": 0
+    }
+  ],
+  "instruments": [
+    {
+      "name": "design-audit",
+      "verdict": "pass",
+      "canExpressFault": true,
+      "expressibleVerdicts": [
+        "pass",
+        "fail",
+        "fault",
+        "skipped"
+      ],
+      "evidenceStrength": "static-model+css+rendered",
+      "reason": null
+    },
+    {
+      "name": "design-audit-positive-control",
+      "verdict": "fault",
+      "reason": "not requested (--positive-control absent)"
+    },
+    {
+      "name": "design-audit-rendered",
+      "verdict": "pass",
+      "reason": null
+    }
+  ],
+  "checks": [
+    {
+      "id": "design-audit/corpus/defined-classes",
+      "instrument": "design-audit",
+      "kind": "conformance",
+      "module": null,
+      "page": null,
+      "requirement": null,
+      "title": "the defined-class corpus was actually loaded",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "ds.css 68 classes; deployed theme 3237 classes from deployment/web/theme.compiled.css, deployment/web/dist/widgets.css; wireframe-inline 0 classes across 47 files. 66 ds.css classes are absent from the deployed theme overall — the never-promoted check is therefore capable of firing; whether it does depends on which of them a page references.",
+      "measuredAt": "2026-10-14T23:29:08.639Z",
+      "evidence": [
+        {
+          "type": "log",
+          "path": "../design/ds.css"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/scope",
+      "instrument": "design-audit",
+      "kind": "conformance",
+      "module": null,
+      "page": null,
+      "requirement": null,
+      "title": "in-scope page set resolved",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "9 pages from ../.claude/loop/page-scope.json",
+      "measuredAt": "2026-10-14T23:29:08.639Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/read/Core.Company_Edit/complete",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Company_Edit",
+      "requirement": null,
+      "title": "ELK tree carries the whole page (mxcli #891 content-slot guard)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "describe returned 33 tree nodes for 33 declared widgets; no unread slot detected",
+      "measuredAt": "2026-10-14T23:29:09.062Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "command",
+          "command": "./mxcli -p erpv1.mpr describe --format elk page Core.Company_Edit"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/invented-class/Core.Company_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Company_Edit",
+      "requirement": null,
+      "title": "no invented classes (referenced, defined nowhere)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no invented-class among 5 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.062Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/never-promoted/Core.Company_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Company_Edit",
+      "requirement": null,
+      "title": "ds.css classes promoted to the deployed theme",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no never-promoted among 5 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.062Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-chrome/Core.Company_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Company_Edit",
+      "requirement": null,
+      "title": "no wireframe-only annotation chrome in a real page",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no wireframe-chrome among 5 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.062Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/unmatched-class/Core.Company_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Company_Edit",
+      "requirement": null,
+      "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no unmatched-class among 5 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.062Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-conformance/Core.Company_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Company_Edit",
+      "requirement": null,
+      "title": "wireframe conformance (class-promotion diff)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "wireframe Company_Edit.html: every class this page references resolves to the deployed theme or ds.css; informational: 28 styled classes in the wireframe the page never uses (bind, is-active, is-num, is-primary, is-required, lg-actions, lg-appname, lg-body, lg-btn, lg-check, lg-content, lg-docno, lg-eyebrow, lg-field, lg-grid2, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-rail, lg-section, lg-select, lg-sheet, lg-shell, lg-textarea, …), 5 classes the page adds beyond the wireframe",
+      "measuredAt": "2026-10-14T23:29:09.064Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "log",
+          "path": "../design/wireframes/Company_Edit.html"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/raw-class-vs-designproperty/Core.Company_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Company_Edit",
+      "requirement": null,
+      "title": "no raw class where a sanctioned design property exists",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large, gridSections.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-14T23:29:09.065Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/read/Core.Home_Web/complete",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Home_Web",
+      "requirement": null,
+      "title": "ELK tree carries the whole page (mxcli #891 content-slot guard)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "describe returned 6 tree nodes for 6 declared widgets; no unread slot detected",
+      "measuredAt": "2026-10-14T23:29:09.201Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "command",
+          "command": "./mxcli -p erpv1.mpr describe --format elk page Core.Home_Web"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/invented-class/Core.Home_Web",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Home_Web",
+      "requirement": null,
+      "title": "no invented classes (referenced, defined nowhere)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no invented-class among 4 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.201Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/never-promoted/Core.Home_Web",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Home_Web",
+      "requirement": null,
+      "title": "ds.css classes promoted to the deployed theme",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no never-promoted among 4 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.201Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-chrome/Core.Home_Web",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Home_Web",
+      "requirement": null,
+      "title": "no wireframe-only annotation chrome in a real page",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no wireframe-chrome among 4 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.201Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/unmatched-class/Core.Home_Web",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Home_Web",
+      "requirement": null,
+      "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no unmatched-class among 4 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.201Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-conformance/Core.Home_Web",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Home_Web",
+      "requirement": null,
+      "title": "wireframe conformance (class-promotion diff)",
+      "verdict": "skipped",
+      "provenance": "measured",
+      "detail": "rung 6 does not apply to this page; rung 7 measures it anyway — that is the point of rung 7",
+      "measuredAt": "2026-10-14T23:29:09.201Z",
+      "reason": "no wireframe was drawn for this page (not in the hand-verified map)",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/raw-class-vs-designproperty/Core.Home_Web",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Home_Web",
+      "requirement": null,
+      "title": "no raw class where a sanctioned design property exists",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large, ctnIntro.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-14T23:29:09.201Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/read/Core.PaymentTerm_NewEdit/complete",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_NewEdit",
+      "requirement": null,
+      "title": "ELK tree carries the whole page (mxcli #891 content-slot guard)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "describe returned 26 tree nodes for 26 declared widgets; no unread slot detected",
+      "measuredAt": "2026-10-14T23:29:09.378Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "command",
+          "command": "./mxcli -p erpv1.mpr describe --format elk page Core.PaymentTerm_NewEdit"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/invented-class/Core.PaymentTerm_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_NewEdit",
+      "requirement": null,
+      "title": "no invented classes (referenced, defined nowhere)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no invented-class among 8 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.378Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/never-promoted/Core.PaymentTerm_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_NewEdit",
+      "requirement": null,
+      "title": "ds.css classes promoted to the deployed theme",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no never-promoted among 8 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.378Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-chrome/Core.PaymentTerm_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_NewEdit",
+      "requirement": null,
+      "title": "no wireframe-only annotation chrome in a real page",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no wireframe-chrome among 8 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.378Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/unmatched-class/Core.PaymentTerm_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_NewEdit",
+      "requirement": null,
+      "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no unmatched-class among 8 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.378Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-conformance/Core.PaymentTerm_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_NewEdit",
+      "requirement": null,
+      "title": "wireframe conformance (class-promotion diff)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "wireframe PaymentTerm_NewEdit.html: every class this page references resolves to the deployed theme or ds.css; informational: 29 styled classes in the wireframe the page never uses (bind, is-link, is-num, is-primary, is-required, lg-actions, lg-addline, lg-appname, lg-body, lg-btn, lg-content, lg-docno, lg-eyebrow, lg-field, lg-grid2, lg-gridwrap, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-rail, lg-section, lg-sheet, lg-shell, lg-table, …), 8 classes the page adds beyond the wireframe",
+      "measuredAt": "2026-10-14T23:29:09.379Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "log",
+          "path": "../design/wireframes/PaymentTerm_NewEdit.html"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/raw-class-vs-designproperty/Core.PaymentTerm_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_NewEdit",
+      "requirement": null,
+      "title": "no raw class where a sanctioned design property exists",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large, gridSections.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-14T23:29:09.379Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/read/Core.PaymentTerm_Overview/complete",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_Overview",
+      "requirement": null,
+      "title": "ELK tree carries the whole page (mxcli #891 content-slot guard)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "describe returned 6 tree nodes for 6 declared widgets; no unread slot detected",
+      "measuredAt": "2026-10-14T23:29:09.562Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "command",
+          "command": "./mxcli -p erpv1.mpr describe --format elk page Core.PaymentTerm_Overview"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/invented-class/Core.PaymentTerm_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_Overview",
+      "requirement": null,
+      "title": "no invented classes (referenced, defined nowhere)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no invented-class among 5 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.562Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/never-promoted/Core.PaymentTerm_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_Overview",
+      "requirement": null,
+      "title": "ds.css classes promoted to the deployed theme",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no never-promoted among 5 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.562Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-chrome/Core.PaymentTerm_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_Overview",
+      "requirement": null,
+      "title": "no wireframe-only annotation chrome in a real page",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no wireframe-chrome among 5 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.562Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/unmatched-class/Core.PaymentTerm_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_Overview",
+      "requirement": null,
+      "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no unmatched-class among 5 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.562Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-conformance/Core.PaymentTerm_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_Overview",
+      "requirement": null,
+      "title": "wireframe conformance (class-promotion diff)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "wireframe PaymentTerm_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 19 styled classes in the wireframe the page never uses (bind, is-active, is-primary, lg-actions, lg-appname, lg-body, lg-btn, lg-content, lg-gridwrap, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-rowlink, lg-shell, lg-table, lg-topbar, wf-contract), 5 classes the page adds beyond the wireframe",
+      "measuredAt": "2026-10-14T23:29:09.562Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "log",
+          "path": "../design/wireframes/PaymentTerm_Overview.html"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/raw-class-vs-designproperty/Core.PaymentTerm_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_Overview",
+      "requirement": null,
+      "title": "no raw class where a sanctioned design property exists",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-14T23:29:09.562Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/read/Core.Sequence_Overview/complete",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Sequence_Overview",
+      "requirement": null,
+      "title": "ELK tree carries the whole page (mxcli #891 content-slot guard)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "describe returned 15 tree nodes for 15 declared widgets; no unread slot detected",
+      "measuredAt": "2026-10-14T23:29:09.698Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "command",
+          "command": "./mxcli -p erpv1.mpr describe --format elk page Core.Sequence_Overview"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/invented-class/Core.Sequence_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Sequence_Overview",
+      "requirement": null,
+      "title": "no invented classes (referenced, defined nowhere)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no invented-class among 6 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.699Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/never-promoted/Core.Sequence_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Sequence_Overview",
+      "requirement": null,
+      "title": "ds.css classes promoted to the deployed theme",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no never-promoted among 6 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.699Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-chrome/Core.Sequence_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Sequence_Overview",
+      "requirement": null,
+      "title": "no wireframe-only annotation chrome in a real page",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no wireframe-chrome among 6 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.699Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/unmatched-class/Core.Sequence_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Sequence_Overview",
+      "requirement": null,
+      "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no unmatched-class among 6 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.699Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-conformance/Core.Sequence_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Sequence_Overview",
+      "requirement": null,
+      "title": "wireframe conformance (class-promotion diff)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "wireframe Sequence_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 17 styled classes in the wireframe the page never uses (bind, is-active, is-num, lg-actions, lg-appname, lg-body, lg-content, lg-gridwrap, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-shell, lg-table, lg-topbar, wf-contract), 6 classes the page adds beyond the wireframe",
+      "measuredAt": "2026-10-14T23:29:09.699Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "log",
+          "path": "../design/wireframes/Sequence_Overview.html"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/raw-class-vs-designproperty/Core.Sequence_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Sequence_Overview",
+      "requirement": null,
+      "title": "no raw class where a sanctioned design property exists",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-14T23:29:09.699Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/read/Core.Tax_NewEdit/complete",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_NewEdit",
+      "requirement": null,
+      "title": "ELK tree carries the whole page (mxcli #891 content-slot guard)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "describe returned 12 tree nodes for 12 declared widgets; no unread slot detected",
+      "measuredAt": "2026-10-14T23:29:09.904Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "command",
+          "command": "./mxcli -p erpv1.mpr describe --format elk page Core.Tax_NewEdit"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/invented-class/Core.Tax_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_NewEdit",
+      "requirement": null,
+      "title": "no invented classes (referenced, defined nowhere)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no invented-class among 1 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.904Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/never-promoted/Core.Tax_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_NewEdit",
+      "requirement": null,
+      "title": "ds.css classes promoted to the deployed theme",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no never-promoted among 1 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.904Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-chrome/Core.Tax_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_NewEdit",
+      "requirement": null,
+      "title": "no wireframe-only annotation chrome in a real page",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no wireframe-chrome among 1 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.904Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/unmatched-class/Core.Tax_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_NewEdit",
+      "requirement": null,
+      "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no unmatched-class among 1 referenced classes",
+      "measuredAt": "2026-10-14T23:29:09.904Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-conformance/Core.Tax_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_NewEdit",
+      "requirement": null,
+      "title": "wireframe conformance (class-promotion diff)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "wireframe Tax_NewEdit.html: every class this page references resolves to the deployed theme or ds.css; informational: 15 styled classes in the wireframe the page never uses (bind, is-num, is-primary, is-required, lg-backdrop, lg-body, lg-btn, lg-check, lg-dialog, lg-dialog-body, lg-field, lg-input, lg-section, lg-select, wf-contract), 1 classes the page adds beyond the wireframe",
+      "measuredAt": "2026-10-14T23:29:09.904Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "log",
+          "path": "../design/wireframes/Tax_NewEdit.html"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/raw-class-vs-designproperty/Core.Tax_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_NewEdit",
+      "requirement": null,
+      "title": "no raw class where a sanctioned design property exists",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "none; exempt (prescribed by design-spacing.md): gridSections.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-14T23:29:09.904Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/read/Core.Tax_Overview/complete",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_Overview",
+      "requirement": null,
+      "title": "ELK tree carries the whole page (mxcli #891 content-slot guard)",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "partially-read: describe returned 6 tree nodes for 7 widgets declared in the page's own mdlSource. Unread widgets: numberfilter fAmount. customContent columns: none. controlbars: none. empty groups: none. Every class finding below is therefore a LOWER BOUND, not a clean bill of health.",
+      "measuredAt": "2026-10-14T23:29:10.153Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "tags": [
+        "partially-read"
+      ],
+      "evidence": [
+        {
+          "type": "command",
+          "command": "./mxcli -p erpv1.mpr describe --format elk page Core.Tax_Overview"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/invented-class/Core.Tax_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_Overview",
+      "requirement": null,
+      "title": "no invented classes (referenced, defined nowhere)",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no invented-class among the 5 classes we could see, but the page is partially-read — this is not a pass",
+      "measuredAt": "2026-10-14T23:29:10.153Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "blockedBy": "design-audit/read/Core.Tax_Overview/complete",
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/never-promoted/Core.Tax_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_Overview",
+      "requirement": null,
+      "title": "ds.css classes promoted to the deployed theme",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no never-promoted among the 5 classes we could see, but the page is partially-read — this is not a pass",
+      "measuredAt": "2026-10-14T23:29:10.153Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "blockedBy": "design-audit/read/Core.Tax_Overview/complete",
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-chrome/Core.Tax_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_Overview",
+      "requirement": null,
+      "title": "no wireframe-only annotation chrome in a real page",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no wireframe-chrome among the 5 classes we could see, but the page is partially-read — this is not a pass",
+      "measuredAt": "2026-10-14T23:29:10.153Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "blockedBy": "design-audit/read/Core.Tax_Overview/complete",
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/unmatched-class/Core.Tax_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_Overview",
+      "requirement": null,
+      "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no unmatched-class among the 5 classes we could see, but the page is partially-read — this is not a pass",
+      "measuredAt": "2026-10-14T23:29:10.153Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "blockedBy": "design-audit/read/Core.Tax_Overview/complete",
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-conformance/Core.Tax_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_Overview",
+      "requirement": null,
+      "title": "wireframe conformance (class-promotion diff)",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "wireframe Tax_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 20 styled classes in the wireframe the page never uses (bind, is-active, is-num, is-primary, lg-actions, lg-appname, lg-body, lg-btn, lg-content, lg-gridwrap, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-rowlink, lg-shell, lg-table, lg-topbar, wf-contract), 5 classes the page adds beyond the wireframe [LOWER BOUND — page is partially-read, see the #891 guard row]",
+      "measuredAt": "2026-10-14T23:29:10.153Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "blockedBy": "design-audit/read/Core.Tax_Overview/complete",
+      "evidence": [
+        {
+          "type": "log",
+          "path": "../design/wireframes/Tax_Overview.html"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/raw-class-vs-designproperty/Core.Tax_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_Overview",
+      "requirement": null,
+      "title": "no raw class where a sanctioned design property exists",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "none seen, but the page is partially-read — not a pass; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-14T23:29:10.153Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "blockedBy": "design-audit/read/Core.Tax_Overview/complete",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/read/Partners.Partner_NewEdit/complete",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_NewEdit",
+      "requirement": null,
+      "title": "ELK tree carries the whole page (mxcli #891 content-slot guard)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "describe returned 13 tree nodes for 13 declared widgets; no unread slot detected",
+      "measuredAt": "2026-10-14T23:29:10.314Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "command",
+          "command": "./mxcli -p erpv1.mpr describe --format elk page Partners.Partner_NewEdit"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/invented-class/Partners.Partner_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_NewEdit",
+      "requirement": null,
+      "title": "no invented classes (referenced, defined nowhere)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no invented-class among 5 referenced classes",
+      "measuredAt": "2026-10-14T23:29:10.314Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/never-promoted/Partners.Partner_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_NewEdit",
+      "requirement": null,
+      "title": "ds.css classes promoted to the deployed theme",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no never-promoted among 5 referenced classes",
+      "measuredAt": "2026-10-14T23:29:10.314Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-chrome/Partners.Partner_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_NewEdit",
+      "requirement": null,
+      "title": "no wireframe-only annotation chrome in a real page",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no wireframe-chrome among 5 referenced classes",
+      "measuredAt": "2026-10-14T23:29:10.314Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/unmatched-class/Partners.Partner_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_NewEdit",
+      "requirement": null,
+      "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no unmatched-class among 5 referenced classes",
+      "measuredAt": "2026-10-14T23:29:10.314Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-conformance/Partners.Partner_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_NewEdit",
+      "requirement": null,
+      "title": "wireframe conformance (class-promotion diff)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "wireframe Partner_NewEdit.html: every class this page references resolves to the deployed theme or ds.css; informational: 32 styled classes in the wireframe the page never uses (bind, is-link, is-primary, lg-actions, lg-addline, lg-appname, lg-body, lg-btn, lg-check, lg-content, lg-docno, lg-eyebrow, lg-field, lg-grid2, lg-gridwrap, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-pill, lg-rail, lg-rowlink, lg-section, lg-select, lg-sheet, …), 5 classes the page adds beyond the wireframe",
+      "measuredAt": "2026-10-14T23:29:10.315Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "log",
+          "path": "../design/wireframes/Partner_NewEdit.html"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/raw-class-vs-designproperty/Partners.Partner_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_NewEdit",
+      "requirement": null,
+      "title": "no raw class where a sanctioned design property exists",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "none; exempt (prescribed by design-spacing.md): pageHead.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-14T23:29:10.315Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/read/Partners.Partner_Overview/complete",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_Overview",
+      "requirement": null,
+      "title": "ELK tree carries the whole page (mxcli #891 content-slot guard)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "describe returned 6 tree nodes for 6 declared widgets; no unread slot detected",
+      "measuredAt": "2026-10-14T23:29:10.502Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "command",
+          "command": "./mxcli -p erpv1.mpr describe --format elk page Partners.Partner_Overview"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/invented-class/Partners.Partner_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_Overview",
+      "requirement": null,
+      "title": "no invented classes (referenced, defined nowhere)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no invented-class among 4 referenced classes",
+      "measuredAt": "2026-10-14T23:29:10.503Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/never-promoted/Partners.Partner_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_Overview",
+      "requirement": null,
+      "title": "ds.css classes promoted to the deployed theme",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no never-promoted among 4 referenced classes",
+      "measuredAt": "2026-10-14T23:29:10.503Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-chrome/Partners.Partner_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_Overview",
+      "requirement": null,
+      "title": "no wireframe-only annotation chrome in a real page",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no wireframe-chrome among 4 referenced classes",
+      "measuredAt": "2026-10-14T23:29:10.503Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/unmatched-class/Partners.Partner_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_Overview",
+      "requirement": null,
+      "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no unmatched-class among 4 referenced classes",
+      "measuredAt": "2026-10-14T23:29:10.503Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3237, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-conformance/Partners.Partner_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_Overview",
+      "requirement": null,
+      "title": "wireframe conformance (class-promotion diff)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "wireframe Partner_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 22 styled classes in the wireframe the page never uses (bind, is-active, is-primary, lg-actions, lg-appname, lg-body, lg-btn, lg-content, lg-filters, lg-gridwrap, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-rowlink, lg-select, lg-shell, lg-table, lg-topbar, wf-contract), 4 classes the page adds beyond the wireframe",
+      "measuredAt": "2026-10-14T23:29:10.503Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "log",
+          "path": "../design/wireframes/Partner_Overview.html"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/raw-class-vs-designproperty/Partners.Partner_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_Overview",
+      "requirement": null,
+      "title": "no raw class where a sanctioned design property exists",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "none; exempt (prescribed by design-spacing.md): pageHead.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-14T23:29:10.503Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/structure/Core.Company_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Company_Edit",
+      "requirement": null,
+      "title": "structure inventory — exactly one h1, landmarks present",
+      "verdict": "fail",
+      "provenance": "measured",
+      "detail": "h1 count 1 (Welcome); landmarks: NONE",
+      "measuredAt": "2026-10-14T23:29:14.744Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "screenshot",
+          "path": "../tests/e2e/artifacts/design-audit-Core.Company_Edit.png"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/a11y/Core.Company_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Company_Edit",
+      "requirement": null,
+      "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "0 serious/critical of 0 violations over 23 rules",
+      "measuredAt": "2026-10-14T23:29:15.130Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/overflow/Core.Company_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Company_Edit",
+      "requirement": null,
+      "title": "no horizontal overflow at 360 / 768 / 1440",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
+      "measuredAt": "2026-10-14T23:29:15.931Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/structure/Core.Home_Web",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Home_Web",
+      "requirement": null,
+      "title": "structure inventory — exactly one h1, landmarks present",
+      "verdict": "fail",
+      "provenance": "measured",
+      "detail": "h1 count 1 (Welcome); landmarks: NONE",
+      "measuredAt": "2026-10-14T23:29:17.173Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "screenshot",
+          "path": "../tests/e2e/artifacts/design-audit-Core.Home_Web.png"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/a11y/Core.Home_Web",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Home_Web",
+      "requirement": null,
+      "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "0 serious/critical of 0 violations over 23 rules",
+      "measuredAt": "2026-10-14T23:29:17.403Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/overflow/Core.Home_Web",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Home_Web",
+      "requirement": null,
+      "title": "no horizontal overflow at 360 / 768 / 1440",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
+      "measuredAt": "2026-10-14T23:29:18.205Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/a11y/Core.PaymentTerm_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_NewEdit",
+      "requirement": null,
+      "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-14T23:29:18.205Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/overflow/Core.PaymentTerm_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_NewEdit",
+      "requirement": null,
+      "title": "no horizontal overflow at 360 / 768 / 1440",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-14T23:29:18.205Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/structure/Core.PaymentTerm_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_NewEdit",
+      "requirement": null,
+      "title": "structure inventory — exactly one h1, landmarks present",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-14T23:29:18.205Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/structure/Core.PaymentTerm_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_Overview",
+      "requirement": null,
+      "title": "structure inventory — exactly one h1, landmarks present",
+      "verdict": "fail",
+      "provenance": "measured",
+      "detail": "h1 count 1 (Payment terms); landmarks: NONE",
+      "measuredAt": "2026-10-14T23:29:19.584Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "screenshot",
+          "path": "../tests/e2e/artifacts/design-audit-Core.PaymentTerm_Overview.png"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/a11y/Core.PaymentTerm_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_Overview",
+      "requirement": null,
+      "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "0 serious/critical of 0 violations over 30 rules",
+      "measuredAt": "2026-10-14T23:29:19.883Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/overflow/Core.PaymentTerm_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.PaymentTerm_Overview",
+      "requirement": null,
+      "title": "no horizontal overflow at 360 / 768 / 1440",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
+      "measuredAt": "2026-10-14T23:29:20.693Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/structure/Core.Sequence_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Sequence_Overview",
+      "requirement": null,
+      "title": "structure inventory — exactly one h1, landmarks present",
+      "verdict": "fail",
+      "provenance": "measured",
+      "detail": "h1 count 1 (Payment terms); landmarks: NONE",
+      "measuredAt": "2026-10-14T23:29:22.089Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "screenshot",
+          "path": "../tests/e2e/artifacts/design-audit-Core.Sequence_Overview.png"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/a11y/Core.Sequence_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Sequence_Overview",
+      "requirement": null,
+      "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "0 serious/critical of 0 violations over 30 rules",
+      "measuredAt": "2026-10-14T23:29:22.452Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/overflow/Core.Sequence_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Sequence_Overview",
+      "requirement": null,
+      "title": "no horizontal overflow at 360 / 768 / 1440",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
+      "measuredAt": "2026-10-14T23:29:23.277Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/a11y/Core.Tax_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_NewEdit",
+      "requirement": null,
+      "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-14T23:29:23.277Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/overflow/Core.Tax_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_NewEdit",
+      "requirement": null,
+      "title": "no horizontal overflow at 360 / 768 / 1440",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-14T23:29:23.277Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/structure/Core.Tax_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_NewEdit",
+      "requirement": null,
+      "title": "structure inventory — exactly one h1, landmarks present",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-14T23:29:23.277Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/structure/Core.Tax_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_Overview",
+      "requirement": null,
+      "title": "structure inventory — exactly one h1, landmarks present",
+      "verdict": "fail",
+      "provenance": "measured",
+      "detail": "h1 count 1 (Taxes); landmarks: NONE",
+      "measuredAt": "2026-10-14T23:29:24.671Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "screenshot",
+          "path": "../tests/e2e/artifacts/design-audit-Core.Tax_Overview.png"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/a11y/Core.Tax_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_Overview",
+      "requirement": null,
+      "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
+      "verdict": "fail",
+      "provenance": "measured",
+      "detail": "1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x4)",
+      "measuredAt": "2026-10-14T23:29:25.391Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/overflow/Core.Tax_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Core",
+      "page": "Core.Tax_Overview",
+      "requirement": null,
+      "title": "no horizontal overflow at 360 / 768 / 1440",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
+      "measuredAt": "2026-10-14T23:29:26.281Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/a11y/Partners.Partner_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_NewEdit",
+      "requirement": null,
+      "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-14T23:29:26.281Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/overflow/Partners.Partner_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_NewEdit",
+      "requirement": null,
+      "title": "no horizontal overflow at 360 / 768 / 1440",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-14T23:29:26.281Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/structure/Partners.Partner_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_NewEdit",
+      "requirement": null,
+      "title": "structure inventory — exactly one h1, landmarks present",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-14T23:29:26.281Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/structure/Partners.Partner_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_Overview",
+      "requirement": null,
+      "title": "structure inventory — exactly one h1, landmarks present",
+      "verdict": "fail",
+      "provenance": "measured",
+      "detail": "h1 count 1 (Taxes); landmarks: NONE",
+      "measuredAt": "2026-10-14T23:29:27.707Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "screenshot",
+          "path": "../tests/e2e/artifacts/design-audit-Partners.Partner_Overview.png"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/a11y/Partners.Partner_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_Overview",
+      "requirement": null,
+      "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
+      "verdict": "fail",
+      "provenance": "measured",
+      "detail": "1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x4)",
+      "measuredAt": "2026-10-14T23:29:28.378Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/overflow/Partners.Partner_Overview",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.Partner_Overview",
+      "requirement": null,
+      "title": "no horizontal overflow at 360 / 768 / 1440",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
+      "measuredAt": "2026-10-14T23:29:29.250Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    }
+  ]
+}

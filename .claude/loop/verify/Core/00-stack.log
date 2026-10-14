@@ -1,0 +1,9 @@
+── Test stack: erpv1 ──────────────────────────────────
+  [32m✓[0m Studio Pro not running
+  [33m![0m erpv1.mpr has uncommitted changes — a Docker build will build THAT state, not HEAD
+  [32m✓[0m App serving on :8080 (ownership verified — this project's mxcli run --local)
+  [32m✓[0m App serves the current model
+  [33m![0m Jaeger DOWN on :16686 — Trace assertions unavailable (UI+Data still fine)
+  [32m✓[0m No mock API configured (set MOCK_HEALTH_URL in .claude/loop/stack.conf if this project has one)
+────────────────────────────────────────────────────────
+READY (app :8080 · jaeger DOWN)

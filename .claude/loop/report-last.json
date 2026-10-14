@@ -1,12 +1,12 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-14 21:22:11",
-  "overallScore": 53.8,
+  "date": "2026-10-14 23:14:05",
+  "overallScore": 53.7,
   "summary": {
-    "total": 347,
+    "total": 343,
     "errors": 0,
-    "warnings": 124,
-    "infos": 223
+    "warnings": 119,
+    "infos": 224
   },
   "categories": [
     {
@@ -32,21 +32,21 @@
       "warnings": 0,
       "infos": 4,
       "topActions": [
-        "Describe what the page shows and who reaches it.",
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
-        "Give the page a URL \u2014 `Url: 'home_web'` on CREATE PAGE, or the URL property in Studio Pro \u2014 so it is reachable at /p/home_web. Disable CONV019 in .claude/lint-config.yaml if this app deliberately has no deep links."
+        "Describe what the collection is for and where its images are used."
       ]
     },
     {
       "name": "Architecture",
       "score": 0,
-      "total": 75,
+      "total": 70,
       "errors": 0,
-      "warnings": 75,
+      "warnings": 70,
       "infos": 0,
       "topActions": [
         "Add an attribute like 'CompanyCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE",
-        "Create microflows (e.g., ACT_SaveCompany, VAL_Company) to handle create/update operations with proper validation."
+        "Create microflows (e.g., ACT_SaveLocation, VAL_Location) to handle create/update operations with proper validation.",
+        "Move the 'CreateObjectAction' action to a SUB_ microflow and call it from 'ACT_PaymentTermLine_Add'"
       ]
     },
     {
@@ -60,15 +60,15 @@
     },
     {
       "name": "Naming",
-      "score": 70,
-      "total": 30,
+      "score": 69,
+      "total": 31,
       "errors": 0,
       "warnings": 0,
-      "infos": 30,
+      "infos": 31,
       "topActions": [
         "Rename to 'IsPOApprovalEnabled' or another appropriate prefix (Has, Can, Should, Was, Will)",
         "Remove the default value and set it in a Before Create (BCR_) microflow for 'Company'",
-        "Rename the page to include a suffix indicating its purpose, e.g., 'Home_Web_Overview'"
+        "Rename the page to include a suffix indicating its purpose, e.g., 'Company_Edit_Overview'"
       ]
     },
     {

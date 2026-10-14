@@ -1,0 +1,186 @@
+{
+  "capturedAt": "2026-10-14T23:29:05.018Z",
+  "seed": 20362705,
+  "rounds": 24,
+  "configuredUser": "invoicing.manager",
+  "actualUser": "invoicing.manager",
+  "usedFallback": false,
+  "otelOracleRan": false,
+  "findings": [
+    {
+      "severity": "ok",
+      "target": "salesOrderOverview",
+      "what": "abuse: doubleClick",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "quotationTemplateOverview",
+      "what": "abuse: reloadMidFlow",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "salesTeamOverview",
+      "what": "abuse: doubleClick",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "purchaseOrderOverview",
+      "what": "abuse: rapidTab",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "purchaseApprovalInbox",
+      "what": "abuse: backAfterSubmit (Back left the app: the click pushed no history entry; returned with Forward)",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "vendorPriceOverview",
+      "what": "abuse: reloadMidFlow",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "inventoryDashboard",
+      "what": "abuse: rapidTab",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "transferOverview",
+      "what": "abuse: backAfterSubmit (Back left the app: the click pushed no history entry; returned with Forward)",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "stockLevelOverview",
+      "what": "abuse: backAfterSubmit (Back left the app: the click pushed no history entry; returned with Forward)",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "reorderRuleOverview",
+      "what": "abuse: doubleClick",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "invoiceOverview",
+      "what": "abuse: reloadMidFlow",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "paymentOverview",
+      "what": "abuse: reloadMidFlow",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "partnerOverview",
+      "what": "abuse: backAfterSubmit (Back left the app: the click pushed no history entry; returned with Forward)",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "productOverview",
+      "what": "abuse: rapidTab",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "pricelistOverview",
+      "what": "abuse: reloadMidFlow",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "salesAnalysisReport",
+      "what": "abuse: doubleClick",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "purchaseAnalysisReport",
+      "what": "abuse: doubleClick",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "invoiceAnalysisReport",
+      "what": "abuse: doubleClick",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "companyEdit",
+      "what": "abuse: reloadMidFlow",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "warehouseEdit",
+      "what": "abuse: rapidTab",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "sequenceOverview",
+      "what": "abuse: backAfterSubmit (Back left the app: the click pushed no history entry; returned with Forward)",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "taxOverview",
+      "what": "abuse: reloadMidFlow",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "paymentTermOverview",
+      "what": "field ← path traversal",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "uoMCategoryOverview",
+      "what": "field ← newlines",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    },
+    {
+      "severity": "ok",
+      "target": "productCategoryOverview",
+      "what": "field ← CJK",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 20362705
+    }
+  ]
+}

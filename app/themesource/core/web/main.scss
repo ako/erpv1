@@ -23,7 +23,7 @@
 .crumb {
   display: block;
   color: var(--mxt-ink-muted);
-  font-size: 0.8125rem;
+  font-size: calc(var(--font-size-default) * 0.85);
   margin-bottom: 4px;
 }
 
@@ -34,3 +34,21 @@
   margin: 0;
   font-family: var(--mxt-font-heading);
 }
+
+// Top bar: sign-out on the right, on the rail colour.
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+.topbar-link, .topbar-link:hover, .topbar-link:focus { color: var(--mxt-rail-ink); }
+.topbar-link:hover { color: var(--mxt-rail-ink-active); }
+
+// Phone (<768px): the rail cannot collapse (no sidebar toggle in an MDL-authored layout), so hide it and
+// show the same Responsive menu as a compact menu bar in the top bar. Desktop/tablet: menu bar hidden.
+.phone-menu { display: none; }
+@media (max-width: 767px) {
+  .layout-atlas .region-sidebar { display: none !important; }
+  .phone-menu { display: block; flex: 1 1 auto; min-width: 0; }
+  .phone-menu .mx-navbar { background: transparent; }
+  .region-content .spacing-inner-layout { padding: 16px !important; }
+}
+
+// Line editors: the caption row lines up with the list-view items' inner padding.
+.lines-head { padding: 0 16px; }

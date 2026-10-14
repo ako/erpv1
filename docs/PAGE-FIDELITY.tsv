@@ -1,0 +1,22 @@
+# PAGE-FIDELITY.tsv — appended by project-bin/page-fidelity.js on every run.
+# The first NON-STUB row for a page is its first-build score of record (target:
+# >=80%); later rows for the same page show the rework curve. Rows with source
+# `stub` are forward-reference targets (scored with --stub) and are exempt from
+# the target. `module` is the page's module as declared in its CREATE PAGE
+# statement — this is what the fidelity obligation (bin/lib/obligations.tsv)
+# greps for; a blank module leaves that module's obligation PENDING forever, so
+# never blank it by hand. Do not edit rows by hand.
+date	page	module	score	headings	actions	content	classes	bindings	source	wireframe
+2026-10-14 21:39	Company_Edit	Core	74%	6/6	1/1	4/8	0/17	5/5	draft	design/wireframes/Company_Edit.html
+2026-10-14 21:39	Sequence_Overview	Core	56%	1/1	-	-	0/6	-	draft	design/wireframes/Sequence_Overview.html
+2026-10-14 21:39	Tax_Overview	Core	26%	1/1	-	0/1	0/9	0/2	draft	design/wireframes/Tax_Overview.html
+2026-10-14 21:39	PaymentTerm_NewEdit	Core	68%	3/3	2/2	-	0/19	2/4	draft	design/wireframes/PaymentTerm_NewEdit.html
+2026-10-14 21:39	Tax_NewEdit	Core	71%	2/2	1/1	2/2	0/12	1/3	draft	design/wireframes/Tax_NewEdit.html
+2026-10-14 21:39	PaymentTerm_Overview	Core	56%	1/1	-	-	0/8	-	draft	design/wireframes/PaymentTerm_Overview.html
+2026-10-14 21:39	Tax_Overview	Core	26%	1/1	-	0/1	0/9	0/2	draft	design/wireframes/Tax_Overview.html
+2026-10-14 21:40	Company_Edit	Core	84%	6/6	1/1	8/8	0/17	5/5	draft	design/wireframes/Company_Edit.html
+2026-10-14 21:40	Sequence_Overview	Core	56%	1/1	-	-	0/6	-	draft	design/wireframes/Sequence_Overview.html
+2026-10-14 21:40	Tax_Overview	Core	26%	1/1	-	0/1	0/9	0/2	draft	design/wireframes/Tax_Overview.html
+2026-10-14 21:40	PaymentTerm_NewEdit	Core	68%	3/3	2/2	-	0/19	2/4	draft	design/wireframes/PaymentTerm_NewEdit.html
+2026-10-14 21:40	Tax_NewEdit	Core	71%	2/2	1/1	2/2	0/12	1/3	draft	design/wireframes/Tax_NewEdit.html
+2026-10-14 21:40	PaymentTerm_Overview	Core	56%	1/1	-	-	0/8	-	draft	design/wireframes/PaymentTerm_Overview.html

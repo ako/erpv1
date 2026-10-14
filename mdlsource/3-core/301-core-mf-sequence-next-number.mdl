@@ -1,0 +1,45 @@
+mdl 1;
+-- 301-core-mf-sequence-next-number.mdl — build-plan row 17 (F001). Owns Core.SUB_Sequence_NextNumber
+-- and Core.SUB_Sequence_Ensure (used by the seed scripts).
+
+/**
+ * Next document number for a sequence code (Odoo ir.sequence.next_by_code).
+ * Prefix supports %(year)s; the number is zero-padded to Padding digits; gap-free per code.
+ *
+ * @param $Code sequence code, e.g. 'sale.order'
+ * @returns the formatted number, e.g. 'S00042' or 'INV/2026/00007'; empty when the code is unknown
+ */
+create or modify microflow Core.SUB_Sequence_NextNumber ($Code: String)
+returns String as $Number
+folder 'Numbering/Microflows'
+begin
+  retrieve $Sequence from Core.Sequence where [Code = $Code] first;
+  if $Sequence = empty then
+    log error node 'Core.Sequence' 'No sequence for code ' + $Code;
+    return '';
+  end if;
+  declare $Digits String = toString($Sequence/NextNumber);
+  declare $Padded String = if length($Digits) >= $Sequence/Padding then $Digits
+    else substring('0000000000' + $Digits, length('0000000000' + $Digits) - $Sequence/Padding);
+  declare $Prefix String = replaceAll(if $Sequence/Prefix = empty then '' else $Sequence/Prefix, '%\(year\)s', formatDateTime([%CurrentDateTime%], 'yyyy'));
+  change $Sequence (NextNumber = $Sequence/NextNumber + 1);
+  commit $Sequence without events;
+  return $Prefix + $Padded;
+end;
+
+/**
+ * Create a sequence when its code does not exist yet (idempotent seed helper).
+ *
+ * @param $Code business key
+ * @param $Prefix prefix, may contain %(year)s
+ * @param $Padding number of digits
+ */
+create or modify microflow Core.SUB_Sequence_Ensure ($Code: String, $Prefix: String, $Padding: Integer)
+folder 'Numbering/Microflows'
+begin
+  retrieve $Existing from Core.Sequence where [Code = $Code] first;
+  if $Existing = empty then
+    $Sequence = create Core.Sequence (Code = $Code, Prefix = $Prefix, Padding = $Padding, NextNumber = 1);
+    commit $Sequence without events;
+  end if;
+end;

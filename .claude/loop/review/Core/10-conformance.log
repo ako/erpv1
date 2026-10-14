@@ -1,0 +1,21 @@
+  measuring 1/133   measuring 2/133   measuring 3/133   measuring 4/133   measuring 5/133   measuring 6/133   measuring 7/133   measuring 8/133   measuring 9/133   measuring 10/133   measuring 11/133   measuring 12/133   measuring 13/133   measuring 14/133   measuring 15/133   measuring 16/133   measuring 17/133   measuring 18/133   measuring 19/133   measuring 20/133   measuring 21/133   measuring 22/133   measuring 23/133   measuring 24/133   measuring 25/133   measuring 26/133   measuring 27/133   measuring 28/133   measuring 29/133   measuring 30/133   measuring 31/133   measuring 32/133   measuring 33/133   measuring 34/133   measuring 35/133   measuring 36/133   measuring 37/133   measuring 38/133   measuring 39/133   measuring 40/133   measuring 41/133   measuring 42/133   measuring 43/133   measuring 44/133   measuring 45/133   measuring 46/133   measuring 47/133   measuring 48/133   measuring 49/133   measuring 50/133   measuring 51/133   measuring 52/133   measuring 53/133   measuring 54/133   measuring 55/133   measuring 56/133   measuring 57/133   measuring 58/133   measuring 59/133   measuring 60/133   measuring 61/133   measuring 62/133   measuring 63/133   measuring 64/133   measuring 65/133   measuring 66/133   measuring 67/133   measuring 68/133   measuring 69/133   measuring 70/133   measuring 71/133   measuring 72/133   measuring 73/133   measuring 74/133   measuring 75/133   measuring 76/133   measuring 77/133   measuring 78/133   measuring 79/133   measuring 80/133   measuring 81/133   measuring 82/133   measuring 83/133   measuring 84/133   measuring 85/133   measuring 86/133   measuring 87/133   measuring 88/133   measuring 89/133   measuring 90/133   measuring 91/133   measuring 92/133   measuring 93/133   measuring 94/133   measuring 95/133   measuring 96/133   measuring 97/133   measuring 98/133   measuring 99/133   measuring 100/133   measuring 101/133   measuring 102/133   measuring 103/133   measuring 104/133   measuring 105/133   measuring 106/133   measuring 107/133   measuring 108/133   measuring 109/133   measuring 110/133   measuring 111/133   measuring 112/133   measuring 113/133   measuring 114/133   measuring 115/133   measuring 116/133   measuring 117/133   measuring 118/133   measuring 119/133   measuring 120/133   measuring 121/133   measuring 122/133   measuring 123/133   measuring 124/133   measuring 125/133   measuring 126/133   measuring 127/133   measuring 128/133   measuring 129/133   measuring 130/133   measuring 131/133   measuring 132/133   measuring 133/133                               conformance-check · 2026-10-14
+  ledger rows            163   (measured 133 · prose-only 30)
+  OK                     125
+  STALE                  0   (claims built/partial, model says absent)
+  UNDERSTATED            8
+  report                 docs/conformance/report-2026-10-14-F001-contacts-company-users.tsv
+  report                 docs/conformance/report-2026-10-14-F004-sales.tsv
+  report                 docs/conformance/report-2026-10-14-F005-purchasing.tsv
+  report                 docs/conformance/report-2026-10-14-F008-invoicing-payments.tsv
+
+  mismatches:
+    Core                     F001-contacts-company-users:`/actorRoleMapping/*` (6) not-built   -> PRESENT UNDERSTATED
+    Core                     F001-contacts-company-users:`/actors/*` (5) not-built   -> PRESENT UNDERSTATED
+    Core                     F004-sales:`/actorRoleMapping/*` (3) not-built   -> PRESENT UNDERSTATED
+    Core                     F004-sales:`/actors/*` (2)   not-built   -> PRESENT UNDERSTATED
+    Core                     F005-purchasing:`/actorRoleMapping/*` (2) not-built   -> PRESENT UNDERSTATED
+    Core                     F005-purchasing:`/actors/*` (2) not-built   -> PRESENT UNDERSTATED
+    Core                     F008-invoicing-payments:`/actorRoleMapping/*` (4) not-built   -> PRESENT UNDERSTATED
+    Core                     F008-invoicing-payments:`/actors/*` (4) not-built   -> PRESENT UNDERSTATED
+
+  no regressions against baseline.

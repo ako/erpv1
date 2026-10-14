@@ -1,0 +1,103 @@
+-- Core unit tests (build-plan row 22). Every test rolls back (default @cleanup rollback).
+
+/**
+ * @test NextNumber on an unknown code returns empty and writes nothing
+ * @expect $Number = ''
+ */
+$Number = call microflow Core.SUB_Sequence_NextNumber(Code = 'no.such.code');
+/
+
+/**
+ * @test NextNumber pads to the sequence's digits and increments gap-free
+ * @expect $First = 'T0001'
+ * @expect $Second = 'T0002'
+ */
+call microflow Core.SUB_Sequence_Ensure(Code = 'test.seq', Prefix = 'T', Padding = 4);
+$First = call microflow Core.SUB_Sequence_NextNumber(Code = 'test.seq');
+$Second = call microflow Core.SUB_Sequence_NextNumber(Code = 'test.seq');
+/
+
+/**
+ * @test NextNumber substitutes %(year)s in the prefix
+ * @expect $Number = 'Y/' + formatDateTime([%CurrentDateTime%], 'yyyy') + '/001'
+ */
+call microflow Core.SUB_Sequence_Ensure(Code = 'test.year', Prefix = 'Y/%(year)s/', Padding = 3);
+$Number = call microflow Core.SUB_Sequence_NextNumber(Code = 'test.year');
+/
+
+/**
+ * @test Line without taxes: discount applied, no tax
+ * @expect $Amounts/Subtotal = 180
+ * @expect $Amounts/TaxAmount = 0
+ * @expect $Amounts/Total = 180
+ */
+$Taxes = create list of Core.Tax;
+$Amounts = call microflow Core.SUB_Tax_ComputeLine(UnitPrice = 100, Quantity = 2, DiscountPercent = 10, Taxes = $Taxes);
+/
+
+/**
+ * @test Excluded 21% tax is added on top of the base
+ * @expect $Amounts/Subtotal = 100
+ * @expect $Amounts/TaxAmount = 21
+ * @expect $Amounts/Total = 121
+ */
+$Vat = create Core.Tax (Name = 'T21', Computation = Core.ENUM_TaxComputation.Percentage, Amount = 21, IncludedInPrice = false);
+$Taxes = create list of Core.Tax;
+add $Vat to $Taxes;
+$Amounts = call microflow Core.SUB_Tax_ComputeLine(UnitPrice = 100, Quantity = 1, DiscountPercent = 0, Taxes = $Taxes);
+/
+
+/**
+ * @test Price-included 21% tax is extracted from the price first
+ * @expect $Amounts/Subtotal = 100
+ * @expect $Amounts/TaxAmount = 21
+ * @expect $Amounts/Total = 121
+ */
+$Vat = create Core.Tax (Name = 'T21i', Computation = Core.ENUM_TaxComputation.Percentage, Amount = 21, IncludedInPrice = true);
+$Taxes = create list of Core.Tax;
+add $Vat to $Taxes;
+$Amounts = call microflow Core.SUB_Tax_ComputeLine(UnitPrice = 121, Quantity = 1, DiscountPercent = 0, Taxes = $Taxes);
+/
+
+/**
+ * @test Fixed tax is per unit
+ * @expect $Amounts/Subtotal = 30
+ * @expect $Amounts/TaxAmount = 6
+ * @expect $Amounts/Total = 36
+ */
+$Fee = create Core.Tax (Name = 'Fee', Computation = Core.ENUM_TaxComputation.Fixed, Amount = 2, IncludedInPrice = false);
+$Taxes = create list of Core.Tax;
+add $Fee to $Taxes;
+$Amounts = call microflow Core.SUB_Tax_ComputeLine(UnitPrice = 10, Quantity = 3, DiscountPercent = 0, Taxes = $Taxes);
+/
+
+/**
+ * @test 30 days payment term: due 30 days after the invoice date
+ * @expect $Due = addDays(dateTime(2026, 1, 15), 30)
+ */
+$Term = create Core.PaymentTerm (Name = 'T30');
+$Line = create Core.PaymentTermLine (Value = Core.ENUM_PaymentTermValue.Percent, ValueAmount = 100, Days = 30,
+  DelayType = Core.ENUM_PaymentTermDelay.DaysAfterInvoiceDate, Core.PaymentTermLine_PaymentTerm = $Term);
+commit $Term;
+commit $Line;
+$Due = call microflow Core.SUB_PaymentTerm_ComputeDueDate(PaymentTerm = $Term, InvoiceDate = dateTime(2026, 1, 15));
+/
+
+/**
+ * @test End-of-month term: due on the last day of the invoice month
+ * @expect $Due = dateTime(2026, 1, 31)
+ */
+$Term = create Core.PaymentTerm (Name = 'EOM');
+$Line = create Core.PaymentTermLine (Value = Core.ENUM_PaymentTermValue.Percent, ValueAmount = 100, Days = 0,
+  DelayType = Core.ENUM_PaymentTermDelay.DaysAfterEndOfMonth, Core.PaymentTermLine_PaymentTerm = $Term);
+commit $Term;
+commit $Line;
+$Due = call microflow Core.SUB_PaymentTerm_ComputeDueDate(PaymentTerm = $Term, InvoiceDate = dateTime(2026, 1, 15));
+/
+
+/**
+ * @test No payment term: due on the invoice date
+ * @expect $Due = dateTime(2026, 3, 1)
+ */
+$Due = call microflow Core.SUB_PaymentTerm_ComputeDueDate(PaymentTerm = empty, InvoiceDate = dateTime(2026, 3, 1));
+/

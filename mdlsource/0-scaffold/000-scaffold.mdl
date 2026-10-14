@@ -16,6 +16,12 @@ create or modify layout Core.App_Default (
         DesignProperties: ('Flex container': 'Horizontal (row)', 'Align items Y': 'Center', 'Disable row wrap': on, 'Grow / shrink (self)': 'Fill container (only grow)')
       ) {
         dynamictext appName (Content: 'erpv1', RenderMode: H4, Class: 'app-name')
+        container phoneMenu (Class: 'phone-menu') {
+          menubar phoneMenuBar (Profile: 'Responsive')
+        }
+        container topbarRight (Class: 'topbar-right') {
+          linkbutton btnSignOut (Caption: 'Sign out', Action: sign out, Class: 'topbar-link')
+        }
       }
     }
     region left (Size: 232, SizeMode: 'Pixels', Class: 'region-sidebar') {

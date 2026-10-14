@@ -1,0 +1,6 @@
+instrument	verdict	rc	elapsed	log
+conformance (ledger claims vs live model)	PASS	0	136s	.claude/loop/review/Core/10-conformance.log
+graph sweep (orphans + wiring shape)	PASS	0	1s	.claude/loop/review/Core/graph.tsv
+coverage (BRD leaves: UNCLAIMED/PHANTOM/DOUBLE · all 4 BRDs, one ledger each)	PASS	0	3s	.claude/loop/review/Core/coverage.txt
+journeys	FAULT	2	-	(no journey run in this invocation)
+look	FAULT	2	-	(no visual review in this invocation — module-review.md §4)

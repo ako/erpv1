@@ -1,0 +1,135 @@
+mdl 1;
+-- 302-core-mf-core-seed-data.mdl — build-plan row 17 (F001). Reference data for Core only (layering:
+-- Core never references Products/Inventory; those modules seed their own reference data and are chained
+-- from the app's after-startup orchestrator once they exist). Every helper is idempotent by business key.
+
+/** Ensure a currency exists (business key: ISO code). */
+create or modify microflow Core.SUB_Currency_Ensure ($Code: String, $Symbol: String)
+returns Core.Currency as $Currency
+folder 'Setup/Microflows'
+begin
+  retrieve $Currency from Core.Currency where [Name = $Code] first;
+  if $Currency = empty then
+    $New = create Core.Currency (Name = $Code, Symbol = $Symbol, Rounding = 0.01, DecimalPlaces = 2, SymbolPosition = 'after', Active = true);
+    commit $New without events;
+    return $New;
+  end if;
+  return $Currency;
+end;
+
+/** Ensure a country exists (business key: ISO 3166 alpha-2 code). */
+create or modify microflow Core.SUB_Country_Ensure ($Code: String, $Name: String)
+returns Core.Country as $Country
+folder 'Setup/Microflows'
+begin
+  retrieve $Country from Core.Country where [Code = $Code] first;
+  if $Country = empty then
+    $New = create Core.Country (Code = $Code, Name = $Name);
+    commit $New without events;
+    return $New;
+  end if;
+  return $Country;
+end;
+
+/** Ensure a tax exists (business key: name). */
+create or modify microflow Core.SUB_Tax_Ensure ($Name: String, $Scope: Enumeration(Core.ENUM_TaxScope), $Rate: Decimal, $Label: String, $Sequence: Integer)
+returns Core.Tax as $Tax
+folder 'Setup/Microflows'
+begin
+  retrieve $Tax from Core.Tax where [Name = $Name] first;
+  if $Tax = empty then
+    $New = create Core.Tax (Name = $Name, Scope = $Scope, Computation = Core.ENUM_TaxComputation.Percentage, Amount = $Rate,
+      IncludedInPrice = false, LabelOnInvoice = $Label, Sequence = $Sequence, Active = true);
+    commit $New without events;
+    return $New;
+  end if;
+  return $Tax;
+end;
+
+/** Ensure a single-instalment payment term exists (business key: name). */
+create or modify microflow Core.SUB_PaymentTerm_Ensure ($Name: String, $Days: Integer, $Sequence: Integer)
+folder 'Setup/Microflows'
+begin
+  retrieve $Existing from Core.PaymentTerm where [Name = $Name] first;
+  if $Existing = empty then
+    $Term = create Core.PaymentTerm (Name = $Name, Sequence = $Sequence, Active = true);
+    $Line = create Core.PaymentTermLine (Value = Core.ENUM_PaymentTermValue.Percent, ValueAmount = 100, Days = $Days,
+      DelayType = Core.ENUM_PaymentTermDelay.DaysAfterInvoiceDate, Core.PaymentTermLine_PaymentTerm = $Term);
+    commit $Term without events;
+    commit $Line without events;
+  end if;
+end;
+
+/** Seed the document numbering sequences used by every module (codes are the contract). */
+create or modify microflow Core.SUB_Core_SeedSequences ()
+folder 'Setup/Microflows'
+begin
+  call microflow Core.SUB_Sequence_Ensure(Code = 'sale.order', Prefix = 'S', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'purchase.order', Prefix = 'P', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'stock.picking.in', Prefix = 'WH/IN/', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'stock.picking.out', Prefix = 'WH/OUT/', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'account.move.out_invoice', Prefix = 'INV/%(year)s/', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'account.move.in_invoice', Prefix = 'BILL/%(year)s/', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'account.move.out_refund', Prefix = 'RINV/%(year)s/', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'account.move.in_refund', Prefix = 'RBILL/%(year)s/', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'account.payment', Prefix = 'PAY/%(year)s/', Padding = 5);
+end;
+
+/** Seed countries used by the demo addresses. */
+create or modify microflow Core.SUB_Core_SeedCountries ()
+folder 'Setup/Microflows'
+begin
+  $NL = call microflow Core.SUB_Country_Ensure(Code = 'NL', Name = 'Netherlands');
+  $BE = call microflow Core.SUB_Country_Ensure(Code = 'BE', Name = 'Belgium');
+  $DE = call microflow Core.SUB_Country_Ensure(Code = 'DE', Name = 'Germany');
+  $FR = call microflow Core.SUB_Country_Ensure(Code = 'FR', Name = 'France');
+  $GB = call microflow Core.SUB_Country_Ensure(Code = 'GB', Name = 'United Kingdom');
+  $US = call microflow Core.SUB_Country_Ensure(Code = 'US', Name = 'United States');
+end;
+
+/** Seed the taxes and payment terms of the demo company. */
+create or modify microflow Core.SUB_Core_SeedTaxesAndTerms ()
+folder 'Setup/Microflows'
+begin
+  $SalesTax = call microflow Core.SUB_Tax_Ensure(Name = '21% (sales)', Scope = Core.ENUM_TaxScope.Sales, Rate = 21, Label = '21%', Sequence = 10);
+  $PurchaseTax = call microflow Core.SUB_Tax_Ensure(Name = '21% (purchase)', Scope = Core.ENUM_TaxScope.Purchases, Rate = 21, Label = '21%', Sequence = 10);
+  $LowTax = call microflow Core.SUB_Tax_Ensure(Name = '9% (sales)', Scope = Core.ENUM_TaxScope.Sales, Rate = 9, Label = '9%', Sequence = 20);
+  call microflow Core.SUB_PaymentTerm_Ensure(Name = 'Immediate Payment', Days = 0, Sequence = 10);
+  call microflow Core.SUB_PaymentTerm_Ensure(Name = '15 Days', Days = 15, Sequence = 20);
+  call microflow Core.SUB_PaymentTerm_Ensure(Name = '30 Days', Days = 30, Sequence = 30);
+end;
+
+/** Seed the one company with its currency, country and default taxes. */
+create or modify microflow Core.SUB_Core_SeedCompany ()
+folder 'Setup/Microflows'
+begin
+  retrieve $Existing from Core.Company first;
+  if $Existing = empty then
+    $EUR = call microflow Core.SUB_Currency_Ensure(Code = 'EUR', Symbol = '€');
+    retrieve $NL from Core.Country where [Code = 'NL'] first;
+    retrieve $SalesTax from Core.Tax where [Name = '21% (sales)'] first;
+    retrieve $PurchaseTax from Core.Tax where [Name = '21% (purchase)'] first;
+    $Company = create Core.Company (Name = 'erpv1 Demo B.V.', Email = 'info@erpv1-demo.example.com', Phone = '+31 20 555 0100',
+      Street = 'Keizersgracht 1', Zip = '1015 CJ', City = 'Amsterdam', VATNumber = 'NL000099998B57', Website = 'https://erpv1-demo.example.com',
+      QuotationValidityDays = 30, POApprovalEnabled = true, POApprovalThreshold = 5000, PurchaseLeadDays = 0,
+      Core.Company_Currency = $EUR, Core.Company_Country = $NL, Core.Company_DefaultSalesTax = $SalesTax, Core.Company_DefaultPurchaseTax = $PurchaseTax);
+    commit $Company without events;
+  end if;
+end;
+
+/**
+ * After-startup seed of Core reference data (idempotent; safe on every boot).
+ *
+ * @returns true (an after-startup microflow must return a Boolean)
+ */
+create or modify microflow Core.ASU_Core_SeedData ()
+returns Boolean as $Done
+folder 'Setup/Microflows'
+begin
+  $USD = call microflow Core.SUB_Currency_Ensure(Code = 'USD', Symbol = '$');
+  call microflow Core.SUB_Core_SeedCountries();
+  call microflow Core.SUB_Core_SeedSequences();
+  call microflow Core.SUB_Core_SeedTaxesAndTerms();
+  call microflow Core.SUB_Core_SeedCompany();
+  return true;
+end;

@@ -1,0 +1,14 @@
+graph-sweep · catalog 2026-10-14T23:13:17 (build_mode full) · 1027 objects · 3471 typed edges (member=910 associate=428 parameter=344 xpath=341 call=217 show_page=174 action=168 retrieve=141)
+
+  module wiring (>= 20 elements)
+    MODULE                   ELEMENTS   INBOUND   OUTBOUND
+    Core                           52        32         11
+
+  orphaned microflows (no call / action / nav inbound, entry-point prefixes excluded): 4
+    Core.ASU_Core_SeedData                                   5 activities
+    Core.SUB_PaymentTerm_ComputeDueDate                      4 activities
+    Core.SUB_Sequence_NextNumber                             8 activities
+    Core.SUB_Tax_ComputeLine                                 8 activities
+
+  0 module(s) with no inbound references.
+  Whether that is a defect is an intent question — check the module brief.

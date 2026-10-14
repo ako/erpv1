@@ -1,0 +1,39 @@
+══ review-module: Core ══  2026-10-14T23:23:57Z
+  scope: the MODEL against what was decided. Not the running app — no journey runs here.
+
+[1m── conformance (reusing the caller's run)[0m
+[32m  ✓ reused[0m  (266 rows from 8 report(s): docs/conformance/report-2026-10-14-F001-contacts-company-users.tsv, docs/conformance/report-2026-10-14-F001.tsv, docs/conformance/report-2026-10-14-F004-sales.tsv, docs/conformance/report-2026-10-14-F004.tsv, docs/conformance/report-2026-10-14-F005-purchasing.tsv, docs/conformance/report-2026-10-14-F005.tsv, docs/conformance/report-2026-10-14-F008-invoicing-payments.tsv, docs/conformance/report-2026-10-14-F008.tsv)
+
+[1m── graph sweep (orphans + wiring shape)[0m  [2m(budget 300s)[0m
+[32m  ✓ clean[0m  (0s)
+
+[1m── coverage (BRD leaves: UNCLAIMED/PHANTOM/DOUBLE)[0m
+[33m  ! INSTRUMENT FAULT[0m — the ledger names no reachable *.brd.json
+      Refusing to substitute another module's BRD — that would report its leaves as this module's.
+
+[1m── journeys (the running app)[0m
+[33m  ! NOT RUN IN THIS INVOCATION[0m — review answers a model question.
+      The report carries a journey `fault` row so it cannot render as covered.
+      For the app-side answer: bin/verify-module.sh Core (needs the stack up).
+
+[1m── look (module-review.md §4 — the rendered pages)[0m
+[33m  ! NOT RUN IN THIS INVOCATION[0m — review answers a model question.
+      The report carries a `look` fault row so it cannot render as covered.
+      For the visual answer: review-agent, job 2 — every page in Core assessed
+      against wireframe, design system, or module-review.md §4d's unaided rubric.
+
+════════════════════════════════════════════════════════
+instrument	verdict	rc	elapsed	log
+conformance (reused)	PASS	0	-	docs/conformance/report-2026-10-14-F001-contacts-company-users.tsv, docs/conformance/report-2026-10-14-F001.tsv, docs/conformance/report-2026-10-14-F004-sales.tsv, docs/conformance/report-2026-10-14-F004.tsv, docs/conformance/report-2026-10-14-F005-purchasing.tsv, docs/conformance/report-2026-10-14-F005.tsv, docs/conformance/report-2026-10-14-F008-invoicing-payments.tsv, docs/conformance/report-2026-10-14-F008.tsv
+graph sweep (orphans + wiring shape)	PASS	0	0s	.claude/loop/review/Core/graph.tsv
+coverage (BRD leaves: UNCLAIMED/PHANTOM/DOUBLE)	FAULT	2	-	(the ledger names no reachable *.brd.json)
+journeys	FAULT	2	-	(no journey run in this invocation)
+look	FAULT	2	-	(no visual review in this invocation — module-review.md §4)
+════════════════════════════════════════════════════════
+  logs: .claude/loop/review/Core
+
+[33m  INCOMPLETE[0m — 1 instrument(s) did not run, 0 with findings.
+  This is NOT a pass with caveats. The unrun checks are absent, not green.
+review-report: 274 checks (142 fail · 3 fault · 4 manual · 125 pass) -> /home/user/erpv1/.claude/loop/verify/Core/review-report.json
+
+  report  .claude/loop/verify/Core/review-report.json

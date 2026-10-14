@@ -1,0 +1,42 @@
+coverage · LEVEL 1 · MEASURED — ledger found for Core
+  ledger: architecture/modules/Core/coverage-ledger
+
+coverage-check: analysis/odoo/knowledge-base/brd/F001-contacts-company-users.brd.json
+  ledger:        architecture/modules/Core/coverage-ledger/F001-contacts-company-users.md
+  leaves:        1126
+  CLAIMED:       1028
+  LEDGERED:      98
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:0
+coverage-check: analysis/odoo/knowledge-base/brd/F004-sales.brd.json
+  ledger:        architecture/modules/Core/coverage-ledger/F004-sales.md
+  leaves:        932
+  CLAIMED:       851
+  LEDGERED:      81
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:0
+coverage-check: analysis/odoo/knowledge-base/brd/F005-purchasing.brd.json
+  ledger:        architecture/modules/Core/coverage-ledger/F005-purchasing.md
+  leaves:        805
+  CLAIMED:       754
+  LEDGERED:      51
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:0
+coverage-check: analysis/odoo/knowledge-base/brd/F008-invoicing-payments.brd.json
+  ledger:        architecture/modules/Core/coverage-ledger/F008-invoicing-payments.md
+  leaves:        1192
+  CLAIMED:       1100
+  LEDGERED:      92
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:0
+
+  per-BRD ledgers: 4 of 8 BRD(s) measured against architecture/modules/Core/coverage-ledger/<BRDID>.md;
+  4 BRD(s) have no ledger here (another module's, not measured): F002-units-of-measure F003-product-catalogue-pricing F006-inventory F007-order-fulfilment

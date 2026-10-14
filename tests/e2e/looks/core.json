@@ -1,0 +1,8 @@
+[
+  {"page": "Company_Edit", "user": "admin.user", "menu": ["Configuration", "Company"]},
+  {"page": "Sequence_Overview", "user": "admin.user", "menu": ["Configuration", "Numbering"]},
+  {"page": "Tax_Overview", "user": "invoicing.manager", "menu": ["Configuration", "Taxes"]},
+  {"page": "Tax_NewEdit", "user": "invoicing.manager", "menu": ["Configuration", "Taxes"], "openRow": 1},
+  {"page": "PaymentTerm_Overview", "user": "invoicing.manager", "menu": ["Configuration", "Payment terms"]},
+  {"page": "PaymentTerm_NewEdit", "user": "invoicing.manager", "menu": ["Configuration", "Payment terms"], "openRow": 1}
+]

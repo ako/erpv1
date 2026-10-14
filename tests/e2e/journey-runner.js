@@ -226,6 +226,12 @@ async function act(page, a, vars, note) {
       // and failed "no option matches" (field run 2026-10-07, existing app).
       await box.locator('[id^="downshift-"][id$="-toggle-button"]').first()
                 .click({ force: true }).catch(() => {});
+      // erpv1 2026-10-14: after a server round-trip that set validation feedback on the form, the
+      // first toggle click is swallowed (aria-expanded stays "false"); a second click opens it.
+      // Read the state instead of assuming the click worked.
+      await PAUSE(300);
+      if ((await box.locator('input[role="combobox"]').getAttribute('aria-expanded').catch(() => null)) !== 'true')
+        await box.locator('[id^="downshift-"][id$="-toggle-button"]').first().click({ force: true }).catch(() => {});
       if (FIXED) await PAUSE(1200);
       const opts = page.locator('[role="option"]');
       await opts.first().waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});

@@ -1,0 +1,10 @@
+report-normalize → docs/report.json
+  checks      402  (pass 211  fail 9  fault 181  skipped 1  manual 0)
+  of which declared-but-never-run (blocks): 9
+  instruments 21  (pass 11  fail 2  fault 5  skipped 1  manual 2)
+    FAULT  deferrals — .claude/loop/deferrals.jsonl does not exist — the instrument did not run, or ran without writing. No producer for this path is recorded in report-normalize.js PRODUCERS, so this report cannot say what writes it — closing that gap is the first step.
+    FAULT  full-app-walkthrough — tests/e2e/artifacts/findings.json does not exist — the instrument did not run, or ran without writing. `node tests/e2e/full-app-walkthrough.js` writes it; until it does, nothing in this report is evidence about what it would have measured.
+    FAULT  run-ledger — .claude/loop/run-ledger.jsonl does not exist — the instrument did not run, or ran without writing. No producer for this path is recorded in report-normalize.js PRODUCERS, so this report cannot say what writes it — closing that gap is the first step.
+    FAULT  verify-loop/Core/design audit (rungs 6-7 — UI/a11y, informational) — no reason recorded
+    FAULT  verify-loop/Core/review (model vs decided — report.json) — no reason recorded
+  coverage    7 module(s)   deferrals 0

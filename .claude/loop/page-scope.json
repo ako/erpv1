@@ -1,0 +1,88 @@
+{
+  "counts": {
+    "modules": 7,
+    "pagesTotal": 9,
+    "perModule": {
+      "Core": 7,
+      "Inventory": 0,
+      "Invoicing": 0,
+      "Partners": 2,
+      "Products": 0,
+      "Purchasing": 0,
+      "Sales": 0
+    }
+  },
+  "distinctRolePageSets": 4,
+  "generatedAt": "2026-10-14T23:29:08Z",
+  "inScope": [
+    "Core.Company_Edit",
+    "Core.Home_Web",
+    "Core.PaymentTerm_NewEdit",
+    "Core.PaymentTerm_Overview",
+    "Core.Sequence_Overview",
+    "Core.Tax_NewEdit",
+    "Core.Tax_Overview",
+    "Partners.Partner_NewEdit",
+    "Partners.Partner_Overview"
+  ],
+  "orphans": [],
+  "provenance": {
+    "commands": {
+      "pages": "/home/user/erpv1/mxcli -p /home/user/erpv1/app/erpv1.mpr -c \"SHOW PAGES IN <Module>\"",
+      "roles": "/home/user/erpv1/mxcli -p /home/user/erpv1/app/erpv1.mpr describe --format elk page <QN> \u2014 `grant view on page ... to ...;` in mdlSource"
+    },
+    "describeFailed": [],
+    "droppedTableRows": 14,
+    "generator": "bin/page-scope.sh",
+    "moduleSource": "SHOW MODULES \u2014 rows with an empty Source column, minus System/Administration/Atlas* (harness-architecture.md \u00a77)",
+    "modulesScanned": [
+      "Core",
+      "Inventory",
+      "Invoicing",
+      "Partners",
+      "Products",
+      "Purchasing",
+      "Sales"
+    ],
+    "rolesDerived": true
+  },
+  "roles": [
+    {
+      "inScopePages": 6,
+      "pages": [
+        "Core.Company_Edit",
+        "Core.PaymentTerm_NewEdit",
+        "Core.PaymentTerm_Overview",
+        "Core.Sequence_Overview",
+        "Core.Tax_NewEdit",
+        "Core.Tax_Overview"
+      ],
+      "role": "Core.Admin"
+    },
+    {
+      "inScopePages": 4,
+      "pages": [
+        "Core.PaymentTerm_NewEdit",
+        "Core.PaymentTerm_Overview",
+        "Core.Tax_NewEdit",
+        "Core.Tax_Overview"
+      ],
+      "role": "Core.Config"
+    },
+    {
+      "inScopePages": 1,
+      "pages": [
+        "Core.Home_Web"
+      ],
+      "role": "Core.User"
+    },
+    {
+      "inScopePages": 2,
+      "pages": [
+        "Partners.Partner_NewEdit",
+        "Partners.Partner_Overview"
+      ],
+      "role": "Partners.Editor"
+    }
+  ]
+}

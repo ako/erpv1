@@ -1,0 +1,5 @@
+conformance	pass	0	136	.claude/loop/review/Core/10-conformance.log	
+graph-sweep	pass	0	1	.claude/loop/review/Core/graph.tsv	
+coverage	pass	0	3	.claude/loop/review/Core/coverage.txt	
+journey-runner	fault	2			no journey run in this invocation
+ui-review	fault	2			no visual review in this invocation - module-review.md stage 4
