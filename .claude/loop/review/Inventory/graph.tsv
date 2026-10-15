@@ -1,0 +1,3 @@
+kind	a	b	c
+wiring	Inventory	110	20|130
+orphan	Inventory.ASU_Inventory_SeedData	4	

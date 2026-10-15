@@ -218,7 +218,7 @@ async function act(page, a, vars, note) {
       // .mx-name-<widget> finds nothing and a plain fill() does not commit a
       // selection. Toggle, then keyboard-select — the technique proven in
       // spec-fieldscan-otel.js.
-      const box = w(a.widget);
+      const box = a.nth ? page.locator(`.mx-name-${a.widget}`).nth(a.nth) : w(a.widget); // nth: the row of a list view
       if (!(await box.isVisible({ timeout: 6000 }).catch(() => false)))
         throw new Error(`.mx-name-${a.widget} not visible`);
       await box.scrollIntoViewIfNeeded().catch(() => {});

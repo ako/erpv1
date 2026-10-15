@@ -1,8 +1,9 @@
 {
   "id": "J-INV-01",
-  "title": "Warehouse user validates the delivery of a confirmed sales order: stock goes down, the order reads fully delivered",
+  "title": "Warehouse user delivers part of a confirmed sales order: 3 of 5 chairs, the rest to a backorder; the order reads partially delivered",
   "requirement": [
     "F006-UC002",
+    "F006-UC004",
     "F007-UC001",
     "F007-UC002"
   ],
@@ -10,11 +11,11 @@
   "requires": [
     "delivery-ready"
   ],
-  "_seedNote": "the delivery comes from a confirmed sales order (J-SALES-01 confirms 5 Office Chairs for Azure Interior; 8 on hand makes it Ready)",
+  "_seedNote": "the delivery comes from a confirmed sales order (J-SALES-01 confirms 5 Office Chairs for Azure Interior; enough chairs on hand makes it Ready \u2014 J-INV-04 tops them up). Backorders (2 chairs) are excluded from the seed so a re-run never picks one.",
   "seeds": [
     {
       "name": "deliveryNo",
-      "sql": "SELECT t.Number AS n FROM Inventory.Transfer AS t WHERE t.Status = 'Ready' AND t/Inventory.Transfer_OperationType/Inventory.OperationType/Kind = 'Delivery' AND t/Inventory.Transfer_SalesOrder/Sales.SalesOrder/Number != NULL ORDER BY t.Number DESC LIMIT 1"
+      "sql": "SELECT t.Number AS n FROM Inventory.Transfer AS t WHERE t.Status = 'Ready' AND t/Inventory.Transfer_OperationType/Inventory.OperationType/Kind = 'Delivery' AND t/Inventory.Transfer_SalesOrder/Sales.SalesOrder/Number != NULL AND NOT EXISTS (SELECT b.ID FROM Inventory.Transfer AS b WHERE t/Inventory.Transfer_Backorder = b.ID) ORDER BY t.Number DESC LIMIT 1"
     },
     {
       "name": "orderNo",
@@ -65,12 +66,34 @@
       }
     },
     {
-      "name": "Validate: the delivery is done",
+      "name": "Process 3 of the 5 chairs and validate: the backorder question opens",
       "actions": [
+        {
+          "do": "fill",
+          "widget": "lntxtQuantity",
+          "value": "3",
+          "label": "Quantity (chairs processed)"
+        },
         {
           "do": "click",
           "widget": "btnValidate0",
-          "label": "Validate"
+          "label": "Validate \u2014 straight after typing, as a user would"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-pbtnCreatebackorder",
+        "textPresent": [
+          "less than the initial demand"
+        ]
+      }
+    },
+    {
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order",
+      "actions": [
+        {
+          "do": "click",
+          "widget": "pbtnCreatebackorder",
+          "label": "Create backorder"
         }
       ],
       "ui": {
@@ -80,10 +103,28 @@
         ]
       },
       "data": {
+        "creates": "Inventory.Transfer",
+        "delta": 1,
+        "assocMustBeSet": [
+          {
+            "entity": "Inventory.Transfer",
+            "assoc": "Inventory.Transfer_SalesOrder",
+            "target": "Sales.SalesOrder",
+            "mustPointAt": {
+              "attr": "Number",
+              "value": "{{orderNo}}"
+            }
+          }
+        ],
         "oql": [
           {
-            "label": "the delivery is done with a date",
+            "label": "the delivery is done with 3 chairs",
             "sql": "SELECT COUNT(t.ID) AS n FROM Inventory.Transfer AS t WHERE t.Number = '{{deliveryNo}}' AND t.Status = 'Done' AND t.DateDone != NULL",
+            "atLeast": 1
+          },
+          {
+            "label": "the backorder carries the 2 chairs not delivered",
+            "sql": "SELECT COUNT(m.ID) AS n FROM Inventory.StockMove AS m WHERE m/Inventory.StockMove_Transfer/Inventory.Transfer/Inventory.Transfer_Backorder/Inventory.Transfer/Number = '{{deliveryNo}}' AND m.DemandQuantity = 2",
             "atLeast": 1
           }
         ]
@@ -91,8 +132,8 @@
     }
   ],
   "outcome": {
-    "label": "the sales order reads fully delivered",
-    "sql": "SELECT COUNT(o.ID) AS n FROM Sales.SalesOrder AS o WHERE o.Number = '{{orderNo}}' AND o.DeliveryStatus = 'FullyDelivered'",
+    "label": "the sales order reads partially delivered, 3 delivered on its line",
+    "sql": "SELECT COUNT(o.ID) AS n FROM Sales.SalesOrder AS o WHERE o.Number = '{{orderNo}}' AND o.DeliveryStatus = 'PartiallyDelivered'",
     "atLeast": 1
   }
 }

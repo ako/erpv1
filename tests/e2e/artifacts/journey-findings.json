@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-15T20:02:11.551Z",
+  "capturedAt": "2026-10-15T20:18:22.427Z",
   "configuredUser": "inventory.manager",
   "actualUser": "inventory.manager",
   "usedFallback": false,
@@ -22,72 +22,45 @@
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Stock: both stock levels are listed: reached",
+      "name": "Open Inventory > Stock: reached",
       "verdict": "PASS",
       "detail": ".mx-name-lvLines",
-      "requirement": "F006-UC006"
+      "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Stock: both stock levels are listed: page says \"Stock\"",
+      "name": "Row 1: location WH/Stock: combobox lncmbStockLevelLocation committed the seeded value",
       "verdict": "PASS",
-      "detail": "",
-      "requirement": "F006-UC006"
+      "detail": "WH/Stock",
+      "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Stock: both stock levels are listed: page says \"Counted quantity\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F006-UC006"
-    },
-    {
-      "rung": "ui",
-      "name": "Count {{counted}} Office Chairs and press the row's Apply: reached",
+      "name": "Row 1: location WH/Stock: reached",
       "verdict": "PASS",
       "detail": ".mx-name-lvLines",
-      "requirement": "F006-UC006"
-    },
-    {
-      "rung": "data",
-      "name": "Count {{counted}} Office Chairs and press the row's Apply: Inventory.StockMove +1",
-      "verdict": "PASS",
-      "detail": "before=11 after=12 delta=1",
-      "requirement": "F006-UC006"
-    },
-    {
-      "rung": "data",
-      "name": "Count {{counted}} Office Chairs and press the row's Apply: an adjustment move for the chairs is done",
-      "verdict": "PASS",
-      "detail": "got 5, need >= 1",
-      "requirement": "F006-UC006"
+      "requirement": ""
     },
     {
       "rung": "outcome",
-      "name": "J-INV-04 end state",
+      "name": "REPAIR-STOCK end state",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC006"
+      "detail": "got 2, expected 2",
+      "requirement": ""
     }
   ],
   "walks": [
     {
-      "journey": "J-INV-04",
-      "title": "Inventory manager counts 5 more Office Chairs than recorded and applies the row's count: stock is corrected through one adjustment move",
+      "journey": "REPAIR-STOCK",
+      "title": "Data repair after the verify monkey cleared product/location on both stock rows (2026-10-16)",
       "persona": "inventory.manager",
-      "requirement": [
-        "F006-UC006"
-      ],
-      "seeds": {
-        "counted": "30"
-      },
+      "requirement": [],
+      "seeds": {},
       "steps": [
         {
           "n": 1,
-          "name": "Open Inventory > Stock: both stock levels are listed",
-          "requirement": [
-            "F006-UC006"
-          ],
+          "name": "Open Inventory > Stock",
+          "requirement": [],
           "actions": [
             {
               "verb": "Navigate",
@@ -97,63 +70,41 @@
           ],
           "expects": {
             "landsOn": ".mx-name-lvLines",
-            "pageSays": [
-              "Stock",
-              "Counted quantity"
-            ],
+            "pageSays": [],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-04-step1.png",
+            "file": "../tests/e2e/artifacts/REPAIR-STOCK-step1.png",
             "title": "Mendix - Stock",
             "url": "http://localhost:8080/p/stock-level-overview",
-            "at": "2026-10-15T20:02:08.358Z"
+            "at": "2026-10-15T20:18:17.474Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Inventory > Stock: both stock levels are listed: reached",
+              "name": "Open Inventory > Stock: reached",
               "verdict": "PASS",
               "detail": ".mx-name-lvLines"
-            },
-            {
-              "rung": "ui",
-              "name": "Open Inventory > Stock: both stock levels are listed: page says \"Stock\"",
-              "verdict": "PASS",
-              "detail": ""
-            },
-            {
-              "rung": "ui",
-              "name": "Open Inventory > Stock: both stock levels are listed: page says \"Counted quantity\"",
-              "verdict": "PASS",
-              "detail": ""
             }
           ],
-          "ms": 1739
+          "ms": 1734
         },
         {
           "n": 2,
-          "name": "Count {{counted}} Office Chairs and press the row's Apply",
-          "requirement": [
-            "F006-UC006"
-          ],
+          "name": "Row 1: location WH/Stock",
+          "requirement": [],
           "actions": [
             {
-              "verb": "Type",
-              "target": "\"30\" into Counted quantity (Office Chair)",
-              "selector": ".mx-name-lntxtCountedQuantity"
+              "verb": "Select",
+              "target": "\"WH/Stock\" in lncmbStockLevelLocation",
+              "selector": ".mx-name-lncmbStockLevelLocation"
             },
             {
-              "verb": "Click",
-              "target": "Apply (Office Chair row) — straight after typing, as a user would",
-              "selector": ".mx-name-btnRowAction"
-            },
-            {
-              "verb": "dismissModal",
-              "target": "",
+              "verb": "Wait",
+              "target": "1500ms",
               "selector": null
             }
           ],
@@ -162,40 +113,30 @@
             "pageSays": [],
             "pageDoesNotSay": [],
             "microflows": [],
-            "writes": {
-              "entity": "Inventory.StockMove",
-              "delta": 1,
-              "associations": []
-            }
+            "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-04-step2.png",
+            "file": "../tests/e2e/artifacts/REPAIR-STOCK-step2.png",
             "title": "Mendix - Stock",
             "url": "http://localhost:8080/p/stock-level-overview",
-            "at": "2026-10-15T20:02:11.306Z"
+            "at": "2026-10-15T20:18:22.288Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Count {{counted}} Office Chairs and press the row's Apply: reached",
+              "name": "Row 1: location WH/Stock: combobox lncmbStockLevelLocation committed the seeded value",
+              "verdict": "PASS",
+              "detail": "WH/Stock"
+            },
+            {
+              "rung": "ui",
+              "name": "Row 1: location WH/Stock: reached",
               "verdict": "PASS",
               "detail": ".mx-name-lvLines"
-            },
-            {
-              "rung": "data",
-              "name": "Count {{counted}} Office Chairs and press the row's Apply: Inventory.StockMove +1",
-              "verdict": "PASS",
-              "detail": "before=11 after=12 delta=1"
-            },
-            {
-              "rung": "data",
-              "name": "Count {{counted}} Office Chairs and press the row's Apply: an adjustment move for the chairs is done",
-              "verdict": "PASS",
-              "detail": "got 5, need >= 1"
             }
           ],
-          "ms": 3049
+          "ms": 4813
         }
       ]
     }

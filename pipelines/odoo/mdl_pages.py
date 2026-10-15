@@ -67,6 +67,11 @@ ROW_ACTION = {'Inventory.StockLevel': ('Apply', 'Inventory.ACT_StockLevel_ApplyC
 # Inputs on an editable list that do NOT save on leave: the row action is their only writer. A counted quantity that saved on
 # leave landed after Apply had cleared it, so the count came back and a second Apply would add the stock twice (J-INV-04).
 NO_ROW_SAVE = {('Inventory.StockLevel', 'CountedQuantity')}
+# Inputs editable only while empty (a new row): the fields that identify the row. An automated sweep's "Clear selection" on
+# a saved stock row's product/location saved at once and orphaned the stock (verify-module monkey, 2026-10-16).
+EDITABLE_WHEN_EMPTY = {('Inventory.StockLevel', 'StockLevel_Product'), ('Inventory.StockLevel', 'StockLevel_Location'),
+                       ('Inventory.ReorderRule', 'ReorderRule_Product'), ('Inventory.ReorderRule', 'ReorderRule_Location'),
+                       ('Purchasing.VendorPrice', 'VendorPrice_Vendor'), ('Purchasing.VendorPrice', 'VendorPrice_Product')}
 # Inputs shown only in some states (C1-04: a template replaces every line, so only on a quotation).
 VISIBLE_WHEN = {('Sales.SalesOrder', 'SalesOrder_QuotationTemplate'):
                 "$currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation or $currentObject/Status = Sales.ENUM_SalesOrderStatus.QuotationSent"}
@@ -185,6 +190,8 @@ def input_widget(e, f, ind, readonly=False, prefix='in', row_save=False):
         ro = ', OnChange: call microflow %s(%s = $currentObject)' % (oc, e['name'].split('.')[1])
     elif row_save and not ro:
         ro = ', OnChange: save changes'   # a row of an editable list page commits itself (C1-07: edits were lost)
+    if (e['name'], f) in EDITABLE_WHEN_EMPTY and 'Editable: Never' not in ro:
+        ro += ', Editable: $currentObject/%s.%s = empty' % (e['name'].split('.')[0], f)
     vis = VISIBLE_WHEN.get((e['name'], f))
     if vis:
         ro += ', Visible: ' + vis
@@ -327,7 +334,7 @@ def editable_listview(e, cols, source, ind, add_mf, delete=True, row_save=False)
     labels; Core main.scss shows them only on phones, where the caption row is hidden (ui-review 2026-10-14 P2-1)."""
     def weight(c):
         a = attr(e, c)
-        if c == cols[0] and assoc(e, c):
+        if c == cols[0] and assoc(e, c) and (e['name'].endswith('Line') or e['name'] == 'Inventory.StockMove'):
             return 5   # the line's product: its name must read (ui-review 2026-10-15 Sales/Purchasing P2)
         return 3 if (a and a['type'] == 'String') or assoc(e, c) else 2
     row_act = ROW_ACTION.get(e['name'])

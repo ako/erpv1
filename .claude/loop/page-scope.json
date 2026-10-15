@@ -1,10 +1,10 @@
 {
   "counts": {
     "modules": 7,
-    "pagesTotal": 32,
+    "pagesTotal": 39,
     "perModule": {
       "Core": 7,
-      "Inventory": 0,
+      "Inventory": 7,
       "Invoicing": 0,
       "Partners": 4,
       "Products": 8,
@@ -12,8 +12,8 @@
       "Sales": 7
     }
   },
-  "distinctRolePageSets": 13,
-  "generatedAt": "2026-10-15T10:43:28Z",
+  "distinctRolePageSets": 16,
+  "generatedAt": "2026-10-15T20:10:03Z",
   "inScope": [
     "Core.Company_Edit",
     "Core.Home_Web",
@@ -22,6 +22,13 @@
     "Core.Sequence_Overview",
     "Core.Tax_NewEdit",
     "Core.Tax_Overview",
+    "Inventory.Inventory_Dashboard",
+    "Inventory.ReorderRule_Overview",
+    "Inventory.StockLevel_Overview",
+    "Inventory.Transfer_NewEdit",
+    "Inventory.Transfer_Overview",
+    "Inventory.ValidateTransfer_Popup",
+    "Inventory.Warehouse_Edit",
     "Partners.PartnerChild_NewEdit",
     "Partners.Partner_NewEdit",
     "Partners.Partner_Overview",
@@ -98,6 +105,38 @@
         "Core.Home_Web"
       ],
       "role": "Core.User"
+    },
+    {
+      "inScopePages": 7,
+      "pages": [
+        "Inventory.Inventory_Dashboard",
+        "Inventory.ReorderRule_Overview",
+        "Inventory.StockLevel_Overview",
+        "Inventory.Transfer_NewEdit",
+        "Inventory.Transfer_Overview",
+        "Inventory.ValidateTransfer_Popup",
+        "Inventory.Warehouse_Edit"
+      ],
+      "role": "Inventory.Manager"
+    },
+    {
+      "inScopePages": 2,
+      "pages": [
+        "Inventory.ReorderRule_Overview",
+        "Inventory.Transfer_NewEdit"
+      ],
+      "role": "Inventory.Reader"
+    },
+    {
+      "inScopePages": 5,
+      "pages": [
+        "Inventory.Inventory_Dashboard",
+        "Inventory.StockLevel_Overview",
+        "Inventory.Transfer_NewEdit",
+        "Inventory.Transfer_Overview",
+        "Inventory.ValidateTransfer_Popup"
+      ],
+      "role": "Inventory.User"
     },
     {
       "inScopePages": 3,

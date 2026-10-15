@@ -1,0 +1,1444 @@
+{
+ "schemaVersion": "1.1",
+ "project": {
+  "id": "erpv1",
+  "displayName": "erpv1",
+  "mpr": "erpv1.mpr",
+  "mprModifiedAt": null,
+  "mendixVersion": null,
+  "toolkitCommit": "99ef8f5",
+  "gitCommit": "a85647e",
+  "branch": "claude/friendly-dirac-db6s4k"
+ },
+ "run": {
+  "startedAt": "2026-10-15T20:05:28Z",
+  "finishedAt": "2026-10-15T20:06:30Z",
+  "trigger": "review-module",
+  "target": "Inventory",
+  "env": {
+   "baseUrl": null,
+   "host": null,
+   "ownership": "unknown",
+   "ownershipBasis": "no app contacted — this is a model-side review, run with the app down",
+   "user": null,
+   "userFallbackUsed": false,
+   "database": null
+  },
+  "reproduce": {
+   "command": "bin/review-module.sh Inventory",
+   "seeds": null,
+   "monkeySeed": null
+  }
+ },
+ "checks": [
+  {
+   "id": "review/conformance/inventory/f006-inventory-actorrolemapping-2",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/actorRoleMapping/* (2) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "SHOW USER ROLES"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-actors-2",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/actors/* (2) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "SHOW USER ROLES"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-domainentities-0-46",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/domainEntities/0/* (46) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Inventory.Warehouse"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-domainentities-1-61",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/domainEntities/1/* (61) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Inventory.Location"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-domainentities-2-68",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/domainEntities/2/* (68) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Inventory.OperationType"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-domainentities-3-123",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/domainEntities/3/* (123) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Inventory.Transfer"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-domainentities-4-119",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/domainEntities/4/* (119) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Inventory.StockMove"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-domainentities-5-66",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/domainEntities/5/* (66) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Inventory.StockLevel"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-domainentities-6-83",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/domainEntities/6/* (83) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Inventory.ReorderRule"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-domainentities-7-22",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/domainEntities/7/* (22) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Inventory.ValidateTransferRequest"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-enumerations-0-21",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/enumerations/0/* (21) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Inventory.ENUM_LocationType"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-enumerations-1-13",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/enumerations/1/* (13) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Inventory.ENUM_OperationKind"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-enumerations-2-20",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/enumerations/2/* (20) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Inventory.ENUM_TransferStatus"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-microflows-0-11",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/microflows/0/* (11) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Inventory.ACT_Transfer_Confirm"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-microflows-1-12",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/microflows/1/* (12) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Inventory.ACT_Transfer_CheckAvailability"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-microflows-2-13",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/microflows/2/* (13) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Inventory.ACT_Transfer_Validate"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-microflows-3-17",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/microflows/3/* (17) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Inventory.SUB_Transfer_Done"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-microflows-4-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/microflows/4/* (10) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Inventory.ACT_Transfer_Cancel"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-microflows-5-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/microflows/5/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Inventory.ACT_StockLevel_ApplyCount"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-microflows-6-9",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/microflows/6/* (9) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Inventory.SCE_ReorderRules_Run"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-microflows-7-11",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/microflows/7/* (11) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Inventory.SUB_ReorderRule_Replenish"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-pages-0-9",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/pages/0/* (9) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Inventory.Inventory_Dashboard"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-pages-1-12",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/pages/1/* (12) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Inventory.Transfer_Overview"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-pages-2-15",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/pages/2/* (15) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Inventory.Transfer_NewEdit"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-pages-3-11",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/pages/3/* (11) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Inventory.ValidateTransfer_Popup"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-pages-4-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/pages/4/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Inventory.StockLevel_Overview"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-pages-5-11",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/pages/5/* (11) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Inventory.ReorderRule_Overview"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-pages-6-11",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/pages/6/* (11) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Inventory.Warehouse_Edit"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-timers-0-3",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/timers/0/* (3) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "SHOW SCHEDULED EVENTS"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f006-inventory-viewentities-0-4",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F006-inventory:/viewEntities/0/* (4) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Inventory.StockOnHand"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-actorrolemapping-3",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/actorRoleMapping/* (3) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "SHOW USER ROLES"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-actors-3",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/actors/* (3) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "SHOW USER ROLES"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-domainentities-0-23",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/domainEntities/0/* (23) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Inventory.Transfer"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-domainentities-1-21",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/domainEntities/1/* (21) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Inventory.StockMove"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-domainentities-2-15",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/domainEntities/2/* (15) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Sales.SalesOrder"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-domainentities-3-22",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/domainEntities/3/* (22) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Sales.SalesOrderLine"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-domainentities-4-15",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/domainEntities/4/* (15) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Purchasing.PurchaseOrder"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-domainentities-5-14",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/domainEntities/5/* (14) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Purchasing.PurchaseOrderLine"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-microflows-0-13",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/microflows/0/* (13) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Inventory.SUB_SalesOrder_CreateDelivery"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-microflows-1-12",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/microflows/1/* (12) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Sales.SUB_SalesOrder_UpdateDelivered"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-microflows-2-12",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/microflows/2/* (12) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Inventory.SUB_PurchaseOrder_CreateReceipt"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-microflows-3-12",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/microflows/3/* (12) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Purchasing.SUB_PurchaseOrder_UpdateReceived"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-pages-0-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/pages/0/* (10) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Sales.SalesOrder_NewEdit"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-pages-1-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/pages/1/* (10) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Purchasing.PurchaseOrder_NewEdit"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/inventory/f007-order-fulfilment-pages-2-9",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F007-order-fulfilment:/pages/2/* (9) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Inventory.Transfer_NewEdit"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/wiring/inventory",
+   "instrument": "graph-sweep",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Inventory — module wiring shape",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "110 elements · 20 inbound · 130 outbound",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "graph sweep has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "query",
+     "sql": "objects/refs in .mxcli/catalog.db, grouped by module",
+     "value": "20 inbound"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/orphan/inventory-asu-inventory-seeddata",
+   "instrument": "graph-sweep",
+   "kind": "conformance",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Inventory.ASU_Inventory_SeedData — microflow with no inbound call",
+   "verdict": "manual",
+   "provenance": "judged",
+   "detail": "4 activities, and no inbound call / action / menu_item / show_page / datasource edge. Entry-point prefixes are already excluded. SHOW REFERENCES TO misses layout snippetcalls, so this is strong evidence of deadness, not proof.",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "graph sweep has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "query",
+     "sql": "microflows_data LEFT JOIN refs (catalog.db)",
+     "value": "Inventory.ASU_Inventory_SeedData"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/coverage/inventory",
+   "instrument": "coverage",
+   "kind": "coverage",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Inventory — every BRD leaf claimed by exactly one ledger row",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "leaves 1407 · claimed 1214 · unclaimed 0 · phantom 0 · double-claimed 0 · summed over 2 BRD ledger(s)",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "coverage-check has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "log",
+     "path": "../../review/Inventory/coverage.txt"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/journey/inventory",
+   "instrument": "journey-runner",
+   "kind": "outcome",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Inventory — the running app was never contacted",
+   "verdict": "fault",
+   "provenance": "declared",
+   "notRun": true,
+   "detail": "no journey run in this invocation. bin/review-module.sh answers a MODEL question (does what was built match what was decided) and deliberately never starts the app. Nothing in this report is evidence about runtime behaviour. For that: bin/loop/verify-module.sh Inventory, with the stack up.",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "no journey ran, so no control could run either"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "bin/loop/verify-module.sh Inventory"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/look/inventory",
+   "instrument": "ui-review",
+   "kind": "outcome",
+   "module": "Inventory",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Inventory — no page in this module was looked at",
+   "verdict": "fault",
+   "provenance": "declared",
+   "notRun": true,
+   "detail": "module-review.md stage 4 (the LOOK) was not performed in this invocation and cannot be: it is a judgement pass over rendered pages, assessed against the wireframe, the design system, or §4d's unaided rubric where neither exists. Nothing in this report is evidence about how Inventory looks or whether a user could complete anything on it. For that: review-agent job 2, which writes design/ui-reviews/ui-review-<date>.html and appends P1/P2 findings to docs/improvement-register.md.",
+   "measuredAt": "2026-10-15T20:05:28Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "nobody looked, so there is nothing to control for"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "review-agent — module-review.md §4 over Inventory"
+    }
+   ],
+   "blocks": []
+  }
+ ],
+ "instruments": [
+  {
+   "name": "conformance",
+   "verdict": "pass",
+   "canExpressFault": true,
+   "evidenceStrength": "strong",
+   "expressibleVerdicts": [
+    "pass",
+    "fail",
+    "fault"
+   ],
+   "source": "architecture/modules/Inventory/coverage-ledger.md vs erpv1.mpr",
+   "rc": 0,
+   "elapsedSec": null,
+   "log": "docs/conformance/report-2026-10-15-F001-contacts-company-users.tsv, docs/conformance/report-2026-10-15-F002-units-of-measure.tsv, docs/conformance/report-2026-10-15-F003-product-catalogue-pricing.tsv, docs/conformance/report-2026-10-15-F004-sales.tsv, docs/conformance/report-2026-10-15-F005-purchasing.tsv, docs/conformance/report-2026-10-15-F006-inventory.tsv, docs/conformance/report-2026-10-15-F007-order-fulfilment.tsv, docs/conformance/report-2026-10-15-F008-invoicing-payments.tsv"
+  },
+  {
+   "name": "graph-sweep",
+   "verdict": "pass",
+   "canExpressFault": true,
+   "evidenceStrength": "medium",
+   "expressibleVerdicts": [
+    "pass",
+    "fault",
+    "manual"
+   ],
+   "source": ".mxcli/catalog.db",
+   "note": "wiring shape is measured; whether a given shape is a DEFECT is an intent question answered against the module brief, not here",
+   "rc": 0,
+   "elapsedSec": 1,
+   "log": ".claude/loop/review/Inventory/graph.tsv"
+  },
+  {
+   "name": "coverage",
+   "verdict": "pass",
+   "canExpressFault": true,
+   "evidenceStrength": "medium",
+   "expressibleVerdicts": [
+    "pass",
+    "fail",
+    "fault"
+   ],
+   "source": "BRD leaves vs coverage-ledger.md",
+   "rc": 0,
+   "elapsedSec": 1,
+   "log": ".claude/loop/review/Inventory/coverage.txt"
+  },
+  {
+   "name": "journey-runner",
+   "verdict": "fault",
+   "canExpressFault": true,
+   "evidenceStrength": "strong",
+   "expressibleVerdicts": [
+    "pass",
+    "fail",
+    "fault"
+   ],
+   "source": "journeys/Inventory.journey.json",
+   "rc": 2,
+   "elapsedSec": null,
+   "log": null,
+   "reason": "no journey run in this invocation"
+  },
+  {
+   "name": "ui-review",
+   "verdict": "fault",
+   "canExpressFault": true,
+   "evidenceStrength": "none",
+   "expressibleVerdicts": [
+    "fault"
+   ],
+   "source": "design/ui-reviews/ui-review-<date>.html (written by review-agent, not by this script)",
+   "note": "the visual assessment of every page in the module against wireframe, design system, or module-review.md §4d's unaided rubric. Judgement, not measurement — it is performed by a reviewer looking at rendered screens, and this chain never performs it",
+   "rc": 2,
+   "elapsedSec": null,
+   "log": null,
+   "reason": "no visual review in this invocation - module-review.md stage 4"
+  }
+ ],
+ "coverage": [
+  {
+   "module": "Inventory",
+   "brd": null,
+   "leaves": {
+    "total": 1407,
+    "claimed": 1214,
+    "unclaimed": 0,
+    "phantom": 0,
+    "doubleClaimed": 0
+   },
+   "rows": null,
+   "conformance": {
+    "checked": 45,
+    "ok": 33,
+    "stale": 0,
+    "understated": 12,
+    "unrunnable": 0
+   },
+   "journeys": [],
+   "source": "architecture/modules/Inventory/coverage-ledger.md",
+   "generatedAt": null
+  }
+ ],
+ "deferrals": [],
+ "walks": []
+}

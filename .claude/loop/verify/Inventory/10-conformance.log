@@ -1,0 +1,24 @@
+  measuring 1/45   measuring 2/45   measuring 3/45   measuring 4/45   measuring 5/45   measuring 6/45   measuring 7/45   measuring 8/45   measuring 9/45   measuring 10/45   measuring 11/45   measuring 12/45   measuring 13/45   measuring 14/45   measuring 15/45   measuring 16/45   measuring 17/45   measuring 18/45   measuring 19/45   measuring 20/45   measuring 21/45   measuring 22/45   measuring 23/45   measuring 24/45   measuring 25/45   measuring 26/45   measuring 27/45   measuring 28/45   measuring 29/45   measuring 30/45   measuring 31/45   measuring 32/45   measuring 33/45   measuring 34/45   measuring 35/45   measuring 36/45   measuring 37/45   measuring 38/45   measuring 39/45   measuring 40/45   measuring 41/45   measuring 42/45   measuring 43/45   measuring 44/45   measuring 45/45                               conformance-check · 2026-10-15
+  ledger rows            58   (measured 45 · prose-only 13)
+  OK                     33
+  STALE                  0   (claims built/partial, model says absent)
+  UNDERSTATED            12
+  report                 docs/conformance/report-2026-10-15-F006-inventory.tsv
+  report                 docs/conformance/report-2026-10-15-F007-order-fulfilment.tsv
+  newly baselined        45   (no baseline row yet — regressions measured from the next run)
+
+  mismatches:
+    Inventory                F006-inventory:`/actorRoleMapping/*` (2) not-built   -> PRESENT UNDERSTATED
+    Inventory                F006-inventory:`/actors/*` (2) not-built   -> PRESENT UNDERSTATED
+    Inventory                F006-inventory:`/microflows/5/*` (10) not-built   -> PRESENT UNDERSTATED
+    Inventory                F006-inventory:`/pages/0/*` (9) not-built   -> PRESENT UNDERSTATED
+    Inventory                F006-inventory:`/pages/1/*` (12) not-built   -> PRESENT UNDERSTATED
+    Inventory                F006-inventory:`/pages/4/*` (10) not-built   -> PRESENT UNDERSTATED
+    Inventory                F006-inventory:`/pages/5/*` (11) not-built   -> PRESENT UNDERSTATED
+    Inventory                F006-inventory:`/pages/6/*` (11) not-built   -> PRESENT UNDERSTATED
+    Inventory                F006-inventory:`/timers/0/*` (3) not-built   -> PRESENT UNDERSTATED
+    Inventory                F006-inventory:`/viewEntities/0/*` (4) not-built   -> PRESENT UNDERSTATED
+    Inventory                F007-order-fulfilment:`/actorRoleMapping/*` (3) not-built   -> PRESENT UNDERSTATED
+    Inventory                F007-order-fulfilment:`/actors/*` (3) not-built   -> PRESENT UNDERSTATED
+
+  no regressions against baseline.

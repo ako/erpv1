@@ -1,0 +1,8 @@
+[
+ {"module":"Inventory","page":"Inventory_Dashboard","user":"warehouse.user","menu":["Inventory","Overview"]},
+ {"module":"Inventory","page":"Transfer_Overview","user":"warehouse.user","menu":["Inventory","Transfers"]},
+ {"module":"Inventory","page":"Transfer_NewEdit","user":"warehouse.user","menu":["Inventory","Transfers"],"openRow":1},
+ {"module":"Inventory","page":"StockLevel_Overview","user":"warehouse.user","menu":["Inventory","Stock"]},
+ {"module":"Inventory","page":"ReorderRule_Overview","user":"inventory.manager","menu":["Inventory","Reorder rules"]},
+ {"module":"Inventory","page":"Warehouse_Edit","user":"inventory.manager","menu":["Configuration","Warehouse"]}
+]

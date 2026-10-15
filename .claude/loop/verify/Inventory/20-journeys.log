@@ -1,0 +1,40 @@
+
+=== PREFLIGHT ===
+  SETUP  admin: OK at localhost:8090 (credential from .mxcli/run-local.json (the run --local handshake for :8080))
+  SETUP  sessions: 0 live
+  [32mPASS[0m [ui] login  — warehouse.user
+  requires that no journey in this run leaves (trusted to the fixture): delivery-ready
+
+=== JOURNEY J-INV-01 — Warehouse user validates the delivery of a confirmed sales order: stock goes down, the order reads fully delivered
+    persona: warehouse.user   requirements: F006-UC002, F007-UC001, F007-UC002
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+    seeds: {"deliveryNo":"WH/OUT/00037","orderNo":"S00057"}
+
+  --- step 1/3: Open Inventory > Transfers: the delivery is listed
+  [32mPASS[0m [ui] Open Inventory > Transfers: the delivery is listed: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Open Inventory > Transfers: the delivery is listed: page says "WH/OUT/00037"
+
+  --- step 2/3: Open the delivery: Ready, the order's chairs reserved
+  [32mPASS[0m [ui] Open the delivery: Ready, the order's chairs reserved: reached  — .mx-name-btnValidate0
+  [32mPASS[0m [ui] Open the delivery: Ready, the order's chairs reserved: page says "WH/OUT/00037"
+  [32mPASS[0m [ui] Open the delivery: Ready, the order's chairs reserved: page says "Ready"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)  — got 1, need >= 1
+
+  --- step 3/3: Validate: the delivery is done
+  [32mPASS[0m [ui] Validate: the delivery is done: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Validate: the delivery is done: page says "Done"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Validate: the delivery is done: the delivery is done with a date  — got 1, need >= 1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [outcome] J-INV-01 end state  — got 1, need >= 1
+
+=== SUMMARY ===
+  PASS 11   FAIL 0   INVALID 0
+  findings → ../tests/e2e/artifacts/journey-findings.json

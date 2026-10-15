@@ -152,3 +152,6 @@
 1792093246	2026-10-15T19:40:46Z	Inventory.StockLevel_Overview	mdlsource/8-inventory/807-inventory-page-stock-level-overview.mdl
 1792093620	2026-10-15T19:47:00Z	Inventory.StockLevel_Overview	mdlsource/8-inventory/807-inventory-page-stock-level-overview.mdl
 1792094110	2026-10-15T19:55:10Z	Inventory.ValidateTransfer_Popup	mdlsource/_oneoff/2026-10-16-rebuild-inventory-lint-splits.mdl
+1792095190	2026-10-15T20:13:10Z	Inventory.StockLevel_Overview	mdlsource/8-inventory/807-inventory-page-stock-level-overview.mdl
+1792095263	2026-10-15T20:14:23Z	Inventory.ReorderRule_Overview	mdlsource/8-inventory/810-inventory-page-reorder-rule-overview.mdl
+1792095336	2026-10-15T20:15:36Z	Purchasing.VendorPrice_Overview	mdlsource/7-purchasing/done-715-purchasing-page-vendor-price-overview.mdl
