@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-15T23:04:34.172Z",
+  "capturedAt": "2026-10-15T23:04:43.928Z",
   "configuredUser": "inventory.manager",
   "actualUser": "inventory.manager",
   "usedFallback": false,
@@ -22,106 +22,134 @@
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Reorder rules: the chair rule is listed: reached",
+      "name": "Open Inventory > Stock: both stock levels are listed: reached",
       "verdict": "PASS",
       "detail": ".mx-name-lvLines",
-      "requirement": "F006-UC007"
+      "requirement": "F006-UC006"
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Reorder rules: the chair rule is listed: page says \"Reorder rules\"",
+      "name": "Open Inventory > Stock: both stock levels are listed: page says \"Stock\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC007"
+      "requirement": "F006-UC006"
     },
     {
       "rung": "ui",
-      "name": "Run scheduler: the rules ran: reached",
+      "name": "Open Inventory > Stock: both stock levels are listed: page says \"Counted quantity\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC006"
+    },
+    {
+      "rung": "ui",
+      "name": "Count {{counted}} Office Chairs and press the row's Apply: reached",
       "verdict": "PASS",
       "detail": ".mx-name-lvLines",
-      "requirement": "F006-UC007"
+      "requirement": "F006-UC006"
     },
     {
-      "rung": "ui",
-      "name": "Run scheduler: the rules ran: page says \"Reorder rules\"",
+      "rung": "data",
+      "name": "Count {{counted}} Office Chairs and press the row's Apply: Inventory.StockMove +1",
       "verdict": "PASS",
-      "detail": "",
-      "requirement": "F006-UC007"
+      "detail": "before=39 after=40 delta=1",
+      "requirement": "F006-UC006"
+    },
+    {
+      "rung": "data",
+      "name": "Count {{counted}} Office Chairs and press the row's Apply: an adjustment move for the chairs is done",
+      "verdict": "PASS",
+      "detail": "got 7, need >= 1",
+      "requirement": "F006-UC006"
     },
     {
       "rung": "outcome",
-      "name": "J-INV-03 end state",
+      "name": "J-INV-04 end state",
       "verdict": "PASS",
       "detail": "got 1, need >= 1",
-      "requirement": "F006-UC007"
+      "requirement": "F006-UC006"
     }
   ],
   "walks": [
     {
-      "journey": "J-INV-03",
-      "title": "Inventory manager runs the reorder rules: the Office Chair (below its minimum of 10) is ordered from Gemini Furniture",
+      "journey": "J-INV-04",
+      "title": "Inventory manager counts 5 more Office Chairs than recorded and applies the row's count: stock is corrected through one adjustment move",
       "persona": "inventory.manager",
       "requirement": [
-        "F006-UC007"
+        "F006-UC006"
       ],
-      "seeds": {},
+      "seeds": {
+        "counted": "3"
+      },
       "steps": [
         {
           "n": 1,
-          "name": "Open Inventory > Reorder rules: the chair rule is listed",
+          "name": "Open Inventory > Stock: both stock levels are listed",
           "requirement": [
-            "F006-UC007"
+            "F006-UC006"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Inventory › Reorder rules",
+              "target": "Inventory › Stock",
               "selector": null
             }
           ],
           "expects": {
             "landsOn": ".mx-name-lvLines",
             "pageSays": [
-              "Reorder rules"
+              "Stock",
+              "Counted quantity"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-03-step1.png",
-            "title": "Mendix - Reorder rules",
-            "url": "http://localhost:8080/p/reorder-rule-overview",
-            "at": "2026-10-15T23:04:32.005Z"
+            "file": "../tests/e2e/artifacts/J-INV-04-step1.png",
+            "title": "Mendix - Stock",
+            "url": "http://localhost:8080/p/stock-level-overview",
+            "at": "2026-10-15T23:04:40.482Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Inventory > Reorder rules: the chair rule is listed: reached",
+              "name": "Open Inventory > Stock: both stock levels are listed: reached",
               "verdict": "PASS",
               "detail": ".mx-name-lvLines"
             },
             {
               "rung": "ui",
-              "name": "Open Inventory > Reorder rules: the chair rule is listed: page says \"Reorder rules\"",
+              "name": "Open Inventory > Stock: both stock levels are listed: page says \"Stock\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "ui",
+              "name": "Open Inventory > Stock: both stock levels are listed: page says \"Counted quantity\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1717
+          "ms": 1729
         },
         {
           "n": 2,
-          "name": "Run scheduler: the rules ran",
+          "name": "Count {{counted}} Office Chairs and press the row's Apply",
           "requirement": [
-            "F006-UC007"
+            "F006-UC006"
           ],
           "actions": [
             {
+              "verb": "Type",
+              "target": "\"3\" into Counted quantity (Office Chair)",
+              "selector": ".mx-name-lntxtCountedQuantity"
+            },
+            {
               "verb": "Click",
-              "target": "Run scheduler",
-              "selector": ".mx-name-btnRunscheduler1"
+              "target": "Apply (Office Chair row) — straight after typing, as a user would",
+              "selector": ".mx-name-btnRowAction"
             },
             {
               "verb": "dismissModal",
@@ -131,35 +159,43 @@
           ],
           "expects": {
             "landsOn": ".mx-name-lvLines",
-            "pageSays": [
-              "Reorder rules"
-            ],
+            "pageSays": [],
             "pageDoesNotSay": [],
             "microflows": [],
-            "writes": null
+            "writes": {
+              "entity": "Inventory.StockMove",
+              "delta": 1,
+              "associations": []
+            }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-03-step2.png",
-            "title": "Mendix - Reorder rules",
-            "url": "http://localhost:8080/p/reorder-rule-overview",
-            "at": "2026-10-15T23:04:33.989Z"
+            "file": "../tests/e2e/artifacts/J-INV-04-step2.png",
+            "title": "Mendix - Stock",
+            "url": "http://localhost:8080/p/stock-level-overview",
+            "at": "2026-10-15T23:04:43.601Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Run scheduler: the rules ran: reached",
+              "name": "Count {{counted}} Office Chairs and press the row's Apply: reached",
               "verdict": "PASS",
               "detail": ".mx-name-lvLines"
             },
             {
-              "rung": "ui",
-              "name": "Run scheduler: the rules ran: page says \"Reorder rules\"",
+              "rung": "data",
+              "name": "Count {{counted}} Office Chairs and press the row's Apply: Inventory.StockMove +1",
               "verdict": "PASS",
-              "detail": ""
+              "detail": "before=39 after=40 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Count {{counted}} Office Chairs and press the row's Apply: an adjustment move for the chairs is done",
+              "verdict": "PASS",
+              "detail": "got 7, need >= 1"
             }
           ],
-          "ms": 1982
+          "ms": 3255
         }
       ]
     }
