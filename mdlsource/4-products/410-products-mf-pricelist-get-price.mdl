@@ -1,0 +1,95 @@
+mdl 1;
+-- 410-products-mf-pricelist-get-price.mdl — build-plan row 28 (F003-UC002/UC003). Owns Products.SUB_Pricelist_GetPrice
+-- and its helpers Products.SUB_PriceRule_Apply, Products.SUB_PriceRule_FindForCategory.
+
+/**
+ * Price of a product under one rule: fixed price, or the sales price less a discount.
+ *
+ * @param $PriceRule the matching rule (empty = no rule)
+ * @param $BasePrice the product's sales price
+ * @returns the price
+ */
+create or modify microflow Products.SUB_PriceRule_Apply ($PriceRule: Products.PriceRule, $BasePrice: Decimal)
+returns Decimal as $Price
+folder 'Pricing/Microflows'
+begin
+  if $PriceRule = empty then
+    return $BasePrice;
+  end if;
+  if $PriceRule/Computation = Products.ENUM_PriceComputation.FixedPrice then
+    return if $PriceRule/FixedPrice = empty then $BasePrice else $PriceRule/FixedPrice;
+  end if;
+  return round($BasePrice * (1 - (if $PriceRule/DiscountPercent = empty then 0 else $PriceRule/DiscountPercent) div 100), 2);
+end;
+
+/**
+ * The best category rule for a category or, failing that, its nearest ancestor (recursive walk up the
+ * parent chain; category trees are shallow).
+ *
+ * @param $Pricelist the pricelist
+ * @param $Category the category to start from
+ * @param $Quantity the ordered quantity
+ * @param $Date the order date
+ * @returns the matching rule, or empty
+ */
+create or modify microflow Products.SUB_PriceRule_FindForCategory ($Pricelist: Products.Pricelist, $Category: Products.ProductCategory, $Quantity: Decimal, $Date: DateTime)
+returns Products.PriceRule as $Rule
+folder 'Pricing/Microflows'
+begin
+  retrieve $Rule from Products.PriceRule
+    where [Products.PriceRule_Pricelist = $Pricelist][Products.PriceRule_Category = $Category][AppliesTo = 'ProductCategory']
+      [MinQuantity = empty or MinQuantity <= $Quantity][ValidFrom = empty or ValidFrom <= $Date][ValidTo = empty or ValidTo >= $Date]
+    sort by MinQuantity desc first;
+  if $Rule != empty then
+    return $Rule;
+  end if;
+  retrieve $Parent from $Category/Products.ProductCategory_Parent;
+  if $Parent = empty then
+    return empty;
+  end if;
+  $ParentRule = call microflow Products.SUB_PriceRule_FindForCategory(Pricelist = $Pricelist, Category = $Parent, Quantity = $Quantity, Date = $Date);
+  return $ParentRule;
+end;
+
+/**
+ * Unit price of a product for a quantity and date on a pricelist (Odoo product.pricelist._get_product_price).
+ * Rule precedence: a product rule, then a category rule walking up the parent chain, then an all-products rule;
+ * within each, the highest minimum quantity not above $Quantity, valid on $Date. No pricelist or no rule: sales price.
+ *
+ * @param $Pricelist the customer's pricelist (may be empty)
+ * @param $Product the product
+ * @param $Quantity the ordered quantity
+ * @param $Date the order date
+ * @returns the unit price
+ */
+create or modify microflow Products.SUB_Pricelist_GetPrice ($Pricelist: Products.Pricelist, $Product: Products.Product, $Quantity: Decimal, $Date: DateTime)
+returns Decimal as $Price
+folder 'Pricing/Microflows'
+begin
+  declare $Base Decimal = if $Product/SalesPrice = empty then 0 else $Product/SalesPrice;
+  if $Pricelist = empty then
+    return $Base;
+  end if;
+  retrieve $ProductRule from Products.PriceRule
+    where [Products.PriceRule_Pricelist = $Pricelist][Products.PriceRule_Product = $Product][AppliesTo = 'Product']
+      [MinQuantity = empty or MinQuantity <= $Quantity][ValidFrom = empty or ValidFrom <= $Date][ValidTo = empty or ValidTo >= $Date]
+    sort by MinQuantity desc first;
+  if $ProductRule != empty then
+    $ProductPrice = call microflow Products.SUB_PriceRule_Apply(PriceRule = $ProductRule, BasePrice = $Base);
+    return $ProductPrice;
+  end if;
+  retrieve $Category from $Product/Products.Product_Category;
+  if $Category != empty then
+    $CategoryRule = call microflow Products.SUB_PriceRule_FindForCategory(Pricelist = $Pricelist, Category = $Category, Quantity = $Quantity, Date = $Date);
+    if $CategoryRule != empty then
+      $CategoryPrice = call microflow Products.SUB_PriceRule_Apply(PriceRule = $CategoryRule, BasePrice = $Base);
+      return $CategoryPrice;
+    end if;
+  end if;
+  retrieve $GlobalRule from Products.PriceRule
+    where [Products.PriceRule_Pricelist = $Pricelist][AppliesTo = 'AllProducts']
+      [MinQuantity = empty or MinQuantity <= $Quantity][ValidFrom = empty or ValidFrom <= $Date][ValidTo = empty or ValidTo >= $Date]
+    sort by MinQuantity desc first;
+  $GlobalPrice = call microflow Products.SUB_PriceRule_Apply(PriceRule = $GlobalRule, BasePrice = $Base);
+  return $GlobalPrice;
+end;

@@ -29,6 +29,18 @@ ENTS, ENUMS = D.load()
 SYS_ATTR = {'CreatedDate': 'DateTime', 'ChangedDate': 'DateTime'}
 # links whose wireframe target is a prototype stand-in: the real page they open in the app
 LINK_TARGET = {'UserProfile_Edit': 'Administration.Account_Overview'}
+# hand-written logic a generated save runs just before its commit
+SAVE_HOOK = {'Products.ProductCategory': 'Products.SUB_ProductCategory_ComputeFullName'}
+LINK_CAPTION = {'Administration.Account_Overview': 'User accounts (Administration)'}
+
+
+def existing_page(scr):
+    """Qualified name of a ui_spec list page if it already exists in the model (links to later modules appear once built)."""
+    if scr not in U.S or U.S[scr]['kind'] != 'list':
+        return None
+    q = '%s.%s' % (module_of(U.S[scr]['entity']), scr)
+    out = subprocess.run(['./mxcli', '-p', 'app/erpv1.mpr', '-c', 'LIST PAGES'], cwd=ROOT, capture_output=True, text=True).stdout
+    return q if ('| %s ' % q) in out else None
 CAPTION_PREF = ['Name', 'Number', 'DisplayName', 'Code', 'FullName']
 EXTERNAL_CAPTION = {'Administration.Account': 'FullName', 'System.User': 'Name', 'System.Image': 'Name'}
 
@@ -206,7 +218,7 @@ def gen_list(s):
     L = page_head(None, "dynamictext txtTitle (Content: '%s', RenderMode: H1)" % esc(s['title']), actions)
     filt = set(s.get('filters', []))
     if s.get('editable'):
-        L += editable_listview(e, s['columns'], 'database %s sort by %s asc' % (D.qn(s['entity']), D.q(s['columns'][0])), '  ', None)
+        L += editable_listview(e, s['columns'], 'database %s sort by %s asc' % (D.qn(s['entity']), D.q(s['columns'][0])), '  ', None, delete=False)
         return L
     sort = s['columns'][0]
     src = 'database %s sort by %s asc' % (D.qn(s['entity']), D.q(sort) if attr(e, sort) else sort + '/' + caption_attr(assoc(e, sort)['target']))
@@ -220,21 +232,33 @@ def gen_list(s):
     return L
 
 
+LINE_READONLY = {'Code'}   # business keys other code depends on (Core.Sequence.Code = the numbering contract)
+
+
 def editable_listview(e, cols, source, ind, add_mf, delete=True):
-    """Inline-editable rows: a header row of captions, then one row of inputs per object."""
+    """Inline-editable rows: a caption row (desktop/tablet), then one row of inputs per object. Inputs keep their
+    labels; Core main.scss shows them only on phones, where the caption row is hidden (ui-review 2026-10-14 P2-1)."""
+    def weight(c):
+        a = attr(e, c)
+        return 3 if (a and a['type'] == 'String') or assoc(e, c) else 2
     avail = 12 - (1 if delete else 0)
-    widths = [avail // len(cols) + (1 if i >= len(cols) - avail % len(cols) else 0) for i in range(len(cols))]
+    ws = [weight(c) for c in cols]
+    widths = [max(1, int(avail * w / sum(ws))) for w in ws]
+    i = 0
+    while sum(widths) < avail:
+        widths[i % len(widths)] += 1
+        i += 1
     L = ['%slayoutgrid gridLinesHead (Class: \'th lines-head hide-phone\') {' % ind, '%s  row {' % ind]
     for c, w in zip(cols, widths):
         L.append("%s    column (DesktopWidth: %d) { dynamictext %s (Content: '%s', RenderMode: Text) }" % (ind, w, wid('hd', c), esc(label_of(e, c))))
     L += ['%s  }' % ind, '%s}' % ind]
-    L.append('%slistview lvLines (DataSource: %s, Editable: true) {' % (ind, source))
+    L.append('%slistview lvLines (DataSource: %s, Editable: true, Class: \'lines-list\') {' % (ind, source))
     L += ['%s  layoutgrid gridLine {' % ind, '%s    row {' % ind]
     for c, w in zip(cols, widths):
-        wd = input_widget(e, c, '', prefix='ln').replace("Label: '%s', " % esc(label_of(e, c)), '')
-        L.append('%s      column (DesktopWidth: %d) { %s }' % (ind, w, wd))
+        wd = input_widget(e, c, '', prefix='ln', readonly=c in LINE_READONLY)
+        L.append('%s      column (DesktopWidth: %d, TabletWidth: %d, PhoneWidth: 12) { %s }' % (ind, w, w, wd))
     if delete:
-        L.append("%s      column (DesktopWidth: 1) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }" % ind)
+        L.append("%s      column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }" % ind)
     L += ['%s    }' % ind, '%s  }' % ind, '%s}' % ind]
     if add_mf:
         L.append("%slinkbutton btnAddLine (Caption: '+ Add a line', Action: call microflow %s)" % (ind, add_mf))
@@ -260,12 +284,14 @@ def buttons(s, e, pname, popup=False):
     for i, b in enumerate(s.get('buttons', [])):
         cap, act = b[0], b[1]
         states = b[2] if len(b) > 2 else None
-        if act == 'save':
+        if cap == 'Archive':
+            act = 'ACT_%s_Archive' % e['name'].split('.')[1]
+        if act == 'save' or act.startswith('VAL_'):
             short = e['name'].split('.')[1]
             a = 'call microflow %s.ACT_%s_Save(%s = $currentObject)' % (module_of(e['name']), short, short)
         else:
-            mod = D_MF_MODULE(act)
-            params = MF_PARAMS(act)
+            mod = D_MF_MODULE(act, e['name'])
+            params = MF_PARAMS(act, e['name'])
             args = ', '.join('%s = $currentObject' % p for p in params[:1])  # buttons sit inside dvMain
             a = 'call microflow %s.%s%s' % (mod, act, '(%s)' % args if args else '')
         vis = ''
@@ -295,12 +321,14 @@ def _load_mfs():
     return _MF
 
 
-def D_MF_MODULE(name):
-    return _load_mfs()[name]['module']
+def D_MF_MODULE(name, entity=None):
+    m = _load_mfs().get(name)
+    return m['module'] if m else module_of(entity)
 
 
-def MF_PARAMS(name):
-    return [p['name'] for p in _load_mfs()[name].get('params', [])]
+def MF_PARAMS(name, entity=None):
+    m = _load_mfs().get(name)
+    return [p['name'] for p in m.get('params', [])] if m else [entity.split('.')[1]]
 
 
 def gen_form(s, popup=False):
@@ -336,10 +364,12 @@ def gen_form(s, popup=False):
         L.append('    }')
     if s.get('notes'):
         L.append(input_widget(e, s['notes'], '    '))
-    for i, (text, target) in enumerate(s.get('links', [])):
-        page = LINK_TARGET.get(target)
+    links = [(t, LINK_TARGET.get(g) or existing_page(g)) for t, g in s.get('links', [])]
+    if any(p for _, p in links):
+        L.append("    dynamictext hRelated (Content: 'Related', RenderMode: H2)")
+    for i, (text, page) in enumerate(links):
         if page:
-            L.append("    linkbutton lnk%d (Caption: '%s', Action: show page %s)" % (i, esc(text.split(':')[0]), page))
+            L.append("    linkbutton lnk%d (Caption: '%s', Action: show page %s)" % (i, esc(LINK_CAPTION.get(page, text.split(':')[0])), page))
     if popup:
         L.append('    footer {')
         L += ['      ' + a for a in acts]
@@ -351,8 +381,10 @@ def save_microflows(s, folder):
     """VAL_/SUB_/ACT_<E>_Save for a form whose Save has no hand-written microflow in the BRDs.
     VAL_ flags every required (BRD mandatory) field shown on the page, collect-all
     (learned-microflow-patterns.md); SUB_ commits with refresh; ACT_ calls both and closes the page."""
-    if not any(b[1] == 'save' for b in s.get('buttons', [])):
+    save_btn = next((b for b in s.get('buttons', []) if b[1] == 'save' or b[1].startswith('VAL_')), None)
+    if not save_btn:
         return []
+    own_val = save_btn[1] if save_btn[1].startswith('VAL_') else None
     e = ent(s['entity'])
     mod, short = module_of(e['name']), e['name'].split('.')[1]
     if 'ACT_%s_Save' % short in _load_mfs():
@@ -374,6 +406,37 @@ def save_microflows(s, folder):
     set $IsValid = false;
   end if;''' % (c, short, f if attr(e, f) else '%s.%s' % (mod, f), esc(label_of(e, f))) for f, c in checks)
     mfolder = folder.replace('/Pages', '/Microflows')
+    hook = SAVE_HOOK.get(e['name'])
+    hook_call = ('  call microflow %s(%s = $%s);\n' % (hook, short, short)) if hook else ''
+    val_doc = '' if own_val else '''/** Validate a %(short)s before save: every required field on %(page)s, all flagged on one submit. */
+create or modify microflow %(mod)s.VAL_%(short)s ($%(short)s: %(q)s)
+returns Boolean as $IsValid
+folder '%(f)s'
+begin
+  declare $IsValid Boolean = true;
+%(body)s
+  return $IsValid;
+end;
+
+''' % dict(short=short, mod=mod, q=e['name'], page=s['name'], f=mfolder, body=body)
+    return [val_doc + '''/** Persist a validated %(short)s. */
+create or modify microflow %(mod)s.SUB_%(short)s_Save ($%(short)s: %(q)s)
+folder '%(f)s'
+begin
+%(hook)s  commit $%(short)s with events refresh;
+end;
+
+/** Save button on %(page)s: validate, persist, close. */
+create or modify microflow %(mod)s.ACT_%(short)s_Save ($%(short)s: %(q)s)
+folder '%(f)s'
+begin
+  $IsValid = call microflow %(mod)s.%(val)s(%(short)s = $%(short)s);
+  if $IsValid then
+    call microflow %(mod)s.SUB_%(short)s_Save(%(short)s = $%(short)s);
+    close page;
+  end if;
+end;
+''' % dict(short=short, mod=mod, q=e['name'], page=s['name'], f=mfolder, hook=hook_call, val=own_val or 'VAL_%s' % short)]
     return ['''/** Validate a %(short)s before save: every required field on %(page)s, all flagged on one submit. */
 create or modify microflow %(mod)s.VAL_%(short)s ($%(short)s: %(q)s)
 returns Boolean as $IsValid

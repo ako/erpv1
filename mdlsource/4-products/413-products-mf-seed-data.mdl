@@ -1,0 +1,82 @@
+mdl 1;
+-- 413-products-mf-seed-data.mdl — Products reference data (F002/F003), idempotent by business key.
+-- Startup chain (layering-safe, every call points DOWN): ASU_Products_SeedData calls Core.ASU_Core_SeedData first;
+-- 0-scaffold/020-settings.mdl points the after-startup setting at the highest module's ASU built so far.
+
+/** Ensure a unit category exists (business key: name). */
+create or modify microflow Products.SUB_UoMCategory_Ensure ($Name: String)
+returns Products.UoMCategory as $Category
+folder 'UnitsOfMeasure/Microflows'
+begin
+  retrieve $Category from Products.UoMCategory where [Name = $Name] first;
+  if $Category = empty then
+    $New = create Products.UoMCategory (Name = $Name);
+    commit $New without events;
+    return $New;
+  end if;
+  return $Category;
+end;
+
+/** Ensure a unit exists in a category (business key: name). */
+create or modify microflow Products.SUB_UoM_Ensure ($Category: Products.UoMCategory, $Name: String, $UoMType: Enumeration(Products.ENUM_UoMType), $Factor: Decimal, $Rounding: Decimal)
+folder 'UnitsOfMeasure/Microflows'
+begin
+  retrieve $Existing from Products.UoM where [Name = $Name] first;
+  if $Existing = empty then
+    $New = create Products.UoM (Name = $Name, UoMType = $UoMType, Factor = $Factor, Rounding = $Rounding, Active = true, Products.UoM_Category = $Category);
+    commit $New without events;
+  end if;
+end;
+
+/** Ensure a product category exists under a parent (business key: full name). */
+create or modify microflow Products.SUB_ProductCategory_Ensure ($Name: String, $Parent: Products.ProductCategory)
+returns Products.ProductCategory as $Category
+folder 'Catalogue/Microflows'
+begin
+  declare $FullName String = if $Parent = empty then $Name else $Parent/FullName + ' / ' + $Name;
+  retrieve $Category from Products.ProductCategory where [FullName = $FullName] first;
+  if $Category = empty then
+    $New = create Products.ProductCategory (Name = $Name, FullName = $FullName, Products.ProductCategory_Parent = $Parent);
+    commit $New without events;
+    return $New;
+  end if;
+  return $Category;
+end;
+
+/** Units of measure: Unit, Weight and Working time categories with their units (Odoo uom data). */
+create or modify microflow Products.SUB_Products_SeedUoM ()
+folder 'UnitsOfMeasure/Microflows'
+begin
+  $Unit = call microflow Products.SUB_UoMCategory_Ensure(Name = 'Unit');
+  call microflow Products.SUB_UoM_Ensure(Category = $Unit, Name = 'Units', UoMType = Products.ENUM_UoMType.Reference, Factor = 1, Rounding = 0.01);
+  call microflow Products.SUB_UoM_Ensure(Category = $Unit, Name = 'Dozens', UoMType = Products.ENUM_UoMType.Bigger, Factor = 0.0833333333, Rounding = 0.01);
+  $Weight = call microflow Products.SUB_UoMCategory_Ensure(Name = 'Weight');
+  call microflow Products.SUB_UoM_Ensure(Category = $Weight, Name = 'kg', UoMType = Products.ENUM_UoMType.Reference, Factor = 1, Rounding = 0.01);
+  call microflow Products.SUB_UoM_Ensure(Category = $Weight, Name = 'g', UoMType = Products.ENUM_UoMType.Smaller, Factor = 1000, Rounding = 1);
+  $Time = call microflow Products.SUB_UoMCategory_Ensure(Name = 'Working Time');
+  call microflow Products.SUB_UoM_Ensure(Category = $Time, Name = 'Hours', UoMType = Products.ENUM_UoMType.Reference, Factor = 1, Rounding = 0.01);
+  call microflow Products.SUB_UoM_Ensure(Category = $Time, Name = 'Days', UoMType = Products.ENUM_UoMType.Bigger, Factor = 0.125, Rounding = 0.01);
+end;
+
+/**
+ * After-startup seed of Products reference data (and, first, everything below it). Idempotent.
+ *
+ * @returns true
+ */
+create or modify microflow Products.ASU_Products_SeedData ()
+returns Boolean as $Done
+folder 'Catalogue/Microflows'
+begin
+  $CoreDone = call microflow Core.ASU_Core_SeedData();
+  call microflow Products.SUB_Products_SeedUoM();
+  $All = call microflow Products.SUB_ProductCategory_Ensure(Name = 'All', Parent = empty);
+  $Saleable = call microflow Products.SUB_ProductCategory_Ensure(Name = 'Saleable', Parent = $All);
+  $Office = call microflow Products.SUB_ProductCategory_Ensure(Name = 'Office', Parent = $Saleable);
+  retrieve $Public from Products.Pricelist where [Name = 'Public Pricelist'] first;
+  if $Public = empty then
+    retrieve $EUR from Core.Currency where [Name = 'EUR'] first;
+    $NewPricelist = create Products.Pricelist (Name = 'Public Pricelist', Sequence = 1, Active = true, Products.Pricelist_Currency = $EUR);
+    commit $NewPricelist without events;
+  end if;
+  return true;
+end;

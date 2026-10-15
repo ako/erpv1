@@ -162,7 +162,7 @@ Derived at review time with `SHOW PAGES IN Purchasing`; intent per screen in "Sc
 | WF_PurchaseOrderApproval | CLI, then native `mx check` | all 4 constructs proven in §11; no DECISION (BUG-76) |
 
 ### Document folder plan
-- **Feature groups:** RFQs, Approval, VendorPrices, Reporting
+- **Feature groups:** Approval, VendorPrices, Reporting, RFQs
 
 | Document | Folder |
 |---|---|
@@ -178,7 +178,7 @@ Derived at review time with `SHOW PAGES IN Purchasing`; intent per screen in "Sc
 | ACT_PurchaseOrder_MarkSent | `RFQs/Microflows` |
 | ACT_PurchaseOrder_Confirm | `RFQs/Microflows` |
 | SUB_PurchaseOrder_Approve | `Approval/Microflows` |
-| ACT_PurchaseOrder_Reject | `RFQs/Microflows` |
+| ACT_PurchaseOrder_Reject | `Approval/Microflows` |
 | ACT_PurchaseOrder_Cancel | `RFQs/Microflows` |
 | ACT_PurchaseOrder_SetToDraft | `RFQs/Microflows` |
 | ACT_PurchaseOrder_ToggleLock | `RFQs/Microflows` |

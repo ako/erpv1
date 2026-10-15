@@ -663,14 +663,29 @@ def main():
               '| entities, enumerations, associations, access | CLI | proven constructs |', '| pages, microflows | CLI | proven constructs |']
         if mod == 'Purchasing':
             B.append('| WF_PurchaseOrderApproval | CLI, then native `mx check` | all 4 constructs proven in §11; no DECISION (BUG-76) |')
-        groups = {'Core': ['Company', 'Finance', 'Numbering'], 'Products': ['UnitsOfMeasure', 'Catalogue', 'Pricing'], 'Partners': ['Contacts', 'Users'],
-                  'Sales': ['Quotations', 'Templates', 'Teams', 'Reporting'], 'Purchasing': ['RFQs', 'Approval', 'VendorPrices', 'Reporting'],
-                  'Inventory': ['Operations', 'Stock', 'Replenishment', 'Fulfilment', 'Configuration'], 'Invoicing': ['Invoices', 'Payments', 'CreditNotes', 'Reporting']}[mod]
+        # feature group per document by keyword (module-folder-convention.md: feature group, then Pages/Microflows)
+        FG = {'Core': [('Numbering', ['Sequence']), ('Taxes', ['Tax']), ('PaymentTerms', ['PaymentTerm']), ('Setup', ['Seed', 'Currency', 'Country', 'Home']),
+                       ('Company', ['Company'])],
+              'Products': [('UnitsOfMeasure', ['UoM']), ('Pricing', ['Pricelist', 'PriceRule']), ('Catalogue', ['Product', 'Seed'])],
+              'Partners': [('Users', ['UserProfile']), ('Contacts', ['Partner', 'Seed', 'Tag', 'Bank'])],
+              'Sales': [('Templates', ['Template']), ('Teams', ['SalesTeam']), ('Reporting', ['Analysis']), ('Quotations', ['SalesOrder', 'CreateInvoice', 'Seed'])],
+              'Purchasing': [('Approval', ['Approval', 'Approve', 'Reject', 'WF_']), ('VendorPrices', ['VendorPrice']), ('Reporting', ['Analysis']),
+                             ('RFQs', ['PurchaseOrder', 'Seed'])],
+              'Inventory': [('Replenishment', ['Reorder']), ('Stock', ['StockLevel', 'StockOnHand', 'Dashboard']), ('Configuration', ['Warehouse', 'Location', 'OperationType', 'Seed']),
+                            ('Fulfilment', ['CreateDelivery', 'CreateReceipt', 'UpdateDelivered', 'UpdateReceived']), ('Operations', ['Transfer', 'StockMove'])],
+              'Invoicing': [('CreditNotes', ['CreditNote']), ('Payments', ['Payment']), ('Reporting', ['Analysis']), ('Invoices', ['Invoice', 'Bill', 'Seed'])]}[mod]
+        groups = [g for g, _ in FG]
+
+        def fgroup(doc):
+            for g, keys in FG:
+                if any(k.lower() in doc.lower() for k in keys):
+                    return g
+            return FG[-1][0]
         B += ['', '### Document folder plan', '- **Feature groups:** %s' % ', '.join(groups), '', '| Document | Folder |', '|---|---|']
         for sc in screens:
-            B.append('| %s | `%s/Pages` |' % (sc, next((g for g in groups if g.lower()[:5] in sc.lower()), groups[0])))
+            B.append('| %s | `%s/Pages` |' % (sc, fgroup(sc)))
         for fid, m in mf_here:
-            B.append('| %s | `%s/Microflows` |' % (m['name'], next((g for g in groups if g.lower()[:5] in m['name'].lower()), groups[0])))
+            B.append('| %s | `%s/Microflows` |' % (m['name'], fgroup(m['name'])))
         B += ['', '### Build steps', '| Step | Builds | Reads | Example | Slice |', '|---|---|---|---|---|']
         k = 0
         for r in [dom] + [r for r in mrows if r['kind'] == 'BUILD']:

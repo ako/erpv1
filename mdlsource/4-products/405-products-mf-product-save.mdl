@@ -1,0 +1,105 @@
+mdl 1;
+-- 405-products-mf-product-save.mdl — build-plan row 27 (F003-UC001, UC004). Owns Products.VAL_Product,
+-- Products.SUB_Product_Save, Products.ACT_Product_Save, Products.ACT_Product_Archive and
+-- Products.SUB_ProductCategory_ComputeFullName (called by the generated ProductCategory save).
+
+/**
+ * Validate a product before save (Odoo product.template constraints), every invalid field on one submit:
+ * a name; a unit; the purchase unit in the same category as the unit; a service cannot track inventory;
+ * prices not negative.
+ *
+ * @param $Product the product being saved
+ * @returns true when valid
+ */
+create or modify microflow Products.VAL_Product ($Product: Products.Product)
+returns Boolean as $IsValid
+folder 'Catalogue/Microflows'
+begin
+  declare $IsValid Boolean = true;
+  if $Product/Name = empty or trim($Product/Name) = '' then
+    validation feedback $Product/Name message 'Name is required.';
+    set $IsValid = false;
+  end if;
+  if $Product/Products.Product_UoM = empty then
+    validation feedback $Product/Products.Product_UoM message 'Unit of measure is required.';
+    set $IsValid = false;
+  end if;
+  if $Product/Products.Product_UoM != empty and $Product/Products.Product_PurchaseUoM != empty
+     and $Product/Products.Product_UoM/Products.UoM/Products.UoM_Category != $Product/Products.Product_PurchaseUoM/Products.UoM/Products.UoM_Category then
+    validation feedback $Product/Products.Product_PurchaseUoM message 'The purchase unit must be in the same category as the unit of measure.';
+    set $IsValid = false;
+  end if;
+  if $Product/ProductType = Products.ENUM_ProductType.Service and $Product/TrackInventory then
+    validation feedback $Product/TrackInventory message 'A service cannot track inventory.';
+    set $IsValid = false;
+  end if;
+  if $Product/SalesPrice != empty and $Product/SalesPrice < 0 then
+    validation feedback $Product/SalesPrice message 'The sales price cannot be negative.';
+    set $IsValid = false;
+  end if;
+  if $Product/Cost != empty and $Product/Cost < 0 then
+    validation feedback $Product/Cost message 'The cost cannot be negative.';
+    set $IsValid = false;
+  end if;
+  return $IsValid;
+end;
+
+/**
+ * Persist a validated product; a product without a purchase unit buys in its sales unit (Odoo default).
+ *
+ * @param $Product the product
+ */
+create or modify microflow Products.SUB_Product_Save ($Product: Products.Product)
+folder 'Catalogue/Microflows'
+begin
+  if $Product/Products.Product_PurchaseUoM = empty then
+    change $Product (Products.Product_PurchaseUoM = $Product/Products.Product_UoM);
+  end if;
+  commit $Product with events refresh;
+end;
+
+/**
+ * Save button on the product form: validate, persist, close.
+ *
+ * @param $Product the product being edited
+ * @returns true when saved
+ */
+create or modify microflow Products.ACT_Product_Save ($Product: Products.Product)
+returns Boolean as $Saved
+folder 'Catalogue/Microflows'
+begin
+  $IsValid = call microflow Products.VAL_Product(Product = $Product);
+  if $IsValid then
+    call microflow Products.SUB_Product_Save(Product = $Product);
+    close page;
+    return true;
+  end if;
+  return false;
+end;
+
+/**
+ * Archive button (F003-UC004): the product leaves the pick lists but stays on existing documents.
+ *
+ * @param $Product the product to archive
+ */
+create or modify microflow Products.ACT_Product_Archive ($Product: Products.Product)
+folder 'Catalogue/Microflows'
+begin
+  change $Product (Active = false);
+  commit $Product with events refresh;
+  close page;
+end;
+
+/**
+ * Full path of a category ("All / Saleable / Office", Odoo complete_name), set before it is committed.
+ *
+ * @param $ProductCategory the category being saved
+ */
+create or modify microflow Products.SUB_ProductCategory_ComputeFullName ($ProductCategory: Products.ProductCategory)
+folder 'Catalogue/Microflows'
+begin
+  declare $Name String = if $ProductCategory/Name = empty then '' else trim($ProductCategory/Name);
+  declare $FullName String = if $ProductCategory/Products.ProductCategory_Parent = empty then $Name
+    else $ProductCategory/Products.ProductCategory_Parent/Products.ProductCategory/FullName + ' / ' + $Name;
+  change $ProductCategory (FullName = $FullName);
+end;

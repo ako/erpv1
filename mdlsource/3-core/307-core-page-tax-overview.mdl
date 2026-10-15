@@ -3,7 +3,7 @@ mdl 1;
 -- Regenerate, do not hand-edit. Reached from: menu Configuration › Taxes.
 
 /** Taxes — Tax_Overview. */
-create or modify page Core.Tax_Overview folder 'Company/Pages'
+create or modify page Core.Tax_Overview folder 'Taxes/Pages'
 (
   Title: 'Taxes',
   Layout: Core.App_Default,

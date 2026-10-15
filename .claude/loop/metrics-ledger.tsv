@@ -60,3 +60,13 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-14T23:06:30Z	308-core-page-payment-term-new-edit.mdl	pass	applied-lint-rose	56	0	1	347	0	53	0	93	0	100	69	76	98	347	8c2772c
 2026-10-14T23:13:04Z	311-core-page-home.mdl	pass	applied-lint-rose	57	0	1	345	0	53.4	0	95	0	100	69	76	98	345	7dd0f6d
 2026-10-14T23:14:05Z	2026-10-14-drop-myfirstlogic.mdl	pass	applied-lint-rose	51	0	1	343	0	53.7	0	96	0	100	69	76	99	343	131412a
+2026-10-14T23:47:19Z	304-core-mf-payment-term-compute-due-date.mdl	pass	applied-lint-rose	53	0	1	343	0	53.7	0	96	0	100	69	76	99	343	eef7d37
+2026-10-14T23:48:15Z	305-core-page-company-edit.mdl	pass	applied-lint-rose	55	0	1	343	0	53.7	0	96	0	100	69	76	99	343	069fdc4
+2026-10-14T23:49:09Z	306-core-page-sequence-overview.mdl	pass	applied-lint-rose	53	0	1	343	0	53.7	0	96	0	100	69	76	99	343	069fdc4
+2026-10-14T23:50:03Z	309-core-page-tax-new-edit.mdl	pass	applied-lint-rose	54	0	1	343	0	53.7	0	96	0	100	69	76	99	343	04ce619
+2026-10-14T23:50:57Z	307-core-page-tax-overview.mdl	pass	applied-lint-rose	53	0	1	343	0	53.7	0	96	0	100	69	76	99	343	3d4c432
+2026-10-14T23:51:54Z	308-core-page-payment-term-new-edit.mdl	pass	applied-lint-rose	56	0	1	343	0	53.7	0	96	0	100	69	76	99	343	374f6b5
+2026-10-14T23:52:47Z	310-core-page-payment-term-overview.mdl	pass	applied-lint-rose	53	0	1	343	0	53.7	0	96	0	100	69	76	99	343	43bf789
+2026-10-14T23:54:50Z	305-core-page-company-edit.mdl	pass	applied-lint-rose	55	0	1	343	0	53.7	0	96	0	100	69	76	99	343	3a2c358
+2026-10-14T23:55:44Z	306-core-page-sequence-overview.mdl	pass	applied-lint-rose	52	0	1	343	0	53.7	0	96	0	100	69	76	99	343	226c535
+2026-10-14T23:56:42Z	308-core-page-payment-term-new-edit.mdl	pass	applied-lint-rose	55	0	1	343	0	53.7	0	96	0	100	69	76	99	343	6fd76d6

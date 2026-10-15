@@ -126,19 +126,19 @@ Derived at review time with `SHOW PAGES IN Partners`; intent per screen in "Scre
 | pages, microflows | CLI | proven constructs |
 
 ### Document folder plan
-- **Feature groups:** Contacts, Users
+- **Feature groups:** Users, Contacts
 
 | Document | Folder |
 |---|---|
 | Partner_Overview | `Contacts/Pages` |
 | Partner_NewEdit | `Contacts/Pages` |
 | PartnerChild_NewEdit | `Contacts/Pages` |
-| UserProfile_Edit | `Contacts/Pages` |
+| UserProfile_Edit | `Users/Pages` |
 | ACT_Partner_Save | `Contacts/Microflows` |
 | VAL_Partner | `Contacts/Microflows` |
 | SUB_Partner_GetCommercialPartner | `Contacts/Microflows` |
 | SUB_Partner_GetAddress | `Contacts/Microflows` |
-| ACT_UserProfile_Create | `Contacts/Microflows` |
+| ACT_UserProfile_Create | `Users/Microflows` |
 
 ### Build steps
 | Step | Builds | Reads | Example | Slice |

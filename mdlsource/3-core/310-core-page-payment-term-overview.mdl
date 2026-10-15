@@ -3,7 +3,7 @@ mdl 1;
 -- Regenerate, do not hand-edit. Reached from: menu Configuration › Payment terms.
 
 /** Payment terms — PaymentTerm_Overview. */
-create or modify page Core.PaymentTerm_Overview folder 'Company/Pages'
+create or modify page Core.PaymentTerm_Overview folder 'PaymentTerms/Pages'
 (
   Title: 'Payment terms',
   Layout: Core.App_Default,

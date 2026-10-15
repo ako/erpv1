@@ -3,7 +3,7 @@ mdl 1;
 -- Regenerate, do not hand-edit. Reached from: menu Configuration › Numbering.
 
 /** Document numbering — Sequence_Overview. */
-create or modify page Core.Sequence_Overview folder 'Company/Pages'
+create or modify page Core.Sequence_Overview folder 'Numbering/Pages'
 (
   Title: 'Document numbering',
   Layout: Core.App_Default,
@@ -17,20 +17,19 @@ create or modify page Core.Sequence_Overview folder 'Company/Pages'
   }
   layoutgrid gridLinesHead (Class: 'th lines-head hide-phone') {
     row {
-      column (DesktopWidth: 2) { dynamictext hdCode (Content: 'Code', RenderMode: Text) }
-      column (DesktopWidth: 3) { dynamictext hdPrefix (Content: 'Prefix', RenderMode: Text) }
-      column (DesktopWidth: 3) { dynamictext hdPadding (Content: 'Padding', RenderMode: Text) }
-      column (DesktopWidth: 3) { dynamictext hdNextNumber (Content: 'Next number', RenderMode: Text) }
+      column (DesktopWidth: 4) { dynamictext hdCode (Content: 'Code', RenderMode: Text) }
+      column (DesktopWidth: 4) { dynamictext hdPrefix (Content: 'Prefix', RenderMode: Text) }
+      column (DesktopWidth: 2) { dynamictext hdPadding (Content: 'Padding', RenderMode: Text) }
+      column (DesktopWidth: 2) { dynamictext hdNextNumber (Content: 'Next number', RenderMode: Text) }
     }
   }
-  listview lvLines (DataSource: database Core."Sequence" sort by "Code" asc, Editable: true) {
+  listview lvLines (DataSource: database Core."Sequence" sort by "Code" asc, Editable: true, Class: 'lines-list') {
     layoutgrid gridLine {
       row {
-        column (DesktopWidth: 2) { textbox txtCode (Attribute: "Code") }
-        column (DesktopWidth: 3) { textbox txtPrefix (Attribute: "Prefix") }
-        column (DesktopWidth: 3) { textbox txtPadding (Attribute: "Padding") }
-        column (DesktopWidth: 3) { textbox txtNextNumber (Attribute: "NextNumber") }
-        column (DesktopWidth: 1) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }
+        column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) { textbox txtCode (Label: 'Code', Attribute: "Code", Editable: Never) }
+        column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) { textbox txtPrefix (Label: 'Prefix', Attribute: "Prefix") }
+        column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox txtPadding (Label: 'Padding', Attribute: "Padding") }
+        column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox txtNextNumber (Label: 'Next number', Attribute: "NextNumber") }
       }
     }
   }

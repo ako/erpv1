@@ -148,20 +148,20 @@ Derived at review time with `SHOW PAGES IN Core`; intent per screen in "Screens 
 | pages, microflows | CLI | proven constructs |
 
 ### Document folder plan
-- **Feature groups:** Company, Finance, Numbering
+- **Feature groups:** Numbering, Taxes, PaymentTerms, Setup, Company
 
 | Document | Folder |
 |---|---|
 | Company_Edit | `Company/Pages` |
-| Sequence_Overview | `Company/Pages` |
-| Tax_Overview | `Company/Pages` |
-| Tax_NewEdit | `Company/Pages` |
-| PaymentTerm_Overview | `Company/Pages` |
-| PaymentTerm_NewEdit | `Company/Pages` |
+| Sequence_Overview | `Numbering/Pages` |
+| Tax_Overview | `Taxes/Pages` |
+| Tax_NewEdit | `Taxes/Pages` |
+| PaymentTerm_Overview | `PaymentTerms/Pages` |
+| PaymentTerm_NewEdit | `PaymentTerms/Pages` |
 | SUB_Sequence_NextNumber | `Numbering/Microflows` |
-| ASU_Core_SeedData | `Company/Microflows` |
-| SUB_Tax_ComputeLine | `Company/Microflows` |
-| SUB_PaymentTerm_ComputeDueDate | `Company/Microflows` |
+| ASU_Core_SeedData | `Setup/Microflows` |
+| SUB_Tax_ComputeLine | `Taxes/Microflows` |
+| SUB_PaymentTerm_ComputeDueDate | `PaymentTerms/Microflows` |
 
 ### Build steps
 | Step | Builds | Reads | Example | Slice |

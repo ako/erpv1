@@ -5,7 +5,7 @@ mdl 1;
 /** Validate a Tax before save: every required field on Tax_NewEdit, all flagged on one submit. */
 create or modify microflow Core.VAL_Tax ($Tax: Core.Tax)
 returns Boolean as $IsValid
-folder 'Company/Microflows'
+folder 'Taxes/Microflows'
 begin
   declare $IsValid Boolean = true;
   if $Tax/Name = empty or trim($Tax/Name) = '' then
@@ -17,14 +17,14 @@ end;
 
 /** Persist a validated Tax. */
 create or modify microflow Core.SUB_Tax_Save ($Tax: Core.Tax)
-folder 'Company/Microflows'
+folder 'Taxes/Microflows'
 begin
   commit $Tax with events refresh;
 end;
 
 /** Save button on Tax_NewEdit: validate, persist, close. */
 create or modify microflow Core.ACT_Tax_Save ($Tax: Core.Tax)
-folder 'Company/Microflows'
+folder 'Taxes/Microflows'
 begin
   $IsValid = call microflow Core.VAL_Tax(Tax = $Tax);
   if $IsValid then
@@ -34,7 +34,7 @@ begin
 end;
 
 /** Tax — Tax_NewEdit. */
-create or modify page Core.Tax_NewEdit folder 'Company/Pages'
+create or modify page Core.Tax_NewEdit folder 'Taxes/Pages'
 (
   Params: ( $Tax: Core.Tax ),
   Title: 'Tax',

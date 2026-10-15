@@ -153,24 +153,24 @@ Derived at review time with `SHOW PAGES IN Products`; intent per screen in "Scre
 | pages, microflows | CLI | proven constructs |
 
 ### Document folder plan
-- **Feature groups:** UnitsOfMeasure, Catalogue, Pricing
+- **Feature groups:** UnitsOfMeasure, Pricing, Catalogue
 
 | Document | Folder |
 |---|---|
 | UoMCategory_Overview | `UnitsOfMeasure/Pages` |
 | UoMCategory_NewEdit | `UnitsOfMeasure/Pages` |
-| Product_Overview | `UnitsOfMeasure/Pages` |
-| Product_NewEdit | `UnitsOfMeasure/Pages` |
-| ProductCategory_Overview | `UnitsOfMeasure/Pages` |
-| ProductCategory_NewEdit | `UnitsOfMeasure/Pages` |
-| Pricelist_Overview | `UnitsOfMeasure/Pages` |
-| Pricelist_NewEdit | `UnitsOfMeasure/Pages` |
+| Product_Overview | `Catalogue/Pages` |
+| Product_NewEdit | `Catalogue/Pages` |
+| ProductCategory_Overview | `Catalogue/Pages` |
+| ProductCategory_NewEdit | `Catalogue/Pages` |
+| Pricelist_Overview | `Pricing/Pages` |
+| Pricelist_NewEdit | `Pricing/Pages` |
 | SUB_UoM_ConvertQuantity | `UnitsOfMeasure/Microflows` |
 | SUB_UoM_ConvertPrice | `UnitsOfMeasure/Microflows` |
 | VAL_UoMCategory | `UnitsOfMeasure/Microflows` |
-| ACT_Product_Save | `UnitsOfMeasure/Microflows` |
-| VAL_Product | `UnitsOfMeasure/Microflows` |
-| SUB_Pricelist_GetPrice | `UnitsOfMeasure/Microflows` |
+| ACT_Product_Save | `Catalogue/Microflows` |
+| VAL_Product | `Catalogue/Microflows` |
+| SUB_Pricelist_GetPrice | `Pricing/Microflows` |
 
 ### Build steps
 | Step | Builds | Reads | Example | Slice |

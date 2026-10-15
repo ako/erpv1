@@ -165,16 +165,16 @@ Derived at review time with `SHOW PAGES IN Sales`; intent per screen in "Screens
 | pages, microflows | CLI | proven constructs |
 
 ### Document folder plan
-- **Feature groups:** Quotations, Templates, Teams, Reporting
+- **Feature groups:** Templates, Teams, Reporting, Quotations
 
 | Document | Folder |
 |---|---|
 | SalesOrder_Overview | `Quotations/Pages` |
 | SalesOrder_NewEdit | `Quotations/Pages` |
-| QuotationTemplate_Overview | `Quotations/Pages` |
-| QuotationTemplate_NewEdit | `Quotations/Pages` |
-| SalesTeam_Overview | `Quotations/Pages` |
-| SalesTeam_NewEdit | `Quotations/Pages` |
+| QuotationTemplate_Overview | `Templates/Pages` |
+| QuotationTemplate_NewEdit | `Templates/Pages` |
+| SalesTeam_Overview | `Teams/Pages` |
+| SalesTeam_NewEdit | `Teams/Pages` |
 | SalesAnalysis_Report | `Reporting/Pages` |
 | CreateInvoice_Popup | `Quotations/Pages` |
 | ACT_SalesOrder_New | `Quotations/Microflows` |

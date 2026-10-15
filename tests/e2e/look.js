@@ -63,7 +63,7 @@ async function nav(page, menu) {
         if (s.click) { await page.click('.mx-name-' + s.click); await page.waitForTimeout(1500); }
         const h1 = (await page.locator('h1').first().textContent().catch(() => '')) || '';
         const dialog = (await page.locator('.mx-dialog-body, .alert-danger').first().textContent().catch(() => '')) || '';
-        const file = `${outDir}/${s.page}-${width}.png`;
+        const file = `${outDir}/${s.module ? s.module + '.' : ''}${s.page}-${width}.png`;
         await page.screenshot({ path: file, fullPage: true });
         const pageErrors = errors.slice(); // before sign-out, which itself triggers a 401 on the closed session
         const out = page.locator('.mx-name-btnSignOut');

@@ -1,0 +1,47 @@
+mdl 1;
+-- 404-products-mf-uo-m-convert-quantity.mdl — build-plan row 26 (F002-UC002). Owns Products.SUB_UoM_ConvertQuantity
+-- and Products.SUB_UoM_ConvertPrice.
+
+/**
+ * Convert a quantity between two units of one category (Odoo uom.uom._compute_quantity, rounding UP).
+ * Factor = units of this UoM per reference unit: quantity_ref = qty / from.Factor; result = quantity_ref * to.Factor,
+ * rounded up to the target unit's rounding. Units of different categories cannot convert: logged, quantity returned unchanged.
+ *
+ * @param $Quantity quantity in FromUoM
+ * @param $FromUoM unit of the quantity
+ * @param $ToUoM unit to convert to
+ * @returns the quantity in ToUoM
+ */
+create or modify microflow Products.SUB_UoM_ConvertQuantity ($Quantity: Decimal, $FromUoM: Products.UoM, $ToUoM: Products.UoM)
+returns Decimal as $Result
+folder 'Units of measure/Microflows'
+begin
+  if $Quantity = empty or $FromUoM = empty or $ToUoM = empty or $FromUoM = $ToUoM then
+    return $Quantity;
+  end if;
+  if $FromUoM/Products.UoM_Category != $ToUoM/Products.UoM_Category then
+    log error node 'Products.UoM' 'Cannot convert ' + $FromUoM/Name + ' to ' + $ToUoM/Name + ': different categories';
+    return $Quantity;
+  end if;
+  declare $Raw Decimal = $Quantity div $FromUoM/Factor * $ToUoM/Factor;
+  declare $Step Decimal = if $ToUoM/Rounding = empty or $ToUoM/Rounding <= 0 then 0.01 else $ToUoM/Rounding;
+  return ceil($Raw div $Step - 0.0000001) * $Step;
+end;
+
+/**
+ * Convert a unit price between two units of one category (inverse of the quantity conversion, not rounded up).
+ *
+ * @param $Price price per FromUoM
+ * @param $FromUoM unit the price is per
+ * @param $ToUoM unit to express the price per
+ * @returns the price per ToUoM
+ */
+create or modify microflow Products.SUB_UoM_ConvertPrice ($Price: Decimal, $FromUoM: Products.UoM, $ToUoM: Products.UoM)
+returns Decimal as $Result
+folder 'Units of measure/Microflows'
+begin
+  if $Price = empty or $FromUoM = empty or $ToUoM = empty or $FromUoM = $ToUoM then
+    return $Price;
+  end if;
+  return $Price * $FromUoM/Factor div $ToUoM/Factor;
+end;

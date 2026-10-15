@@ -184,27 +184,27 @@ Derived at review time with `SHOW PAGES IN Inventory`; intent per screen in "Scr
 | pages, microflows | CLI | proven constructs |
 
 ### Document folder plan
-- **Feature groups:** Operations, Stock, Replenishment, Fulfilment, Configuration
+- **Feature groups:** Replenishment, Stock, Configuration, Fulfilment, Operations
 
 | Document | Folder |
 |---|---|
-| Inventory_Dashboard | `Operations/Pages` |
+| Inventory_Dashboard | `Stock/Pages` |
 | Transfer_Overview | `Operations/Pages` |
 | Transfer_NewEdit | `Operations/Pages` |
 | ValidateTransfer_Popup | `Operations/Pages` |
 | StockLevel_Overview | `Stock/Pages` |
-| ReorderRule_Overview | `Operations/Pages` |
-| Warehouse_Edit | `Operations/Pages` |
-| ACT_Transfer_Confirm | `Configuration/Microflows` |
+| ReorderRule_Overview | `Replenishment/Pages` |
+| Warehouse_Edit | `Configuration/Pages` |
+| ACT_Transfer_Confirm | `Operations/Microflows` |
 | ACT_Transfer_CheckAvailability | `Operations/Microflows` |
 | ACT_Transfer_Validate | `Operations/Microflows` |
 | SUB_Transfer_Done | `Operations/Microflows` |
 | ACT_Transfer_Cancel | `Operations/Microflows` |
 | ACT_StockLevel_ApplyCount | `Stock/Microflows` |
-| SCE_ReorderRules_Run | `Operations/Microflows` |
+| SCE_ReorderRules_Run | `Replenishment/Microflows` |
 | SUB_ReorderRule_Replenish | `Replenishment/Microflows` |
-| SUB_SalesOrder_CreateDelivery | `Operations/Microflows` |
-| SUB_PurchaseOrder_CreateReceipt | `Operations/Microflows` |
+| SUB_SalesOrder_CreateDelivery | `Fulfilment/Microflows` |
+| SUB_PurchaseOrder_CreateReceipt | `Fulfilment/Microflows` |
 
 ### Build steps
 | Step | Builds | Reads | Example | Slice |

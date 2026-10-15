@@ -161,7 +161,7 @@ Derived at review time with `SHOW PAGES IN Invoicing`; intent per screen in "Scr
 | pages, microflows | CLI | proven constructs |
 
 ### Document folder plan
-- **Feature groups:** Invoices, Payments, CreditNotes, Reporting
+- **Feature groups:** CreditNotes, Payments, Reporting, Invoices
 
 | Document | Folder |
 |---|---|
@@ -171,7 +171,7 @@ Derived at review time with `SHOW PAGES IN Invoicing`; intent per screen in "Scr
 | CreditNote_Popup | `CreditNotes/Pages` |
 | Payment_Overview | `Payments/Pages` |
 | Payment_View | `Payments/Pages` |
-| InvoiceAnalysis_Report | `Invoices/Pages` |
+| InvoiceAnalysis_Report | `Reporting/Pages` |
 | ACT_SalesOrder_CreateInvoice | `Invoices/Microflows` |
 | SUB_SalesOrders_CreateInvoices | `Invoices/Microflows` |
 | ACT_PurchaseOrder_CreateBill | `Invoices/Microflows` |
@@ -179,10 +179,10 @@ Derived at review time with `SHOW PAGES IN Invoicing`; intent per screen in "Scr
 | ACT_Invoice_Post | `Invoices/Microflows` |
 | ACT_Invoice_ResetToDraft | `Invoices/Microflows` |
 | ACT_Invoice_Cancel | `Invoices/Microflows` |
-| ACT_Invoice_CreateCreditNote | `Invoices/Microflows` |
-| ACT_Invoice_RegisterPayment | `Invoices/Microflows` |
+| ACT_Invoice_CreateCreditNote | `CreditNotes/Microflows` |
+| ACT_Invoice_RegisterPayment | `Payments/Microflows` |
 | SUB_Payment_Create | `Payments/Microflows` |
-| SUB_Invoice_UpdatePaymentStatus | `Invoices/Microflows` |
+| SUB_Invoice_UpdatePaymentStatus | `Payments/Microflows` |
 
 ### Build steps
 | Step | Builds | Reads | Example | Slice |

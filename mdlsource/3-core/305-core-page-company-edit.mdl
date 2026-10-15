@@ -104,7 +104,8 @@ create or modify page Core.Company_Edit folder 'Company/Pages'
         }
       }
     }
-    linkbutton lnk0 (Caption: 'Users', Action: show page Administration.Account_Overview)
+    dynamictext hRelated (Content: 'Related', RenderMode: H2)
+    linkbutton lnk0 (Caption: 'User accounts (Administration)', Action: show page Administration.Account_Overview)
   }
       }
     }

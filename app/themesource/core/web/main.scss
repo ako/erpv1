@@ -52,3 +52,22 @@
 
 // Line editors: the caption row lines up with the list-view items' inner padding.
 .lines-head { padding: 0 16px; }
+
+// Line editors (ui-review 2026-10-14 P2-1): captions come from the caption row on desktop/tablet; on phones the
+// caption row is hidden and each input shows its own label instead.
+.lines-list .control-label { display: none; }
+.lines-list .form-group > div[class*="col-"] { width: 100%; padding: 0; }
+@media (max-width: 767px) {
+  .lines-list .control-label { display: block; width: 100%; }
+  .lines-list .mx-listview-item { border-bottom: 1px solid var(--mxt-line); }
+}
+
+// Data grids on phones (P2-2): keep columns readable and scroll the grid sideways instead of squashing them.
+@media (max-width: 767px) {
+  .widget-datagrid .widget-datagrid-content { overflow-x: auto; }
+  .widget-datagrid .widget-datagrid-grid { min-width: 640px; }
+}
+
+// Demo-user switcher (Mendix, demo users on): bottom-right corner, clear of page actions; content keeps room for it (P2-4).
+.mx-demouserswitcher { top: auto !important; bottom: 16px; }
+.region-content .spacing-inner-layout { padding-bottom: 72px !important; }

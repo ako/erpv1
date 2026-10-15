@@ -11,7 +11,7 @@ mdl 1;
  */
 create or modify microflow Core.SUB_PaymentTerm_ComputeDueDate ($PaymentTerm: Core.PaymentTerm, $InvoiceDate: DateTime)
 returns DateTime as $DueDate
-folder 'Payment terms/Microflows'
+folder 'PaymentTerms/Microflows'
 begin
   declare $DueDate DateTime = $InvoiceDate;
   if $PaymentTerm = empty then
