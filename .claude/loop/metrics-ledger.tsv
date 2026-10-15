@@ -117,3 +117,27 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-15T01:28:06Z	307-core-page-tax-overview.mdl	pass	applied-lint-rose	54	0	1	374	0	49.7	0	92	0	100	38	76	97	374	2adf04d
 2026-10-15T01:28:59Z	310-core-page-payment-term-overview.mdl	pass	applied-lint-rose	53	0	1	374	0	49.7	0	92	0	100	38	76	97	374	2adf04d
 2026-10-15T01:29:57Z	405-products-mf-product-save.mdl	pass	applied-lint-rose	57	0	1	374	0	49.7	0	92	0	100	38	76	97	374	2adf04d
+2026-10-15T05:18:11Z	312-core-constant-seed-demo-data.mdl	pass	applied	52	0	0	374	0	49.7	0	92	0	100	38	76	97	374	39fded0
+2026-10-15T05:18:58Z	414-products-mf-seed-demo.mdl	pass	applied-lint-rose	46	0	1	375	0	49.5	0	91	0	100	38	76	97	375	9dc4220
+2026-10-15T05:19:47Z	506-partners-mf-partner-get-commercial-partner.mdl	pass	applied-lint-rose	47	0	1	375	0	49.5	0	91	0	100	38	76	97	375	968ab6d
+2026-10-15T05:20:47Z	2026-10-15-partners-supersede-skeleton.mdl	fail	gate-failed	57	?			1										4e1aecc
+2026-10-15T05:22:23Z	2026-10-15-partners-supersede-skeleton.mdl	pass	applied-lint-rose	83	0	1	381	0	49.3	0	90	0	100	38	76	97	381	4e1aecc
+2026-10-15T05:23:15Z	501-partners-mf-partner.mdl	pass	applied-lint-rose	46	0	1	381	0	49.3	0	90	0	100	38	76	97	381	6506c7d
+2026-10-15T05:23:59Z	502-partners-mf-partner-get-address.mdl	pass	applied-lint-rose	43	0	1	381	0	49.3	0	90	0	100	38	76	97	381	6506c7d
+2026-10-15T05:24:45Z	503-partners-mf-partner-save.mdl	pass	applied-lint-rose	45	0	1	381	0	49.3	0	90	0	100	38	76	97	381	6506c7d
+2026-10-15T05:25:31Z	507-partners-page-partner-child-new-edit.mdl	pass	applied-lint-rose	46	0	1	381	0	49.3	0	90	0	100	38	76	97	381	6506c7d
+2026-10-15T05:26:18Z	505-partners-page-partner-new-edit.mdl	pass	applied-lint-rose	47	0	1	381	0	49.3	0	90	0	100	38	76	97	381	6506c7d
+2026-10-15T05:27:03Z	504-partners-page-partner-overview.mdl	pass	applied-lint-rose	45	0	1	381	0	49.3	0	90	0	100	38	76	97	381	6506c7d
+2026-10-15T05:27:49Z	508-partners-mf-user-profile-create.mdl	pass	applied-lint-rose	44	0	1	386	0	49.3	0	90	0	100	38	76	97	386	6506c7d
+2026-10-15T05:28:34Z	509-partners-page-user-profile-edit.mdl	pass	applied-lint-rose	45	0	1	389	0	49	0	89	0	100	37	76	97	389	980387e
+2026-10-15T05:29:21Z	510-partners-mf-seed-data.mdl	pass	applied-lint-rose	47	0	1	390	0	48.9	0	89	0	100	37	76	96	390	3af52f6
+2026-10-15T05:30:16Z	done-020-settings.mdl	pass	applied-lint-rose	54	0	1	389	0	49.1	0	90	0	100	37	76	96	389	1ec3bc7
+2026-10-15T05:31:00Z	done-010-navigation.mdl	pass	applied-lint-rose	43	0	1	389	0	49.1	0	90	0	100	37	76	96	389	8f6ba6b
+2026-10-15T05:34:20Z	done-309-core-page-tax-new-edit.mdl	pass	applied-lint-rose	41	0	1	389	0	49.1	0	90	0	100	37	76	96	389	8f6ba6b
+2026-10-15T05:35:05Z	done-409-products-page-product-category-new-edit.mdl	pass	applied-lint-rose	44	0	1	389	0	49.1	0	90	0	100	37	76	96	389	0a9aab7
+2026-10-15T05:35:47Z	507-partners-page-partner-child-new-edit.mdl	pass	applied-lint-rose	41	0	1	389	0	49.1	0	90	0	100	37	76	96	389	2d38f14
+2026-10-15T05:36:29Z	509-partners-page-user-profile-edit.mdl	pass	applied-lint-rose	40	0	1	389	0	49.1	0	90	0	100	37	76	96	389	1e401fc
+2026-10-15T05:38:50Z	done-309-core-page-tax-new-edit.mdl	pass	applied-lint-rose	44	0	1	389	0	49.1	0	90	0	100	37	76	96	389	2e38643
+2026-10-15T05:39:36Z	done-409-products-page-product-category-new-edit.mdl	pass	applied-lint-rose	45	0	1	389	0	49.1	0	90	0	100	37	76	96	389	3c0a301
+2026-10-15T05:40:21Z	507-partners-page-partner-child-new-edit.mdl	pass	applied-lint-rose	44	0	1	389	0	49.1	0	90	0	100	37	76	96	389	561ed4b
+2026-10-15T05:41:06Z	509-partners-page-user-profile-edit.mdl	pass	applied-lint-rose	44	0	1	389	0	49.1	0	90	0	100	37	76	96	389	4d640a9

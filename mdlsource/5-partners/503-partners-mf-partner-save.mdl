@@ -1,0 +1,55 @@
+mdl 1;
+-- 503-partners-mf-partner-save.mdl — build-plan row 35 (F001-UC001, UC003). Owns Partners.SUB_Partner_Save,
+-- SUB_Partner_Archive, ACT_Partner_Save, ACT_Partner_Archive. (New = the list's create-object action; children: generated ACT_Partner_AddTo*.)
+-- Supersedes the walking skeleton's versions (mdlsource/_oneoff/2026-10-14-walking-skeleton.mdl).
+
+/**
+ * Persist a validated partner. A child contact or address inherits customer/vendor flags from its company,
+ * so it can be picked on the same documents (F001 hidden rule).
+ *
+ * @param $Partner the partner
+ */
+create or modify microflow Partners.SUB_Partner_Save ($Partner: Partners.Partner)
+folder 'Contacts/Microflows'
+begin
+  retrieve $Parent from $Partner/Partners.Partner_ParentCompany;
+  if $Parent != empty then
+    change $Partner (IsCustomer = $Parent/IsCustomer, IsVendor = $Parent/IsVendor);
+  end if;
+  commit $Partner with events refresh;
+end;
+
+/** Deactivate a partner: it leaves the pick lists, stays on existing documents (F001-UC003). */
+create or modify microflow Partners.SUB_Partner_Archive ($Partner: Partners.Partner)
+folder 'Contacts/Microflows'
+begin
+  change $Partner (Active = false);
+  commit $Partner with events refresh;
+end;
+
+/**
+ * Save button on the contact forms: validate, persist, close.
+ *
+ * @param $Partner the partner being edited
+ * @returns true when saved
+ */
+create or modify microflow Partners.ACT_Partner_Save ($Partner: Partners.Partner)
+returns Boolean as $Saved
+folder 'Contacts/Microflows'
+begin
+  $IsValid = call microflow Partners.VAL_Partner(Partner = $Partner);
+  if $IsValid then
+    call microflow Partners.SUB_Partner_Save(Partner = $Partner);
+    close page;
+    return true;
+  end if;
+  return false;
+end;
+
+/** Archive button on the contact form. */
+create or modify microflow Partners.ACT_Partner_Archive ($Partner: Partners.Partner)
+folder 'Contacts/Microflows'
+begin
+  call microflow Partners.SUB_Partner_Archive(Partner = $Partner);
+  close page;
+end;

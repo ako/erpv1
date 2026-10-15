@@ -1,0 +1,25 @@
+mdl 1;
+-- 506-partners-mf-partner-get-commercial-partner.mdl — build-plan row 36 (F001-UC002). Owns Partners.SUB_Partner_GetCommercialPartner.
+-- (Executed before 501/502, which call it.)
+
+/**
+ * The company a contact belongs to, or the partner itself when it has no parent company (Odoo commercial_partner_id).
+ * Orders and invoices are booked on it. Walks up at most the parent chain (VAL_Partner forbids cycles).
+ *
+ * @param $Partner a contact, address or company
+ * @returns the commercial partner
+ */
+create or modify microflow Partners.SUB_Partner_GetCommercialPartner ($Partner: Partners.Partner)
+returns Partners.Partner as $Commercial
+folder 'Contacts/Microflows'
+begin
+  if $Partner = empty then
+    return empty;
+  end if;
+  retrieve $Parent from $Partner/Partners.Partner_ParentCompany;
+  if $Partner/IsCompany or $Parent = empty then
+    return $Partner;
+  end if;
+  $Top = call microflow Partners.SUB_Partner_GetCommercialPartner(Partner = $Parent);
+  return $Top;
+end;

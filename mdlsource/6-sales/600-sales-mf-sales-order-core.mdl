@@ -1,0 +1,94 @@
+mdl 1;
+-- 600-sales-mf-sales-order-core.mdl — F004 shared logic used by every sales action: totals, customer defaults,
+-- product defaults on a line, status changes. Owns SUB_SalesOrder_RecomputeTotals, SUB_SalesOrder_ApplyCustomer,
+-- SUB_SalesOrderLine_ApplyProduct, SUB_SalesOrder_SetStatus.
+
+/**
+ * Per line subtotal / tax / total (discount, price-included taxes, rounded per line), then the order totals.
+ * Section and note lines carry no amounts. Commits lines and order (the form shows them at once).
+ *
+ * @param $SalesOrder the order
+ * @returns true
+ */
+create or modify microflow Sales.SUB_SalesOrder_RecomputeTotals ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  retrieve $Lines from $SalesOrder/Sales.SalesOrderLine_SalesOrder;
+  declare $Untaxed Decimal = 0;
+  declare $Tax Decimal = 0;
+  @annotation 'One loop over the lines (tens at most): taxes are an in-memory association retrieve, one commit after the loop.'
+  loop $Line in $Lines begin
+    if $Line/LineType = Core.ENUM_LineType.Section or $Line/LineType = Core.ENUM_LineType.Note then
+      change $Line (Subtotal = 0, TaxAmount = 0, Total = 0);
+    else
+      retrieve $Taxes from $Line/Sales.SalesOrderLine_Taxes;
+      $Amounts = call microflow Core.SUB_Tax_ComputeLine(UnitPrice = $Line/UnitPrice, Quantity = $Line/Quantity, DiscountPercent = $Line/DiscountPercent, Taxes = $Taxes);
+      change $Line (Subtotal = $Amounts/Subtotal, TaxAmount = $Amounts/TaxAmount, Total = $Amounts/Total);
+      set $Untaxed = $Untaxed + $Amounts/Subtotal;
+      set $Tax = $Tax + $Amounts/TaxAmount;
+    end if;
+  end loop;
+  commit $Lines with events refresh;
+  change $SalesOrder (AmountUntaxed = $Untaxed, AmountTax = $Tax, AmountTotal = $Untaxed + $Tax);
+  commit $SalesOrder with events refresh;
+  return true;
+end;
+
+/**
+ * Customer defaults on an order (Odoo onchange partner_id): invoice and delivery address of the customer's company,
+ * its pricelist and payment term.
+ *
+ * @param $SalesOrder the order whose customer was chosen
+ */
+create or modify microflow Sales.SUB_SalesOrder_ApplyCustomer ($SalesOrder: Sales.SalesOrder)
+folder 'Quotations/Microflows'
+begin
+  retrieve $Customer from $SalesOrder/Sales.SalesOrder_Customer;
+  if $Customer = empty then
+    return;
+  end if;
+  $Invoice = call microflow Partners.SUB_Partner_GetAddress(Partner = $Customer, AddressType = Partners.ENUM_AddressType.Invoice);
+  $Delivery = call microflow Partners.SUB_Partner_GetAddress(Partner = $Customer, AddressType = Partners.ENUM_AddressType.Delivery);
+  $Commercial = call microflow Partners.SUB_Partner_GetCommercialPartner(Partner = $Customer);
+  change $SalesOrder (Sales.SalesOrder_InvoiceAddress = $Invoice, Sales.SalesOrder_DeliveryAddress = $Delivery,
+    Sales.SalesOrder_Pricelist = $Commercial/Partners.Partner_Pricelist, Sales.SalesOrder_PaymentTerm = $Commercial/Partners.Partner_CustomerPaymentTerm);
+end;
+
+/**
+ * Product defaults on a line (Odoo onchange product_id): description, unit, customer taxes and the pricelist price
+ * for the line's quantity on the order date.
+ *
+ * @param $SalesOrderLine the line whose product was chosen
+ */
+create or modify microflow Sales.SUB_SalesOrderLine_ApplyProduct ($SalesOrderLine: Sales.SalesOrderLine)
+folder 'Quotations/Microflows'
+begin
+  retrieve $Product from $SalesOrderLine/Sales.SalesOrderLine_Product;
+  if $Product = empty then
+    return;
+  end if;
+  retrieve $Order from $SalesOrderLine/Sales.SalesOrderLine_SalesOrder;
+  retrieve $Pricelist from $Order/Sales.SalesOrder_Pricelist;
+  retrieve $Taxes from $Product/Products.Product_CustomerTaxes;
+  declare $Qty Decimal = if $SalesOrderLine/Quantity = empty or $SalesOrderLine/Quantity <= 0 then 1 else $SalesOrderLine/Quantity;
+  $Price = call microflow Products.SUB_Pricelist_GetPrice(Pricelist = $Pricelist, Product = $Product, Quantity = $Qty,
+    Date = if $Order/OrderDate = empty then [%CurrentDateTime%] else $Order/OrderDate);
+  declare $Description String = if $Product/SalesDescription = empty or trim($Product/SalesDescription) = '' then $Product/Name
+    else $Product/Name + ' — ' + $Product/SalesDescription;
+  change $SalesOrderLine (Description = $Description, Quantity = $Qty, UnitPrice = $Price, LineType = Core.ENUM_LineType.Product,
+    Sales.SalesOrderLine_UoM = $Product/Products.Product_UoM, Sales.SalesOrderLine_Taxes = $Taxes);
+end;
+
+/**
+ * Set an order's status and commit it.
+ *
+ * @param $SalesOrder the order
+ * @param $Status the new status
+ */
+create or modify microflow Sales.SUB_SalesOrder_SetStatus ($SalesOrder: Sales.SalesOrder, $Status: Enumeration(Sales.ENUM_SalesOrderStatus))
+folder 'Quotations/Microflows'
+begin
+  change $SalesOrder (Status = $Status);
+  commit $SalesOrder with events refresh;
+end;

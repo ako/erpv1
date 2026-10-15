@@ -1,0 +1,79 @@
+mdl 1;
+-- 510-partners-mf-seed-data.mdl — Partners startup chain (PROJECT.md 5 (build) "Startup chain", "Demo data"):
+-- ASU_Partners_SeedData = Products' chain, then demo products and partners when Core.SeedDemoData, then a profile per account.
+
+/** Ensure a demo partner exists (business key: name + no parent). */
+create or modify microflow Partners.SUB_Partner_EnsureDemo ($Name: String, $IsCompany: Boolean, $IsCustomer: Boolean, $IsVendor: Boolean,
+  $Email: String, $Phone: String, $Street: String, $Zip: String, $City: String, $CountryCode: String)
+returns Partners.Partner as $Partner
+folder 'Contacts/Microflows'
+begin
+  retrieve $Partner from Partners.Partner where [Name = $Name][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+  if $Partner != empty then
+    return $Partner;
+  end if;
+  retrieve $Country from Core.Country where [Code = $CountryCode] first;
+  retrieve $Term from Core.PaymentTerm where [Name = '30 Days'] first;
+  retrieve $Pricelist from Products.Pricelist where [Name = 'Public Pricelist'] first;
+  $New = create Partners.Partner (Name = $Name, IsCompany = $IsCompany, IsCustomer = $IsCustomer, IsVendor = $IsVendor, Email = $Email, Phone = $Phone,
+    Street = $Street, Zip = $Zip, City = $City, AddressType = Partners.ENUM_AddressType.Contact, Active = true,
+    Partners.Partner_Country = $Country, Partners.Partner_CustomerPaymentTerm = $Term, Partners.Partner_VendorPaymentTerm = $Term,
+    Partners.Partner_Pricelist = $Pricelist);
+  commit $New without events;
+  return $New;
+end;
+
+/** The customers and vendors of docs/demo-script.md, with one contact person and an invoice address for Azure Interior. */
+create or modify microflow Partners.SUB_Partners_SeedDemo ()
+folder 'Contacts/Microflows'
+begin
+  $Azure = call microflow Partners.SUB_Partner_EnsureDemo(Name = 'Azure Interior', IsCompany = true, IsCustomer = true, IsVendor = false,
+    Email = 'azure.interior24@example.com', Phone = '+31 20 555 0101', Street = 'Herengracht 120', Zip = '1015 BT', City = 'Amsterdam', CountryCode = 'NL');
+  $Wood = call microflow Partners.SUB_Partner_EnsureDemo(Name = 'Wood Corner', IsCompany = true, IsCustomer = true, IsVendor = true,
+    Email = 'wood.corner26@example.com', Phone = '+31 10 555 0144', Street = 'Coolsingel 40', Zip = '3011 AD', City = 'Rotterdam', CountryCode = 'NL');
+  $Deco = call microflow Partners.SUB_Partner_EnsureDemo(Name = 'Deco Addict', IsCompany = true, IsCustomer = true, IsVendor = false,
+    Email = 'deco.addict82@example.com', Phone = '+32 2 555 0190', Street = 'Rue Neuve 12', Zip = '1000', City = 'Brussels', CountryCode = 'BE');
+  $Gemini = call microflow Partners.SUB_Partner_EnsureDemo(Name = 'Gemini Furniture', IsCompany = true, IsCustomer = false, IsVendor = true,
+    Email = 'gemini.furniture39@example.com', Phone = '+49 30 555 0177', Street = 'Friedrichstrasse 100', Zip = '10117', City = 'Berlin', CountryCode = 'DE');
+  $Ready = call microflow Partners.SUB_Partner_EnsureDemo(Name = 'Ready Mat', IsCompany = true, IsCustomer = false, IsVendor = true,
+    Email = 'ready.mat28@example.com', Phone = '+44 20 5550 0123', Street = '10 Market Street', Zip = 'EC1A 1BB', City = 'London', CountryCode = 'GB');
+  retrieve $Brandon from Partners.Partner where [Name = 'Brandon Freeman'] first;
+  if $Brandon = empty then
+    $Person = create Partners.Partner (Name = 'Brandon Freeman', IsCompany = false, IsCustomer = true, JobPosition = 'Creative Director',
+      Email = 'brandon.freeman55@example.com', Phone = '+31 20 555 0102', AddressType = Partners.ENUM_AddressType.Contact, Active = true,
+      Partners.Partner_ParentCompany = $Azure);
+    $InvoiceAddress = create Partners.Partner (Name = 'Azure Interior, Accounts', IsCompany = false, IsCustomer = true,
+      Email = 'ap@azure.example.com', Street = 'Postbus 2001', Zip = '1000 CA', City = 'Amsterdam', AddressType = Partners.ENUM_AddressType.Invoice,
+      Active = true, Partners.Partner_ParentCompany = $Azure);
+    commit $Person without events;
+    commit $InvoiceAddress without events;
+  end if;
+end;
+
+/** Every account has a profile and a partner (demo users included). */
+create or modify microflow Partners.SUB_UserProfiles_Ensure ()
+folder 'Users/Microflows'
+begin
+  retrieve $Accounts from Administration.Account;
+  loop $Account in $Accounts begin
+    $Profile = call microflow Partners.ACT_UserProfile_Create(Account = $Account);
+  end loop;
+end;
+
+/**
+ * After-startup chain head while Partners is the highest module built: Products' chain first, then demo data, then profiles.
+ *
+ * @returns true
+ */
+create or modify microflow Partners.ASU_Partners_SeedData ()
+returns Boolean as $Done
+folder 'Contacts/Microflows'
+begin
+  $ProductsDone = call microflow Products.ASU_Products_SeedData();
+  if @Core.SeedDemoData then
+    call microflow Products.SUB_Products_SeedDemo();
+    call microflow Partners.SUB_Partners_SeedDemo();
+  end if;
+  call microflow Partners.SUB_UserProfiles_Ensure();
+  return true;
+end;

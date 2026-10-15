@@ -1,0 +1,5 @@
+[
+ {"module":"Partners","page":"Partner_Overview","user":"sales.user","menu":["Contacts","Contacts"]},
+ {"module":"Partners","page":"Partner_NewEdit","user":"sales.user","menu":["Contacts","Contacts"],"openRow":1},
+ {"module":"Partners","page":"PartnerChild_NewEdit","user":"sales.user","menu":["Contacts","Contacts"],"openRow":1,"click":"btnAddChild"}
+]

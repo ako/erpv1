@@ -1,0 +1,26 @@
+mdl 1;
+-- 508-partners-mf-user-profile-create.mdl — build-plan row 38 (F001-UC005). Owns Partners.ACT_UserProfile_Create and
+-- Partners.SUB_UserProfiles_Ensure (startup: every account gets its profile and partner, Odoo res.users -> res.partner).
+
+/**
+ * Create the business profile of an account and the partner that represents the user (name, email) on documents.
+ * Returns the existing profile when the account already has one.
+ *
+ * @param $Account the user account
+ * @returns the profile
+ */
+create or modify microflow Partners.ACT_UserProfile_Create ($Account: Administration.Account)
+returns Partners.UserProfile as $Profile
+folder 'Users/Microflows'
+begin
+  retrieve $Profile from Partners.UserProfile where [Partners.UserProfile_Account = $Account] first;
+  if $Profile != empty then
+    return $Profile;
+  end if;
+  declare $Display String = if $Account/FullName = empty or trim($Account/FullName) = '' then $Account/Name else $Account/FullName;
+  $Partner = create Partners.Partner (Name = $Display, Email = $Account/Email, IsCompany = false, AddressType = Partners.ENUM_AddressType.Contact, Active = true);
+  $NewProfile = create Partners.UserProfile (DisplayName = $Display, Partners.UserProfile_Account = $Account, Partners.UserProfile_Partner = $Partner);
+  commit $Partner without events;
+  commit $NewProfile without events;
+  return $NewProfile;
+end;

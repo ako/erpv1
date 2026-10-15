@@ -1,0 +1,41 @@
+mdl 1;
+-- 414-products-mf-seed-demo.mdl — demo-script fixtures for Products (docs/demo-script.md "Fixtures"); called from the
+-- startup chain when Core.SeedDemoData is true. Idempotent by business key (InternalReference).
+
+/** Ensure a demo product exists (business key: internal reference). */
+create or modify microflow Products.SUB_Product_EnsureDemo ($Reference: String, $Name: String, $ProductType: Enumeration(Products.ENUM_ProductType),
+  $TrackInventory: Boolean, $SalesPrice: Decimal, $Cost: Decimal, $UoMName: String, $CategoryFullName: String)
+returns Products.Product as $Product
+folder 'Catalogue/Microflows'
+begin
+  retrieve $Product from Products.Product where [InternalReference = $Reference] first;
+  if $Product != empty then
+    return $Product;
+  end if;
+  retrieve $UoM from Products.UoM where [Name = $UoMName] first;
+  retrieve $Category from Products.ProductCategory where [FullName = $CategoryFullName] first;
+  retrieve $SalesTax from Core.Tax where [Name = '21% (sales)'] first;
+  retrieve $PurchaseTax from Core.Tax where [Name = '21% (purchase)'] first;
+  $New = create Products.Product (InternalReference = $Reference, Name = $Name, ProductType = $ProductType, TrackInventory = $TrackInventory,
+    SalesPrice = $SalesPrice, Cost = $Cost, CanBeSold = true, CanBePurchased = $ProductType = Products.ENUM_ProductType.Goods, Active = true,
+    InvoicePolicy = if $TrackInventory then Products.ENUM_InvoicePolicy.DeliveredQuantities else Products.ENUM_InvoicePolicy.OrderedQuantities,
+    BillPolicy = Products.ENUM_BillPolicy.ReceivedQuantities,
+    Products.Product_UoM = $UoM, Products.Product_PurchaseUoM = $UoM, Products.Product_Category = $Category,
+    Products.Product_CustomerTaxes = $SalesTax, Products.Product_VendorTaxes = $PurchaseTax);
+  commit $New without events;
+  return $New;
+end;
+
+/** The four demo products of docs/demo-script.md. */
+create or modify microflow Products.SUB_Products_SeedDemo ()
+folder 'Catalogue/Microflows'
+begin
+  $Chair = call microflow Products.SUB_Product_EnsureDemo(Reference = 'FURN_0269', Name = 'Office Chair', ProductType = Products.ENUM_ProductType.Goods,
+    TrackInventory = true, SalesPrice = 120, Cost = 70, UoMName = 'Units', CategoryFullName = 'All / Saleable / Office');
+  $Desk = call microflow Products.SUB_Product_EnsureDemo(Reference = 'FURN_7800', Name = 'Desk Combination', ProductType = Products.ENUM_ProductType.Goods,
+    TrackInventory = true, SalesPrice = 450, Cost = 290, UoMName = 'Units', CategoryFullName = 'All / Saleable / Office');
+  $Cable = call microflow Products.SUB_Product_EnsureDemo(Reference = 'CONS_0001', Name = 'Cable Pack', ProductType = Products.ENUM_ProductType.Goods,
+    TrackInventory = false, SalesPrice = 12.5, Cost = 5, UoMName = 'Units', CategoryFullName = 'All / Saleable');
+  $Install = call microflow Products.SUB_Product_EnsureDemo(Reference = 'SERV_0001', Name = 'Installation', ProductType = Products.ENUM_ProductType.Service,
+    TrackInventory = false, SalesPrice = 80, Cost = 40, UoMName = 'Hours', CategoryFullName = 'All / Saleable');
+end;

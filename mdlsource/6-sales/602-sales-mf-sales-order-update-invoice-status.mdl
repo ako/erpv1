@@ -1,0 +1,46 @@
+mdl 1;
+-- 602-sales-mf-sales-order-update-invoice-status.mdl — build-plan row 43 (F004-UC006). Owns Sales.SUB_SalesOrder_UpdateInvoiceStatus.
+
+/**
+ * Quantity to invoice per line and the order's invoice status (Odoo sale.order.line._compute_qty_to_invoice):
+ * ordered-quantities policy: ordered - invoiced; delivered-quantities policy: delivered - invoiced.
+ * Only a confirmed order has something to invoice; sections and notes never do.
+ *
+ * @param $SalesOrder the order
+ * @returns true
+ */
+create or modify microflow Sales.SUB_SalesOrder_UpdateInvoiceStatus ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  retrieve $Lines from $SalesOrder/Sales.SalesOrderLine_SalesOrder;
+  declare $AnyToInvoice Boolean = false;
+  declare $AllInvoiced Boolean = true;
+  declare $AnyProductLine Boolean = false;
+  loop $Line in $Lines begin
+    if $Line/LineType = Core.ENUM_LineType.Section or $Line/LineType = Core.ENUM_LineType.Note then
+      change $Line (QuantityToInvoice = 0);
+    else
+      set $AnyProductLine = true;
+      declare $Invoiced Decimal = if $Line/QuantityInvoiced = empty then 0 else $Line/QuantityInvoiced;
+      declare $Basis Decimal = if $Line/Sales.SalesOrderLine_Product/Products.Product/InvoicePolicy = Products.ENUM_InvoicePolicy.DeliveredQuantities
+        then (if $Line/QuantityDelivered = empty then 0 else $Line/QuantityDelivered) else (if $Line/Quantity = empty then 0 else $Line/Quantity);
+      declare $ToInvoice Decimal = if $SalesOrder/Status = Sales.ENUM_SalesOrderStatus.SalesOrder then $Basis - $Invoiced else 0;
+      change $Line (QuantityToInvoice = $ToInvoice);
+      if $ToInvoice > 0 then
+        set $AnyToInvoice = true;
+      end if;
+      if $Invoiced < (if $Line/Quantity = empty then 0 else $Line/Quantity) then
+        set $AllInvoiced = false;
+      end if;
+    end if;
+  end loop;
+  commit $Lines without events;
+  declare $Status Enumeration(Core.ENUM_InvoiceStatus) = if $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.SalesOrder then Core.ENUM_InvoiceStatus.NothingToInvoice
+    else if $AnyToInvoice then Core.ENUM_InvoiceStatus.ToInvoice
+    else if $AnyProductLine and $AllInvoiced then Core.ENUM_InvoiceStatus.FullyInvoiced
+    else Core.ENUM_InvoiceStatus.NothingToInvoice;
+  change $SalesOrder (InvoiceStatus = $Status);
+  commit $SalesOrder with events refresh;
+  return true;
+end;

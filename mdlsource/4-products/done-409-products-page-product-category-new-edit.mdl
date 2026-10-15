@@ -49,14 +49,14 @@ create or modify page Products.ProductCategory_NewEdit folder 'Catalogue/Pages'
     layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
       row {
         column (DesktopWidth: 12, TabletWidth: 12, PhoneWidth: 12) {
-          textbox txtName (Label: 'Name', Attribute: "Name")
-          combobox cmbProductCategoryParent (Label: 'Parent', Attribute: ProductCategory_Parent, DataSource: database Products."ProductCategory" sort by "Name" asc, CaptionAttribute: "Name")
+          textbox ptxtName (Label: 'Name', Attribute: "Name")
+          combobox pcmbProductCategoryParent (Label: 'Parent', Attribute: ProductCategory_Parent, DataSource: database Products."ProductCategory" sort by "Name" asc, CaptionAttribute: "Name")
         }
       }
     }
     footer {
-      actionbutton btnSave0 (Caption: 'Save', Action: call microflow Products.ACT_ProductCategory_Save(ProductCategory = $currentObject), ButtonStyle: Primary)
-      actionbutton btnCancel (Caption: 'Cancel', Action: cancel changes close page)
+      actionbutton pbtnSave0 (Caption: 'Save', Action: call microflow Products.ACT_ProductCategory_Save(ProductCategory = $currentObject), ButtonStyle: Primary)
+      actionbutton pbtnCancel (Caption: 'Cancel', Action: cancel changes close page)
     }
   }
       }

@@ -1,0 +1,59 @@
+mdl 1;
+-- 603-sales-mf-sales-order-new.mdl — build-plan row 44 (F004-UC001). Owns Sales.SUB_SalesOrder_Create and the
+-- order form's on-change actions ACT_SalesOrder_ChangeCustomer, ACT_SalesOrderLine_ChangeProduct, ACT_SalesOrderLine_Recompute. ACT_SalesOrder_New is in 615 (it opens the form that calls these).
+
+/**
+ * A new quotation with company defaults (Odoo sale.order default_get + create): number from the 'sale.order'
+ * sequence, the current user as salesperson, order date now, expiration = today + company quotation validity,
+ * company currency. Committed, so lines can be added at once.
+ *
+ * @returns the quotation
+ */
+create or modify microflow Sales.SUB_SalesOrder_Create ()
+returns Sales.SalesOrder as $SalesOrder
+folder 'Quotations/Microflows'
+begin
+  retrieve $Company from Core.Company first;
+  declare $LoginName String = if $currentUser = empty then '' else $currentUser/Name;
+  retrieve $Me from Administration.Account where [Name = $LoginName] first;
+  $Number = call microflow Core.SUB_Sequence_NextNumber(Code = 'sale.order');
+  $SalesOrder = create Sales.SalesOrder (Number = $Number, Status = Sales.ENUM_SalesOrderStatus.Quotation, Locked = false,
+    OrderDate = [%CurrentDateTime%],
+    ExpirationDate = addDays([%BeginOfCurrentDay%], if $Company/QuotationValidityDays = empty then 30 else $Company/QuotationValidityDays),
+    InvoiceStatus = Core.ENUM_InvoiceStatus.NothingToInvoice, DeliveryStatus = Sales.ENUM_DeliveryStatus.NotDelivered,
+    AmountUntaxed = 0, AmountTax = 0, AmountTotal = 0, TermsAndConditions = $Company/InvoiceTerms,
+    Sales.SalesOrder_Salesperson = $Me, Sales.SalesOrder_Currency = $Company/Core.Company_Currency);
+  commit $SalesOrder with events;
+  return $SalesOrder;
+end;
+
+/** On change of the customer: addresses, pricelist and payment term from the customer. */
+create or modify microflow Sales.ACT_SalesOrder_ChangeCustomer ($SalesOrder: Sales.SalesOrder)
+folder 'Quotations/Microflows'
+begin
+  call microflow Sales.SUB_SalesOrder_ApplyCustomer(SalesOrder = $SalesOrder);
+end;
+
+/**
+ * On change of a line's product: product defaults, then the order totals.
+ *
+ * @param $SalesOrderLine the line
+ * @returns true
+ */
+create or modify microflow Sales.ACT_SalesOrderLine_ChangeProduct ($SalesOrderLine: Sales.SalesOrderLine)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $SalesOrderLine);
+  retrieve $Order from $SalesOrderLine/Sales.SalesOrderLine_SalesOrder;
+  $Recomputed = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $Order);
+  return true;
+end;
+
+/** On change of a line's quantity, price, discount or taxes: the order totals. */
+create or modify microflow Sales.ACT_SalesOrderLine_Recompute ($SalesOrderLine: Sales.SalesOrderLine)
+folder 'Quotations/Microflows'
+begin
+  retrieve $Order from $SalesOrderLine/Sales.SalesOrderLine_SalesOrder;
+  $Recomputed = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $Order);
+end;

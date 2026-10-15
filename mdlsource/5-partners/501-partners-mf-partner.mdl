@@ -1,0 +1,34 @@
+mdl 1;
+-- 501-partners-mf-partner.mdl — build-plan row 34 (F001). Owns Partners.VAL_Partner.
+
+/**
+ * Validate a partner before save (Odoo res.partner constraints), every invalid field on one submit:
+ * a name for a contact (addresses may go unnamed); a well-formed email; a partner cannot be its own parent,
+ * directly or through its parent chain.
+ *
+ * @param $Partner the partner being saved
+ * @returns true when valid
+ */
+create or modify microflow Partners.VAL_Partner ($Partner: Partners.Partner)
+returns Boolean as $IsValid
+folder 'Contacts/Microflows'
+begin
+  declare $IsValid Boolean = true;
+  if $Partner/AddressType = Partners.ENUM_AddressType.Contact and ($Partner/Name = empty or trim($Partner/Name) = '') then
+    validation feedback $Partner/Name message 'Name is required.';
+    set $IsValid = false;
+  end if;
+  if $Partner/Email != empty and trim($Partner/Email) != '' and not(isMatch(trim($Partner/Email), '^[^@\s]+@[^@\s]+\.[^@\s]+$')) then
+    validation feedback $Partner/Email message 'Enter a valid email address.';
+    set $IsValid = false;
+  end if;
+  retrieve $Parent from $Partner/Partners.Partner_ParentCompany;
+  if $Parent != empty then
+    $Top = call microflow Partners.SUB_Partner_GetCommercialPartner(Partner = $Parent);
+    if $Parent = $Partner or $Top = $Partner then
+      validation feedback $Partner/Partners.Partner_ParentCompany message 'A contact cannot belong to itself.';
+      set $IsValid = false;
+    end if;
+  end if;
+  return $IsValid;
+end;

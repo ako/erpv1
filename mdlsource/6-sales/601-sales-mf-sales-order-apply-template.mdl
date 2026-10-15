@@ -1,0 +1,50 @@
+mdl 1;
+-- 601-sales-mf-sales-order-apply-template.mdl — build-plan row 43 (F004). Owns Sales.SUB_SalesOrder_ApplyTemplate and the
+-- template combobox's on-change Sales.ACT_SalesOrder_ApplyTemplate.
+
+/**
+ * Replace the order lines by the template's lines and set the expiration to today + the template validity
+ * (Odoo sale_management _onchange_sale_order_template_id). Prices come from the pricelist via the product defaults.
+ *
+ * @param $SalesOrder the quotation
+ */
+create or modify microflow Sales.SUB_SalesOrder_ApplyTemplate ($SalesOrder: Sales.SalesOrder)
+folder 'Templates/Microflows'
+begin
+  retrieve $Template from $SalesOrder/Sales.SalesOrder_QuotationTemplate;
+  if $Template = empty then
+    return;
+  end if;
+  retrieve $OldLines from $SalesOrder/Sales.SalesOrderLine_SalesOrder;
+  delete $OldLines;
+  retrieve $TemplateLines from $Template/Sales.QuotationTemplateLine_Template;
+  $NewLines = create list of Sales.SalesOrderLine;
+  loop $TemplateLine in $TemplateLines begin
+    $Line = create Sales.SalesOrderLine (Sequence = $TemplateLine/Sequence, LineType = $TemplateLine/LineType, Description = $TemplateLine/Description,
+      Quantity = $TemplateLine/Quantity, Sales.SalesOrderLine_SalesOrder = $SalesOrder,
+      Sales.SalesOrderLine_Product = $TemplateLine/Sales.QuotationTemplateLine_Product, Sales.SalesOrderLine_UoM = $TemplateLine/Sales.QuotationTemplateLine_UoM);
+    if $TemplateLine/Sales.QuotationTemplateLine_Product != empty then
+      call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+      change $Line (Quantity = $TemplateLine/Quantity, Description = if $TemplateLine/Description = empty then $Line/Description else $TemplateLine/Description);
+    end if;
+    add $Line to $NewLines;
+  end loop;
+  commit $NewLines without events;
+  change $SalesOrder (ExpirationDate = addDays([%BeginOfCurrentDay%], if $Template/ValidityDays = empty then 0 else $Template/ValidityDays),
+    TermsAndConditions = if $Template/TermsAndConditions = empty then $SalesOrder/TermsAndConditions else $Template/TermsAndConditions);
+  $Done = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $SalesOrder);
+end;
+
+/**
+ * On change of the quotation template on the order form.
+ *
+ * @param $SalesOrder the quotation
+ * @returns true
+ */
+create or modify microflow Sales.ACT_SalesOrder_ApplyTemplate ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Templates/Microflows'
+begin
+  call microflow Sales.SUB_SalesOrder_ApplyTemplate(SalesOrder = $SalesOrder);
+  return true;
+end;

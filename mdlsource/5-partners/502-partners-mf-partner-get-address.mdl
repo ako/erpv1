@@ -1,0 +1,26 @@
+mdl 1;
+-- 502-partners-mf-partner-get-address.mdl — build-plan row 34 (F001). Owns Partners.SUB_Partner_GetAddress.
+
+/**
+ * The child address of a type (Invoice / Delivery) of a partner's company, or the company itself when it has none
+ * (Odoo address_get). Used for an order's invoice and delivery addresses.
+ *
+ * @param $Partner the customer or vendor as chosen on a document
+ * @param $AddressType Invoice or Delivery
+ * @returns the address partner
+ */
+create or modify microflow Partners.SUB_Partner_GetAddress ($Partner: Partners.Partner, $AddressType: Enumeration(Partners.ENUM_AddressType))
+returns Partners.Partner as $Address
+folder 'Contacts/Microflows'
+begin
+  $Commercial = call microflow Partners.SUB_Partner_GetCommercialPartner(Partner = $Partner);
+  if $Commercial = empty then
+    return empty;
+  end if;
+  retrieve $Child from Partners.Partner
+    where [Partners.Partner_ParentCompany = $Commercial][AddressType = $AddressType][Active = true] first;
+  if $Child != empty then
+    return $Child;
+  end if;
+  return $Commercial;
+end;

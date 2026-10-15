@@ -1,0 +1,18 @@
+mdl 1;
+-- 800-inventory-stub-sales-purchase-bridges.mdl — FORWARD STUBS (brd-to-build-plan.md "forward stubs for bridge microflows
+-- are build-order scaffolding, replaced in a later row"). Sales/Purchasing call these sanctioned bridges before Inventory
+-- (phase 8) exists; the real bodies come from 8-inventory/*-create-delivery.mdl etc., which drop+recreate them.
+
+/** STUB until phase 8: create and confirm the delivery for a confirmed sales order. */
+create or modify microflow Inventory.SUB_SalesOrder_CreateDelivery ($SalesOrder: Sales.SalesOrder)
+folder 'Fulfilment/Microflows'
+begin
+  log info node 'Inventory.Stub' 'Delivery not created yet (Inventory phase 8 pending) for ' + $SalesOrder/Number;
+end;
+
+/** STUB until phase 8: cancel the open deliveries of a sales order. */
+create or modify microflow Inventory.SUB_SalesOrder_CancelDeliveries ($SalesOrder: Sales.SalesOrder)
+folder 'Fulfilment/Microflows'
+begin
+  log info node 'Inventory.Stub' 'No deliveries to cancel yet (Inventory phase 8 pending) for ' + $SalesOrder/Number;
+end;

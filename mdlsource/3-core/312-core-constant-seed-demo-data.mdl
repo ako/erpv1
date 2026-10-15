@@ -1,0 +1,9 @@
+mdl 1;
+-- 312-core-constant-seed-demo-data.mdl — PROJECT.md 5 (build) "Demo data": the demo-script fixtures are seeded by the
+-- startup chain only while this constant is true (set it false in any configuration that must start empty).
+
+/** Seed the docs/demo-script.md fixtures (customers, vendors, products, stock) at startup. Idempotent by business key. */
+create or modify constant Core.SeedDemoData folder 'Setup' (
+  Type: Boolean,
+  DefaultValue: true
+);

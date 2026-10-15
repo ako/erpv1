@@ -1,0 +1,13 @@
+mdl 1;
+-- 615-sales-mf-sales-order-new-action.mdl — build-plan row 44 (F004-UC001): the New button's microflow.
+-- Split out of 603 because it opens Sales.SalesOrder_NewEdit, whose buttons call 603/604: the page and this microflow
+-- reference each other, so exec order is 603, 604, 606 (page), 615, 605 (list with the New button).
+
+/** New button on Quotations & orders: create the quotation and open it. */
+create or modify microflow Sales.ACT_SalesOrder_New ()
+folder 'Quotations/Microflows'
+begin
+  $SalesOrder = call microflow Sales.SUB_SalesOrder_Create();
+  show page Sales.SalesOrder_NewEdit(SalesOrder = $SalesOrder);
+end;
+

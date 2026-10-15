@@ -48,19 +48,19 @@ create or modify page Core.Tax_NewEdit folder 'Taxes/Pages'
     layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
       row {
         column (DesktopWidth: 12, TabletWidth: 12, PhoneWidth: 12) {
-          textbox txtName (Label: 'Name', Attribute: "Name")
-          combobox cmbScope (Label: 'Scope', Attribute: "Scope")
-          combobox cmbComputation (Label: 'Computation', Attribute: "Computation")
-          textbox txtAmount (Label: 'Amount', Attribute: "Amount", DecimalPrecision: 2, GroupDigits: true)
-          checkbox cbIncludedInPrice (Label: 'Included in price', Attribute: "IncludedInPrice")
-          textbox txtLabelOnInvoice (Label: 'Label on invoice', Attribute: "LabelOnInvoice")
-          textbox txtSequence (Label: 'Sequence', Attribute: "Sequence")
+          textbox ptxtName (Label: 'Name', Attribute: "Name")
+          combobox pcmbScope (Label: 'Scope', Attribute: "Scope")
+          combobox pcmbComputation (Label: 'Computation', Attribute: "Computation")
+          textbox ptxtAmount (Label: 'Amount', Attribute: "Amount", DecimalPrecision: 2, GroupDigits: true)
+          checkbox pcbIncludedInPrice (Label: 'Included in price', Attribute: "IncludedInPrice")
+          textbox ptxtLabelOnInvoice (Label: 'Label on invoice', Attribute: "LabelOnInvoice")
+          textbox ptxtSequence (Label: 'Sequence', Attribute: "Sequence")
         }
       }
     }
     footer {
-      actionbutton btnSave0 (Caption: 'Save', Action: call microflow Core.ACT_Tax_Save(Tax = $currentObject), ButtonStyle: Primary)
-      actionbutton btnCancel (Caption: 'Cancel', Action: cancel changes close page)
+      actionbutton pbtnSave0 (Caption: 'Save', Action: call microflow Core.ACT_Tax_Save(Tax = $currentObject), ButtonStyle: Primary)
+      actionbutton pbtnCancel (Caption: 'Cancel', Action: cancel changes close page)
     }
   }
       }

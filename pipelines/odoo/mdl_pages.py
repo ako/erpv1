@@ -32,6 +32,16 @@ LINK_TARGET = {'UserProfile_Edit': 'Administration.Account_Overview'}
 # hand-written logic a generated save runs just before its commit
 # ratios stored with 8 decimals must display them all (Dozens = 0.08333333; ui-review 2026-10-15 P2-4)
 DECIMAL_PRECISION = {'Factor': 8}
+# On change of a field: the ACT_ that applies its dependent defaults (BRD onchange rules). Keyed by (entity, field).
+ONCHANGE = {('Sales.SalesOrder', 'SalesOrder_Customer'): 'Sales.ACT_SalesOrder_ChangeCustomer',
+            ('Sales.SalesOrder', 'SalesOrder_QuotationTemplate'): 'Sales.ACT_SalesOrder_ApplyTemplate',
+            ('Sales.SalesOrderLine', 'SalesOrderLine_Product'): 'Sales.ACT_SalesOrderLine_ChangeProduct',
+            **{('Sales.SalesOrderLine', f): 'Sales.ACT_SalesOrderLine_Recompute'
+               for f in ('Quantity', 'UnitPrice', 'DiscountPercent', 'SalesOrderLine_Taxes')}}
+# The New button of a list whose new record needs defaults (number, dates, salesperson): a microflow, not create object.
+NEW_ACTION = {'SalesOrder_Overview': 'Sales.ACT_SalesOrder_New'}
+# Buttons whose microflow belongs to a later phase: left off the page until that phase builds it (build plan).
+DEFERRED_BUTTONS = {'ACT_SalesOrder_CreateInvoice': 'Invoicing phase, build-plan row 52'}
 SAVE_HOOK = {'Products.ProductCategory': 'Products.SUB_ProductCategory_ComputeFullName'}
 LINK_CAPTION = {'Administration.Account_Overview': 'User accounts (Administration)'}
 
@@ -97,12 +107,15 @@ def esc(s):
     return (s or '').replace("'", "''")
 
 
+WID_PREFIX = ''   # 'p' while generating a popup: its widgets never share a name with the page underneath (DOM selectors)
+
+
 def _wid(prefix, name):
-    return prefix + re.sub(r'[^A-Za-z0-9]', '', name.split('/')[-1])
+    return WID_PREFIX + prefix + re.sub(r'[^A-Za-z0-9]', '', name.split('/')[-1])
 
 
 def wid(prefix, name):
-    return prefix + re.sub(r'[^A-Za-z0-9]', '', name.split('/')[-1])
+    return _wid(prefix, name)
 
 
 def is_readonly(a, name=''):
@@ -126,6 +139,9 @@ def input_widget(e, f, ind, readonly=False, prefix='in'):
     a = attr(e, f)
     lab = esc(label_of(e, f))
     ro = ', Editable: Never' if (readonly or is_readonly(a, f)) else ''
+    oc = ONCHANGE.get((e['name'], f))
+    if oc and not ro:
+        ro = ', OnChange: call microflow %s(%s = $currentObject)' % (oc, e['name'].split('.')[1])
     if a or f in SYS_ATTR:
         t = a['type'] if a else SYS_ATTR[f]
         if t == 'Boolean':
@@ -222,8 +238,11 @@ def gen_list(s):
     actions = []
     if s.get('new'):
         tgt = s['new']
-        actions.append("actionbutton btnNew (Caption: 'New', Action: create object %s then show page %s.%s, ButtonStyle: Primary)"
-                       % (D.qn(s['entity']), page_module(tgt), tgt))
+        if s['name'] in NEW_ACTION:
+            actions.append("actionbutton btnNew (Caption: 'New', Action: call microflow %s, ButtonStyle: Primary)" % NEW_ACTION[s['name']])
+        else:
+            actions.append("actionbutton btnNew (Caption: 'New', Action: create object %s then show page %s.%s, ButtonStyle: Primary)"
+                           % (D.qn(s['entity']), page_module(tgt), tgt))
     L = page_head(None, "dynamictext txtTitle (Content: '%s', RenderMode: H1)" % esc(s['title']), actions)
     filt = set(s.get('filters', []))
     if s.get('editable'):
@@ -293,6 +312,8 @@ def buttons(s, e, pname, popup=False):
     for i, b in enumerate(s.get('buttons', [])):
         cap, act = b[0], b[1]
         states = b[2] if len(b) > 2 else None
+        if act in DEFERRED_BUTTONS:
+            continue
         if cap == 'Archive':
             act = 'ACT_%s_Archive' % e['name'].split('.')[1]
         if act == 'save' or act.startswith('VAL_'):
@@ -309,10 +330,10 @@ def buttons(s, e, pname, popup=False):
             en = attr(e, stat_attr)['enumeration']
             conds = ' or '.join('$currentObject/%s = %s.%s' % (stat_attr, en, enum_value_for_caption(en, st)) for st in states)
             vis = ', Visible: %s' % conds
-        style = 'Primary' if i == 0 else 'Default'
+        style = 'Primary' if not out else 'Default'
         out.append("actionbutton %s (Caption: '%s', Action: %s, ButtonStyle: %s%s)" % (wid('btn', cap + str(i)), esc(cap), a, style, vis))
     if popup:
-        out.append("actionbutton btnCancel (Caption: 'Cancel', Action: cancel changes close page)")
+        out.append("actionbutton %sbtnCancel (Caption: 'Cancel', Action: cancel changes close page)" % WID_PREFIX)
     return out
 
 
@@ -363,9 +384,21 @@ def gen_form(s, popup=False):
         add_mf = '%s.ACT_%s_Add' % (lmod, ln['entity'].split('.')[1]) if ln.get('editable') else None
         if add_mf:
             add_mf += '(%s = $currentObject)' % pname
-        L += editable_listview(le, ln['columns'], src, '    ', add_mf) if ln.get('editable') else \
-            ['    datagrid %s (DataSource: %s) {' % (wid('grid', ln['title']), src)] + \
-            ['      ' + column(le, c) for c in ln['columns']] + ['    }']
+        if ln.get('editable'):
+            L += editable_listview(le, ln['columns'], src, '    ', add_mf)
+        else:
+            open_ = ''
+            if ln.get('open'):
+                tp = U.S[ln['open']]
+                open_ = ', OnClick: show page %s.%s(%s = $currentObject)' % (module_of(tp['entity']), ln['open'], param_name(tp['param']))
+            # a database query, not $currentObject/<assoc>: the association may be a self-reference (Partner_ParentCompany),
+            # which a grid cannot walk backwards (CE8812), and a query re-runs after the popup saves a child
+            dsrc = "database %s where [%s.%s = '[%%CurrentObject%%]']" % (D.qn(ln['entity']), lmod, ln['via'])
+            L.append("    datagrid %s (DataSource: %s, Class: 'density-compact'%s) {" % (wid('grid', ln['title']), dsrc, open_))
+            L += ['      ' + column(le, c) for c in ln['columns']] + ['    }']
+            if ln.get('open'):
+                L.append("    linkbutton btnAddChild (Caption: '+ Add', Action: call microflow %s.ACT_%s_AddTo%s(%s = $currentObject))"
+                         % (lmod, ln['entity'].split('.')[1], pname, pname))
     if s.get('totals'):
         L.append("    container ctnTotals (Class: 'spacing-outer-bottom-large') {")
         for t in s['totals']:
@@ -476,6 +509,41 @@ end;
 ''' % dict(short=short, mod=mod, q=e['name'], page=s['name'], f=mfolder, body=body)]
 
 
+def child_add_microflows(s):
+    """'+ Add' under a read-only lines grid whose rows open a popup: a new child linked to the parent, opened in that popup
+    (uncommitted: Save commits it, Cancel drops it)."""
+    out = []
+    lines = [s['lines']] if isinstance(s.get('lines'), dict) else (s.get('lines') or [])
+    pq = s['param'] or s['entity']
+    pname = param_name(pq)
+    for ln in lines:
+        if ln.get('editable') or not ln.get('open'):
+            continue
+        lmod, lshort = module_of(ln['entity']), ln['entity'].split('.')[1]
+        tp = U.S[ln['open']]
+        mf = folder_of(module_of(pq), s['name']).replace('/Pages', '/Microflows')
+        out.append('''/** A new, uncommitted %s linked to this %s. */
+create or modify microflow %s.SUB_%s_NewFor%s ($%s: %s)
+returns %s as $Child
+folder '%s'
+begin
+  $Child = create %s (%s.%s = $%s);
+  return $Child;
+end;
+
+/** "+ Add" on %s: a new %s, opened in %s (Save commits it, Cancel drops it). */
+create or modify microflow %s.ACT_%s_AddTo%s ($%s: %s)
+folder '%s'
+begin
+  $Child = call microflow %s.SUB_%s_NewFor%s(%s = $%s);
+  show page %s.%s(%s = $Child);
+end;
+''' % (lshort, pname, lmod, lshort, pname, pname, pq, ln['entity'], mf, D.qn(ln['entity']), lmod, ln['via'], pname,
+       s['name'], lshort, ln['open'], lmod, lshort, pname, pname, pq, mf, lmod, lshort, pname, pname, pname,
+       module_of(tp['entity']), ln['open'], param_name(tp['param'])))
+    return out
+
+
 def line_add_microflows(s):
     """ACT_<Line>_Add(<Parent>) for every editable lines block: create the line on the parent, commit, refresh."""
     out = []
@@ -512,6 +580,8 @@ def gen_page(name):
     s = U.S[name]
     if s['kind'] not in ('list', 'form', 'popup'):
         raise SystemExit('%s is a %s — hand-written, not generated' % (name, s['kind']))
+    global WID_PREFIX
+    WID_PREFIX = 'p' if s['kind'] == 'popup' else ''
     mod = module_of(s['entity']) if s['kind'] == 'list' or s.get('param') else module_of(s['entity'])
     folder = folder_of(mod, name)
     roles = module_roles_for(mod, s['roles'])
@@ -526,6 +596,7 @@ def gen_page(name):
         popup = s['kind'] == 'popup'
         out += save_microflows(s, folder)
         out += line_add_microflows(s)
+        out += child_add_microflows(s)
         inner, pname = gen_form(s, popup=popup)
         if s.get('singleton'):
             short = s['entity'].split('.')[1]

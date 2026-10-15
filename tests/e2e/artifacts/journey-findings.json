@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-15T01:30:40.085Z",
-  "configuredUser": "sales.manager",
-  "actualUser": "sales.manager",
+  "capturedAt": "2026-10-15T05:41:52.664Z",
+  "configuredUser": "sales.user",
+  "actualUser": "sales.user",
   "usedFallback": false,
   "baseUrl": "http://localhost:8080",
   "positiveControl": false,
@@ -17,164 +17,115 @@
       "rung": "ui",
       "name": "login",
       "verdict": "PASS",
-      "detail": "sales.manager",
+      "detail": "sales.user",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Products > Products: reached",
+      "name": "Open Contacts > Contacts: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F003-UC001"
+      "requirement": "F001-UC001, F001-UC002"
     },
     {
       "rung": "ui",
-      "name": "New product, Save with every field empty: refused, message shown, nothing stored: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-txtName",
-      "requirement": "F003-UC001"
-    },
-    {
-      "rung": "ui",
-      "name": "New product, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
+      "name": "Open Contacts > Contacts: page says \"Azure Interior\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F003-UC001"
+      "requirement": "F001-UC001, F001-UC002"
     },
     {
       "rung": "ui",
-      "name": "New product, Save with every field empty: refused, message shown, nothing stored: page says \"Unit of measure is required.\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F003-UC001"
-    },
-    {
-      "rung": "data",
-      "name": "New product, Save with every field empty: refused, message shown, nothing stored: Products.Product +0",
-      "verdict": "PASS",
-      "detail": "before=6 after=6 delta=0",
-      "requirement": "F003-UC001"
-    },
-    {
-      "rung": "ui",
-      "name": "Fill name, unit and price and save: back on the list with the product shown: combobox cmbProductType committed the seeded value",
-      "verdict": "PASS",
-      "detail": "Goods",
-      "requirement": "F003-UC001"
-    },
-    {
-      "rung": "ui",
-      "name": "Fill name, unit and price and save: back on the list with the product shown: combobox cmbProductUoM committed the seeded value",
-      "verdict": "PASS",
-      "detail": "Units",
-      "requirement": "F003-UC001"
-    },
-    {
-      "rung": "ui",
-      "name": "Fill name, unit and price and save: back on the list with the product shown: reached",
+      "name": "New company: tick Is company, fill name, email and city, mark as customer, save: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F003-UC001"
+      "requirement": "F001-UC001, F001-UC002"
     },
     {
       "rung": "ui",
-      "name": "Fill name, unit and price and save: back on the list with the product shown: page says \"Journey Chair\"",
+      "name": "New company: tick Is company, fill name, email and city, mark as customer, save: page says \"Journey Office Supplies\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F003-UC001"
+      "requirement": "F001-UC001, F001-UC002"
     },
     {
       "rung": "data",
-      "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product +1",
+      "name": "New company: tick Is company, fill name, email and city, mark as customer, save: Partners.Partner +1",
       "verdict": "PASS",
-      "detail": "before=6 after=7 delta=1",
-      "requirement": "F003-UC001"
-    },
-    {
-      "rung": "data",
-      "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product_UoM set on every row",
-      "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 31243722414896359)",
-      "requirement": "F003-UC001",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product_UoM points at the seeded Name",
-      "verdict": "PASS",
-      "detail": "1 row(s) link to Products.UoM where Name = 'Units' (scoped to rows with id > 31243722414896359)",
-      "requirement": "F003-UC001",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Fill name, unit and price and save: back on the list with the product shown: the purchase unit defaults to the sales unit",
-      "verdict": "PASS",
-      "detail": "got 7, need >= 1",
-      "requirement": "F003-UC001"
+      "detail": "before=22 after=23 delta=1",
+      "requirement": "F001-UC001, F001-UC002"
     },
     {
       "rung": "outcome",
-      "name": "J-PRODUCTS-01 end state",
+      "name": "J-PARTNERS-01 end state",
       "verdict": "PASS",
-      "detail": "got 7, need >= 1",
-      "requirement": "F003-UC001"
+      "detail": "got 1, need >= 1",
+      "requirement": "F001-UC001, F001-UC002"
     }
   ],
   "walks": [
     {
-      "journey": "J-PRODUCTS-01",
-      "title": "Sales manager creates a product: an empty save is refused, a valid product is listed with its unit",
-      "persona": "sales.manager",
+      "journey": "J-PARTNERS-01",
+      "title": "Sales user creates a company and adds a contact person to it",
+      "persona": "sales.user",
       "requirement": [
-        "F003-UC001"
+        "F001-UC001",
+        "F001-UC002"
       ],
-      "seeds": {
-        "unitName": "Units"
-      },
+      "seeds": {},
       "steps": [
         {
           "n": 1,
-          "name": "Open Products > Products",
+          "name": "Open Contacts > Contacts",
           "requirement": [
-            "F003-UC001"
+            "F001-UC001",
+            "F001-UC002"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Products › Products",
+              "target": "Contacts › Contacts",
               "selector": null
             }
           ],
           "expects": {
             "landsOn": ".mx-name-gridMain",
-            "pageSays": [],
+            "pageSays": [
+              "Azure Interior"
+            ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-PRODUCTS-01-step1.png",
-            "title": "Mendix - Products",
-            "url": "http://localhost:8080/p/product-overview",
-            "at": "2026-10-15T01:30:28.663Z"
+            "file": "../tests/e2e/artifacts/J-PARTNERS-01-step1.png",
+            "title": "Mendix - Contacts",
+            "url": "http://localhost:8080/p/partner-overview",
+            "at": "2026-10-15T05:41:46.605Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Products > Products: reached",
+              "name": "Open Contacts > Contacts: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Open Contacts > Contacts: page says \"Azure Interior\"",
+              "verdict": "PASS",
+              "detail": ""
             }
           ],
-          "ms": 1090
+          "ms": 1096
         },
         {
           "n": 2,
-          "name": "New product, Save with every field empty: refused, message shown, nothing stored",
+          "name": "New company: tick Is company, fill name, email and city, mark as customer, save",
           "requirement": [
-            "F003-UC001"
+            "F001-UC001",
+            "F001-UC002"
           ],
           "actions": [
             {
@@ -188,86 +139,29 @@
               "selector": null
             },
             {
-              "verb": "Click",
-              "target": "Save",
-              "selector": ".mx-name-btnSave0"
-            }
-          ],
-          "expects": {
-            "landsOn": ".mx-name-txtName",
-            "pageSays": [
-              "Name is required.",
-              "Unit of measure is required."
-            ],
-            "pageDoesNotSay": [],
-            "microflows": [],
-            "writes": {
-              "entity": "Products.Product",
-              "delta": 0,
-              "associations": []
-            }
-          },
-          "shot": {
-            "file": "../tests/e2e/artifacts/J-PRODUCTS-01-step2.png",
-            "title": "Mendix - Product",
-            "url": "http://localhost:8080/p/product-overview",
-            "at": "2026-10-15T01:30:31.829Z"
-          },
-          "reached": true,
-          "checks": [
-            {
-              "rung": "ui",
-              "name": "New product, Save with every field empty: refused, message shown, nothing stored: reached",
-              "verdict": "PASS",
-              "detail": ".mx-name-txtName"
-            },
-            {
-              "rung": "ui",
-              "name": "New product, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
-              "verdict": "PASS",
-              "detail": ""
-            },
-            {
-              "rung": "ui",
-              "name": "New product, Save with every field empty: refused, message shown, nothing stored: page says \"Unit of measure is required.\"",
-              "verdict": "PASS",
-              "detail": ""
-            },
-            {
-              "rung": "data",
-              "name": "New product, Save with every field empty: refused, message shown, nothing stored: Products.Product +0",
-              "verdict": "PASS",
-              "detail": "before=6 after=6 delta=0"
-            }
-          ],
-          "ms": 3218
-        },
-        {
-          "n": 3,
-          "name": "Fill name, unit and price and save: back on the list with the product shown",
-          "requirement": [
-            "F003-UC001"
-          ],
-          "actions": [
-            {
               "verb": "Type",
-              "target": "\"Journey Chair\" into txtName",
+              "target": "\"Journey Office Supplies\" into txtName",
               "selector": ".mx-name-txtName"
             },
             {
-              "verb": "Select",
-              "target": "\"Goods\" in cmbProductType",
-              "selector": ".mx-name-cmbProductType"
-            },
-            {
-              "verb": "Select",
-              "target": "\"Units\" in cmbProductUoM",
-              "selector": ".mx-name-cmbProductUoM"
+              "verb": "Click",
+              "target": "Is company",
+              "selector": ".mx-name-cbIsCompany"
             },
             {
               "verb": "Type",
-              "target": "\"120\" into txtSalesPrice",
-              "selector": ".mx-name-txtSalesPrice"
+              "target": "\"orders@journey-office.example.com\" into txtEmail",
+              "selector": ".mx-name-txtEmail"
+            },
+            {
+              "verb": "Type",
+              "target": "\"Utrecht\" into txtCity",
+              "selector": ".mx-name-txtCity"
+            },
+            {
+              "verb": "Click",
+              "target": "Is customer",
+              "selector": ".mx-name-cbIsCustomer"
             },
             {
               "verb": "Click",
@@ -278,76 +172,44 @@
           "expects": {
             "landsOn": ".mx-name-gridMain",
             "pageSays": [
-              "Journey Chair"
+              "Journey Office Supplies"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Products.Product",
+              "entity": "Partners.Partner",
               "delta": 1,
-              "associations": [
-                "Products.Product_UoM"
-              ]
+              "associations": []
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-PRODUCTS-01-step3.png",
-            "title": "Mendix - Products",
-            "url": "http://localhost:8080/p/product-overview",
-            "at": "2026-10-15T01:30:39.603Z"
+            "file": "../tests/e2e/artifacts/J-PARTNERS-01-step2.png",
+            "title": "Mendix - Contacts",
+            "url": "http://localhost:8080/p/partner-overview",
+            "at": "2026-10-15T05:41:52.504Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Fill name, unit and price and save: back on the list with the product shown: combobox cmbProductType committed the seeded value",
-              "verdict": "PASS",
-              "detail": "Goods"
-            },
-            {
-              "rung": "ui",
-              "name": "Fill name, unit and price and save: back on the list with the product shown: combobox cmbProductUoM committed the seeded value",
-              "verdict": "PASS",
-              "detail": "Units"
-            },
-            {
-              "rung": "ui",
-              "name": "Fill name, unit and price and save: back on the list with the product shown: reached",
+              "name": "New company: tick Is company, fill name, email and city, mark as customer, save: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Fill name, unit and price and save: back on the list with the product shown: page says \"Journey Chair\"",
+              "name": "New company: tick Is company, fill name, email and city, mark as customer, save: page says \"Journey Office Supplies\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product +1",
+              "name": "New company: tick Is company, fill name, email and city, mark as customer, save: Partners.Partner +1",
               "verdict": "PASS",
-              "detail": "before=6 after=7 delta=1"
-            },
-            {
-              "rung": "data",
-              "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product_UoM set on every row",
-              "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 31243722414896359)"
-            },
-            {
-              "rung": "data",
-              "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product_UoM points at the seeded Name",
-              "verdict": "PASS",
-              "detail": "1 row(s) link to Products.UoM where Name = 'Units' (scoped to rows with id > 31243722414896359)"
-            },
-            {
-              "rung": "data",
-              "name": "Fill name, unit and price and save: back on the list with the product shown: the purchase unit defaults to the sales unit",
-              "verdict": "PASS",
-              "detail": "got 7, need >= 1"
+              "detail": "before=22 after=23 delta=1"
             }
           ],
-          "ms": 8048
+          "ms": 5939
         }
       ]
     }

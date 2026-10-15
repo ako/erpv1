@@ -1,0 +1,94 @@
+-- Partners unit tests (build-plan row 39). Every test rolls back unless it says otherwise.
+
+/**
+ * @test A contact person's commercial partner is its company
+ * @expect $Top/Name = 'Azure Interior'
+ */
+retrieve $Brandon from Partners.Partner where [Name = 'Brandon Freeman'] first;
+$Top = call microflow Partners.SUB_Partner_GetCommercialPartner(Partner = $Brandon);
+/
+
+/**
+ * @test A company is its own commercial partner
+ * @expect $Top/Name = 'Wood Corner'
+ */
+retrieve $Wood from Partners.Partner where [Name = 'Wood Corner'] first;
+$Top = call microflow Partners.SUB_Partner_GetCommercialPartner(Partner = $Wood);
+/
+
+/**
+ * @test The invoice address of a contact person is the company's invoice address
+ * @expect $Address/Name = 'Azure Interior, Accounts'
+ */
+retrieve $Brandon from Partners.Partner where [Name = 'Brandon Freeman'] first;
+$Address = call microflow Partners.SUB_Partner_GetAddress(Partner = $Brandon, AddressType = Partners.ENUM_AddressType.Invoice);
+/
+
+/**
+ * @test Without a delivery address the company itself is the delivery address
+ * @expect $Address/Name = 'Azure Interior'
+ */
+retrieve $Brandon from Partners.Partner where [Name = 'Brandon Freeman'] first;
+$Address = call microflow Partners.SUB_Partner_GetAddress(Partner = $Brandon, AddressType = Partners.ENUM_AddressType.Delivery);
+/
+
+/**
+ * @test A contact without a name is refused
+ * @expect $IsValid = false
+ */
+$P = create Partners.Partner (AddressType = Partners.ENUM_AddressType.Contact);
+$IsValid = call microflow Partners.VAL_Partner(Partner = $P);
+/
+
+/**
+ * @test An address without a name is accepted
+ * @expect $IsValid = true
+ */
+$P = create Partners.Partner (AddressType = Partners.ENUM_AddressType.Delivery, City = 'Utrecht');
+$IsValid = call microflow Partners.VAL_Partner(Partner = $P);
+/
+
+/**
+ * @test A malformed email is refused
+ * @expect $IsValid = false
+ */
+$P = create Partners.Partner (Name = 'X', Email = 'not-an-email', AddressType = Partners.ENUM_AddressType.Contact);
+$IsValid = call microflow Partners.VAL_Partner(Partner = $P);
+/
+
+/**
+ * @test A well-formed email is accepted
+ * @expect $IsValid = true
+ */
+$P = create Partners.Partner (Name = 'X', Email = 'x@example.com', AddressType = Partners.ENUM_AddressType.Contact);
+$IsValid = call microflow Partners.VAL_Partner(Partner = $P);
+/
+
+/**
+ * @test A company cannot sit under its own contact person (cycle)
+ * @expect $IsValid = false
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][IsCompany = true] first;
+retrieve $Brandon from Partners.Partner where [Name = 'Brandon Freeman'] first;
+change $Azure (Partners.Partner_ParentCompany = $Brandon);
+$IsValid = call microflow Partners.VAL_Partner(Partner = $Azure);
+/
+
+/**
+ * @test A child contact inherits customer and vendor flags from its company on save
+ * @expect $Child/IsVendor = true
+ * @expect $Child/IsCustomer = true
+ */
+retrieve $Wood from Partners.Partner where [Name = 'Wood Corner'] first;
+$Child = create Partners.Partner (Name = 'Wood buyer', AddressType = Partners.ENUM_AddressType.Contact, Partners.Partner_ParentCompany = $Wood);
+call microflow Partners.SUB_Partner_Save(Partner = $Child);
+/
+
+/**
+ * @test Creating a profile twice for one account returns the same profile
+ * @expect $First = $Second
+ */
+retrieve $Account from Administration.Account where [Name = 'sales.user'] first;
+$First = call microflow Partners.ACT_UserProfile_Create(Account = $Account);
+$Second = call microflow Partners.ACT_UserProfile_Create(Account = $Account);
+/

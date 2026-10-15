@@ -17,19 +17,19 @@
       "actions": [
         { "do": "click", "widget": "btnNew", "label": "New" },
         { "do": "wait", "ms": 800 },
-        { "do": "click", "widget": "btnSave0", "label": "Save" }
+        { "do": "click", "widget": "pbtnSave0", "label": "Save" }
       ],
-      "ui": { "ready": ".mx-name-txtName", "textPresent": ["Name is required."] },
+      "ui": { "ready": ".mx-name-ptxtName", "textPresent": ["Name is required."] },
       "data": { "creates": "Core.Tax", "delta": 0, "scope": { "newRowsBy": "id" } }
     },
     {
       "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed",
       "actions": [
-        { "do": "fill", "widget": "txtName", "value": "Journey tax 5%" },
-        { "do": "combobox", "widget": "cmbScope", "match": "Sales" },
-        { "do": "combobox", "widget": "cmbComputation", "match": "Percentage of price" },
-        { "do": "fill", "widget": "txtAmount", "value": "5" },
-        { "do": "click", "widget": "btnSave0", "label": "Save" }
+        { "do": "fill", "widget": "ptxtName", "value": "Journey tax 5%" },
+        { "do": "combobox", "widget": "pcmbScope", "match": "Sales" },
+        { "do": "combobox", "widget": "pcmbComputation", "match": "Percentage of price" },
+        { "do": "fill", "widget": "ptxtAmount", "value": "5" },
+        { "do": "click", "widget": "pbtnSave0", "label": "Save" }
       ],
       "ui": { "ready": ".mx-name-gridMain", "textPresent": ["Journey tax 5%"] },
       "data": {

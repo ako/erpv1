@@ -175,7 +175,9 @@ async function act(page, a, vars, note) {
       await H.navTo(page, a.group || null, a.item);
       break;
     case 'click': {
-      const el = w(a.widget);
+      // erpv1 2026-10-15: a check box widget's centre is empty form-row space; click the box itself.
+      const box = page.locator(`.mx-name-${a.widget} input[type="checkbox"]`).first();
+      const el = (await box.count().catch(() => 0)) ? box : w(a.widget);
       await el.waitFor({ state: 'attached', timeout: 8000 }).catch(() => {});
       await el.scrollIntoViewIfNeeded({ timeout: 2000 }).catch(() => {});
       if (!(await el.isVisible({ timeout: 6000 }).catch(() => false)))

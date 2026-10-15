@@ -1,0 +1,307 @@
+mdl 1;
+-- One-off: Partners phase 5 supersedes the walking skeleton's contact flows (reshaped: MDL-V1-REBUILD) — drop them and
+-- replay the owning phase-5 scripts in this same script (a drop alone fails the gate: pages still call them).
+drop microflow Partners.ACT_Partner_Save;
+drop microflow Partners.SUB_Partner_Save;
+drop microflow Partners.VAL_Partner;
+drop microflow Partners.ACT_Partner_New;
+drop microflow Partners.SUB_Partner_Create;
+-- ── replay: 501-partners-mf-partner
+-- 501-partners-mf-partner.mdl — build-plan row 34 (F001). Owns Partners.VAL_Partner.
+
+/**
+ * Validate a partner before save (Odoo res.partner constraints), every invalid field on one submit:
+ * a name for a contact (addresses may go unnamed); a well-formed email; a partner cannot be its own parent,
+ * directly or through its parent chain.
+ *
+ * @param $Partner the partner being saved
+ * @returns true when valid
+ */
+create or modify microflow Partners.VAL_Partner ($Partner: Partners.Partner)
+returns Boolean as $IsValid
+folder 'Contacts/Microflows'
+begin
+  declare $IsValid Boolean = true;
+  if $Partner/AddressType = Partners.ENUM_AddressType.Contact and ($Partner/Name = empty or trim($Partner/Name) = '') then
+    validation feedback $Partner/Name message 'Name is required.';
+    set $IsValid = false;
+  end if;
+  if $Partner/Email != empty and trim($Partner/Email) != '' and not(isMatch(trim($Partner/Email), '^[^@\s]+@[^@\s]+\.[^@\s]+$')) then
+    validation feedback $Partner/Email message 'Enter a valid email address.';
+    set $IsValid = false;
+  end if;
+  retrieve $Parent from $Partner/Partners.Partner_ParentCompany;
+  if $Parent != empty then
+    $Top = call microflow Partners.SUB_Partner_GetCommercialPartner(Partner = $Parent);
+    if $Parent = $Partner or $Top = $Partner then
+      validation feedback $Partner/Partners.Partner_ParentCompany message 'A contact cannot belong to itself.';
+      set $IsValid = false;
+    end if;
+  end if;
+  return $IsValid;
+end;
+-- ── replay: 502-partners-mf-partner-get-address
+-- 502-partners-mf-partner-get-address.mdl — build-plan row 34 (F001). Owns Partners.SUB_Partner_GetAddress.
+
+/**
+ * The child address of a type (Invoice / Delivery) of a partner's company, or the company itself when it has none
+ * (Odoo address_get). Used for an order's invoice and delivery addresses.
+ *
+ * @param $Partner the customer or vendor as chosen on a document
+ * @param $AddressType Invoice or Delivery
+ * @returns the address partner
+ */
+create or modify microflow Partners.SUB_Partner_GetAddress ($Partner: Partners.Partner, $AddressType: Enumeration(Partners.ENUM_AddressType))
+returns Partners.Partner as $Address
+folder 'Contacts/Microflows'
+begin
+  $Commercial = call microflow Partners.SUB_Partner_GetCommercialPartner(Partner = $Partner);
+  if $Commercial = empty then
+    return empty;
+  end if;
+  retrieve $Child from Partners.Partner
+    where [Partners.Partner_ParentCompany = $Commercial][AddressType = $AddressType][Active = true] first;
+  if $Child != empty then
+    return $Child;
+  end if;
+  return $Commercial;
+end;
+-- ── replay: 503-partners-mf-partner-save
+-- 503-partners-mf-partner-save.mdl — build-plan row 35 (F001-UC001, UC003). Owns Partners.SUB_Partner_Save,
+-- SUB_Partner_Archive, ACT_Partner_Save, ACT_Partner_Archive. (New = the list's create-object action; children: generated ACT_Partner_AddTo*.)
+-- Supersedes the walking skeleton's versions (mdlsource/_oneoff/2026-10-14-walking-skeleton.mdl).
+
+/**
+ * Persist a validated partner. A child contact or address inherits customer/vendor flags from its company,
+ * so it can be picked on the same documents (F001 hidden rule).
+ *
+ * @param $Partner the partner
+ */
+create or modify microflow Partners.SUB_Partner_Save ($Partner: Partners.Partner)
+folder 'Contacts/Microflows'
+begin
+  retrieve $Parent from $Partner/Partners.Partner_ParentCompany;
+  if $Parent != empty then
+    change $Partner (IsCustomer = $Parent/IsCustomer, IsVendor = $Parent/IsVendor);
+  end if;
+  commit $Partner with events refresh;
+end;
+
+/** Deactivate a partner: it leaves the pick lists, stays on existing documents (F001-UC003). */
+create or modify microflow Partners.SUB_Partner_Archive ($Partner: Partners.Partner)
+folder 'Contacts/Microflows'
+begin
+  change $Partner (Active = false);
+  commit $Partner with events refresh;
+end;
+
+/**
+ * Save button on the contact forms: validate, persist, close.
+ *
+ * @param $Partner the partner being edited
+ * @returns true when saved
+ */
+create or modify microflow Partners.ACT_Partner_Save ($Partner: Partners.Partner)
+returns Boolean as $Saved
+folder 'Contacts/Microflows'
+begin
+  $IsValid = call microflow Partners.VAL_Partner(Partner = $Partner);
+  if $IsValid then
+    call microflow Partners.SUB_Partner_Save(Partner = $Partner);
+    close page;
+    return true;
+  end if;
+  return false;
+end;
+
+/** Archive button on the contact form. */
+create or modify microflow Partners.ACT_Partner_Archive ($Partner: Partners.Partner)
+folder 'Contacts/Microflows'
+begin
+  call microflow Partners.SUB_Partner_Archive(Partner = $Partner);
+  close page;
+end;
+-- ── replay: 507-partners-page-partner-child-new-edit
+-- GENERATED by pipelines/odoo/mdl_pages.py from ui_spec.py["PartnerChild_NewEdit"] — wireframe design/wireframes/PartnerChild_NewEdit.html.
+-- Regenerate, do not hand-edit. Reached from: row / Add line in Contacts & addresses on Partner_NewEdit.
+
+/** Contact or address — PartnerChild_NewEdit. */
+create or modify page Partners.PartnerChild_NewEdit folder 'Contacts/Pages'
+(
+  Params: ( $Partner: Partners.Partner ),
+  Title: 'Contact or address',
+  Layout: Atlas_Core.PopupLayout
+)
+{
+  layoutgrid gridPage {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvMain (DataSource: $Partner) {
+    layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
+      row {
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hType (Content: 'Type', RenderMode: H2)
+          combobox cmbAddressType (Label: 'Address type', Attribute: "AddressType")
+        }
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hContact (Content: 'Contact', RenderMode: H2)
+          textbox txtName (Label: 'Name', Attribute: "Name")
+          textbox txtJobPosition (Label: 'Job position', Attribute: "JobPosition")
+          textbox txtEmail (Label: 'Email', Attribute: "Email")
+          textbox txtPhone (Label: 'Phone', Attribute: "Phone")
+        }
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hAddress (Content: 'Address', RenderMode: H2)
+          textbox txtStreet (Label: 'Street', Attribute: "Street")
+          textbox txtZip (Label: 'Zip', Attribute: "Zip")
+          textbox txtCity (Label: 'City', Attribute: "City")
+          combobox cmbPartnerCountry (Label: 'Country', Attribute: Partner_Country, DataSource: database Core."Country" sort by "Name" asc, CaptionAttribute: "Name")
+        }
+      }
+    }
+    footer {
+      actionbutton btnSave0 (Caption: 'Save', Action: call microflow Partners.ACT_Partner_Save(Partner = $currentObject), ButtonStyle: Primary)
+      actionbutton btnCancel (Caption: 'Cancel', Action: cancel changes close page)
+    }
+  }
+      }
+    }
+  }
+};
+
+grant view on page Partners.PartnerChild_NewEdit to Partners.Editor;
+grant execute on microflow Partners.ACT_Partner_Save to Partners.Editor;
+-- ── replay: 505-partners-page-partner-new-edit
+-- GENERATED by pipelines/odoo/mdl_pages.py from ui_spec.py["Partner_NewEdit"] — wireframe design/wireframes/Partner_NewEdit.html.
+-- Regenerate, do not hand-edit. Reached from: row of Partner_Overview; New on Partner_Overview; customer link on SalesOrder_NewEdit.
+
+/** A new, uncommitted Partner linked to this Partner. */
+create or modify microflow Partners.SUB_Partner_NewForPartner ($Partner: Partners.Partner)
+returns Partners.Partner as $Child
+folder 'Contacts/Microflows'
+begin
+  $Child = create Partners."Partner" (Partners.Partner_ParentCompany = $Partner);
+  return $Child;
+end;
+
+/** "+ Add" on Partner_NewEdit: a new Partner, opened in PartnerChild_NewEdit (Save commits it, Cancel drops it). */
+create or modify microflow Partners.ACT_Partner_AddToPartner ($Partner: Partners.Partner)
+folder 'Contacts/Microflows'
+begin
+  $Child = call microflow Partners.SUB_Partner_NewForPartner(Partner = $Partner);
+  show page Partners.PartnerChild_NewEdit(Partner = $Child);
+end;
+
+/** Contact — Partner_NewEdit. */
+create or modify page Partners.Partner_NewEdit folder 'Contacts/Pages'
+(
+  Params: ( $Partner: Partners.Partner ),
+  Title: 'Contact',
+  Layout: Core.App_Default
+)
+{
+  layoutgrid gridPage {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvMain (DataSource: $Partner) {
+    container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+      container ctnPageHeadTitle (Class: 'page-head-title') {
+        dynamictext txtCrumb (Content: 'Contact', RenderMode: Text, Class: 'crumb')
+        dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = "Name"), RenderMode: H1)
+      }
+      container ctnPageHeadActions (Class: 'page-head-actions') {
+        actionbutton btnSave0 (Caption: 'Save', Action: call microflow Partners.ACT_Partner_Save(Partner = $currentObject), ButtonStyle: Primary)
+        actionbutton btnArchive1 (Caption: 'Archive', Action: call microflow Partners.ACT_Partner_Archive(Partner = $currentObject), ButtonStyle: Default)
+      }
+    }
+    layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
+      row {
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hIdentity (Content: 'Identity', RenderMode: H2)
+          textbox txtName (Label: 'Name', Attribute: "Name")
+          checkbox cbIsCompany (Label: 'Is company', Attribute: "IsCompany")
+          combobox cmbPartnerParentCompany (Label: 'Parent company', Attribute: Partner_ParentCompany, DataSource: database Partners."Partner" sort by "Name" asc, CaptionAttribute: "Name")
+          textbox txtJobPosition (Label: 'Job position', Attribute: "JobPosition")
+          combobox cmbPartnerTags (Label: 'Tags', Attribute: Partner_Tags, DataSource: database Partners."PartnerTag" sort by "Name" asc, CaptionAttribute: "Name")
+        }
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hAddress (Content: 'Address', RenderMode: H2)
+          textbox txtStreet (Label: 'Street', Attribute: "Street")
+          textbox txtStreet2 (Label: 'Street2', Attribute: "Street2")
+          textbox txtZip (Label: 'Zip', Attribute: "Zip")
+          textbox txtCity (Label: 'City', Attribute: "City")
+          combobox cmbPartnerCountry (Label: 'Country', Attribute: Partner_Country, DataSource: database Core."Country" sort by "Name" asc, CaptionAttribute: "Name")
+        }
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hContact (Content: 'Contact', RenderMode: H2)
+          textbox txtEmail (Label: 'Email', Attribute: "Email")
+          textbox txtPhone (Label: 'Phone', Attribute: "Phone")
+          textbox txtMobile (Label: 'Mobile', Attribute: "Mobile")
+          textbox txtWebsite (Label: 'Website', Attribute: "Website")
+          textbox txtVATNumber (Label: 'VAT number', Attribute: "VATNumber")
+          textbox txtReference (Label: 'Reference', Attribute: "Reference")
+        }
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hSalespurchase (Content: 'Sales & purchase', RenderMode: H2)
+          checkbox cbIsCustomer (Label: 'Is customer', Attribute: "IsCustomer")
+          combobox cmbPartnerSalesperson (Label: 'Salesperson', Attribute: Partner_Salesperson, DataSource: database Administration."Account" sort by "FullName" asc, CaptionAttribute: "FullName")
+          combobox cmbPartnerCustomerPaymentTerm (Label: 'Customer payment term', Attribute: Partner_CustomerPaymentTerm, DataSource: database Core."PaymentTerm" sort by "Name" asc, CaptionAttribute: "Name")
+          combobox cmbPartnerPricelist (Label: 'Pricelist', Attribute: Partner_Pricelist, DataSource: database Products."Pricelist" sort by "Name" asc, CaptionAttribute: "Name")
+          checkbox cbIsVendor (Label: 'Is vendor', Attribute: "IsVendor")
+          combobox cmbPartnerVendorPaymentTerm (Label: 'Vendor payment term', Attribute: Partner_VendorPaymentTerm, DataSource: database Core."PaymentTerm" sort by "Name" asc, CaptionAttribute: "Name")
+        }
+      }
+    }
+    dynamictext hContactsaddresses (Content: 'Contacts & addresses', RenderMode: H2)
+    datagrid gridContactsaddresses (DataSource: database Partners."Partner" where [Partners.Partner_ParentCompany = '[%CurrentObject%]'], Class: 'density-compact', OnClick: show page Partners.PartnerChild_NewEdit(Partner = $currentObject)) {
+      column (Attribute: "AddressType", Caption: 'Address type')
+      column (Attribute: "Name", Caption: 'Name')
+      column (Attribute: "Email", Caption: 'Email')
+      column (Attribute: "Phone", Caption: 'Phone')
+      column (Attribute: "City", Caption: 'City')
+    }
+    linkbutton btnAddChild (Caption: '+ Add', Action: call microflow Partners.ACT_Partner_AddToPartner(Partner = $currentObject))
+    textarea taNotes (Label: 'Notes', Attribute: "Notes")
+  }
+      }
+    }
+  }
+};
+
+grant view on page Partners.Partner_NewEdit to Partners.Editor, Partners.Admin;
+grant execute on microflow Partners.ACT_Partner_AddToPartner to Partners.Editor, Partners.Admin;
+grant execute on microflow Partners.ACT_Partner_Archive to Partners.Editor, Partners.Admin;
+grant execute on microflow Partners.ACT_Partner_Save to Partners.Editor, Partners.Admin;
+-- ── replay: 504-partners-page-partner-overview
+-- GENERATED by pipelines/odoo/mdl_pages.py from ui_spec.py["Partner_Overview"] — wireframe design/wireframes/Partner_Overview.html.
+-- Regenerate, do not hand-edit. Reached from: menu Contacts.
+
+/** Contacts — Partner_Overview. */
+create or modify page Partners.Partner_Overview folder 'Contacts/Pages'
+(
+  Title: 'Contacts',
+  Layout: Core.App_Default,
+  Url: 'partner-overview'
+)
+{
+  container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+    container ctnPageHeadTitle (Class: 'page-head-title') {
+      dynamictext txtTitle (Content: 'Contacts', RenderMode: H1)
+    }
+    container ctnPageHeadActions (Class: 'page-head-actions') {
+      actionbutton btnNew (Caption: 'New', Action: create object Partners."Partner" then show page Partners.Partner_NewEdit, ButtonStyle: Primary)
+    }
+  }
+  datagrid gridMain (DataSource: database Partners."Partner" sort by "Name" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Partners.Partner_NewEdit(Partner = $currentObject)) {
+    column (Attribute: "Name", Caption: 'Name') { textfilter fName }
+    column (Attribute: "Email", Caption: 'Email') { textfilter fEmail }
+    column (Attribute: "Phone", Caption: 'Phone') { textfilter fPhone }
+    column (Attribute: "City", Caption: 'City') { textfilter fCity }
+    column (Attribute: Partner_Country/Name, Caption: 'Country')
+    column (Attribute: "IsCustomer", Caption: 'Is customer') { dropdownfilter fIsCustomer }
+    column (Attribute: "IsVendor", Caption: 'Is vendor') { dropdownfilter fIsVendor }
+    column (Attribute: Partner_Salesperson/FullName, Caption: 'Salesperson')
+  }
+};
+
+grant view on page Partners.Partner_Overview to Partners.Editor, Partners.Admin;

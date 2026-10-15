@@ -4,7 +4,7 @@ Skeleton proven 2026-10-14: exec pass, journey pass/fail-control, look done — 
 
 | # | Row | Evidence |
 |---|---|---|
-| 1 | exec.sh gate pass for `mdlsource/00-skeleton.mdl` | docs/BUILD-LOG.md rows 2026-10-14 (mxbuild 0 errors; lint rose — ARCH003/CONV007/CONV008/SEC008, see below) |
+| 1 | exec.sh gate pass for `mdlsource/_oneoff/2026-10-14-walking-skeleton.mdl (retired into Partners phase 5)` | docs/BUILD-LOG.md rows 2026-10-14 (mxbuild 0 errors; lint rose — ARCH003/CONV007/CONV008/SEC008, see below) |
 | 2 | App up | `./bin/app-restart.sh` → "serving on :8080", `curl /login.html` → 200; snapshot taken before first boot (.mpr-snapshots/pre-first-boot) |
 | 3 | Journey passes, broken copy fails | `node tests/e2e/journeys/00-skeleton.journey.js "<name>"` → PASS, exit 0; same journey with menu "Contactz" → `FAIL menu item "Contactz" not found`, exit 1, 0 rows written |
 | 4 | Data assertion names the row | `mxcli oql "SELECT p.Name FROM Partners.Partner AS p WHERE p.Name = 'Skeleton Co 210300'"` → 1 row `Skeleton Co 210300` (typed by the journey as sales.user) |

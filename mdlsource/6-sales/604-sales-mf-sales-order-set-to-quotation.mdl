@@ -1,0 +1,150 @@
+mdl 1;
+-- 604-sales-mf-sales-order-set-to-quotation.mdl — build-plan rows 44-48 (F004-UC002..UC005): the order's state actions.
+-- Owns ACT_SalesOrder_MarkSent, ACT_SalesOrder_Confirm (+ SUB_SalesOrder_Confirm), ACT_SalesOrder_Cancel (+ SUB_SalesOrder_Cancel),
+-- ACT_SalesOrder_SetToQuotation, ACT_SalesOrder_ToggleLock (+ SUB_SalesOrder_SetLocked), ACT_SalesOrder_Save.
+
+/** Save button on the order form: totals, then back to the list. */
+create or modify microflow Sales.ACT_SalesOrder_Save ($SalesOrder: Sales.SalesOrder)
+folder 'Quotations/Microflows'
+begin
+  $Done = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $SalesOrder);
+  close page;
+end;
+
+/**
+ * Send (mark as sent): Quotation -> Quotation sent (F004-UC002). Email sending is out of scope (Stage 0).
+ *
+ * @param $SalesOrder the quotation
+ * @returns true when the status changed
+ */
+create or modify microflow Sales.ACT_SalesOrder_MarkSent ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  if $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.Quotation then
+    show message 'Only a quotation can be marked as sent.' type Warning;
+    return false;
+  end if;
+  call microflow Sales.SUB_SalesOrder_SetStatus(SalesOrder = $SalesOrder, Status = Sales.ENUM_SalesOrderStatus.QuotationSent);
+  return true;
+end;
+
+/**
+ * Confirm into a sales order: order date now, totals, delivery for the goods lines (Inventory bridge), invoice status.
+ *
+ * @param $SalesOrder the quotation
+ */
+create or modify microflow Sales.SUB_SalesOrder_Confirm ($SalesOrder: Sales.SalesOrder)
+folder 'Quotations/Microflows'
+begin
+  change $SalesOrder (Status = Sales.ENUM_SalesOrderStatus.SalesOrder, OrderDate = [%CurrentDateTime%]);
+  commit $SalesOrder with events refresh;
+  $Totals = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $SalesOrder);
+  call microflow Inventory.SUB_SalesOrder_CreateDelivery(SalesOrder = $SalesOrder);
+  $Invoicing = call microflow Sales.SUB_SalesOrder_UpdateInvoiceStatus(SalesOrder = $SalesOrder);
+end;
+
+/**
+ * Confirm button (F004-UC003): only a quotation (sent or not) with at least one product line, and every non-section
+ * line carrying a product (Odoo _confirmation_error_message).
+ *
+ * @param $SalesOrder the quotation
+ * @returns true when confirmed
+ */
+create or modify microflow Sales.ACT_SalesOrder_Confirm ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  if $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.Quotation and $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.QuotationSent then
+    show message 'Only a quotation can be confirmed.' type Warning;
+    return false;
+  end if;
+  if $SalesOrder/Sales.SalesOrder_Customer = empty then
+    show message 'Choose a customer before confirming.' type Warning;
+    return false;
+  end if;
+  retrieve $ProductLines from Sales.SalesOrderLine where [Sales.SalesOrderLine_SalesOrder = $SalesOrder][Sales.SalesOrderLine_Product/Products.Product];
+  retrieve $Unfinished from Sales.SalesOrderLine where [Sales.SalesOrderLine_SalesOrder = $SalesOrder][not(Sales.SalesOrderLine_Product/Products.Product)]
+    [LineType != 'Section'][LineType != 'Note'];
+  if length($ProductLines) = 0 or length($Unfinished) > 0 then
+    show message 'Every line needs a product (sections and notes excepted), and the order needs at least one.' type Warning;
+    return false;
+  end if;
+  call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SalesOrder);
+  return true;
+end;
+
+/** Cancel an order and its open deliveries (Inventory bridge). */
+create or modify microflow Sales.SUB_SalesOrder_Cancel ($SalesOrder: Sales.SalesOrder)
+folder 'Quotations/Microflows'
+begin
+  call microflow Inventory.SUB_SalesOrder_CancelDeliveries(SalesOrder = $SalesOrder);
+  change $SalesOrder (Status = Sales.ENUM_SalesOrderStatus.Cancelled, InvoiceStatus = Core.ENUM_InvoiceStatus.NothingToInvoice);
+  commit $SalesOrder with events refresh;
+end;
+
+/**
+ * Cancel button (F004-UC004): refused once anything was invoiced (a posted invoice exists).
+ *
+ * @param $SalesOrder the order
+ * @returns true when cancelled
+ */
+create or modify microflow Sales.ACT_SalesOrder_Cancel ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  if $SalesOrder/Status = Sales.ENUM_SalesOrderStatus.Cancelled then
+    return false;
+  end if;
+  retrieve $Invoiced from Sales.SalesOrderLine where [Sales.SalesOrderLine_SalesOrder = $SalesOrder][QuantityInvoiced > 0] first;
+  if $Invoiced != empty then
+    show message 'This order has posted invoices: cancel or credit them first.' type Warning;
+    return false;
+  end if;
+  call microflow Sales.SUB_SalesOrder_Cancel(SalesOrder = $SalesOrder);
+  return true;
+end;
+
+/**
+ * Set to quotation (F004-UC004): Cancelled -> Quotation.
+ *
+ * @param $SalesOrder the cancelled order
+ * @returns true when reset
+ */
+create or modify microflow Sales.ACT_SalesOrder_SetToQuotation ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  if $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.Cancelled then
+    show message 'Only a cancelled order can be set back to quotation.' type Warning;
+    return false;
+  end if;
+  call microflow Sales.SUB_SalesOrder_SetStatus(SalesOrder = $SalesOrder, Status = Sales.ENUM_SalesOrderStatus.Quotation);
+  return true;
+end;
+
+/** Lock or unlock an order. */
+create or modify microflow Sales.SUB_SalesOrder_SetLocked ($SalesOrder: Sales.SalesOrder, $Locked: Boolean)
+folder 'Quotations/Microflows'
+begin
+  change $SalesOrder (Locked = $Locked);
+  commit $SalesOrder with events refresh;
+end;
+
+/**
+ * Lock / unlock button (F004-UC005): only a confirmed order.
+ *
+ * @param $SalesOrder the order
+ * @returns true when toggled
+ */
+create or modify microflow Sales.ACT_SalesOrder_ToggleLock ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  if $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.SalesOrder then
+    show message 'Only a confirmed order can be locked.' type Warning;
+    return false;
+  end if;
+  call microflow Sales.SUB_SalesOrder_SetLocked(SalesOrder = $SalesOrder, Locked = not($SalesOrder/Locked));
+  return true;
+end;

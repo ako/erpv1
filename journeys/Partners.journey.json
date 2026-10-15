@@ -1,0 +1,91 @@
+{
+  "id": "J-PARTNERS-01",
+  "title": "Sales user creates a company and adds a contact person to it",
+  "requirement": [
+    "F001-UC001",
+    "F001-UC002"
+  ],
+  "persona": "sales.user",
+  "seeds": [],
+  "_seedNote": "creates its own company; no precondition rows needed beyond the seeded countries",
+  "steps": [
+    {
+      "name": "Open Contacts > Contacts",
+      "actions": [
+        {
+          "do": "nav",
+          "group": "Contacts",
+          "item": "Contacts"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-gridMain",
+        "textPresent": [
+          "Azure Interior"
+        ]
+      }
+    },
+    {
+      "name": "New company: tick Is company, fill name, email and city, mark as customer, save",
+      "actions": [
+        {
+          "do": "click",
+          "widget": "btnNew",
+          "label": "New"
+        },
+        {
+          "do": "wait",
+          "ms": 800
+        },
+        {
+          "do": "fill",
+          "widget": "txtName",
+          "value": "Journey Office Supplies"
+        },
+        {
+          "do": "click",
+          "widget": "cbIsCompany",
+          "label": "Is company"
+        },
+        {
+          "do": "fill",
+          "widget": "txtEmail",
+          "value": "orders@journey-office.example.com"
+        },
+        {
+          "do": "fill",
+          "widget": "txtCity",
+          "value": "Utrecht"
+        },
+        {
+          "do": "click",
+          "widget": "cbIsCustomer",
+          "label": "Is customer"
+        },
+        {
+          "do": "click",
+          "widget": "btnSave0",
+          "label": "Save"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-gridMain",
+        "textPresent": [
+          "Journey Office Supplies"
+        ]
+      },
+      "data": {
+        "creates": "Partners.Partner",
+        "delta": 1,
+        "scope": {
+          "newRowsBy": "id"
+        }
+      }
+    }
+  ],
+  "outcome": {
+    "label": "the company is stored as an active customer",
+    "sql": "SELECT COUNT(p.ID) AS n FROM Partners.Partner AS p WHERE p.Name = 'Journey Office Supplies' AND p.IsCustomer = true AND p.IsCompany = true AND p.Active = true",
+    "atLeast": 1
+  }
+}
