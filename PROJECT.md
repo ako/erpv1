@@ -71,10 +71,10 @@ Opt-in artifact erd: user asked for the target-domain ERD at Stage 2 close (chat
 | 4 | PD-5 Priority: none — pure dependency order Core → … → Invoicing | CONFIRMED | User 2026-10-14: "all as proposed" |
 | 4 | PD-6 Demo script: yes, written before phase 3 | CONFIRMED | User 2026-10-14: "all as proposed" |
 | 4 | Stage 4 ✋ sign-off: architecture/build-plan.md (95 rows, 10 phases), per-BRD coverage ledgers (8 clean), 7 module briefs approved | CONFIRMED | User 2026-10-14: "all as proposed, continue with stage 5" |
-| 5 | Lint security tier accepted: CONV006 (create/delete rights per the approved access tables) and SEC008 (email on Company/Partner readable by internal roles) — single-company internal demo; baseline updated --approved-in-chat | CONFIRMED | User 2026-10-15: "all as proposed" |
-| 5 | SEC014 external roles: none (no portal, guest or external users) — .claude/lint-config.yaml | CONFIRMED | User 2026-10-15: "all as proposed" |
-| 5 | Demo data: the docs/demo-script.md fixtures are seeded by idempotent startup microflows (per module, business-key guarded, behind constant Core.SeedDemoData); journey leftovers are cleaned before a demo | CONFIRMED | User 2026-10-15: "all as proposed" |
-| 5 | Startup chain: each module's ASU_<M>_SeedData calls the module below it first; the after-startup setting points at the highest module built (layering-safe, no upward call) | ASSUMED | Agent 2026-10-14 — replaces the plan's single Core seed, which would have referenced Products/Inventory upward |
+| 5 (build) | Lint security tier accepted: CONV006 (create/delete rights per the approved access tables) and SEC008 (email on Company/Partner readable by internal roles) — single-company internal demo; baseline updated --approved-in-chat | CONFIRMED | User 2026-10-15: "all as proposed" |
+| 5 (build) | SEC014 external roles: none (no portal, guest or external users) — .claude/lint-config.yaml | CONFIRMED | User 2026-10-15: "all as proposed" |
+| 5 (build) | Demo data: the docs/demo-script.md fixtures are seeded by idempotent startup microflows (per module, business-key guarded, behind constant Core.SeedDemoData); journey leftovers are cleaned before a demo | CONFIRMED | User 2026-10-15: "all as proposed" |
+| 5 (build) | Startup chain: each module's ASU_<M>_SeedData calls the module below it first; the after-startup setting points at the highest module built (layering-safe, no upward call) | ASSUMED | Agent 2026-10-14 — replaces the plan's single Core seed, which would have referenced Products/Inventory upward |
 
 Skeleton proven 2026-10-14: exec pass, journey pass/fail-control, look done (docs/skeleton-proof.md, 6 of 6 rows)
 
