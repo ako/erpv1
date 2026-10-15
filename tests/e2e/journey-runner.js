@@ -178,7 +178,7 @@ async function act(page, a, vars, note) {
     case 'click': {
       // erpv1 2026-10-15: a check box widget's centre is empty form-row space; click the box itself.
       const box = page.locator(`.mx-name-${a.widget} input[type="checkbox"]`).first();
-      const el = (await box.count().catch(() => 0)) ? box : w(a.widget);
+      const el = (await box.count().catch(() => 0)) ? box : (a.nth ? page.locator(`.mx-name-${a.widget}`).nth(a.nth) : w(a.widget)); // nth: the row of a list view
       await el.waitFor({ state: 'attached', timeout: 8000 }).catch(() => {});
       await el.scrollIntoViewIfNeeded({ timeout: 2000 }).catch(() => {});
       if (!(await el.isVisible({ timeout: 6000 }).catch(() => false)))
@@ -206,7 +206,7 @@ async function act(page, a, vars, note) {
       break;
     }
     case 'fill': {
-      const el = page.locator(`.mx-name-${a.widget} input, .mx-name-${a.widget} textarea`).first();
+      const el = page.locator(`.mx-name-${a.widget} input, .mx-name-${a.widget} textarea`).nth(a.nth || 0); // nth: the row of a list view
       if (!(await el.isVisible({ timeout: 6000 }).catch(() => false)))
         throw new Error(`.mx-name-${a.widget} input not visible`);
       await el.fill(String(subst(a.value, vars)));

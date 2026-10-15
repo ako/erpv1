@@ -1,23 +1,47 @@
 {
   "id": "J-INV-03",
   "title": "Inventory manager runs the reorder rules: the Office Chair (below its minimum of 10) is ordered from Gemini Furniture",
-  "requirement": ["F006-UC007"],
+  "requirement": [
+    "F006-UC007"
+  ],
   "persona": "inventory.manager",
-  "_seedNote": "demo seed: rule Office Chair WH/Stock min 10 / max 30 from Gemini Furniture; on hand 8 or less",
+  "_seedNote": "demo seed: rule Office Chair WH/Stock min 10 / max 30 from Gemini Furniture. Needs the chairs' forecast below 10: run it before J-INV-04 tops the chairs up (or after J-SALES-01 has used them), else no new line is ordered and the outcome only re-reads an earlier RFQ.",
   "seeds": [],
   "steps": [
     {
       "name": "Open Inventory > Reorder rules: the chair rule is listed",
-      "actions": [{ "do": "nav", "group": "Inventory", "item": "Reorder rules" }],
-      "ui": { "ready": ".mx-name-lvLines", "textPresent": ["Reorder rules"] }
+      "actions": [
+        {
+          "do": "nav",
+          "group": "Inventory",
+          "item": "Reorder rules"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-lvLines",
+        "textPresent": [
+          "Reorder rules"
+        ]
+      }
     },
     {
       "name": "Run scheduler: the rules ran",
       "actions": [
-        { "do": "click", "widget": "btnRunscheduler1", "label": "Run scheduler" },
-        { "do": "dismissModal" }
+        {
+          "do": "click",
+          "widget": "btnRunscheduler1",
+          "label": "Run scheduler"
+        },
+        {
+          "do": "dismissModal"
+        }
       ],
-      "ui": { "ready": ".mx-name-lvLines", "textPresent": ["Reorder rules"] }
+      "ui": {
+        "ready": ".mx-name-lvLines",
+        "textPresent": [
+          "Reorder rules"
+        ]
+      }
     }
   ],
   "outcome": {

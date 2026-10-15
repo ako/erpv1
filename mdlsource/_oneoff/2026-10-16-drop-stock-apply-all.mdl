@@ -1,0 +1,5 @@
+mdl 1;
+-- 2026-10-16 one-off: the Stock page's Apply counts button is gone (J-INV-04: it read counts from the database while a typed
+-- count was still saving; a later save then restored the applied count). Its microflow is dropped; the row Apply
+-- (ACT_StockLevel_ApplyCount, 806) replaces it. Run after 807 is regenerated without the button.
+drop microflow Inventory.ACT_StockLevel_ApplyCounts;

@@ -1,11 +1,11 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-15 19:19:01",
+  "date": "2026-10-15 19:48:08",
   "overallScore": 48.3,
   "summary": {
-    "total": 413,
+    "total": 414,
     "errors": 0,
-    "warnings": 137,
+    "warnings": 138,
     "infos": 276
   },
   "categories": [
@@ -40,9 +40,9 @@
     {
       "name": "Architecture",
       "score": 0,
-      "total": 88,
+      "total": 89,
       "errors": 0,
-      "warnings": 88,
+      "warnings": 89,
       "infos": 0,
       "topActions": [
         "Add an attribute like 'CompanyCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE",

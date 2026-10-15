@@ -61,6 +61,12 @@ PICKER_WHERE = {('Sales.SalesOrder', 'SalesOrder_Customer'): ACTIVE + '[IsCustom
                 ('Purchasing.VendorPrice', 'VendorPrice_Product'): ACTIVE + '[CanBePurchased = true()]'}
 # Document lines removed through a guarded microflow (refuses delivered/received/invoiced lines, recomputes totals) — C1-04/05.
 LINE_DELETE = {'Sales.SalesOrderLine': 'Sales.ACT_SalesOrderLine_Delete', 'Purchasing.PurchaseOrderLine': 'Purchasing.ACT_PurchaseOrderLine_Delete'}
+# A button on each row of an editable list: entity -> (caption, microflow taking the row). The row goes to the microflow with
+# its unsaved edits, so it cannot race the row's save-on-leave (Apply counts after typing a count applied nothing, J-INV-04).
+ROW_ACTION = {'Inventory.StockLevel': ('Apply', 'Inventory.ACT_StockLevel_ApplyCount')}
+# Inputs on an editable list that do NOT save on leave: the row action is their only writer. A counted quantity that saved on
+# leave landed after Apply had cleared it, so the count came back and a second Apply would add the stock twice (J-INV-04).
+NO_ROW_SAVE = {('Inventory.StockLevel', 'CountedQuantity')}
 # Inputs shown only in some states (C1-04: a template replaces every line, so only on a quotation).
 VISIBLE_WHEN = {('Sales.SalesOrder', 'SalesOrder_QuotationTemplate'):
                 "$currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation or $currentObject/Status = Sales.ENUM_SalesOrderStatus.QuotationSent"}
@@ -68,8 +74,7 @@ VISIBLE_WHEN = {('Sales.SalesOrder', 'SalesOrder_QuotationTemplate'):
 READONLY_FIELDS = {('Inventory.StockLevel', 'Quantity'), ('Inventory.StockLevel', 'ReservedQuantity'),
                    ('Inventory.StockMove', 'Status'), ('Inventory.Transfer', 'DateDone')}
 # Page-level buttons on list pages: (page, caption) -> microflow without parameters.
-LIST_BUTTON = {('StockLevel_Overview', 'Apply counts'): 'Inventory.ACT_StockLevel_ApplyCounts',
-               ('ReorderRule_Overview', 'Run scheduler'): 'Inventory.ACT_ReorderRules_RunNow'}
+LIST_BUTTON = {('ReorderRule_Overview', 'Run scheduler'): 'Inventory.ACT_ReorderRules_RunNow'}
 # Smart buttons (Odoo stat buttons) under the status pill: (page, caption) -> microflow taking the form's object.
 SMART_ACTION = {('SalesOrder_NewEdit', 'Delivery'): ('Inventory.ACT_SalesOrder_OpenDelivery',
                                                      "$currentObject/Status = Sales.ENUM_SalesOrderStatus.SalesOrder"),
@@ -325,7 +330,8 @@ def editable_listview(e, cols, source, ind, add_mf, delete=True, row_save=False)
         if c == cols[0] and assoc(e, c):
             return 5   # the line's product: its name must read (ui-review 2026-10-15 Sales/Purchasing P2)
         return 3 if (a and a['type'] == 'String') or assoc(e, c) else 2
-    avail = 12 - (1 if delete else 0)
+    row_act = ROW_ACTION.get(e['name'])
+    avail = 12 - (1 if delete else 0) - (1 if row_act else 0)
     ws = [weight(c) for c in cols]
     widths = [max(1, int(avail * w / sum(ws))) for w in ws]
     i = 0
@@ -339,8 +345,11 @@ def editable_listview(e, cols, source, ind, add_mf, delete=True, row_save=False)
     L.append('%slistview lvLines (DataSource: %s, Editable: true, Class: \'lines-list\') {' % (ind, source))
     L += ['%s  layoutgrid gridLine {' % ind, '%s    row {' % ind]
     for c, w in zip(cols, widths):
-        wd = input_widget(e, c, '', prefix='ln', readonly=c in LINE_READONLY, row_save=row_save)
+        wd = input_widget(e, c, '', prefix='ln', readonly=c in LINE_READONLY, row_save=row_save and (e['name'], c) not in NO_ROW_SAVE)
         L.append('%s      column (DesktopWidth: %d, TabletWidth: %d, PhoneWidth: 12) { %s }' % (ind, w, w, wd))
+    if row_act:
+        L.append("%s      column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnRowAction (Caption: '%s', Action: call microflow %s(%s = $currentObject)) }"
+                 % (ind, esc(row_act[0]), row_act[1], e['name'].split('.')[1]))
     if delete:
         act = ('call microflow %s(%s = $currentObject)' % (LINE_DELETE[e['name']], e['name'].split('.')[1])) if e['name'] in LINE_DELETE else 'delete'
         L.append("%s      column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: %s) }" % (ind, act))

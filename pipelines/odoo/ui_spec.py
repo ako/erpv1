@@ -293,7 +293,6 @@ screen('ValidateTransfer_Popup', 'popup', 'Create backorder?', 'Inventory.Valida
 screen('StockLevel_Overview', 'list', 'Stock', 'Inventory.StockLevel', INV, ['menu Inventory › Stock'],
        columns=['StockLevel_Product', 'StockLevel_Location', 'Quantity', 'ReservedQuantity', 'CountedQuantity', 'ScheduledCountDate'],
        filters=['StockLevel_Product', 'StockLevel_Location'], editable=True,
-       buttons=[('Apply counts', 'ACT_StockLevel_ApplyCount')],
        rows=[['[FURN_7800] Desk Combination', 'WH/Stock', '14.00', '2.00', '13.00', '2026-12-31'],
              ['[FURN_8888] Office Lamp', 'WH/Stock', '61.00', '4.00', '', '']])
 screen('ReorderRule_Overview', 'list', 'Reorder rules', 'Inventory.ReorderRule', ['InventoryManager', 'Purchaser'], ['menu Inventory › Reorder rules'],

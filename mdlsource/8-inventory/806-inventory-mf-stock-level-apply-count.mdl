@@ -1,7 +1,8 @@
 mdl 1;
 -- 806-inventory-mf-stock-level-apply-count.mdl — build-plan row 74 (F006-UC006). Owns SUB_StockLevel_ApplyCounts and the
--- Apply counts button ACT_StockLevel_ApplyCounts. A counted quantity typed on the Stock list saves with the row; Apply turns
--- every entered count into a done adjustment move (Odoo stock.quant.action_apply_inventory).
+-- row button ACT_StockLevel_ApplyCount. A counted quantity typed on a Stock row is saved by that row's Apply, which turns it
+-- into a done adjustment move (Odoo stock.quant.action_apply_inventory). The page-level Apply counts button was removed
+-- 2026-10-16: it read counts from the database while the typed count was still saving (J-INV-04).
 
 /**
  * Apply the entered counts: per stock level with a counted quantity, a done move for the difference between the inventory
@@ -37,10 +38,20 @@ begin
   return $Count;
 end;
 
-/** Apply counts button on the Stock list (F006-UC006). */
-create or modify microflow Inventory.ACT_StockLevel_ApplyCounts ()
+/**
+ * Apply button on a Stock row (F006-UC006, Odoo stock.quant action_apply_inventory per line): the row arrives with the count
+ * just typed (the input does not save on leave, so this is the count's only writer), is saved, and the count is applied.
+ *
+ * @param $StockLevel the row
+ */
+create or modify microflow Inventory.ACT_StockLevel_ApplyCount ($StockLevel: Inventory.StockLevel)
 folder 'Stock/Microflows'
 begin
+  if $StockLevel/CountedQuantity = empty then
+    show message 'Enter a counted quantity on this row first.' type Warning;
+    return;
+  end if;
+  commit $StockLevel with events;
   $Applied = call microflow Inventory.SUB_StockLevel_ApplyCounts();
   show message 'Counts applied: ' + toString($Applied) + ' stock level(s) corrected.' type Information;
 end;

@@ -1,0 +1,69 @@
+{
+  "id": "J-INV-04",
+  "title": "Inventory manager counts 25 Office Chairs and applies the row's count: stock is corrected through an adjustment move",
+  "requirement": [
+    "F006-UC006"
+  ],
+  "persona": "inventory.manager",
+  "_seedNote": "demo seed: stock levels for Desk Combination (row 1, sorted by product) and Office Chair (row 2) at WH/Stock. Also tops the chairs up so J-SALES-01 yields a Ready delivery on a re-run.",
+  "seeds": [],
+  "steps": [
+    {
+      "name": "Open Inventory > Stock: both stock levels are listed",
+      "actions": [
+        {
+          "do": "nav",
+          "group": "Inventory",
+          "item": "Stock"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-lvLines",
+        "textPresent": [
+          "Stock",
+          "Counted quantity"
+        ]
+      }
+    },
+    {
+      "name": "Count 25 Office Chairs and press the row's Apply",
+      "actions": [
+        {
+          "do": "fill",
+          "widget": "lntxtCountedQuantity",
+          "nth": 1,
+          "value": "25",
+          "label": "Counted quantity (Office Chair)"
+        },
+        {
+          "do": "click",
+          "widget": "btnRowAction",
+          "nth": 1,
+          "label": "Apply (Office Chair row) \u2014 straight after typing, as a user would"
+        },
+        {
+          "do": "dismissModal"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-lvLines"
+      },
+      "data": {
+        "creates": "Inventory.StockMove",
+        "delta": 1,
+        "oql": [
+          {
+            "label": "an adjustment move for the chairs is done",
+            "sql": "SELECT COUNT(m.ID) AS n FROM Inventory.StockMove AS m WHERE m.IsInventoryAdjustment = true AND m.Status = 'Done' AND m/Inventory.StockMove_Product/Products.Product/InternalReference = 'FURN_0269'",
+            "atLeast": 1
+          }
+        ]
+      }
+    }
+  ],
+  "outcome": {
+    "label": "25 Office Chairs on hand at WH/Stock, the count cleared",
+    "sql": "SELECT COUNT(l.ID) AS n FROM Inventory.StockLevel AS l WHERE l/Inventory.StockLevel_Product/Products.Product/InternalReference = 'FURN_0269' AND l.Quantity = 25 AND l.CountedQuantity = NULL",
+    "atLeast": 1
+  }
+}

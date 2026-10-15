@@ -1,36 +1,91 @@
 {
   "id": "J-INV-01",
   "title": "Warehouse user validates the delivery of a confirmed sales order: stock goes down, the order reads fully delivered",
-  "requirement": ["F006-UC002", "F007-UC001", "F007-UC002"],
+  "requirement": [
+    "F006-UC002",
+    "F007-UC001",
+    "F007-UC002"
+  ],
   "persona": "warehouse.user",
-  "requires": ["delivery-ready"],
+  "requires": [
+    "delivery-ready"
+  ],
   "_seedNote": "the delivery comes from a confirmed sales order (J-SALES-01 confirms 5 Office Chairs for Azure Interior; 8 on hand makes it Ready)",
   "seeds": [
-    { "name": "deliveryNo",
-      "sql": "SELECT t.Number AS n FROM Inventory.Transfer AS t WHERE t.Status = 'Ready' AND t/Inventory.Transfer_OperationType/Inventory.OperationType/Kind = 'Delivery' AND t/Inventory.Transfer_SalesOrder/Sales.SalesOrder/Number != NULL ORDER BY t.Number DESC LIMIT 1" },
-    { "name": "orderNo",
-      "sql": "SELECT t/Inventory.Transfer_SalesOrder/Sales.SalesOrder/Number AS n FROM Inventory.Transfer AS t WHERE t.Number = '{{deliveryNo}}'" }
+    {
+      "name": "deliveryNo",
+      "sql": "SELECT t.Number AS n FROM Inventory.Transfer AS t WHERE t.Status = 'Ready' AND t/Inventory.Transfer_OperationType/Inventory.OperationType/Kind = 'Delivery' AND t/Inventory.Transfer_SalesOrder/Sales.SalesOrder/Number != NULL ORDER BY t.Number DESC LIMIT 1"
+    },
+    {
+      "name": "orderNo",
+      "sql": "SELECT t/Inventory.Transfer_SalesOrder/Sales.SalesOrder/Number AS n FROM Inventory.Transfer AS t WHERE t.Number = '{{deliveryNo}}'"
+    }
   ],
   "steps": [
     {
       "name": "Open Inventory > Transfers: the delivery is listed",
-      "actions": [{ "do": "nav", "group": "Inventory", "item": "Transfers" }],
-      "ui": { "ready": ".mx-name-gridMain", "textPresent": ["{{deliveryNo}}"] }
+      "actions": [
+        {
+          "do": "nav",
+          "group": "Inventory",
+          "item": "Transfers"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-gridMain",
+        "textPresent": [
+          "{{deliveryNo}}"
+        ]
+      }
     },
     {
       "name": "Open the delivery: Ready, the order's chairs reserved",
-      "actions": [{ "do": "clickRow", "widget": "gridMain", "text": "{{deliveryNo}}" }],
-      "ui": { "ready": ".mx-name-btnValidate0", "textPresent": ["{{deliveryNo}}", "Ready", "{{orderNo}}"] }
+      "actions": [
+        {
+          "do": "clickRow",
+          "widget": "gridMain",
+          "text": "{{deliveryNo}}"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-btnValidate0",
+        "textPresent": [
+          "{{deliveryNo}}",
+          "Ready"
+        ]
+      },
+      "data": {
+        "oql": [
+          {
+            "label": "the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
+            "sql": "SELECT COUNT(t.ID) AS n FROM Inventory.Transfer AS t WHERE t.Number = '{{deliveryNo}}' AND t.SourceDocument = '{{orderNo}}'",
+            "atLeast": 1
+          }
+        ]
+      }
     },
     {
       "name": "Validate: the delivery is done",
-      "actions": [{ "do": "click", "widget": "btnValidate0", "label": "Validate" }],
-      "ui": { "ready": ".mx-name-dvMain", "textPresent": ["Done"] },
+      "actions": [
+        {
+          "do": "click",
+          "widget": "btnValidate0",
+          "label": "Validate"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-dvMain",
+        "textPresent": [
+          "Done"
+        ]
+      },
       "data": {
         "oql": [
-          { "label": "the delivery is done with a date",
+          {
+            "label": "the delivery is done with a date",
             "sql": "SELECT COUNT(t.ID) AS n FROM Inventory.Transfer AS t WHERE t.Number = '{{deliveryNo}}' AND t.Status = 'Done' AND t.DateDone != NULL",
-            "atLeast": 1 }
+            "atLeast": 1
+          }
         ]
       }
     }
