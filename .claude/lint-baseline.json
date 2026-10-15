@@ -1,16 +1,17 @@
 {
   "counts": {
-    "ARCH001": 18,
-    "ARCH002": 18,
+    "ARCH001": 29,
+    "ARCH002": 15,
     "ARCH003": 38,
     "CONV001": 26,
     "CONV002": 34,
-    "CONV003": 4,
+    "CONV003": 7,
     "CONV006": 38,
     "CONV007": 174,
     "CONV008": 14,
     "CONV009": 1,
-    "CUSTOM002": 4,
+    "CONV010": 1,
+    "CUSTOM002": 5,
     "DESIGN001": 8,
     "MDL-FLOW01": 1,
     "QUAL002": 1,
@@ -19,6 +20,6 @@
     "SEC008": 2,
     "SEC010": 1
   },
-  "total": 387,
+  "total": 400,
   "note": "Per-rule finding counts on OUR modules. Gate fails when any rises."
 }

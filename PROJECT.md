@@ -7,7 +7,7 @@ Every gate decision lands here as `CONFIRMED` or `ASSUMED`, never silently decid
 
 **Stage 5 — Build**, needs attention — gates passed: P, 0, 1, 2, 3, 4 (derived by gate-check on 2026-10-15; re-run it rather than editing this line).
 
-Toolkit commit: d16f578
+Toolkit commit: 99ef8f5
 Interview mode: assist
 Exec approval: auto
 Permission profile: project
@@ -77,6 +77,14 @@ Opt-in artifact erd: user asked for the target-domain ERD at Stage 2 close (chat
 | 5 (build) | Startup chain: each module's ASU_<M>_SeedData calls the module below it first; the after-startup setting points at the highest module built (layering-safe, no upward call) | ASSUMED | Agent 2026-10-14 — replaces the plan's single Core seed, which would have referenced Products/Inventory upward |
 | 5 (build) | Displayed fact: confirmed revenue — source Sales.SalesAnalysis / Sales.SalesKpi, both the sum of SalesOrderLine.Subtotal over confirmed orders; SalesOrder.AmountUntaxed is never summed for reporting | CONFIRMED | coherence 2026-10-15 C1-10 (user: "continue with coherence pass") |
 | 5 (build) | Displayed fact: confirmed purchases — source Purchasing.PurchaseAnalysis / Purchasing.PurchaseKpi, both the sum of PurchaseOrderLine.Subtotal over confirmed orders; PurchaseOrder.AmountUntaxed is never summed for reporting | CONFIRMED | same pattern as confirmed revenue, 2026-10-15 |
+| 5 (build) | Sales.ENUM_DeliveryStatus.Started is not used: delivery status is NotDelivered / PartiallyDelivered / FullyDelivered (coherence C1-18) | CONFIRMED | User 2026-10-15: "Yes, go with proposed assumptions" |
+| 5 (build) | Quantity change on a confirmed sales order: a decrease below QuantityDelivered is refused; an increase is added to the open delivery (or a new one). Row 79 gets its own scripts (coherence C1-09) | CONFIRMED | User 2026-10-15: "Yes, go with proposed assumptions" |
+| 5 (build) | Billing's entry to invoicing: Sales.Reader gets a read-only SalesOrder_View page with Create invoice on it (row 52); Sales.Reader does not get SalesOrder_NewEdit (coherence C1-01) | CONFIRMED | User 2026-10-15: "Yes, go with proposed assumptions" |
+| 5 (build) | SalesOrderLine.QuantityInvoiced / PurchaseOrderLine.QuantityBilled move when the draft invoice/bill is created (Odoo), not on post; the Cancel refusal message says 'invoiced' (coherence C1-08) | CONFIRMED | User 2026-10-15: "Yes, go with proposed assumptions" |
+| 5 (build) | Re-pricing: a sales line's quantity or unit change re-prices through the pricelist (unit converted via SUB_UoM_ConvertPrice) only while its price is still the pricelist price; a hand-typed price is kept (coherence C1-06) | CONFIRMED | User 2026-10-15: "Yes, go with proposed assumptions" |
+| 5 (build) | Manager-only actions: lock/unlock orders (Sales, Purchasing), archive contacts, and maintain vendor prices are limited to the Manager module roles (coherence C1-15) | CONFIRMED | User 2026-10-15: "Yes, go with proposed assumptions" |
+| 5 (build) | Lint baseline raised for Purchasing: ARCH001 Account pickers, CONV003 page names, CUSTOM002 ASU_, CONV010 on ACT_PurchaseApproval_Open (open user task is navigation; rule false positive) | CONFIRMED | User 2026-10-15: "Yes, go with proposed assumptions" |
+| 5 (build) | Inventory coverage checklist (12 items, posted in chat 2026-10-15) confirmed as the module's definition of done | CONFIRMED | User 2026-10-15: "Yes, go with proposed assumptions" |
 
 Skeleton proven 2026-10-14: exec pass, journey pass/fail-control, look done (docs/skeleton-proof.md, 6 of 6 rows)
 
