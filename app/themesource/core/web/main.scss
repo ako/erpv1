@@ -62,6 +62,13 @@
   .lines-list .mx-listview-item { border-bottom: 1px solid var(--mxt-line); }
 }
 
+// Line editors on desktop/tablet (ui-review 2026-10-16 P2): eight inputs share twelve columns, so a one-column picker showed
+// only its clear and arrow buttons. Tighter gutters, no clear button inside a line (a line's picker is changed, not emptied).
+@media (min-width: 768px) {
+  .lines-list .row > [class*="col-"], .lines-head .row > [class*="col-"] { padding-left: 4px; padding-right: 4px; }
+  .lines-list .widget-combobox-clear-button { display: none; }
+}
+
 // Data grids on phones (P2-2): keep columns readable and scroll the grid sideways instead of squashing them.
 @media (max-width: 767px) {
   .widget-datagrid .widget-datagrid-content { overflow-x: auto; }

@@ -230,7 +230,9 @@ def column(e, f, filters=False):
         # no autoFit: it starved the text and association columns to ~15px (ui-review 2026-10-15 Sales P1)
         fit = ''
         # wrap rather than truncate: statuses like "Purchase order" were cut to "Purchase or…" (ui-review 2026-10-15 Purchasing P2)
-        head = "column (Attribute: %s, Caption: '%s'%s%s%s, WrapText: true)" % (D.q(f), esc(label_of(e, f)), align, cls, fit)
+        # an address never wraps: it broke mid-word over three lines and tripled the row height (ui-review 2026-10-16 Partners P2)
+        wrap = 'false' if f in ('Email', 'Website') else 'true'
+        head = "column (Attribute: %s, Caption: '%s'%s%s%s, WrapText: %s)" % (D.q(f), esc(label_of(e, f)), align, cls, fit, wrap)
         if filters:
             flt = {'String': 'textfilter', 'Decimal': 'numberfilter', 'Integer': 'numberfilter', 'Long': 'numberfilter',
                    'DateTime': 'datefilter', 'Enumeration': 'dropdownfilter', 'Boolean': 'dropdownfilter'}[t]
@@ -338,16 +340,23 @@ def editable_listview(e, cols, source, ind, add_mf, delete=True, row_save=False)
     def weight(c):
         a = attr(e, c)
         if c == cols[0] and assoc(e, c) and (e['name'].endswith('Line') or e['name'] == 'Inventory.StockMove'):
-            return 5   # the line's product: its name must read (ui-review 2026-10-15 Sales/Purchasing P2)
-        return 3 if (a and a['type'] == 'String') or assoc(e, c) else 2
+            return 4   # the line's product: its name must read (ui-review 2026-10-15 Sales/Purchasing P2)
+        if assoc(e, c) or (a and a['type'] == 'String'):
+            return 2   # pickers and text need room for a caption next to their buttons
+        return 1.2     # numbers, dates, check boxes
     row_act = ROW_ACTION.get(e['name'])
     avail = 12 - (1 if delete else 0) - (1 if row_act else 0)
     ws = [weight(c) for c in cols]
-    widths = [max(1, int(avail * w / sum(ws))) for w in ws]
-    i = 0
-    while sum(widths) < avail:
-        widths[i % len(widths)] += 1
-        i += 1
+    # largest remainder: leftover columns go to the inputs that lost most to rounding, not to the first ones
+    # (ui-review 2026-10-16: Quantity got 2 columns while Unit and Taxes showed only their buttons)
+    raw = [avail * w / sum(ws) for w in ws]
+    widths = [max(1, int(r)) for r in raw]
+    for i in sorted(range(len(cols)), key=lambda k: raw[k] - widths[k], reverse=True):
+        if sum(widths) >= avail:
+            break
+        widths[i] += 1
+    while sum(widths) > avail:
+        widths[widths.index(max(widths))] -= 1
     L = ['%slayoutgrid gridLinesHead (Class: \'th lines-head hide-phone\') {' % ind, '%s  row {' % ind]
     for c, w in zip(cols, widths):
         L.append("%s    column (DesktopWidth: %d) { dynamictext %s (Content: '%s', RenderMode: Text) }" % (ind, w, wid('hd', c), esc(label_of(e, c))))

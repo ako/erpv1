@@ -19,7 +19,7 @@ create or modify page Inventory.Inventory_Dashboard folder 'Transfers/Pages'
   listview lvTiles (DataSource: database Inventory."TransferSummary" sort by "OperationTypeName" asc, Class: 'spacing-outer-bottom-large') {
     container ctnTile (Class: 'card spacing-inner-medium spacing-outer-bottom-medium') {
       dynamictext txtTileName (Content: '{1}', ContentParams: ({1} = "OperationTypeName"), RenderMode: H3)
-      dynamictext txtTileCounts (Content: '{1} ready · {2} waiting', ContentParams: ({1} = "ReadyCount", {2} = "WaitingCount"), RenderMode: Text)
+      dynamictext txtTileCounts (Content: '{1} ready · {2} waiting', ContentParams: ({1} = "ReadyCount", {2} = "WaitingCount"), RenderMode: Paragraph)
       linkbutton btnOpenTransfers (Caption: 'Open transfers', Action: show page Inventory.Transfer_Overview)
     }
   }

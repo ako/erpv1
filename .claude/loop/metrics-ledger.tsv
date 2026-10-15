@@ -293,3 +293,10 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-15T21:21:57Z	803-inventory-page-transfer-overview.mdl	pass	applied-lint-rose	75	0	1	405	0	49.1	0	94	0	100	31	76	92	405	b12e018
 2026-10-15T22:53:22Z	2026-10-16-rebuild-save-commits-lines.mdl	pass	applied-lint-rose	121	0	1	405	0	49.1	0	94	0	100	31	76	92	405	5fffeb5
 2026-10-15T23:07:46Z	803-inventory-page-transfer-overview.mdl	pass	applied-lint-rose	67	0	1	405	0	49.1	0	94	0	100	31	76	92	405	7a42730
+2026-10-15T23:15:43Z	done-412-products-page-pricelist-new-edit.mdl	pass	applied-lint-rose	70	0	1	405	0	49.1	0	94	0	100	31	76	92	405	b117361
+2026-10-15T23:16:54Z	done-504-partners-page-partner-overview.mdl	pass	applied-lint-rose	68	0	1	405	0	49.1	0	94	0	100	31	76	92	405	9a3d69f
+2026-10-15T23:18:10Z	done-606-sales-page-sales-order-new-edit.mdl	pass	applied-lint-rose	71	0	1	405	0	49.1	0	94	0	100	31	76	92	405	e61ae04
+2026-10-15T23:19:25Z	done-609-sales-page-quotation-template-new-edit.mdl	pass	applied-lint-rose	70	0	1	405	0	49.1	0	94	0	100	31	76	92	405	3810695
+2026-10-15T23:20:39Z	done-707-purchasing-page-purchase-order-new-edit.mdl	pass	applied-lint-rose	70	0	1	405	0	49.1	0	94	0	100	31	76	92	405	9e5d7fc
+2026-10-15T23:21:47Z	802-inventory-page-inventory-dashboard.mdl	pass	applied-lint-rose	65	0	1	405	0	49.1	0	94	0	100	31	76	92	405	60ef525
+2026-10-15T23:22:59Z	811-inventory-page-warehouse-edit.mdl	pass	applied-lint-rose	68	0	1	405	0	49.1	0	94	0	100	31	76	92	405	5bd9028
