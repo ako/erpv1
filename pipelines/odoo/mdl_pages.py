@@ -37,11 +37,32 @@ ONCHANGE = {('Sales.SalesOrder', 'SalesOrder_Customer'): 'Sales.ACT_SalesOrder_C
             ('Sales.SalesOrder', 'SalesOrder_QuotationTemplate'): 'Sales.ACT_SalesOrder_ApplyTemplate',
             ('Sales.SalesOrderLine', 'SalesOrderLine_Product'): 'Sales.ACT_SalesOrderLine_ChangeProduct',
             **{('Sales.SalesOrderLine', f): 'Sales.ACT_SalesOrderLine_Recompute'
-               for f in ('Quantity', 'UnitPrice', 'DiscountPercent', 'SalesOrderLine_Taxes')}}
+               for f in ('Quantity', 'UnitPrice', 'DiscountPercent', 'SalesOrderLine_Taxes')},
+            ('Purchasing.PurchaseOrder', 'PurchaseOrder_Vendor'): 'Purchasing.ACT_PurchaseOrder_ChangeVendor',
+            ('Purchasing.PurchaseOrderLine', 'PurchaseOrderLine_Product'): 'Purchasing.ACT_PurchaseOrderLine_ChangeProduct',
+            **{('Purchasing.PurchaseOrderLine', f): 'Purchasing.ACT_PurchaseOrderLine_Recompute'
+               for f in ('Quantity', 'UnitPrice', 'DiscountPercent', 'PurchaseOrderLine_Taxes')}}
 # The New button of a list whose new record needs defaults (number, dates, salesperson): a microflow, not create object.
-NEW_ACTION = {'SalesOrder_Overview': 'Sales.ACT_SalesOrder_New'}
+NEW_ACTION = {'SalesOrder_Overview': 'Sales.ACT_SalesOrder_New', 'PurchaseOrder_Overview': 'Purchasing.ACT_PurchaseOrder_New'}
 # Buttons whose microflow belongs to a later phase: left off the page until that phase builds it (build plan).
-DEFERRED_BUTTONS = {'ACT_SalesOrder_CreateInvoice': 'Invoicing phase, build-plan row 52'}
+DEFERRED_BUTTONS = {'ACT_SalesOrder_CreateInvoice': 'Invoicing phase, build-plan row 52',
+                    'ACT_PurchaseOrder_CreateBill': 'Invoicing phase, build-plan row 64'}
+# Picker data-source constraints (coherence 2026-10-15 C1-02): archived records and the wrong kind never offered.
+ACTIVE = '[Active = true()]'
+PICKER_WHERE = {('Sales.SalesOrder', 'SalesOrder_Customer'): ACTIVE + '[IsCustomer = true()]',
+                ('Sales.SalesOrder', 'SalesOrder_InvoiceAddress'): ACTIVE, ('Sales.SalesOrder', 'SalesOrder_DeliveryAddress'): ACTIVE,
+                ('Sales.SalesOrderLine', 'SalesOrderLine_Product'): ACTIVE + '[CanBeSold = true()]',
+                ('Sales.QuotationTemplateLine', 'QuotationTemplateLine_Product'): ACTIVE + '[CanBeSold = true()]',
+                ('Products.PriceRule', 'PriceRule_Product'): ACTIVE,
+                ('Purchasing.PurchaseOrder', 'PurchaseOrder_Vendor'): ACTIVE + '[IsVendor = true()]',
+                ('Purchasing.PurchaseOrderLine', 'PurchaseOrderLine_Product'): ACTIVE + '[CanBePurchased = true()]',
+                ('Purchasing.VendorPrice', 'VendorPrice_Vendor'): ACTIVE + '[IsVendor = true()]',
+                ('Purchasing.VendorPrice', 'VendorPrice_Product'): ACTIVE + '[CanBePurchased = true()]'}
+# Document lines removed through a guarded microflow (refuses delivered/received/invoiced lines, recomputes totals) — C1-04/05.
+LINE_DELETE = {'Sales.SalesOrderLine': 'Sales.ACT_SalesOrderLine_Delete', 'Purchasing.PurchaseOrderLine': 'Purchasing.ACT_PurchaseOrderLine_Delete'}
+# Inputs shown only in some states (C1-04: a template replaces every line, so only on a quotation).
+VISIBLE_WHEN = {('Sales.SalesOrder', 'SalesOrder_QuotationTemplate'):
+                "$currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation or $currentObject/Status = Sales.ENUM_SalesOrderStatus.QuotationSent"}
 SAVE_HOOK = {'Products.ProductCategory': 'Products.SUB_ProductCategory_ComputeFullName'}
 LINK_CAPTION = {'Administration.Account_Overview': 'User accounts (Administration)'}
 
@@ -132,7 +153,7 @@ def enum_value_for_caption(enum_name, caption):
 
 
 # ── widgets ──────────────────────────────────────────────────────────────────────────────────
-def input_widget(e, f, ind, readonly=False, prefix='in'):
+def input_widget(e, f, ind, readonly=False, prefix='in', row_save=False):
     """One input for field f (attribute or owned association) of entity e. Line-editor inputs (prefix 'ln')
     get their own widget names so they never clash with the header fields (CE0495)."""
     wid = (lambda k, n: _wid('ln' + k, n)) if prefix == 'ln' else _wid
@@ -142,6 +163,11 @@ def input_widget(e, f, ind, readonly=False, prefix='in'):
     oc = ONCHANGE.get((e['name'], f))
     if oc and not ro:
         ro = ', OnChange: call microflow %s(%s = $currentObject)' % (oc, e['name'].split('.')[1])
+    elif row_save and not ro:
+        ro = ', OnChange: save changes'   # a row of an editable list page commits itself (C1-07: edits were lost)
+    vis = VISIBLE_WHEN.get((e['name'], f))
+    if vis:
+        ro += ', Visible: ' + vis
     if a or f in SYS_ATTR:
         t = a['type'] if a else SYS_ATTR[f]
         if t == 'Boolean':
@@ -160,8 +186,10 @@ def input_widget(e, f, ind, readonly=False, prefix='in'):
     if s:
         tgt = s['target']
         cap = caption_attr(tgt)
-        return ('%scombobox %s (Label: \'%s\', Attribute: %s, DataSource: database %s sort by %s asc, CaptionAttribute: %s%s)'
-                % (ind, wid('cmb', f), lab, f, D.qn(tgt), D.q(cap), D.q(cap), ro))
+        where = PICKER_WHERE.get((e['name'], f))
+        where = ' where ' + where if where else ''
+        return ('%scombobox %s (Label: \'%s\', Attribute: %s, DataSource: database %s%s sort by %s asc, CaptionAttribute: %s%s)'
+                % (ind, wid('cmb', f), lab, f, D.qn(tgt), where, D.q(cap), D.q(cap), ro))
     raise SystemExit('field %s is neither attribute nor owned association of %s' % (f, e['name']))
 
 
@@ -248,7 +276,10 @@ def gen_list(s):
     L = page_head(None, "dynamictext txtTitle (Content: '%s', RenderMode: H1)" % esc(s['title']), actions)
     filt = set(s.get('filters', []))
     if s.get('editable'):
-        L += editable_listview(e, s['columns'], 'database %s sort by %s asc' % (D.qn(s['entity']), D.q(s['columns'][0])), '  ', None, delete=False)
+        first = s['columns'][0]
+        sort = D.q(first) if attr(e, first) else first + '/' + caption_attr(assoc(e, first)['target'])
+        add = '%s.ACT_%s_Add' % (mod, s['entity'].split('.')[1]) if s.get('add') else None
+        L += editable_listview(e, s['columns'], 'database %s sort by %s asc' % (D.qn(s['entity']), sort), '  ', add, delete=bool(s.get('add')), row_save=True)
         return L
     sort = s['columns'][0]
     src = 'database %s sort by %s asc' % (D.qn(s['entity']), D.q(sort) if attr(e, sort) else sort + '/' + caption_attr(assoc(e, sort)['target']))
@@ -265,7 +296,7 @@ def gen_list(s):
 LINE_READONLY = {'Code'}   # business keys other code depends on (Core.Sequence.Code = the numbering contract)
 
 
-def editable_listview(e, cols, source, ind, add_mf, delete=True):
+def editable_listview(e, cols, source, ind, add_mf, delete=True, row_save=False):
     """Inline-editable rows: a caption row (desktop/tablet), then one row of inputs per object. Inputs keep their
     labels; Core main.scss shows them only on phones, where the caption row is hidden (ui-review 2026-10-14 P2-1)."""
     def weight(c):
@@ -285,10 +316,11 @@ def editable_listview(e, cols, source, ind, add_mf, delete=True):
     L.append('%slistview lvLines (DataSource: %s, Editable: true, Class: \'lines-list\') {' % (ind, source))
     L += ['%s  layoutgrid gridLine {' % ind, '%s    row {' % ind]
     for c, w in zip(cols, widths):
-        wd = input_widget(e, c, '', prefix='ln', readonly=c in LINE_READONLY)
+        wd = input_widget(e, c, '', prefix='ln', readonly=c in LINE_READONLY, row_save=row_save)
         L.append('%s      column (DesktopWidth: %d, TabletWidth: %d, PhoneWidth: 12) { %s }' % (ind, w, w, wd))
     if delete:
-        L.append("%s      column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }" % ind)
+        act = ('call microflow %s(%s = $currentObject)' % (LINE_DELETE[e['name']], e['name'].split('.')[1])) if e['name'] in LINE_DELETE else 'delete'
+        L.append("%s      column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: %s) }" % (ind, act))
     L += ['%s    }' % ind, '%s  }' % ind, '%s}' % ind]
     if add_mf:
         L.append("%slinkbutton btnAddLine (Caption: '+ Add a line', Action: call microflow %s)" % (ind, add_mf))
@@ -593,6 +625,26 @@ def gen_page(name):
     out = ['mdl 1;', '-- GENERATED by pipelines/odoo/mdl_pages.py from ui_spec.py["%s"] — wireframe design/wireframes/%s.html.' % (name, name),
            '-- Regenerate, do not hand-edit. Reached from: %s.' % '; '.join(s['reached']), '']
     if s['kind'] == 'list':
+        if s.get('editable') and s.get('add'):
+            short = s['entity'].split('.')[1]
+            mf = folder.replace('/Pages', '/Microflows')
+            out.append('''/** A new %s row, committed so the list shows it at once. */
+create or modify microflow %s.SUB_%s_Add ()
+returns %s as $Row
+folder '%s'
+begin
+  $Row = create %s ();
+  commit $Row refresh;
+  return $Row;
+end;
+
+/** "+ Add a line" on %s. */
+create or modify microflow %s.ACT_%s_Add ()
+folder '%s'
+begin
+  $Row = call microflow %s.SUB_%s_Add();
+end;
+''' % (short, mod, short, s['entity'], mf, D.qn(s['entity']), name, mod, short, mf, mod, short))
         body = gen_list(s)
         params = ''
         layout = 'Core.App_Default'
@@ -633,7 +685,11 @@ end;
         out.append('grant view on page %s.%s to %s;' % (mod, name, ', '.join(roles)))
     called = set(re.findall(r'(?:call microflow|microflow) ((?:%s)\.(?:ACT_\w+|DS_\w+_Get))' % '|'.join(D.MODULES), '\n'.join(out)))
     for mf in sorted(m for m in called if m.startswith(mod + '.')):
-        out.append('grant execute on microflow %s to %s;' % (mf, ', '.join(roles)))
+        # the New microflow opens the form: only roles that may open the form get it, so Mendix hides New from the rest (C1-01)
+        r = module_roles_for(mod, U.S[s['new']]['roles']) if mf == NEW_ACTION.get(name) else roles
+        out.append('grant execute on microflow %s to %s;' % (mf, ', '.join(r)))
+        if r != roles:
+            out.append('revoke execute on microflow %s from %s;' % (mf, ', '.join(x for x in roles if x not in r)))
     return '\n'.join(out) + '\n'
 
 

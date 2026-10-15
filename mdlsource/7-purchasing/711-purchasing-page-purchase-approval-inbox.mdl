@@ -1,0 +1,64 @@
+mdl 1;
+-- 711-purchasing-page-purchase-approval-inbox.mdl — build-plan row 60 (F005-UC004). Purchase managers' approval inbox:
+-- the orders waiting for approval (Status ToApprove), each row opening its running approval task.
+-- Owns Purchasing.SUB_PurchaseOrder_GetApprovalTask, ACT_PurchaseApproval_Open and page PurchaseApproval_Inbox.
+
+/**
+ * The open approval task of an order: the running WF_PurchaseOrderApproval instance's user task that is not finished.
+ *
+ * @param $PurchaseOrder the order waiting for approval
+ * @returns the task, or empty when no approval is running
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_GetApprovalTask ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns System.WorkflowUserTask as $Task
+folder 'Approval/Microflows'
+begin
+  $Workflows = get workflows for $PurchaseOrder;
+  $Running = find $Workflows where $currentObject/State = System.WorkflowState.InProgress;
+  if $Running = empty then
+    return empty;
+  end if;
+  retrieve $Task from System.WorkflowUserTask where [System.WorkflowUserTask_Workflow = $Running][State = 'Created' or State = 'InProgress'] first;
+  return $Task;
+end;
+
+/**
+ * Row click in the approval inbox: open the order's approval task page.
+ *
+ * @param $PurchaseOrder the order waiting for approval
+ */
+create or modify microflow Purchasing.ACT_PurchaseApproval_Open ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'Approval/Microflows'
+begin
+  $Task = call microflow Purchasing.SUB_PurchaseOrder_GetApprovalTask(PurchaseOrder = $PurchaseOrder);
+  if $Task = empty then
+    show message 'This order has no open approval task (it may just have been decided).' type Warning;
+    return;
+  end if;
+  open user task $Task;
+end;
+
+/** Purchase approvals — PurchaseApproval_Inbox. */
+create or modify page Purchasing.PurchaseApproval_Inbox folder 'Approval/Pages'
+(
+  Title: 'Purchase approvals',
+  Layout: Core.App_Default,
+  Url: 'purchase-approval-inbox'
+)
+{
+  container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+    container ctnPageHeadTitle (Class: 'page-head-title') {
+      dynamictext txtTitle (Content: 'Purchase approvals', RenderMode: H1)
+    }
+  }
+  datagrid gridMain (DataSource: database Purchasing."PurchaseOrder" where [Status = 'ToApprove'] sort by "OrderDeadline" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: call microflow Purchasing.ACT_PurchaseApproval_Open(PurchaseOrder = $currentObject)) {
+    column (Attribute: "Number", Caption: 'Number') { textfilter fNumber }
+    column (Attribute: PurchaseOrder_Vendor/Name, Caption: 'Vendor')
+    column (Attribute: PurchaseOrder_Buyer/FullName, Caption: 'Buyer')
+    column (Attribute: "AmountTotal", Caption: 'Total', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fAmountTotal }
+    column (Attribute: "OrderDeadline", Caption: 'Order deadline') { datefilter fOrderDeadline }
+  }
+};
+
+grant view on page Purchasing.PurchaseApproval_Inbox to Purchasing.Manager;
+grant execute on microflow Purchasing.ACT_PurchaseApproval_Open to Purchasing.Manager;

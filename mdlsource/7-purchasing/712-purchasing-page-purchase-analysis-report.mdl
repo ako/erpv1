@@ -1,0 +1,82 @@
+mdl 1;
+-- 712-purchasing-page-purchase-analysis-report.mdl — build-plan row 62, F005-UC006 "Analyse purchases". Wireframe design/wireframes/PurchaseAnalysis_Report.html.
+-- Reached from: menu Reporting > Purchase analysis. Drawn as role PurchaseManager. Depends on 713 (view entities, DS_PurchaseKpi_Get). Derived from Sales 607.
+
+/** Purchase analysis — PurchaseAnalysis_Report. */
+create or modify page Purchasing.PurchaseAnalysis_Report folder 'Reporting/Pages'
+(
+  Title: 'Purchase analysis',
+  Layout: Core.App_Default,
+  Url: 'purchase-analysis-report'
+)
+{
+  container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+    container ctnPageHeadTitle (Class: 'page-head-title') {
+      dynamictext txtTitle (Content: 'Purchase analysis', RenderMode: H1)
+    }
+  }
+  layoutgrid gridKpiOuter (Class: 'spacing-outer-bottom-large') {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvKpi (DataSource: microflow Purchasing.DS_PurchaseKpi_Get) {
+    layoutgrid gridKpi {
+      row {
+        column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) {
+          container ctnKpiPurchased (Class: 'card spacing-inner-medium') {
+            dynamictext txtKpiPurchasedLabel (Content: 'Purchased (confirmed)', RenderMode: Text, Class: 'text-small spacing-outer-bottom-small')
+
+            textbox txtKpiPurchased (Attribute: "Purchased", DecimalPrecision: 2, GroupDigits: true, Editable: Never)
+          }
+        }
+        column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) {
+          container ctnKpiOrders (Class: 'card spacing-inner-medium') {
+            dynamictext txtKpiOrdersLabel (Content: 'Orders', RenderMode: Text, Class: 'text-small spacing-outer-bottom-small')
+
+            textbox txtKpiOrders (Attribute: "Orders", GroupDigits: true, Editable: Never)
+          }
+        }
+        column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) {
+          container ctnKpiReceived (Class: 'card spacing-inner-medium') {
+            dynamictext txtKpiAverageLabel (Content: 'Average order', RenderMode: Text, Class: 'text-small spacing-outer-bottom-small')
+
+            textbox txtKpiAverage (Attribute: "AverageOrder", DecimalPrecision: 2, GroupDigits: true, Editable: Never)
+          }
+        }
+      }
+    }
+  }
+      }
+    }
+  }
+  layoutgrid gridCharts (Class: 'spacing-outer-bottom-large') {
+    row {
+      column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+        container ctnChartMonth (Class: 'card spacing-inner-medium') {
+          dynamictext hChartMonth (Content: 'Purchases per month', RenderMode: H3)
+          columnchart chartMonth (showLegend: false, gridLines: 'horizontal', customLayout: '{"xaxis": {"type": "category"}}') {
+            series serMonth (dataSet: 'static', staticDataSource: database Purchasing.PurchaseAnalysis sort by "Period" asc, staticName: 'Purchased', staticXAttribute: "Period", staticYAttribute: "Untaxed", aggregationType: 'sum')
+          }
+        }
+      }
+      column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+        container ctnChartVendor (Class: 'card spacing-inner-medium') {
+          dynamictext hChartVendor (Content: 'Purchases per vendor', RenderMode: H3)
+          columnchart chartVendor (showLegend: false, gridLines: 'horizontal') {
+            series serVendor (dataSet: 'static', staticDataSource: database Purchasing.PurchaseAnalysis, staticName: 'Purchased', staticXAttribute: "VendorName", staticYAttribute: "Untaxed", aggregationType: 'sum')
+          }
+        }
+      }
+    }
+  }
+  datagrid gridMain (DataSource: database Purchasing."PurchaseAnalysis" sort by "Period" desc, PagingPosition: bottom, Class: 'density-compact') {
+    column (Attribute: "Period", Caption: 'Month') { textfilter fPeriod }
+    column (Attribute: "VendorName", Caption: 'Vendor') { textfilter fVendorName }
+    column (Attribute: "ProductName", Caption: 'Product') { textfilter fProductName }
+    column (Attribute: "Ordered", Caption: 'Ordered', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fOrdered }
+    column (Attribute: "Received", Caption: 'Received', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fReceived }
+    column (Attribute: "Billed", Caption: 'Billed', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fBilled }
+    column (Attribute: "Untaxed", Caption: 'Untaxed', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fUntaxed }
+  }
+};
+
+grant view on page Purchasing.PurchaseAnalysis_Report to Purchasing.Manager;

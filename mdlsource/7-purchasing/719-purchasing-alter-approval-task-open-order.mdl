@@ -1,0 +1,9 @@
+mdl 1;
+-- 719-purchasing-alter-approval-task-open-order.mdl — build-plan row 60: the task page's 'Open order' link (wireframe
+-- PurchaseApproval_Task), added after PurchaseOrder_NewEdit (707) exists — see 710's header for the cycle it breaks.
+
+alter page Purchasing.PurchaseApproval_Task {
+  insert after dpExpectedArrival {
+    linkbutton lnkOpenOrder (Caption: 'Open order', Action: show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $currentObject))
+  }
+};

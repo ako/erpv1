@@ -204,10 +204,11 @@ screen('SalesAnalysis_Report', 'report', 'Sales analysis', 'Sales.SalesAnalysis'
 
 # ── F005 Purchasing ─────────────────────────────────────────────────────────────────────────
 PO_LINES = dict(entity='Purchasing.PurchaseOrderLine', via='PurchaseOrderLine_PurchaseOrder', title='Products', editable=True,
-                columns=['PurchaseOrderLine_Product', 'Description', 'Quantity', 'QuantityReceived', 'QuantityBilled', 'PurchaseOrderLine_UoM',
+                # Description and Billed left out of the line editor, as for sales lines (ui-review 2026-10-15 Sales P2)
+                columns=['PurchaseOrderLine_Product', 'Quantity', 'QuantityReceived', 'PurchaseOrderLine_UoM',
                          'UnitPrice', 'PurchaseOrderLine_Taxes', 'Subtotal'],
-                rows=[['[FURN_8888] Office Lamp', 'Office lamp, LED', '50.00', '0.00', '0.00', 'Units', '22.50', 'VAT 21% (purchase)', '1 125.00'],
-                      ['[FURN_7800] Desk Combination', 'Desk combination', '10.00', '0.00', '0.00', 'Units', '290.00', 'VAT 21% (purchase)', '2 900.00']],
+                rows=[['[FURN_8888] Office Lamp', '50.00', '0.00', 'Units', '22.50', 'VAT 21% (purchase)', '1 125.00'],
+                      ['[FURN_7800] Desk Combination', '10.00', '0.00', 'Units', '290.00', 'VAT 21% (purchase)', '2 900.00']],
                 onchange='ACT_PurchaseOrderLine_ChangeProduct', recompute='SUB_PurchaseOrder_RecomputeTotals')
 screen('PurchaseOrder_Overview', 'list', 'Requests for quotation & purchase orders', 'Purchasing.PurchaseOrder', PURCH + ['Billing'],
        ['menu Purchase › RFQs & orders', 'home of Purchaser'], tabs=['All (9)', 'RFQs (3)', 'To approve (1)', 'Purchase orders (5)'],
@@ -222,9 +223,10 @@ screen('PurchaseOrder_NewEdit', 'form', 'Purchase order', 'Purchasing.PurchaseOr
        buttons=[('Send (mark as sent)', 'ACT_PurchaseOrder_MarkSent', ['RFQ']),
                 ('Confirm order', 'ACT_PurchaseOrder_Confirm', ['RFQ', 'RFQ sent']),
                 ('Create bill', 'ACT_PurchaseOrder_CreateBill', ['Purchase order']),
-                ('Cancel', 'ACT_PurchaseOrder_Cancel', ['RFQ', 'RFQ sent', 'To approve', 'Purchase order']),
+                ('Cancel order', 'ACT_PurchaseOrder_Cancel', ['RFQ', 'RFQ sent', 'To approve', 'Purchase order']),
                 ('Set to RFQ', 'ACT_PurchaseOrder_SetToDraft', ['Cancelled']),
-                ('Lock', 'ACT_PurchaseOrder_ToggleLock', ['Purchase order'])],
+                ('Lock', 'ACT_PurchaseOrder_ToggleLock', ['Purchase order']),
+                ('Save', 'ACT_PurchaseOrder_Save')],
        smart=[('Receipt', 'Transfer_NewEdit', '1'), ('Bills', 'Invoice_NewEdit', '0')], header='Number',
        sections=[('Vendor', ['PurchaseOrder_Vendor', 'VendorReference', 'PurchaseOrder_Currency']),
                  ('Dates', ['OrderDeadline', 'ExpectedArrival', 'ConfirmationDate']),
@@ -244,7 +246,7 @@ screen('PurchaseApproval_Task', 'task', 'Approve purchase order', 'Purchasing.Pu
        links=[('Open order', 'PurchaseOrder_NewEdit')])
 screen('VendorPrice_Overview', 'list', 'Vendor prices', 'Purchasing.VendorPrice', PURCH, ['menu Purchase › Vendor prices', 'Vendor prices link on Product_NewEdit'],
        columns=['VendorPrice_Vendor', 'VendorPrice_Product', 'VendorProductCode', 'MinQuantity', 'Price', 'Discount', 'LeadTimeDays', 'ValidFrom', 'ValidTo'],
-       filters=['VendorPrice_Vendor', 'VendorPrice_Product'], editable=True,
+       filters=['VendorPrice_Vendor', 'VendorPrice_Product'], editable=True, add=True,
        rows=[['Wood Corner', 'Desk Combination', 'WC-DESK-01', '1', '290.00', '', '5', '', ''],
              ['Wood Corner', 'Office Lamp', 'WC-LAMP-07', '20', '22.50', '5.00', '5', '2026-01-01', '']])
 screen('PurchaseAnalysis_Report', 'report', 'Purchase analysis', 'Purchasing.PurchaseAnalysis', ['PurchaseManager'], ['menu Reporting › Purchase analysis'],

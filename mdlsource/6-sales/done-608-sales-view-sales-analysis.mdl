@@ -35,19 +35,22 @@ create or modify view entity Sales."SalesAnalysis" (
 );
 
 /**
- * Sales KPIs: a single row over all confirmed sales orders (revenue, order count, average order). (F004-UC007)
+ * Sales KPIs: a single row over all confirmed sales orders (revenue, order count, average order). Revenue is the sum of
+ * confirmed line subtotals — the same source as Sales.SalesAnalysis, so tile, charts and grid agree
+ * (PROJECT.md "Displayed fact: confirmed revenue", coherence 2026-10-15 C1-10). (F004-UC007)
  */
 create or modify view entity Sales."SalesKpi" (
   "Revenue": Decimal,
   "Orders": Integer,
   "AverageOrder": Decimal
 ) as (
-  from Sales.SalesOrder as o
+  from Sales.SalesOrderLine as l
+  join l/Sales.SalesOrderLine_SalesOrder/Sales.SalesOrder as o
   where o.Status = 'SalesOrder'
   select
-    coalesce(sum(o.AmountUntaxed), 0) as Revenue,
-    count(o.ID) as Orders,
-    case when count(o.ID) = 0 then cast(0 as decimal) else coalesce(sum(o.AmountUntaxed), 0) : count(o.ID) end as AverageOrder
+    coalesce(sum(l.Subtotal), 0) as Revenue,
+    count(distinct o.ID) as Orders,
+    case when count(distinct o.ID) = 0 then cast(0 as decimal) else coalesce(sum(l.Subtotal), 0) : count(distinct o.ID) end as AverageOrder
 );
 
 /** Data source of SalesAnalysis_Report KPI tiles: the single Sales.SalesKpi row. */

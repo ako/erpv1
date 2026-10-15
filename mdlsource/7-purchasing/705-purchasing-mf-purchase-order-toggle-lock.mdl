@@ -1,0 +1,197 @@
+mdl 1;
+-- 705-purchasing-mf-purchase-order-toggle-lock.mdl — build-plan rows 57-61 (F005-UC002..UC005): the order's state actions.
+-- Owns ACT_PurchaseOrder_Save, ACT_PurchaseOrder_MarkSent, ACT_PurchaseOrder_Confirm (+ SUB_PurchaseOrder_RequestApproval,
+-- SUB_PurchaseOrder_LinesReadyToConfirm), ACT_PurchaseOrder_Cancel (+ SUB_PurchaseOrder_Cancel, SUB_PurchaseOrder_HasProgress),
+-- ACT_PurchaseOrder_SetToDraft, ACT_PurchaseOrder_ToggleLock (+ SUB_PurchaseOrder_SetLocked).
+
+/** Save button on the order form: totals, then back to the list. */
+create or modify microflow Purchasing.ACT_PurchaseOrder_Save ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'RFQs/Microflows'
+begin
+  $Done = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $PurchaseOrder);
+  close page;
+end;
+
+/**
+ * Send (mark as sent): RFQ -> RFQ sent (F005-UC002). Email sending is out of scope (Stage 0).
+ *
+ * @param $PurchaseOrder the RFQ
+ * @returns true when the status changed
+ */
+create or modify microflow Purchasing.ACT_PurchaseOrder_MarkSent ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  if $PurchaseOrder/Status != Purchasing.ENUM_PurchaseOrderStatus.RFQ then
+    show message 'Only a request for quotation can be marked as sent.' type Warning;
+    return false;
+  end if;
+  call microflow Purchasing.SUB_PurchaseOrder_SetStatus(PurchaseOrder = $PurchaseOrder, Status = Purchasing.ENUM_PurchaseOrderStatus.RFQSent);
+  return true;
+end;
+
+/**
+ * At least one product line, and every line that is not a section or note carries a product.
+ *
+ * @param $PurchaseOrder the RFQ
+ * @returns true when the lines allow confirming
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_LinesReadyToConfirm ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Boolean as $Ready
+folder 'RFQs/Microflows'
+begin
+  retrieve $ProductLines from Purchasing.PurchaseOrderLine where [Purchasing.PurchaseOrderLine_PurchaseOrder = $PurchaseOrder][Purchasing.PurchaseOrderLine_Product/Products.Product];
+  retrieve $Unfinished from Purchasing.PurchaseOrderLine where [Purchasing.PurchaseOrderLine_PurchaseOrder = $PurchaseOrder][not(Purchasing.PurchaseOrderLine_Product/Products.Product)]
+    [LineType != 'Section'][LineType != 'Note'];
+  return length($ProductLines) > 0 and length($Unfinished) = 0;
+end;
+
+/**
+ * Route to approval (F005-UC003 step 2): status To approve and the approval workflow starts.
+ *
+ * @param $PurchaseOrder the RFQ
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_RequestApproval ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'Approval/Microflows'
+begin
+  change $PurchaseOrder (Status = Purchasing.ENUM_PurchaseOrderStatus.ToApprove, ApprovalComment = empty);
+  commit $PurchaseOrder with events refresh;
+  $Workflow = call workflow Purchasing.WF_PurchaseOrderApproval ($PurchaseOrder);
+end;
+
+/**
+ * Confirm order button (F005-UC003): an RFQ (sent or not) with a vendor and finished lines either becomes a purchase order
+ * or, above the company threshold for a non-manager, goes to a purchase manager for approval.
+ *
+ * @param $PurchaseOrder the RFQ
+ * @returns true when confirmed or sent to approval
+ */
+create or modify microflow Purchasing.ACT_PurchaseOrder_Confirm ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  if $PurchaseOrder/Status != Purchasing.ENUM_PurchaseOrderStatus.RFQ and $PurchaseOrder/Status != Purchasing.ENUM_PurchaseOrderStatus.RFQSent then
+    show message 'Only a request for quotation can be confirmed.' type Warning;
+    return false;
+  end if;
+  if $PurchaseOrder/Purchasing.PurchaseOrder_Vendor = empty then
+    show message 'Choose a vendor before confirming.' type Warning;
+    return false;
+  end if;
+  $LinesReady = call microflow Purchasing.SUB_PurchaseOrder_LinesReadyToConfirm(PurchaseOrder = $PurchaseOrder);
+  if not($LinesReady) then
+    show message 'Every line needs a product (sections and notes excepted), and the order needs at least one.' type Warning;
+    return false;
+  end if;
+  $Totals = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $PurchaseOrder);
+  $NeedsApproval = call microflow Purchasing.SUB_PurchaseOrder_NeedsApproval(PurchaseOrder = $PurchaseOrder);
+  if $NeedsApproval then
+    call microflow Purchasing.SUB_PurchaseOrder_RequestApproval(PurchaseOrder = $PurchaseOrder);
+    show message 'The order is above the approval threshold and was sent to a purchase manager for approval.' type Information;
+    return true;
+  end if;
+  call microflow Purchasing.SUB_PurchaseOrder_Approve(PurchaseOrder = $PurchaseOrder);
+  return true;
+end;
+
+/**
+ * Whether anything was received or billed on the order (then it cannot be cancelled).
+ *
+ * @param $PurchaseOrder the order
+ * @returns true when a line has a received or billed quantity
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_HasProgress ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Boolean as $HasProgress
+folder 'RFQs/Microflows'
+begin
+  retrieve $Done from Purchasing.PurchaseOrderLine where [Purchasing.PurchaseOrderLine_PurchaseOrder = $PurchaseOrder][QuantityReceived > 0 or QuantityBilled > 0] first;
+  return $Done != empty;
+end;
+
+/** Cancel an order: abort a running approval, cancel its open receipts (Inventory bridge), status Cancelled. */
+create or modify microflow Purchasing.SUB_PurchaseOrder_Cancel ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'RFQs/Microflows'
+begin
+  if $PurchaseOrder/Status = Purchasing.ENUM_PurchaseOrderStatus.ToApprove then
+    $Workflows = get workflows for $PurchaseOrder;
+    @annotation 'At most one approval instance per order: the loop aborts the one still running.'
+    loop $Workflow in $Workflows begin
+      if $Workflow/State = System.WorkflowState.InProgress or $Workflow/State = System.WorkflowState.Paused then
+        workflow operation abort $Workflow reason 'Purchase order cancelled';
+      end if;
+    end loop;
+  end if;
+  call microflow Inventory.SUB_PurchaseOrder_CancelReceipts(PurchaseOrder = $PurchaseOrder);
+  change $PurchaseOrder (Status = Purchasing.ENUM_PurchaseOrderStatus.Cancelled, BillingStatus = Core.ENUM_InvoiceStatus.NothingToInvoice);
+  commit $PurchaseOrder with events refresh;
+end;
+
+/**
+ * Cancel button (F005-UC005): refused once anything was received or billed.
+ *
+ * @param $PurchaseOrder the order
+ * @returns true when cancelled
+ */
+create or modify microflow Purchasing.ACT_PurchaseOrder_Cancel ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  if $PurchaseOrder/Status = Purchasing.ENUM_PurchaseOrderStatus.Cancelled then
+    return false;
+  end if;
+  if $PurchaseOrder/Locked then
+    show message 'This order is locked: unlock it before cancelling.' type Warning;
+    return false;
+  end if;
+  $HasProgress = call microflow Purchasing.SUB_PurchaseOrder_HasProgress(PurchaseOrder = $PurchaseOrder);
+  if $HasProgress then
+    show message 'Goods were received or billed on this order: it cannot be cancelled.' type Warning;
+    return false;
+  end if;
+  call microflow Purchasing.SUB_PurchaseOrder_Cancel(PurchaseOrder = $PurchaseOrder);
+  return true;
+end;
+
+/**
+ * Set to draft (F005-UC005): Cancelled -> RFQ.
+ *
+ * @param $PurchaseOrder the cancelled order
+ * @returns true when reset
+ */
+create or modify microflow Purchasing.ACT_PurchaseOrder_SetToDraft ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  if $PurchaseOrder/Status != Purchasing.ENUM_PurchaseOrderStatus.Cancelled then
+    show message 'Only a cancelled order can be set back to draft.' type Warning;
+    return false;
+  end if;
+  call microflow Purchasing.SUB_PurchaseOrder_SetStatus(PurchaseOrder = $PurchaseOrder, Status = Purchasing.ENUM_PurchaseOrderStatus.RFQ);
+  return true;
+end;
+
+/** Lock or unlock an order. */
+create or modify microflow Purchasing.SUB_PurchaseOrder_SetLocked ($PurchaseOrder: Purchasing.PurchaseOrder, $Locked: Boolean)
+folder 'RFQs/Microflows'
+begin
+  change $PurchaseOrder (Locked = $Locked);
+  commit $PurchaseOrder with events refresh;
+end;
+
+/**
+ * Lock / unlock button (F005-UC005): only a confirmed purchase order.
+ *
+ * @param $PurchaseOrder the order
+ * @returns true when toggled
+ */
+create or modify microflow Purchasing.ACT_PurchaseOrder_ToggleLock ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  if $PurchaseOrder/Status != Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder then
+    show message 'Only a confirmed purchase order can be locked.' type Warning;
+    return false;
+  end if;
+  call microflow Purchasing.SUB_PurchaseOrder_SetLocked(PurchaseOrder = $PurchaseOrder, Locked = not($PurchaseOrder/Locked));
+  return true;
+end;

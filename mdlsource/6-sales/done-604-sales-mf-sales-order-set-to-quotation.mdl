@@ -125,6 +125,10 @@ begin
   if $SalesOrder/Status = Sales.ENUM_SalesOrderStatus.Cancelled then
     return false;
   end if;
+  if $SalesOrder/Locked then
+    show message 'This order is locked: unlock it before cancelling.' type Warning;
+    return false;
+  end if;
   $HasInvoiced = call microflow Sales.SUB_SalesOrder_HasInvoicedLines(SalesOrder = $SalesOrder);
   if $HasInvoiced then
     show message 'This order has posted invoices: cancel or credit them first.' type Warning;

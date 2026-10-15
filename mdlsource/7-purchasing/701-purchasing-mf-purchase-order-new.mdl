@@ -1,0 +1,33 @@
+mdl 1;
+-- 701-purchasing-mf-purchase-order-new.mdl — build-plan row 56 (F005-UC001). Owns Purchasing.SUB_PurchaseOrder_Create and the
+-- vendor on-change action ACT_PurchaseOrder_ChangeVendor. ACT_PurchaseOrder_New is in 718 (it opens the form that calls these).
+
+/**
+ * A new request for quotation with company defaults (Odoo purchase.order default_get + create): number from the
+ * 'purchase.order' sequence, the current user as buyer, order deadline now, company currency. Committed, so lines can be
+ * added at once.
+ *
+ * @returns the RFQ
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_Create ()
+returns Purchasing.PurchaseOrder as $PurchaseOrder
+folder 'RFQs/Microflows'
+begin
+  retrieve $Company from Core.Company first;
+  declare $LoginName String = if $currentUser = empty then '' else $currentUser/Name;
+  retrieve $Me from Administration.Account where [Name = $LoginName] first;
+  $Number = call microflow Core.SUB_Sequence_NextNumber(Code = 'purchase.order');
+  $PurchaseOrder = create Purchasing.PurchaseOrder (Number = $Number, Status = Purchasing.ENUM_PurchaseOrderStatus.RFQ, Locked = false,
+    OrderDeadline = [%CurrentDateTime%], BillingStatus = Core.ENUM_InvoiceStatus.NothingToInvoice,
+    ReceiptStatus = Purchasing.ENUM_ReceiptStatus.NotReceived, AmountUntaxed = 0, AmountTax = 0, AmountTotal = 0,
+    Purchasing.PurchaseOrder_Buyer = $Me, Purchasing.PurchaseOrder_Currency = $Company/Core.Company_Currency);
+  commit $PurchaseOrder with events;
+  return $PurchaseOrder;
+end;
+
+/** On change of the vendor: the vendor's payment term. */
+create or modify microflow Purchasing.ACT_PurchaseOrder_ChangeVendor ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'RFQs/Microflows'
+begin
+  call microflow Purchasing.SUB_PurchaseOrder_ApplyVendor(PurchaseOrder = $PurchaseOrder);
+end;

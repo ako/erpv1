@@ -1,0 +1,22 @@
+mdl 1;
+-- 714-purchasing-mf-vendor-price-get-best.mdl — build-plan row 63 (F005-UC007). Owns Purchasing.SUB_VendorPrice_GetBest.
+
+/**
+ * The vendor price line that applies (Odoo product.product._select_seller): this vendor and product, minimum quantity
+ * reached, valid today; the highest minimum quantity wins, then the lowest price.
+ *
+ * @param $Vendor the vendor (may be empty: then nothing applies)
+ * @param $Product the product
+ * @param $Quantity the ordered quantity
+ * @returns the vendor price line, or empty
+ */
+create or modify microflow Purchasing.SUB_VendorPrice_GetBest ($Vendor: Partners.Partner, $Product: Products.Product, $Quantity: Decimal)
+returns Purchasing.VendorPrice as $Best
+folder 'VendorPrices/Microflows'
+begin
+  retrieve $Best from Purchasing.VendorPrice
+    where [Purchasing.VendorPrice_Vendor = $Vendor][Purchasing.VendorPrice_Product = $Product][MinQuantity <= $Quantity]
+      [ValidFrom = empty or ValidFrom <= '[%CurrentDateTime%]'][ValidTo = empty or ValidTo >= '[%BeginOfCurrentDay%]']
+    sort by MinQuantity desc, Price asc first;
+  return $Best;
+end;

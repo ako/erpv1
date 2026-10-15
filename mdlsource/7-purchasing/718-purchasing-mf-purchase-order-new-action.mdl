@@ -1,0 +1,14 @@
+mdl 1;
+-- 718-purchasing-mf-purchase-order-new-action.mdl — build-plan row 56 (F005-UC001): the New button's microflow.
+-- Split out of 701 because it opens Purchasing.PurchaseOrder_NewEdit, whose buttons call 701/704/705: exec order
+-- 701, 704, 705, 707 (page), 718, 706 (list with the New button) — as Sales 615.
+
+/** New button on RFQs & orders: create the request for quotation and open it. */
+create or modify microflow Purchasing.ACT_PurchaseOrder_New ()
+folder 'RFQs/Microflows'
+begin
+  $PurchaseOrder = call microflow Purchasing.SUB_PurchaseOrder_Create();
+  show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $PurchaseOrder);
+end;
+
+grant execute on microflow Purchasing.ACT_PurchaseOrder_New to Purchasing.User, Purchasing.Manager;

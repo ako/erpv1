@@ -27,9 +27,9 @@ create or modify page Core.Sequence_Overview folder 'Numbering/Pages'
     layoutgrid gridLine {
       row {
         column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) { textbox lntxtCode (Label: 'Code', Attribute: "Code", Editable: Never) }
-        column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) { textbox lntxtPrefix (Label: 'Prefix', Attribute: "Prefix") }
-        column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtPadding (Label: 'Padding', Attribute: "Padding") }
-        column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtNextNumber (Label: 'Next number', Attribute: "NextNumber") }
+        column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) { textbox lntxtPrefix (Label: 'Prefix', Attribute: "Prefix", OnChange: save changes) }
+        column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtPadding (Label: 'Padding', Attribute: "Padding", OnChange: save changes) }
+        column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtNextNumber (Label: 'Next number', Attribute: "NextNumber", OnChange: save changes) }
       }
     }
   }

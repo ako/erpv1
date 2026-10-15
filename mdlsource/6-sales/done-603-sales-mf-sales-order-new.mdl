@@ -28,7 +28,7 @@ begin
 end;
 
 /**
- * The totals of the order a line belongs to.
+ * The totals of the order a line belongs to, and its invoice status once confirmed (coherence C1-04).
  *
  * @param $SalesOrderLine the changed line
  * @returns true
@@ -39,6 +39,9 @@ folder 'Quotations/Microflows'
 begin
   retrieve $Order from $SalesOrderLine/Sales.SalesOrderLine_SalesOrder;
   $Recomputed = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $Order);
+  if $Order/Status = Sales.ENUM_SalesOrderStatus.SalesOrder then
+    $Invoicing = call microflow Sales.SUB_SalesOrder_UpdateInvoiceStatus(SalesOrder = $Order);
+  end if;
   return true;
 end;
 

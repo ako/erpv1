@@ -1,0 +1,47 @@
+mdl 1;
+-- 703-purchasing-mf-purchase-order-update-billing-status.mdl — build-plan row 56 (F005). Owns
+-- Purchasing.SUB_PurchaseOrder_UpdateBillingStatus.
+
+/**
+ * Quantity to bill per line and the order's billing status (Odoo purchase.order.line._compute_qty_invoiced):
+ * ordered-quantities policy: ordered - billed; received-quantities policy: received - billed.
+ * Only a confirmed purchase order has something to bill; sections and notes never do.
+ *
+ * @param $PurchaseOrder the order
+ * @returns true
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_UpdateBillingStatus ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  retrieve $Lines from $PurchaseOrder/Purchasing.PurchaseOrderLine_PurchaseOrder;
+  declare $AnyToBill Boolean = false;
+  declare $AllBilled Boolean = true;
+  declare $AnyProductLine Boolean = false;
+  loop $Line in $Lines begin
+    if $Line/LineType = Core.ENUM_LineType.Section or $Line/LineType = Core.ENUM_LineType.Note then
+      change $Line (QuantityToBill = 0);
+    else
+      set $AnyProductLine = true;
+      declare $Billed Decimal = if $Line/QuantityBilled = empty then 0 else $Line/QuantityBilled;
+      declare $Basis Decimal = if $Line/Purchasing.PurchaseOrderLine_Product/Products.Product/BillPolicy = Products.ENUM_BillPolicy.ReceivedQuantities
+        then (if $Line/QuantityReceived = empty then 0 else $Line/QuantityReceived) else (if $Line/Quantity = empty then 0 else $Line/Quantity);
+      declare $ToBill Decimal = if $PurchaseOrder/Status = Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder then $Basis - $Billed else 0;
+      change $Line (QuantityToBill = $ToBill);
+      if $ToBill > 0 then
+        set $AnyToBill = true;
+      end if;
+      if $Billed < (if $Line/Quantity = empty then 0 else $Line/Quantity) then
+        set $AllBilled = false;
+      end if;
+    end if;
+  end loop;
+  commit $Lines without events;
+  declare $Status Enumeration(Core.ENUM_InvoiceStatus) = if $PurchaseOrder/Status != Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder then Core.ENUM_InvoiceStatus.NothingToInvoice
+    else if $AnyToBill then Core.ENUM_InvoiceStatus.ToInvoice
+    else if $AnyProductLine and $AllBilled then Core.ENUM_InvoiceStatus.FullyInvoiced
+    else Core.ENUM_InvoiceStatus.NothingToInvoice;
+  change $PurchaseOrder (BillingStatus = $Status);
+  commit $PurchaseOrder with events refresh;
+  return true;
+end;

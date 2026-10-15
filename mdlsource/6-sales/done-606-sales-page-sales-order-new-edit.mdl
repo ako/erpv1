@@ -50,10 +50,10 @@ create or modify page Sales.SalesOrder_NewEdit folder 'Quotations/Pages'
       row {
         column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
           dynamictext hCustomer (Content: 'Customer', RenderMode: H2)
-          combobox cmbSalesOrderCustomer (Label: 'Customer', Attribute: SalesOrder_Customer, DataSource: database Partners."Partner" sort by "Name" asc, CaptionAttribute: "Name", OnChange: call microflow Sales.ACT_SalesOrder_ChangeCustomer(SalesOrder = $currentObject))
-          combobox cmbSalesOrderInvoiceAddress (Label: 'Invoice address', Attribute: SalesOrder_InvoiceAddress, DataSource: database Partners."Partner" sort by "Name" asc, CaptionAttribute: "Name")
-          combobox cmbSalesOrderDeliveryAddress (Label: 'Delivery address', Attribute: SalesOrder_DeliveryAddress, DataSource: database Partners."Partner" sort by "Name" asc, CaptionAttribute: "Name")
-          combobox cmbSalesOrderQuotationTemplate (Label: 'Quotation template', Attribute: SalesOrder_QuotationTemplate, DataSource: database Sales."QuotationTemplate" sort by "Name" asc, CaptionAttribute: "Name", OnChange: call microflow Sales.ACT_SalesOrder_ApplyTemplate(SalesOrder = $currentObject))
+          combobox cmbSalesOrderCustomer (Label: 'Customer', Attribute: SalesOrder_Customer, DataSource: database Partners."Partner" where [Active = true()][IsCustomer = true()] sort by "Name" asc, CaptionAttribute: "Name", OnChange: call microflow Sales.ACT_SalesOrder_ChangeCustomer(SalesOrder = $currentObject))
+          combobox cmbSalesOrderInvoiceAddress (Label: 'Invoice address', Attribute: SalesOrder_InvoiceAddress, DataSource: database Partners."Partner" where [Active = true()] sort by "Name" asc, CaptionAttribute: "Name")
+          combobox cmbSalesOrderDeliveryAddress (Label: 'Delivery address', Attribute: SalesOrder_DeliveryAddress, DataSource: database Partners."Partner" where [Active = true()] sort by "Name" asc, CaptionAttribute: "Name")
+          combobox cmbSalesOrderQuotationTemplate (Label: 'Quotation template', Attribute: SalesOrder_QuotationTemplate, DataSource: database Sales."QuotationTemplate" sort by "Name" asc, CaptionAttribute: "Name", OnChange: call microflow Sales.ACT_SalesOrder_ApplyTemplate(SalesOrder = $currentObject), Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation or $currentObject/Status = Sales.ENUM_SalesOrderStatus.QuotationSent)
         }
         column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
           dynamictext hTerms (Content: 'Terms', RenderMode: H2)
@@ -91,7 +91,7 @@ create or modify page Sales.SalesOrder_NewEdit folder 'Quotations/Pages'
     listview lvLines (DataSource: $currentObject/Sales.SalesOrderLine_SalesOrder, Editable: true, Class: 'lines-list') {
       layoutgrid gridLine {
         row {
-          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbSalesOrderLineProduct (Label: 'Product', Attribute: SalesOrderLine_Product, DataSource: database Products."Product" sort by "Name" asc, CaptionAttribute: "Name", OnChange: call microflow Sales.ACT_SalesOrderLine_ChangeProduct(SalesOrderLine = $currentObject)) }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbSalesOrderLineProduct (Label: 'Product', Attribute: SalesOrderLine_Product, DataSource: database Products."Product" where [Active = true()][CanBeSold = true()] sort by "Name" asc, CaptionAttribute: "Name", OnChange: call microflow Sales.ACT_SalesOrderLine_ChangeProduct(SalesOrderLine = $currentObject)) }
           column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtQuantity (Label: 'Quantity', Attribute: "Quantity", DecimalPrecision: 2, GroupDigits: true, OnChange: call microflow Sales.ACT_SalesOrderLine_Recompute(SalesOrderLine = $currentObject)) }
           column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtQuantityDelivered (Label: 'Quantity delivered', Attribute: "QuantityDelivered", DecimalPrecision: 2, GroupDigits: true, Editable: Never) }
           column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox lncmbSalesOrderLineUoM (Label: 'Unit', Attribute: SalesOrderLine_UoM, DataSource: database Products."UoM" sort by "Name" asc, CaptionAttribute: "Name") }
@@ -99,7 +99,7 @@ create or modify page Sales.SalesOrder_NewEdit folder 'Quotations/Pages'
           column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox lncmbSalesOrderLineTaxes (Label: 'Taxes', Attribute: SalesOrderLine_Taxes, DataSource: database Core."Tax" sort by "Name" asc, CaptionAttribute: "Name", OnChange: call microflow Sales.ACT_SalesOrderLine_Recompute(SalesOrderLine = $currentObject)) }
           column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtDiscountPercent (Label: 'Discount percent', Attribute: "DiscountPercent", DecimalPrecision: 2, GroupDigits: true, OnChange: call microflow Sales.ACT_SalesOrderLine_Recompute(SalesOrderLine = $currentObject)) }
           column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtSubtotal (Label: 'Subtotal', Attribute: "Subtotal", DecimalPrecision: 2, GroupDigits: true, Editable: Never) }
-          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: call microflow Sales.ACT_SalesOrderLine_Delete(SalesOrderLine = $currentObject)) }
         }
       }
     }
@@ -119,6 +119,7 @@ create or modify page Sales.SalesOrder_NewEdit folder 'Quotations/Pages'
 grant view on page Sales.SalesOrder_NewEdit to Sales.User, Sales.Manager;
 grant execute on microflow Sales.ACT_SalesOrderLine_Add to Sales.User, Sales.Manager;
 grant execute on microflow Sales.ACT_SalesOrderLine_ChangeProduct to Sales.User, Sales.Manager;
+grant execute on microflow Sales.ACT_SalesOrderLine_Delete to Sales.User, Sales.Manager;
 grant execute on microflow Sales.ACT_SalesOrderLine_Recompute to Sales.User, Sales.Manager;
 grant execute on microflow Sales.ACT_SalesOrder_ApplyTemplate to Sales.User, Sales.Manager;
 grant execute on microflow Sales.ACT_SalesOrder_Cancel to Sales.User, Sales.Manager;

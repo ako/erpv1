@@ -1,0 +1,43 @@
+mdl 1;
+-- 617-sales-mf-sales-order-line-delete.mdl — coherence 2026-10-15 C1-04/C1-05 (F004-UC001 step 6, F007): the line editor's
+-- Remove. Owns Sales.SUB_SalesOrderLine_Delete and ACT_SalesOrderLine_Delete.
+
+/**
+ * Delete a line and recompute its order (totals, and invoice status once confirmed).
+ *
+ * @param $SalesOrderLine the line to remove
+ */
+create or modify microflow Sales.SUB_SalesOrderLine_Delete ($SalesOrderLine: Sales.SalesOrderLine)
+folder 'Quotations/Microflows'
+begin
+  retrieve $Order from $SalesOrderLine/Sales.SalesOrderLine_SalesOrder;
+  delete $SalesOrderLine;
+  $Recomputed = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $Order);
+  if $Order/Status = Sales.ENUM_SalesOrderStatus.SalesOrder then
+    $Invoicing = call microflow Sales.SUB_SalesOrder_UpdateInvoiceStatus(SalesOrder = $Order);
+  end if;
+end;
+
+/**
+ * Remove on an order line: refused on a locked order and for a line already delivered or invoiced (Odoo
+ * _unlink_except_confirmed keeps such lines).
+ *
+ * @param $SalesOrderLine the line
+ * @returns true when removed
+ */
+create or modify microflow Sales.ACT_SalesOrderLine_Delete ($SalesOrderLine: Sales.SalesOrderLine)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  if $SalesOrderLine/Sales.SalesOrderLine_SalesOrder/Sales.SalesOrder/Locked then
+    show message 'This order is locked: unlock it before changing lines.' type Warning;
+    return false;
+  end if;
+  if ($SalesOrderLine/QuantityDelivered != empty and $SalesOrderLine/QuantityDelivered > 0)
+    or ($SalesOrderLine/QuantityInvoiced != empty and $SalesOrderLine/QuantityInvoiced > 0) then
+    show message 'This line was already delivered or invoiced and cannot be removed.' type Warning;
+    return false;
+  end if;
+  call microflow Sales.SUB_SalesOrderLine_Delete(SalesOrderLine = $SalesOrderLine);
+  return true;
+end;

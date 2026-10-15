@@ -31,4 +31,5 @@ create or modify page Sales.SalesOrder_Overview folder 'Quotations/Pages'
 };
 
 grant view on page Sales.SalesOrder_Overview to Sales.User, Sales.Manager, Sales.Reader;
-grant execute on microflow Sales.ACT_SalesOrder_New to Sales.User, Sales.Manager, Sales.Reader;
+grant execute on microflow Sales.ACT_SalesOrder_New to Sales.User, Sales.Manager;
+revoke execute on microflow Sales.ACT_SalesOrder_New from Sales.Reader;

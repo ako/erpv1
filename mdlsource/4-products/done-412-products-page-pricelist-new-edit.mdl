@@ -104,7 +104,7 @@ create or modify page Products.Pricelist_NewEdit folder 'Pricing/Pages'
         row {
           column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbAppliesTo (Label: 'Applies to', Attribute: "AppliesTo") }
           column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbPriceRuleCategory (Label: 'Category', Attribute: PriceRule_Category, DataSource: database Products."ProductCategory" sort by "Name" asc, CaptionAttribute: "Name") }
-          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox lncmbPriceRuleProduct (Label: 'Product', Attribute: PriceRule_Product, DataSource: database Products."Product" sort by "Name" asc, CaptionAttribute: "Name") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox lncmbPriceRuleProduct (Label: 'Product', Attribute: PriceRule_Product, DataSource: database Products."Product" where [Active = true()] sort by "Name" asc, CaptionAttribute: "Name") }
           column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtMinQuantity (Label: 'Min quantity', Attribute: "MinQuantity", DecimalPrecision: 2, GroupDigits: true) }
           column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox lncmbComputation (Label: 'Computation', Attribute: "Computation") }
           column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtFixedPrice (Label: 'Fixed price', Attribute: "FixedPrice", DecimalPrecision: 2, GroupDigits: true) }

@@ -1,0 +1,64 @@
+mdl 1;
+-- 710-purchasing-page-purchase-approval-task.mdl — build-plan row 60 (F005-UC004). The approval user task's page: the order
+-- read-only, its lines, the rejection reason, Approve / Reject. Wireframe design/wireframes/PurchaseApproval_Task.html.
+-- Task-page contract (workflow-structure-rules.md §11): parameters $WorkflowUserTask AND $WorkflowContext. Built before
+-- the workflow (709), which names it as its task page. The 'Open order' link is added by 719 once PurchaseOrder_NewEdit exists
+-- (the order form's Confirm starts this workflow: page -> workflow -> Confirm -> order form would otherwise be a cycle).
+
+/** Approve purchase order — PurchaseApproval_Task. */
+create or modify page Purchasing.PurchaseApproval_Task folder 'Approval/Pages'
+(
+  Params: ( $WorkflowUserTask: System.WorkflowUserTask, $WorkflowContext: Purchasing.PurchaseOrder ),
+  Title: 'Approve purchase order',
+  Layout: Core.App_Default
+)
+{
+  layoutgrid gridPage {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvMain (DataSource: $WorkflowContext) {
+    container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+      container ctnPageHeadTitle (Class: 'page-head-title') {
+        dynamictext txtCrumb (Content: 'Approve purchase order', RenderMode: Text, Class: 'crumb')
+        dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = "Number"), RenderMode: H1)
+      }
+      container ctnPageHeadActions (Class: 'page-head-actions') {
+        actionbutton btnApprove (Caption: 'Approve', Action: call microflow Purchasing.ACT_PurchaseApprovalTask_Approve(WorkflowUserTask = $WorkflowUserTask, PurchaseOrder = $currentObject), ButtonStyle: Primary)
+        actionbutton btnReject (Caption: 'Reject', Action: call microflow Purchasing.ACT_PurchaseOrder_Reject(WorkflowUserTask = $WorkflowUserTask, PurchaseOrder = $currentObject), ButtonStyle: Default)
+      }
+    }
+    dynamictext txtStatus (Content: '{1}', ContentParams: ({1} = "Status"), Class: 'pill pill-info spacing-outer-bottom-medium')
+    layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
+      row {
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hOrder (Content: 'Order', RenderMode: H2)
+          combobox cmbPurchaseOrderVendor (Label: 'Vendor', Attribute: PurchaseOrder_Vendor, DataSource: database Partners."Partner" sort by "Name" asc, CaptionAttribute: "Name", Editable: Never)
+          combobox cmbPurchaseOrderBuyer (Label: 'Buyer', Attribute: PurchaseOrder_Buyer, DataSource: database Administration."Account" sort by "FullName" asc, CaptionAttribute: "FullName", Editable: Never)
+          textbox txtAmountTotal (Label: 'Amount total', Attribute: "AmountTotal", DecimalPrecision: 2, GroupDigits: true, Editable: Never)
+        }
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hDates (Content: 'Dates', RenderMode: H2)
+          datepicker dpOrderDeadline (Label: 'Order deadline', Attribute: "OrderDeadline", Editable: Never)
+          datepicker dpExpectedArrival (Label: 'Expected arrival', Attribute: "ExpectedArrival", Editable: Never)
+        }
+      }
+    }
+    dynamictext hProducts (Content: 'Products', RenderMode: H2)
+    datagrid gridProducts (DataSource: database Purchasing."PurchaseOrderLine" where [Purchasing.PurchaseOrderLine_PurchaseOrder = '[%CurrentObject%]'], Class: 'density-compact spacing-outer-bottom-large') {
+      column (Attribute: PurchaseOrderLine_Product/Name, Caption: 'Product')
+      column (Attribute: "Description", Caption: 'Description')
+      column (Attribute: "Quantity", Caption: 'Quantity', Alignment: right, DynamicCellClass: 'num-right')
+      column (Attribute: PurchaseOrderLine_UoM/Name, Caption: 'Unit')
+      column (Attribute: "UnitPrice", Caption: 'Unit price', Alignment: right, DynamicCellClass: 'num-right')
+      column (Attribute: "Subtotal", Caption: 'Subtotal', Alignment: right, DynamicCellClass: 'num-right')
+    }
+    textarea taApprovalComment (Label: 'Reason (required to reject)', Attribute: "ApprovalComment")
+  }
+      }
+    }
+  }
+};
+
+grant view on page Purchasing.PurchaseApproval_Task to Purchasing.Manager;
+grant execute on microflow Purchasing.ACT_PurchaseApprovalTask_Approve to Purchasing.Manager;
+grant execute on microflow Purchasing.ACT_PurchaseOrder_Reject to Purchasing.Manager;

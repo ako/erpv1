@@ -1,0 +1,71 @@
+mdl 1;
+-- 708-purchasing-mf-purchase-order-approve.mdl — build-plan row 59 (F005-UC003/UC004). Owns Purchasing.SUB_PurchaseOrder_Approve,
+-- SUB_PurchaseOrder_Reject, SUB_PurchaseOrder_NeedsApproval and SUB_CurrentUser_IsPurchaseManager.
+
+/**
+ * Confirm into a purchase order (Odoo button_approve): status PurchaseOrder, confirmation date now, totals, the receipt
+ * (Inventory bridge, F007) and the billing status.
+ *
+ * @param $PurchaseOrder the RFQ (or order waiting for approval)
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_Approve ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'Approval/Microflows'
+begin
+  change $PurchaseOrder (Status = Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder, ConfirmationDate = [%CurrentDateTime%]);
+  commit $PurchaseOrder with events refresh;
+  $Totals = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $PurchaseOrder);
+  call microflow Inventory.SUB_PurchaseOrder_CreateReceipt(PurchaseOrder = $PurchaseOrder);
+  $Billing = call microflow Purchasing.SUB_PurchaseOrder_UpdateBillingStatus(PurchaseOrder = $PurchaseOrder);
+end;
+
+/**
+ * Approval rejected (F005-UC004): back to RFQ; the manager's reason stays in ApprovalComment for the purchaser.
+ *
+ * @param $PurchaseOrder the order that was waiting for approval
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_Reject ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'Approval/Microflows'
+begin
+  change $PurchaseOrder (Status = Purchasing.ENUM_PurchaseOrderStatus.RFQ);
+  commit $PurchaseOrder with events refresh;
+end;
+
+/**
+ * Whether the signed-in user holds the PurchaseManager user role (managers confirm without approval, Odoo _approval_allowed).
+ *
+ * @returns true for a purchase manager
+ */
+create or modify microflow Purchasing.SUB_CurrentUser_IsPurchaseManager ()
+returns Boolean as $IsManager
+folder 'Approval/Microflows'
+begin
+  if $currentUser = empty then
+    return false;
+  end if;
+  retrieve $Roles from $currentUser/System.UserRoles;
+  $Manager = find $Roles where $currentObject/Name = 'PurchaseManager';
+  return $Manager != empty;
+end;
+
+/**
+ * Whether confirming this order needs manager approval (Odoo _approval_allowed): company approval on, total at or above the
+ * company threshold, and the user is not a purchase manager.
+ *
+ * @param $PurchaseOrder the RFQ being confirmed
+ * @returns true when the order must go to approval
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_NeedsApproval ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Boolean as $Needs
+folder 'Approval/Microflows'
+begin
+  retrieve $Company from Core.Company first;
+  if $Company = empty or not($Company/POApprovalEnabled) then
+    return false;
+  end if;
+  declare $Threshold Decimal = if $Company/POApprovalThreshold = empty then 0 else $Company/POApprovalThreshold;
+  if $PurchaseOrder/AmountTotal < $Threshold then
+    return false;
+  end if;
+  $IsManager = call microflow Purchasing.SUB_CurrentUser_IsPurchaseManager();
+  return not($IsManager);
+end;

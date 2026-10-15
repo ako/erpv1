@@ -16,3 +16,17 @@ folder 'Fulfilment/Microflows'
 begin
   log info node 'Inventory.Stub' 'No deliveries to cancel yet (Inventory phase 8 pending) for ' + $SalesOrder/Number;
 end;
+
+/** STUB until phase 8: create the receipt for a confirmed purchase order. */
+create or modify microflow Inventory.SUB_PurchaseOrder_CreateReceipt ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'Fulfilment/Microflows'
+begin
+  log info node 'Inventory.Stub' 'Receipt not created yet (Inventory phase 8 pending) for ' + $PurchaseOrder/Number;
+end;
+
+/** STUB until phase 8: cancel the open receipts of a purchase order. */
+create or modify microflow Inventory.SUB_PurchaseOrder_CancelReceipts ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'Fulfilment/Microflows'
+begin
+  log info node 'Inventory.Stub' 'No receipts to cancel yet (Inventory phase 8 pending) for ' + $PurchaseOrder/Number;
+end;

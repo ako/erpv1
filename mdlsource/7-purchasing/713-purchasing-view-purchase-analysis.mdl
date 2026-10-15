@@ -1,0 +1,70 @@
+mdl 1;
+-- 713-purchasing-view-purchase-analysis.mdl — build-plan row 62, F005-UC006 "Analyse purchases" (Odoo purchase.report).
+-- Two read-only view entities over confirmed purchase order lines, the KPI data-source microflow and their grants
+-- (Purchasing.Manager only; brief access table: PurchaseAnalysis_Report -> Manager view). Same OQL shape as Sales 608
+-- (no concat(): '+'; enum compared by value name — FINDINGS 2026-10-15).
+
+/**
+ * Purchase analysis: confirmed purchase order lines grouped by month (of confirmation), vendor and product: ordered,
+ * received and billed quantities and the untaxed amount. (Odoo purchase.report; F005-UC006)
+ */
+create or modify view entity Purchasing."PurchaseAnalysis" (
+  "OrderYear": Integer,
+  "OrderMonthNo": Integer,
+  "Period": String(200),
+  "VendorName": String(200),
+  "ProductName": String(200),
+  "Ordered": Decimal,
+  "Received": Decimal,
+  "Billed": Decimal,
+  "Untaxed": Decimal
+) as (
+  from Purchasing.PurchaseOrderLine as l
+  join l/Purchasing.PurchaseOrderLine_PurchaseOrder/Purchasing.PurchaseOrder as o
+  join o/Purchasing.PurchaseOrder_Vendor/Partners.Partner as v
+  join l/Purchasing.PurchaseOrderLine_Product/Products.Product as p
+  where o.Status = 'PurchaseOrder'
+  group by datepart(year, o.ConfirmationDate), datepart(month, o.ConfirmationDate), cast(datepart(year, o.ConfirmationDate) as string) + (case when datepart(month, o.ConfirmationDate) < 10 then '-0' else '-' end) + cast(datepart(month, o.ConfirmationDate) as string), v.Name, p.Name
+  select
+    datepart(year, o.ConfirmationDate) as OrderYear,
+    datepart(month, o.ConfirmationDate) as OrderMonthNo,
+    cast(datepart(year, o.ConfirmationDate) as string) + (case when datepart(month, o.ConfirmationDate) < 10 then '-0' else '-' end) + cast(datepart(month, o.ConfirmationDate) as string) as Period,
+    v.Name as VendorName,
+    p.Name as ProductName,
+    sum(l.Quantity) as Ordered,
+    sum(coalesce(l.QuantityReceived, 0)) as Received,
+    sum(coalesce(l.QuantityBilled, 0)) as Billed,
+    sum(l.Subtotal) as Untaxed
+);
+
+/**
+ * Purchase KPIs: a single row over all confirmed purchase orders — purchased amount (sum of confirmed line subtotals, the
+ * same source as Purchasing.PurchaseAnalysis: PROJECT.md "Displayed fact: confirmed purchases"), order count and average
+ * order. The wireframe's "received on time" needs receipt dates, which come with Inventory. (F005-UC006)
+ */
+create or modify view entity Purchasing."PurchaseKpi" (
+  "Purchased": Decimal,
+  "Orders": Integer,
+  "AverageOrder": Decimal
+) as (
+  from Purchasing.PurchaseOrderLine as l
+  join l/Purchasing.PurchaseOrderLine_PurchaseOrder/Purchasing.PurchaseOrder as o
+  where o.Status = 'PurchaseOrder'
+  select
+    coalesce(sum(l.Subtotal), 0) as Purchased,
+    count(distinct o.ID) as Orders,
+    case when count(distinct o.ID) = 0 then cast(0 as decimal) else coalesce(sum(l.Subtotal), 0) : count(distinct o.ID) end as AverageOrder
+);
+
+/** Data source of PurchaseAnalysis_Report KPI tiles: the single Purchasing.PurchaseKpi row. */
+create or modify microflow Purchasing.DS_PurchaseKpi_Get ()
+returns Purchasing.PurchaseKpi as $PurchaseKpi
+folder 'Reporting/Microflows'
+begin
+  retrieve $PurchaseKpi from Purchasing.PurchaseKpi first;
+  return $PurchaseKpi;
+end;
+
+grant read * on entity Purchasing.PurchaseAnalysis to Purchasing.Manager;
+grant read * on entity Purchasing.PurchaseKpi to Purchasing.Manager;
+grant execute on microflow Purchasing.DS_PurchaseKpi_Get to Purchasing.Manager;

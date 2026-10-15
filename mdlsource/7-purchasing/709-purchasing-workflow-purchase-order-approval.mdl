@@ -1,0 +1,25 @@
+mdl 1;
+-- 709-purchasing-workflow-purchase-order-approval.mdl — build-plan row 59 (F005-UC004, BRD workflow WF_PurchaseOrderApproval).
+-- Its task page, PurchaseApproval_Task (710), is built first: the page takes $WorkflowUserTask + $WorkflowContext.
+
+/**
+ * Manager approval of a purchase order above the company threshold (Odoo state 'to approve' + button_approve).
+ * One user task for purchase managers; the outcome branches do the domain work, the task page's buttons only decide.
+ */
+create or modify workflow Purchasing.WF_PurchaseOrderApproval
+  folder 'Approval/Workflows'
+  parameter $WorkflowContext: Purchasing.PurchaseOrder
+  display 'Purchase order approval'
+  description 'A purchase manager approves or rejects a purchase order above the approval threshold.'
+begin
+  user task ApproveOrder 'Approve purchase order'
+    page Purchasing.PurchaseApproval_Task
+    targeting users xpath [System.UserRoles/System.UserRole/Name = 'PurchaseManager']
+    outcomes
+      'Approve' {
+        call microflow Purchasing.SUB_PurchaseOrder_Approve(PurchaseOrder = $WorkflowContext) caption 'Confirm the order';
+      }
+      'Reject' {
+        call microflow Purchasing.SUB_PurchaseOrder_Reject(PurchaseOrder = $WorkflowContext) caption 'Back to RFQ';
+      };
+end workflow;

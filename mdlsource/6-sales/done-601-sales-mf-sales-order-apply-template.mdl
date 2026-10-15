@@ -11,6 +11,9 @@ mdl 1;
 create or modify microflow Sales.SUB_SalesOrder_ApplyTemplate ($SalesOrder: Sales.SalesOrder)
 folder 'Templates/Microflows'
 begin
+  if $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.Quotation and $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.QuotationSent then
+    return;
+  end if;
   retrieve $Template from $SalesOrder/Sales.SalesOrder_QuotationTemplate;
   if $Template = empty then
     return;

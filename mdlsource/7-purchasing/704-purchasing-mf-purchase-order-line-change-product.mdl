@@ -1,0 +1,83 @@
+mdl 1;
+-- 704-purchasing-mf-purchase-order-line-change-product.mdl — build-plan row 57 (F005-UC001). Owns
+-- Purchasing.ACT_PurchaseOrderLine_ChangeProduct, ACT_PurchaseOrderLine_Recompute, SUB_PurchaseOrderLine_RecomputeOrder and the line Remove
+-- (SUB/ACT_PurchaseOrderLine_Delete).
+
+/**
+ * The totals of the order a line belongs to, and its billing status once confirmed.
+ *
+ * @param $PurchaseOrderLine the changed line
+ * @returns true
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrderLine_RecomputeOrder ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  retrieve $Order from $PurchaseOrderLine/Purchasing.PurchaseOrderLine_PurchaseOrder;
+  $Recomputed = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $Order);
+  if $Order/Status = Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder then
+    $Billing = call microflow Purchasing.SUB_PurchaseOrder_UpdateBillingStatus(PurchaseOrder = $Order);
+  end if;
+  return true;
+end;
+
+/**
+ * On change of a line's product: product and vendor-price defaults, then the order totals.
+ *
+ * @param $PurchaseOrderLine the line
+ * @returns true
+ */
+create or modify microflow Purchasing.ACT_PurchaseOrderLine_ChangeProduct ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $PurchaseOrderLine);
+  $Recomputed = call microflow Purchasing.SUB_PurchaseOrderLine_RecomputeOrder(PurchaseOrderLine = $PurchaseOrderLine);
+  return true;
+end;
+
+/** On change of a line's quantity, price, discount or taxes: the order totals. */
+create or modify microflow Purchasing.ACT_PurchaseOrderLine_Recompute ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
+folder 'RFQs/Microflows'
+begin
+  $Recomputed = call microflow Purchasing.SUB_PurchaseOrderLine_RecomputeOrder(PurchaseOrderLine = $PurchaseOrderLine);
+end;
+
+/**
+ * Delete a line and recompute its order (totals, and billing status once confirmed).
+ *
+ * @param $PurchaseOrderLine the line to remove
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrderLine_Delete ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
+folder 'RFQs/Microflows'
+begin
+  retrieve $Order from $PurchaseOrderLine/Purchasing.PurchaseOrderLine_PurchaseOrder;
+  delete $PurchaseOrderLine;
+  $Recomputed = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $Order);
+  if $Order/Status = Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder then
+    $Billing = call microflow Purchasing.SUB_PurchaseOrder_UpdateBillingStatus(PurchaseOrder = $Order);
+  end if;
+end;
+
+/**
+ * Remove on a purchase order line: refused on a locked order and for a line already received or billed.
+ *
+ * @param $PurchaseOrderLine the line
+ * @returns true when removed
+ */
+create or modify microflow Purchasing.ACT_PurchaseOrderLine_Delete ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  if $PurchaseOrderLine/Purchasing.PurchaseOrderLine_PurchaseOrder/Purchasing.PurchaseOrder/Locked then
+    show message 'This order is locked: unlock it before changing lines.' type Warning;
+    return false;
+  end if;
+  if ($PurchaseOrderLine/QuantityReceived != empty and $PurchaseOrderLine/QuantityReceived > 0)
+    or ($PurchaseOrderLine/QuantityBilled != empty and $PurchaseOrderLine/QuantityBilled > 0) then
+    show message 'This line was already received or billed and cannot be removed.' type Warning;
+    return false;
+  end if;
+  call microflow Purchasing.SUB_PurchaseOrderLine_Delete(PurchaseOrderLine = $PurchaseOrderLine);
+  return true;
+end;

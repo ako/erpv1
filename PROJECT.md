@@ -75,6 +75,8 @@ Opt-in artifact erd: user asked for the target-domain ERD at Stage 2 close (chat
 | 5 (build) | SEC014 external roles: none (no portal, guest or external users) — .claude/lint-config.yaml | CONFIRMED | User 2026-10-15: "all as proposed" |
 | 5 (build) | Demo data: the docs/demo-script.md fixtures are seeded by idempotent startup microflows (per module, business-key guarded, behind constant Core.SeedDemoData); journey leftovers are cleaned before a demo | CONFIRMED | User 2026-10-15: "all as proposed" |
 | 5 (build) | Startup chain: each module's ASU_<M>_SeedData calls the module below it first; the after-startup setting points at the highest module built (layering-safe, no upward call) | ASSUMED | Agent 2026-10-14 — replaces the plan's single Core seed, which would have referenced Products/Inventory upward |
+| 5 (build) | Displayed fact: confirmed revenue — source Sales.SalesAnalysis / Sales.SalesKpi, both the sum of SalesOrderLine.Subtotal over confirmed orders; SalesOrder.AmountUntaxed is never summed for reporting | CONFIRMED | coherence 2026-10-15 C1-10 (user: "continue with coherence pass") |
+| 5 (build) | Displayed fact: confirmed purchases — source Purchasing.PurchaseAnalysis / Purchasing.PurchaseKpi, both the sum of PurchaseOrderLine.Subtotal over confirmed orders; PurchaseOrder.AmountUntaxed is never summed for reporting | CONFIRMED | same pattern as confirmed revenue, 2026-10-15 |
 
 Skeleton proven 2026-10-14: exec pass, journey pass/fail-control, look done (docs/skeleton-proof.md, 6 of 6 rows)
 

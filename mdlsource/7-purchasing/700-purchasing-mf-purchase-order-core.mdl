@@ -1,0 +1,94 @@
+mdl 1;
+-- 700-purchasing-mf-purchase-order-core.mdl — F005 shared logic used by every purchasing action: totals, vendor defaults,
+-- product defaults on a line, status changes. Owns SUB_PurchaseOrder_RecomputeTotals, SUB_PurchaseOrder_ApplyVendor,
+-- SUB_PurchaseOrderLine_ApplyProduct, SUB_PurchaseOrder_SetStatus.
+
+/**
+ * Per line subtotal / tax / total (discount, price-included taxes, rounded per line), then the order totals.
+ * Section and note lines carry no amounts. Commits lines and order (the form shows them at once).
+ *
+ * @param $PurchaseOrder the order
+ * @returns true
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  retrieve $Lines from $PurchaseOrder/Purchasing.PurchaseOrderLine_PurchaseOrder;
+  declare $Untaxed Decimal = 0;
+  declare $Tax Decimal = 0;
+  @annotation 'One loop over the lines (tens at most): taxes are an in-memory association retrieve, one commit after the loop.'
+  loop $Line in $Lines begin
+    if $Line/LineType = Core.ENUM_LineType.Section or $Line/LineType = Core.ENUM_LineType.Note then
+      change $Line (Subtotal = 0, TaxAmount = 0, Total = 0);
+    else
+      retrieve $Taxes from $Line/Purchasing.PurchaseOrderLine_Taxes;
+      $Amounts = call microflow Core.SUB_Tax_ComputeLine(UnitPrice = $Line/UnitPrice, Quantity = $Line/Quantity, DiscountPercent = $Line/DiscountPercent, Taxes = $Taxes);
+      change $Line (Subtotal = $Amounts/Subtotal, TaxAmount = $Amounts/TaxAmount, Total = $Amounts/Total);
+      set $Untaxed = $Untaxed + $Amounts/Subtotal;
+      set $Tax = $Tax + $Amounts/TaxAmount;
+    end if;
+  end loop;
+  commit $Lines with events refresh;
+  change $PurchaseOrder (AmountUntaxed = $Untaxed, AmountTax = $Tax, AmountTotal = $Untaxed + $Tax);
+  commit $PurchaseOrder with events refresh;
+  return true;
+end;
+
+/**
+ * Vendor defaults on an order (Odoo onchange partner_id): the vendor payment term of its commercial partner.
+ *
+ * @param $PurchaseOrder the order whose vendor was chosen
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_ApplyVendor ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'RFQs/Microflows'
+begin
+  retrieve $Vendor from $PurchaseOrder/Purchasing.PurchaseOrder_Vendor;
+  if $Vendor = empty then
+    return;
+  end if;
+  $Commercial = call microflow Partners.SUB_Partner_GetCommercialPartner(Partner = $Vendor);
+  change $PurchaseOrder (Purchasing.PurchaseOrder_PaymentTerm = $Commercial/Partners.Partner_VendorPaymentTerm);
+end;
+
+/**
+ * Product defaults on a line (Odoo purchase.order.line onchange product_id): description, purchase unit, vendor taxes,
+ * the vendor price for the quantity (else the product cost) and the expected arrival from the vendor lead time.
+ *
+ * @param $PurchaseOrderLine the line whose product was chosen
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
+folder 'RFQs/Microflows'
+begin
+  retrieve $Product from $PurchaseOrderLine/Purchasing.PurchaseOrderLine_Product;
+  if $Product = empty then
+    return;
+  end if;
+  retrieve $Order from $PurchaseOrderLine/Purchasing.PurchaseOrderLine_PurchaseOrder;
+  retrieve $Vendor from $Order/Purchasing.PurchaseOrder_Vendor;
+  retrieve $Taxes from $Product/Products.Product_VendorTaxes;
+  declare $Qty Decimal = if $PurchaseOrderLine/Quantity = empty or $PurchaseOrderLine/Quantity <= 0 then 1 else $PurchaseOrderLine/Quantity;
+  $Best = call microflow Purchasing.SUB_VendorPrice_GetBest(Vendor = $Vendor, Product = $Product, Quantity = $Qty);
+  declare $Price Decimal = if $Best != empty then $Best/Price else (if $Product/Cost = empty then 0 else $Product/Cost);
+  declare $LeadDays Integer = if $Best != empty and $Best/LeadTimeDays != empty then $Best/LeadTimeDays else 0;
+  declare $Description String = if $Product/PurchaseDescription = empty or trim($Product/PurchaseDescription) = '' then $Product/Name
+    else $Product/Name + ' — ' + $Product/PurchaseDescription;
+  retrieve $PurchaseUnit from $Product/Products.Product_PurchaseUoM;
+  retrieve $SalesUnit from $Product/Products.Product_UoM;
+  change $PurchaseOrderLine (Description = $Description, Quantity = $Qty, UnitPrice = $Price, LineType = Core.ENUM_LineType.Product,
+    ExpectedArrival = addDays([%CurrentDateTime%], $LeadDays),
+    Purchasing.PurchaseOrderLine_UoM = if $PurchaseUnit != empty then $PurchaseUnit else $SalesUnit, Purchasing.PurchaseOrderLine_Taxes = $Taxes);
+end;
+
+/**
+ * Set an order's status and commit it.
+ *
+ * @param $PurchaseOrder the order
+ * @param $Status the new status
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_SetStatus ($PurchaseOrder: Purchasing.PurchaseOrder, $Status: Enumeration(Purchasing.ENUM_PurchaseOrderStatus))
+folder 'RFQs/Microflows'
+begin
+  change $PurchaseOrder (Status = $Status);
+  commit $PurchaseOrder with events refresh;
+end;

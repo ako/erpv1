@@ -1,0 +1,317 @@
+mdl 1;
+-- One-off: coherence 2026-10-15 C1-03/C1-04 — template guard (ApplyTemplate), invoice status on line change (RecomputeOrder),
+-- Cancel refused when locked. create or modify refuses the reshapes (MDL-V1-REBUILD): drop and replay 601, 603, 604.
+drop microflow Sales.SUB_SalesOrder_ApplyTemplate;
+drop microflow Sales.SUB_SalesOrderLine_RecomputeOrder;
+drop microflow Sales.ACT_SalesOrder_Cancel;
+-- ── replay: mdlsource/6-sales/done-601-sales-mf-sales-order-apply-template.mdl
+-- 601-sales-mf-sales-order-apply-template.mdl — build-plan row 43 (F004). Owns Sales.SUB_SalesOrder_ApplyTemplate and the
+-- template combobox's on-change Sales.ACT_SalesOrder_ApplyTemplate.
+
+/**
+ * Replace the order lines by the template's lines and set the expiration to today + the template validity
+ * (Odoo sale_management _onchange_sale_order_template_id). Prices come from the pricelist via the product defaults.
+ *
+ * @param $SalesOrder the quotation
+ */
+create or modify microflow Sales.SUB_SalesOrder_ApplyTemplate ($SalesOrder: Sales.SalesOrder)
+folder 'Templates/Microflows'
+begin
+  if $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.Quotation and $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.QuotationSent then
+    return;
+  end if;
+  retrieve $Template from $SalesOrder/Sales.SalesOrder_QuotationTemplate;
+  if $Template = empty then
+    return;
+  end if;
+  retrieve $OldLines from $SalesOrder/Sales.SalesOrderLine_SalesOrder;
+  delete $OldLines;
+  retrieve $TemplateLines from $Template/Sales.QuotationTemplateLine_Template;
+  $NewLines = create list of Sales.SalesOrderLine;
+  loop $TemplateLine in $TemplateLines begin
+    $Line = create Sales.SalesOrderLine (Sequence = $TemplateLine/Sequence, LineType = $TemplateLine/LineType, Description = $TemplateLine/Description,
+      Quantity = $TemplateLine/Quantity, Sales.SalesOrderLine_SalesOrder = $SalesOrder,
+      Sales.SalesOrderLine_Product = $TemplateLine/Sales.QuotationTemplateLine_Product, Sales.SalesOrderLine_UoM = $TemplateLine/Sales.QuotationTemplateLine_UoM);
+    if $TemplateLine/Sales.QuotationTemplateLine_Product != empty then
+      call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+      change $Line (Quantity = $TemplateLine/Quantity, Description = if $TemplateLine/Description = empty then $Line/Description else $TemplateLine/Description);
+    end if;
+    add $Line to $NewLines;
+  end loop;
+  commit $NewLines without events;
+  change $SalesOrder (ExpirationDate = addDays([%BeginOfCurrentDay%], if $Template/ValidityDays = empty then 0 else $Template/ValidityDays),
+    TermsAndConditions = if $Template/TermsAndConditions = empty then $SalesOrder/TermsAndConditions else $Template/TermsAndConditions);
+  $Done = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $SalesOrder);
+end;
+
+/**
+ * On change of the quotation template on the order form.
+ *
+ * @param $SalesOrder the quotation
+ * @returns true
+ */
+create or modify microflow Sales.ACT_SalesOrder_ApplyTemplate ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Templates/Microflows'
+begin
+  call microflow Sales.SUB_SalesOrder_ApplyTemplate(SalesOrder = $SalesOrder);
+  return true;
+end;
+-- ── replay: mdlsource/6-sales/done-603-sales-mf-sales-order-new.mdl
+-- 603-sales-mf-sales-order-new.mdl — build-plan row 44 (F004-UC001). Owns Sales.SUB_SalesOrder_Create, SUB_SalesOrderLine_RecomputeOrder and the
+-- order form's on-change actions ACT_SalesOrder_ChangeCustomer, ACT_SalesOrderLine_ChangeProduct, ACT_SalesOrderLine_Recompute. ACT_SalesOrder_New is in 615 (it opens the form that calls these).
+
+/**
+ * A new quotation with company defaults (Odoo sale.order default_get + create): number from the 'sale.order'
+ * sequence, the current user as salesperson, order date now, expiration = today + company quotation validity,
+ * company currency. Committed, so lines can be added at once.
+ *
+ * @returns the quotation
+ */
+create or modify microflow Sales.SUB_SalesOrder_Create ()
+returns Sales.SalesOrder as $SalesOrder
+folder 'Quotations/Microflows'
+begin
+  retrieve $Company from Core.Company first;
+  declare $LoginName String = if $currentUser = empty then '' else $currentUser/Name;
+  retrieve $Me from Administration.Account where [Name = $LoginName] first;
+  $Number = call microflow Core.SUB_Sequence_NextNumber(Code = 'sale.order');
+  $SalesOrder = create Sales.SalesOrder (Number = $Number, Status = Sales.ENUM_SalesOrderStatus.Quotation, Locked = false,
+    OrderDate = [%CurrentDateTime%],
+    ExpirationDate = addDays([%BeginOfCurrentDay%], if $Company/QuotationValidityDays = empty then 30 else $Company/QuotationValidityDays),
+    InvoiceStatus = Core.ENUM_InvoiceStatus.NothingToInvoice, DeliveryStatus = Sales.ENUM_DeliveryStatus.NotDelivered,
+    AmountUntaxed = 0, AmountTax = 0, AmountTotal = 0, TermsAndConditions = $Company/InvoiceTerms,
+    Sales.SalesOrder_Salesperson = $Me, Sales.SalesOrder_Currency = $Company/Core.Company_Currency);
+  commit $SalesOrder with events;
+  return $SalesOrder;
+end;
+
+/**
+ * The totals of the order a line belongs to, and its invoice status once confirmed (coherence C1-04).
+ *
+ * @param $SalesOrderLine the changed line
+ * @returns true
+ */
+create or modify microflow Sales.SUB_SalesOrderLine_RecomputeOrder ($SalesOrderLine: Sales.SalesOrderLine)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  retrieve $Order from $SalesOrderLine/Sales.SalesOrderLine_SalesOrder;
+  $Recomputed = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $Order);
+  if $Order/Status = Sales.ENUM_SalesOrderStatus.SalesOrder then
+    $Invoicing = call microflow Sales.SUB_SalesOrder_UpdateInvoiceStatus(SalesOrder = $Order);
+  end if;
+  return true;
+end;
+
+/** On change of the customer: addresses, pricelist and payment term from the customer. */
+create or modify microflow Sales.ACT_SalesOrder_ChangeCustomer ($SalesOrder: Sales.SalesOrder)
+folder 'Quotations/Microflows'
+begin
+  call microflow Sales.SUB_SalesOrder_ApplyCustomer(SalesOrder = $SalesOrder);
+end;
+
+/**
+ * On change of a line's product: product defaults, then the order totals.
+ *
+ * @param $SalesOrderLine the line
+ * @returns true
+ */
+create or modify microflow Sales.ACT_SalesOrderLine_ChangeProduct ($SalesOrderLine: Sales.SalesOrderLine)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $SalesOrderLine);
+  $Recomputed = call microflow Sales.SUB_SalesOrderLine_RecomputeOrder(SalesOrderLine = $SalesOrderLine);
+  return true;
+end;
+
+/** On change of a line's quantity, price, discount or taxes: the order totals. */
+create or modify microflow Sales.ACT_SalesOrderLine_Recompute ($SalesOrderLine: Sales.SalesOrderLine)
+folder 'Quotations/Microflows'
+begin
+  $Recomputed = call microflow Sales.SUB_SalesOrderLine_RecomputeOrder(SalesOrderLine = $SalesOrderLine);
+end;
+-- ── replay: mdlsource/6-sales/done-604-sales-mf-sales-order-set-to-quotation.mdl
+-- 604-sales-mf-sales-order-set-to-quotation.mdl — build-plan rows 44-48 (F004-UC002..UC005): the order's state actions.
+-- Owns ACT_SalesOrder_MarkSent, ACT_SalesOrder_Confirm (+ SUB_SalesOrder_Confirm), ACT_SalesOrder_Cancel (+ SUB_SalesOrder_Cancel),
+-- ACT_SalesOrder_SetToQuotation, ACT_SalesOrder_ToggleLock (+ SUB_SalesOrder_SetLocked), ACT_SalesOrder_Save,
+-- SUB_SalesOrder_LinesReadyToConfirm, SUB_SalesOrder_HasInvoicedLines.
+
+/** Save button on the order form: totals, then back to the list. */
+create or modify microflow Sales.ACT_SalesOrder_Save ($SalesOrder: Sales.SalesOrder)
+folder 'Quotations/Microflows'
+begin
+  $Done = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $SalesOrder);
+  close page;
+end;
+
+/**
+ * Send (mark as sent): Quotation -> Quotation sent (F004-UC002). Email sending is out of scope (Stage 0).
+ *
+ * @param $SalesOrder the quotation
+ * @returns true when the status changed
+ */
+create or modify microflow Sales.ACT_SalesOrder_MarkSent ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  if $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.Quotation then
+    show message 'Only a quotation can be marked as sent.' type Warning;
+    return false;
+  end if;
+  call microflow Sales.SUB_SalesOrder_SetStatus(SalesOrder = $SalesOrder, Status = Sales.ENUM_SalesOrderStatus.QuotationSent);
+  return true;
+end;
+
+/**
+ * Confirm into a sales order: order date now, totals, delivery for the goods lines (Inventory bridge), invoice status.
+ *
+ * @param $SalesOrder the quotation
+ */
+create or modify microflow Sales.SUB_SalesOrder_Confirm ($SalesOrder: Sales.SalesOrder)
+folder 'Quotations/Microflows'
+begin
+  change $SalesOrder (Status = Sales.ENUM_SalesOrderStatus.SalesOrder, OrderDate = [%CurrentDateTime%]);
+  commit $SalesOrder with events refresh;
+  $Totals = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $SalesOrder);
+  call microflow Inventory.SUB_SalesOrder_CreateDelivery(SalesOrder = $SalesOrder);
+  $Invoicing = call microflow Sales.SUB_SalesOrder_UpdateInvoiceStatus(SalesOrder = $SalesOrder);
+end;
+
+/**
+ * At least one product line, and every line that is not a section or note carries a product (Odoo _confirmation_error_message).
+ *
+ * @param $SalesOrder the quotation
+ * @returns true when the lines allow confirming
+ */
+create or modify microflow Sales.SUB_SalesOrder_LinesReadyToConfirm ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Ready
+folder 'Quotations/Microflows'
+begin
+  retrieve $ProductLines from Sales.SalesOrderLine where [Sales.SalesOrderLine_SalesOrder = $SalesOrder][Sales.SalesOrderLine_Product/Products.Product];
+  retrieve $Unfinished from Sales.SalesOrderLine where [Sales.SalesOrderLine_SalesOrder = $SalesOrder][not(Sales.SalesOrderLine_Product/Products.Product)]
+    [LineType != 'Section'][LineType != 'Note'];
+  return length($ProductLines) > 0 and length($Unfinished) = 0;
+end;
+
+/**
+ * Confirm button (F004-UC003): only a quotation (sent or not) with at least one product line, and every non-section
+ * line carrying a product (Odoo _confirmation_error_message).
+ *
+ * @param $SalesOrder the quotation
+ * @returns true when confirmed
+ */
+create or modify microflow Sales.ACT_SalesOrder_Confirm ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  if $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.Quotation and $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.QuotationSent then
+    show message 'Only a quotation can be confirmed.' type Warning;
+    return false;
+  end if;
+  if $SalesOrder/Sales.SalesOrder_Customer = empty then
+    show message 'Choose a customer before confirming.' type Warning;
+    return false;
+  end if;
+  $LinesReady = call microflow Sales.SUB_SalesOrder_LinesReadyToConfirm(SalesOrder = $SalesOrder);
+  if not($LinesReady) then
+    show message 'Every line needs a product (sections and notes excepted), and the order needs at least one.' type Warning;
+    return false;
+  end if;
+  call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SalesOrder);
+  return true;
+end;
+
+/** Cancel an order and its open deliveries (Inventory bridge). */
+create or modify microflow Sales.SUB_SalesOrder_Cancel ($SalesOrder: Sales.SalesOrder)
+folder 'Quotations/Microflows'
+begin
+  call microflow Inventory.SUB_SalesOrder_CancelDeliveries(SalesOrder = $SalesOrder);
+  change $SalesOrder (Status = Sales.ENUM_SalesOrderStatus.Cancelled, InvoiceStatus = Core.ENUM_InvoiceStatus.NothingToInvoice);
+  commit $SalesOrder with events refresh;
+end;
+
+/**
+ * Whether any line of the order has been invoiced.
+ *
+ * @param $SalesOrder the order
+ * @returns true when a line has an invoiced quantity
+ */
+create or modify microflow Sales.SUB_SalesOrder_HasInvoicedLines ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $HasInvoiced
+folder 'Quotations/Microflows'
+begin
+  retrieve $Invoiced from Sales.SalesOrderLine where [Sales.SalesOrderLine_SalesOrder = $SalesOrder][QuantityInvoiced > 0] first;
+  return $Invoiced != empty;
+end;
+
+/**
+ * Cancel button (F004-UC004): refused once anything was invoiced (a posted invoice exists).
+ *
+ * @param $SalesOrder the order
+ * @returns true when cancelled
+ */
+create or modify microflow Sales.ACT_SalesOrder_Cancel ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  if $SalesOrder/Status = Sales.ENUM_SalesOrderStatus.Cancelled then
+    return false;
+  end if;
+  if $SalesOrder/Locked then
+    show message 'This order is locked: unlock it before cancelling.' type Warning;
+    return false;
+  end if;
+  $HasInvoiced = call microflow Sales.SUB_SalesOrder_HasInvoicedLines(SalesOrder = $SalesOrder);
+  if $HasInvoiced then
+    show message 'This order has posted invoices: cancel or credit them first.' type Warning;
+    return false;
+  end if;
+  call microflow Sales.SUB_SalesOrder_Cancel(SalesOrder = $SalesOrder);
+  return true;
+end;
+
+/**
+ * Set to quotation (F004-UC004): Cancelled -> Quotation.
+ *
+ * @param $SalesOrder the cancelled order
+ * @returns true when reset
+ */
+create or modify microflow Sales.ACT_SalesOrder_SetToQuotation ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  if $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.Cancelled then
+    show message 'Only a cancelled order can be set back to quotation.' type Warning;
+    return false;
+  end if;
+  call microflow Sales.SUB_SalesOrder_SetStatus(SalesOrder = $SalesOrder, Status = Sales.ENUM_SalesOrderStatus.Quotation);
+  return true;
+end;
+
+/** Lock or unlock an order. */
+create or modify microflow Sales.SUB_SalesOrder_SetLocked ($SalesOrder: Sales.SalesOrder, $Locked: Boolean)
+folder 'Quotations/Microflows'
+begin
+  change $SalesOrder (Locked = $Locked);
+  commit $SalesOrder with events refresh;
+end;
+
+/**
+ * Lock / unlock button (F004-UC005): only a confirmed order.
+ *
+ * @param $SalesOrder the order
+ * @returns true when toggled
+ */
+create or modify microflow Sales.ACT_SalesOrder_ToggleLock ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  if $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.SalesOrder then
+    show message 'Only a confirmed order can be locked.' type Warning;
+    return false;
+  end if;
+  call microflow Sales.SUB_SalesOrder_SetLocked(SalesOrder = $SalesOrder, Locked = not($SalesOrder/Locked));
+  return true;
+end;

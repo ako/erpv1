@@ -1,0 +1,59 @@
+mdl 1;
+-- 720-purchasing-mf-seed-data.mdl — PROJECT.md 5 (build) "Demo data" + startup chain. Owns Purchasing.SUB_VendorPrice_EnsureDemo,
+-- SUB_Purchasing_SeedDemo and ASU_Purchasing_SeedData = Sales' chain, then the Purchasing demo fixtures when Core.SeedDemoData
+-- (docs/demo-script.md: PO approval on at 5 000, Gemini vendor prices, P numbers continuing from P00018).
+-- Purchasing calling Sales' chain is a sibling call made only by startup ordering (no business logic crosses); Inventory's
+-- seed takes the head of the chain in phase 8.
+
+/** Ensure a vendor price line (business key: vendor + product + minimum quantity). */
+create or modify microflow Purchasing.SUB_VendorPrice_EnsureDemo ($VendorName: String, $ProductReference: String, $Price: Decimal, $LeadTimeDays: Integer)
+folder 'Setup/Microflows'
+begin
+  retrieve $Vendor from Partners.Partner where [Name = $VendorName][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+  retrieve $Product from Products.Product where [InternalReference = $ProductReference] first;
+  if $Vendor = empty or $Product = empty then
+    log warning node 'Purchasing.Seed' 'Vendor price not seeded: missing ' + $VendorName + ' or ' + $ProductReference;
+    return;
+  end if;
+  retrieve $Existing from Purchasing.VendorPrice where [Purchasing.VendorPrice_Vendor = $Vendor][Purchasing.VendorPrice_Product = $Product][MinQuantity = 0] first;
+  if $Existing != empty then
+    return;
+  end if;
+  $NewPrice = create Purchasing.VendorPrice (MinQuantity = 0, Price = $Price, LeadTimeDays = $LeadTimeDays, Sequence = 1,
+    Purchasing.VendorPrice_Vendor = $Vendor, Purchasing.VendorPrice_Product = $Product);
+  commit $NewPrice without events;
+end;
+
+/** Purchasing demo fixtures: approval on at 5 000, P numbers from P00018, Gemini Furniture's prices for chairs and desks. */
+create or modify microflow Purchasing.SUB_Purchasing_SeedDemo ()
+folder 'Setup/Microflows'
+begin
+  retrieve $Company from Core.Company first;
+  if $Company != empty and not($Company/POApprovalEnabled) then
+    change $Company (POApprovalEnabled = true, POApprovalThreshold = 5000);
+    commit $Company without events;
+  end if;
+  retrieve $Sequence from Core.Sequence where [Code = 'purchase.order'] first;
+  if $Sequence != empty and $Sequence/NextNumber < 18 then
+    change $Sequence (NextNumber = 18);
+    commit $Sequence without events;
+  end if;
+  call microflow Purchasing.SUB_VendorPrice_EnsureDemo(VendorName = 'Gemini Furniture', ProductReference = 'FURN_0269', Price = 65, LeadTimeDays = 5);
+  call microflow Purchasing.SUB_VendorPrice_EnsureDemo(VendorName = 'Gemini Furniture', ProductReference = 'FURN_7800', Price = 420, LeadTimeDays = 7);
+end;
+
+/**
+ * After-startup microflow (top of the chain): Sales' chain, then the Purchasing demo fixtures when Core.SeedDemoData.
+ *
+ * @returns true
+ */
+create or modify microflow Purchasing.ASU_Purchasing_SeedData ()
+returns Boolean as $Done
+folder 'Setup/Microflows'
+begin
+  $SalesDone = call microflow Sales.ASU_Sales_SeedData();
+  if @Core.SeedDemoData then
+    call microflow Purchasing.SUB_Purchasing_SeedDemo();
+  end if;
+  return true;
+end;
