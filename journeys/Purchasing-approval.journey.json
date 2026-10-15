@@ -1,0 +1,34 @@
+{
+  "id": "J-PURCH-02",
+  "title": "Purchase manager opens the waiting order from the approval inbox and approves it: it becomes a purchase order",
+  "requirement": ["F005-UC004"],
+  "persona": "purchase.manager",
+  "requires": ["po-to-approve"],
+  "consumes": ["po-to-approve"],
+  "seeds": [
+    { "name": "poNumber",
+      "sql": "SELECT o.Number AS n FROM Purchasing.PurchaseOrder AS o WHERE o.Status = 'ToApprove' ORDER BY o.Number DESC LIMIT 1" }
+  ],
+  "steps": [
+    {
+      "name": "Open Purchase > Approvals: the waiting order is listed",
+      "actions": [{ "do": "nav", "group": "Purchase", "item": "Approvals" }],
+      "ui": { "ready": ".mx-name-gridMain", "textPresent": ["{{poNumber}}"] }
+    },
+    {
+      "name": "Open the order's approval task",
+      "actions": [{ "do": "clickRow", "widget": "gridMain", "text": "{{poNumber}}" }],
+      "ui": { "ready": ".mx-name-btnApprove", "textPresent": ["{{poNumber}}", "Desk Combination"] }
+    },
+    {
+      "name": "Approve: back in the inbox, the order no longer waits",
+      "actions": [{ "do": "click", "widget": "btnApprove", "label": "Approve" }],
+      "ui": { "ready": ".mx-name-gridMain", "textAbsent": ["{{poNumber}}"] }
+    }
+  ],
+  "outcome": {
+    "label": "the approved order is a confirmed purchase order with a confirmation date",
+    "sql": "SELECT COUNT(o.ID) AS n FROM Purchasing.PurchaseOrder AS o WHERE o.Number = '{{poNumber}}' AND o.Status = 'PurchaseOrder' AND o.ConfirmationDate != NULL",
+    "atLeast": 1
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "id": "J-PURCH-01",
+  "title": "Purchaser asks Gemini Furniture for 12 desks; confirming above the 5 000 threshold sends the order to approval",
+  "requirement": ["F005-UC001", "F005-UC003"],
+  "persona": "purchaser",
+  "seeds": [],
+  "_seedNote": "uses the demo seed (Gemini Furniture, Desk Combination 420.00 vendor price, approval on at 5 000); creates its own RFQ",
+  "leaves": ["po-to-approve"],
+  "steps": [
+    {
+      "name": "Open Purchase > RFQs & orders",
+      "actions": [{ "do": "nav", "group": "Purchase", "item": "RFQs & orders" }],
+      "ui": { "ready": ".mx-name-gridMain", "textPresent": ["Requests for quotation & purchase orders"] }
+    },
+    {
+      "name": "New RFQ: numbered, status Request for quotation",
+      "actions": [{ "do": "click", "widget": "btnNew", "label": "New" }],
+      "ui": { "ready": ".mx-name-dvMain", "textPresent": ["Request for quotation"] },
+      "data": { "creates": "Purchasing.PurchaseOrder", "delta": 1, "scope": { "newRowsBy": "id" } }
+    },
+    {
+      "name": "Choose Gemini Furniture as vendor",
+      "actions": [{ "do": "combobox", "widget": "cmbPurchaseOrderVendor", "match": "Gemini Furniture" }],
+      "ui": { "ready": ".mx-name-dvMain", "textPresent": ["Purchase order"] }
+    },
+    {
+      "name": "Add a line: Desk Combination x 12 at Gemini's price",
+      "actions": [
+        { "do": "click", "widget": "btnAddLine", "label": "+ Add a line" },
+        { "do": "combobox", "widget": "lncmbPurchaseOrderLineProduct", "match": "Desk Combination" },
+        { "do": "fill", "widget": "lntxtQuantity", "value": "12" },
+        { "do": "click", "widget": "txtVendorReference", "label": "leave the quantity field" }
+      ],
+      "ui": { "ready": ".mx-name-dvMain", "textPresent": ["Desk Combination"] },
+      "_note": "read-only totals render as input values, which ui.textPresent does not read; the oql row proves them",
+      "data": {
+        "creates": "Purchasing.PurchaseOrderLine", "delta": 1, "scope": { "newRowsBy": "id" },
+        "assocMustBeSet": [
+          { "entity": "Purchasing.PurchaseOrderLine", "assoc": "Purchasing.PurchaseOrderLine_Product", "target": "Products.Product",
+            "mustPointAt": { "attr": "Name", "value": "Desk Combination" } }
+        ],
+        "oql": [
+          { "label": "the vendor price filled the line: 12 x 420.00 = 5 040.00 untaxed",
+            "sql": "SELECT COUNT(o.ID) AS n FROM Purchasing.PurchaseOrder AS o WHERE o/Purchasing.PurchaseOrder_Vendor/Partners.Partner/Name = 'Gemini Furniture' AND o.Status = 'RFQ' AND o.AmountUntaxed = 5040",
+            "atLeast": 1 }
+        ]
+      }
+    },
+    {
+      "name": "Confirm order: above the threshold, it goes to a purchase manager",
+      "actions": [
+        { "do": "click", "widget": "btnConfirmorder1", "label": "Confirm order" },
+        { "do": "dismissModal" }
+      ],
+      "ui": { "ready": ".mx-name-dvMain", "textPresent": ["To approve"] },
+      "data": {
+        "oql": [
+          { "label": "an approval task is open for purchase managers",
+            "sql": "SELECT COUNT(t.ID) AS n FROM System.WorkflowUserTask AS t WHERE t.State = 'Created' OR t.State = 'InProgress'",
+            "atLeast": 1 }
+        ]
+      }
+    },
+    {
+      "name": "Save: back on the list, the order reads To approve",
+      "actions": [{ "do": "click", "widget": "btnSave6", "label": "Save" }],
+      "ui": { "ready": ".mx-name-gridMain", "textPresent": ["To approve"] }
+    }
+  ],
+  "outcome": {
+    "label": "Gemini's 12-desk order waits for approval at 5 040.00 untaxed",
+    "sql": "SELECT COUNT(o.ID) AS n FROM Purchasing.PurchaseOrder AS o WHERE o/Purchasing.PurchaseOrder_Vendor/Partners.Partner/Name = 'Gemini Furniture' AND o.Status = 'ToApprove' AND o.AmountUntaxed = 5040",
+    "atLeast": 1
+  }
+}

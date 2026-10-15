@@ -6,6 +6,8 @@ create or modify navigation Responsive
   home page Core.Home_Web
   home page Sales.SalesOrder_Overview for SalesUser
   home page Sales.SalesOrder_Overview for SalesManager
+  home page Purchasing.PurchaseOrder_Overview for Purchaser
+  home page Purchasing.PurchaseApproval_Inbox for PurchaseManager
   home page Core.Company_Edit for Administrator
 {
   menu item 'Home' ( OnClick: show page Core.Home_Web, Icon: Atlas_Core.Atlas.home )
@@ -13,6 +15,11 @@ create or modify navigation Responsive
     menu item 'Quotations & orders' ( OnClick: show page Sales.SalesOrder_Overview, Icon: Atlas_Core.Atlas."shopping-cart" )
     menu item 'Quotation templates' ( OnClick: show page Sales.QuotationTemplate_Overview, Icon: Atlas_Core.Atlas."shopping-cart" )
     menu item 'Sales teams' ( OnClick: show page Sales.SalesTeam_Overview, Icon: Atlas_Core.Atlas."shopping-cart" )
+  }
+  menu 'Purchase' ( Icon: Atlas_Core.Atlas."shipment-box" ) {
+    menu item 'RFQs & orders' ( OnClick: show page Purchasing.PurchaseOrder_Overview, Icon: Atlas_Core.Atlas."shipment-box" )
+    menu item 'Approvals' ( OnClick: show page Purchasing.PurchaseApproval_Inbox, Icon: Atlas_Core.Atlas."shipment-box" )
+    menu item 'Vendor prices' ( OnClick: show page Purchasing.VendorPrice_Overview, Icon: Atlas_Core.Atlas."shipment-box" )
   }
   menu 'Contacts' ( Icon: Atlas_Core.Atlas.contacts ) {
     menu item 'Contacts' ( OnClick: show page Partners.Partner_Overview, Icon: Atlas_Core.Atlas.contacts )
@@ -23,6 +30,7 @@ create or modify navigation Responsive
   }
   menu 'Reporting' ( Icon: Atlas_Core.Atlas."analytics-bars" ) {
     menu item 'Sales analysis' ( OnClick: show page Sales.SalesAnalysis_Report, Icon: Atlas_Core.Atlas."analytics-bars" )
+    menu item 'Purchase analysis' ( OnClick: show page Purchasing.PurchaseAnalysis_Report, Icon: Atlas_Core.Atlas."analytics-bars" )
   }
   menu 'Configuration' ( Icon: Atlas_Core.Atlas.cog ) {
     menu item 'Company' ( OnClick: show page Core.Company_Edit, Icon: Atlas_Core.Atlas.cog )

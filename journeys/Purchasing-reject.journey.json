@@ -1,0 +1,40 @@
+{
+  "id": "J-PURCH-03",
+  "title": "Purchase manager rejects a waiting order with a reason: it goes back to RFQ and the purchaser sees why",
+  "requirement": ["F005-UC004"],
+  "persona": "purchase.manager",
+  "requires": ["po-to-approve"],
+  "consumes": ["po-to-approve"],
+  "seeds": [
+    { "name": "poNumber",
+      "sql": "SELECT o.Number AS n FROM Purchasing.PurchaseOrder AS o WHERE o.Status = 'ToApprove' ORDER BY o.Number DESC LIMIT 1" }
+  ],
+  "steps": [
+    {
+      "name": "Open Purchase > Approvals and the waiting order's task",
+      "actions": [
+        { "do": "nav", "group": "Purchase", "item": "Approvals" },
+        { "do": "clickRow", "widget": "gridMain", "text": "{{poNumber}}" }
+      ],
+      "ui": { "ready": ".mx-name-btnReject", "textPresent": ["{{poNumber}}"] }
+    },
+    {
+      "name": "Reject without a reason: refused, the reason is asked for",
+      "actions": [{ "do": "click", "widget": "btnReject", "label": "Reject" }],
+      "ui": { "ready": ".mx-name-btnReject", "textPresent": ["Give the purchaser a reason for the rejection."] }
+    },
+    {
+      "name": "Reject with the reason 'Negotiate price': back in the inbox, the order no longer waits",
+      "actions": [
+        { "do": "fill", "widget": "taApprovalComment", "value": "Negotiate price" },
+        { "do": "click", "widget": "btnReject", "label": "Reject" }
+      ],
+      "ui": { "ready": ".mx-name-gridMain", "textAbsent": ["{{poNumber}}"] }
+    }
+  ],
+  "outcome": {
+    "label": "the rejected order is an RFQ again and carries the manager's reason",
+    "sql": "SELECT COUNT(o.ID) AS n FROM Purchasing.PurchaseOrder AS o WHERE o.Number = '{{poNumber}}' AND o.Status = 'RFQ' AND o.ApprovalComment = 'Negotiate price'",
+    "atLeast": 1
+  }
+}

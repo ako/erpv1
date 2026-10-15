@@ -1,0 +1,171 @@
+-- Purchasing unit tests (build-plan rows 56-63). Every test rolls back unless it says otherwise.
+-- Fixtures: the demo seed (Gemini Furniture prices: Office Chair 65.00, Desk Combination 420.00; Ready Mat has no prices;
+-- Office Chair cost 70.00; company approval on at 5 000). Tests run without a signed-in user: never a purchase manager.
+
+/**
+ * @test A new RFQ is numbered from the P sequence and starts as a request for quotation
+ * @expect $Ok = true
+ */
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+declare $Ok Boolean = startsWith($PO/Number, 'P') and $PO/Status = Purchasing.ENUM_PurchaseOrderStatus.RFQ;
+/
+
+/**
+ * @test The vendor's price list gives Gemini's price for an office chair
+ * @expect $Best/Price = 65
+ */
+retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'] first;
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+$Best = call microflow Purchasing.SUB_VendorPrice_GetBest(Vendor = $Gemini, Product = $Chair, Quantity = 5);
+/
+
+/**
+ * @test Choosing a product on a Gemini RFQ line takes the vendor price
+ * @expect $Line/UnitPrice = 420
+ */
+retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'] first;
+retrieve $Desk from Products.Product where [InternalReference = 'FURN_7800'] first;
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+change $PO (Purchasing.PurchaseOrder_Vendor = $Gemini);
+$Line = create Purchasing.PurchaseOrderLine (Quantity = 12, Purchasing.PurchaseOrderLine_PurchaseOrder = $PO, Purchasing.PurchaseOrderLine_Product = $Desk);
+call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $Line);
+/
+
+/**
+ * @test Without a vendor price the line takes the product cost
+ * @expect $Line/UnitPrice = 70
+ */
+retrieve $ReadyMat from Partners.Partner where [Name = 'Ready Mat'] first;
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+change $PO (Purchasing.PurchaseOrder_Vendor = $ReadyMat);
+$Line = create Purchasing.PurchaseOrderLine (Quantity = 1, Purchasing.PurchaseOrderLine_PurchaseOrder = $PO, Purchasing.PurchaseOrderLine_Product = $Chair);
+call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $Line);
+/
+
+/**
+ * @test Twelve desks at 420.00 total 5 040.00 untaxed
+ * @expect $PO/AmountUntaxed = 5040
+ */
+retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'] first;
+retrieve $Desk from Products.Product where [InternalReference = 'FURN_7800'] first;
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+change $PO (Purchasing.PurchaseOrder_Vendor = $Gemini);
+$Line = create Purchasing.PurchaseOrderLine (Quantity = 12, Purchasing.PurchaseOrderLine_PurchaseOrder = $PO, Purchasing.PurchaseOrderLine_Product = $Desk);
+call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $Line);
+$Done = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $PO);
+/
+
+/**
+ * @test An order above the threshold needs approval when approval is on
+ * @expect $Needs = true
+ */
+retrieve $Company from Core.Company first;
+change $Company (POApprovalEnabled = true, POApprovalThreshold = 5000);
+commit $Company;
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+change $PO (AmountTotal = 6098.40);
+$Needs = call microflow Purchasing.SUB_PurchaseOrder_NeedsApproval(PurchaseOrder = $PO);
+/
+
+/**
+ * @test An order below the threshold needs no approval
+ * @expect $Needs = false
+ */
+retrieve $Company from Core.Company first;
+change $Company (POApprovalEnabled = true, POApprovalThreshold = 5000);
+commit $Company;
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+change $PO (AmountTotal = 786.50);
+$Needs = call microflow Purchasing.SUB_PurchaseOrder_NeedsApproval(PurchaseOrder = $PO);
+/
+
+/**
+ * @test With approval off no order needs approval
+ * @expect $Needs = false
+ */
+retrieve $Company from Core.Company first;
+change $Company (POApprovalEnabled = false);
+commit $Company;
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+change $PO (AmountTotal = 99999);
+$Needs = call microflow Purchasing.SUB_PurchaseOrder_NeedsApproval(PurchaseOrder = $PO);
+/
+
+/**
+ * @test Confirming a small RFQ makes it a purchase order with a confirmation date
+ * @expect $Ok = true
+ */
+retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'] first;
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+change $PO (Purchasing.PurchaseOrder_Vendor = $Gemini);
+$Line = create Purchasing.PurchaseOrderLine (Quantity = 2, Purchasing.PurchaseOrderLine_PurchaseOrder = $PO, Purchasing.PurchaseOrderLine_Product = $Chair);
+call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $Line);
+commit $Line;
+$Done = call microflow Purchasing.ACT_PurchaseOrder_Confirm(PurchaseOrder = $PO);
+declare $Ok Boolean = $PO/Status = Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder and $PO/ConfirmationDate != empty;
+/
+
+/**
+ * @test An RFQ without a vendor is not confirmed
+ * @expect $Done = false
+ */
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+$Done = call microflow Purchasing.ACT_PurchaseOrder_Confirm(PurchaseOrder = $PO);
+/
+
+/**
+ * @test A rejected order goes back to RFQ and keeps the reason
+ * @expect $Ok = true
+ */
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+change $PO (Status = Purchasing.ENUM_PurchaseOrderStatus.ToApprove, ApprovalComment = 'Negotiate price');
+commit $PO;
+call microflow Purchasing.SUB_PurchaseOrder_Reject(PurchaseOrder = $PO);
+declare $Ok Boolean = $PO/Status = Purchasing.ENUM_PurchaseOrderStatus.RFQ and $PO/ApprovalComment = 'Negotiate price';
+/
+
+/**
+ * @test An order with received goods cannot be cancelled
+ * @expect $Done = false
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+$Line = create Purchasing.PurchaseOrderLine (Quantity = 2, QuantityReceived = 1, Purchasing.PurchaseOrderLine_PurchaseOrder = $PO, Purchasing.PurchaseOrderLine_Product = $Chair);
+commit $Line;
+$Done = call microflow Purchasing.ACT_PurchaseOrder_Cancel(PurchaseOrder = $PO);
+/
+
+/**
+ * @test Mark as sent turns an RFQ into a sent RFQ
+ * @expect $PO/Status = Purchasing.ENUM_PurchaseOrderStatus.RFQSent
+ */
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+$Done = call microflow Purchasing.ACT_PurchaseOrder_MarkSent(PurchaseOrder = $PO);
+/
+
+/**
+ * @test A cancelled order can be set back to RFQ
+ * @expect $PO/Status = Purchasing.ENUM_PurchaseOrderStatus.RFQ
+ */
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+call microflow Purchasing.SUB_PurchaseOrder_Cancel(PurchaseOrder = $PO);
+$Done = call microflow Purchasing.ACT_PurchaseOrder_SetToDraft(PurchaseOrder = $PO);
+/
+
+/**
+ * @test A confirmed order on ordered quantities is to bill
+ * @expect $PO/BillingStatus = Core.ENUM_InvoiceStatus.ToInvoice
+ */
+retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+change $PO (Purchasing.PurchaseOrder_Vendor = $Gemini);
+change $Cable (BillPolicy = Products.ENUM_BillPolicy.OrderedQuantities);
+commit $Cable;
+$Line = create Purchasing.PurchaseOrderLine (Quantity = 10, Purchasing.PurchaseOrderLine_PurchaseOrder = $PO, Purchasing.PurchaseOrderLine_Product = $Cable);
+call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $Line);
+commit $Line;
+call microflow Purchasing.SUB_PurchaseOrder_Approve(PurchaseOrder = $PO);
+/

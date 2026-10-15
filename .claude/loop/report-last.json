@@ -1,12 +1,12 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-15 09:33:18",
-  "overallScore": 49.8,
+  "date": "2026-10-15 10:06:54",
+  "overallScore": 49.4,
   "summary": {
-    "total": 387,
+    "total": 400,
     "errors": 0,
-    "warnings": 123,
-    "infos": 264
+    "warnings": 132,
+    "infos": 268
   },
   "categories": [
     {
@@ -33,21 +33,22 @@
       "infos": 6,
       "topActions": [
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
-        "Describe what the collection is for and where its images are used.",
-        "Extract logical sections into SUB_ microflows to keep each under 15 activities"
+        "Extract logical sections into SUB_ microflows to keep each under 15 activities",
+        "Describe what the collection is for and where its images are used."
       ]
     },
     {
       "name": "Architecture",
       "score": 0,
-      "total": 74,
+      "total": 83,
       "errors": 0,
-      "warnings": 74,
+      "warnings": 83,
       "infos": 0,
       "topActions": [
         "Add an attribute like 'CompanyCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE",
         "Create a view entity in 'Partners' that exposes the needed data from 'Core', or use a microflow to retrieve the data.",
-        "Create microflows (e.g., ACT_SaveLocation, VAL_Location) to handle create/update operations with proper validation."
+        "Create microflows (e.g., ACT_SaveLocation, VAL_Location) to handle create/update operations with proper validation.",
+        "Move the 'OpenUserTaskAction' action to a SUB_ microflow and call it from 'ACT_PurchaseApproval_Open'"
       ]
     },
     {
@@ -61,11 +62,11 @@
     },
     {
       "name": "Naming",
-      "score": 36,
-      "total": 64,
+      "score": 33,
+      "total": 67,
       "errors": 0,
       "warnings": 0,
-      "infos": 64,
+      "infos": 67,
       "topActions": [
         "Remove the default value and set it in a Before Create (BCR_) microflow for 'Company'",
         "Rename to 'IsPOApprovalEnabled' or another appropriate prefix (Has, Can, Should, Was, Will)",
@@ -85,11 +86,11 @@
     },
     {
       "name": "Other",
-      "score": 95,
-      "total": 5,
+      "score": 94,
+      "total": 6,
       "errors": 0,
       "warnings": 0,
-      "infos": 5,
+      "infos": 6,
       "topActions": [
         "Describing this microflow does not round-trip. Edit it in Studio Pro, or restructure so each branch reaches the decision's merge without passing through another branch's path. The condition can usually be folded into one decision instead (e.g. `not(a) or b`)."
       ]

@@ -1,23 +1,26 @@
 mdl 1;
 -- 702-purchasing-mf-purchase-order-reject.mdl — build-plan row 56 (F005-UC004). The approval task page's two decisions:
--- ACT_PurchaseOrder_Reject (reason required) and ACT_PurchaseApprovalTask_Approve, each with a SUB that claims the task and
--- sets its outcome (the workflow's outcome branch then does the domain work: SUB_PurchaseOrder_Approve / _Reject).
+-- ACT_PurchaseOrder_Reject (reason required: VAL_PurchaseOrder_Reject) and ACT_PurchaseApprovalTask_Approve, each with a SUB that claims the task and
+-- sets its outcome, then opens a fresh inbox (a closed task page returns to a grid that does not re-query);
+-- the domain work (SUB_PurchaseOrder_Approve / _Reject) runs here, synchronously, before the outcome.
 
 /**
- * Claim the approval task for the signed-in manager and complete it with Approve.
+ * Confirm the order, then claim the approval task for the signed-in manager and complete it with Approve.
  *
  * @param $WorkflowUserTask the approval task
+ * @param $PurchaseOrder the order being approved
  */
-create or modify microflow Purchasing.SUB_PurchaseApprovalTask_Approve ($WorkflowUserTask: System.WorkflowUserTask)
+create or modify microflow Purchasing.SUB_PurchaseApprovalTask_Approve ($WorkflowUserTask: System.WorkflowUserTask, $PurchaseOrder: Purchasing.PurchaseOrder)
 folder 'Approval/Microflows'
 begin
+  call microflow Purchasing.SUB_PurchaseOrder_Approve(PurchaseOrder = $PurchaseOrder);
   change $WorkflowUserTask (System.WorkflowUserTask_Assignees = [%CurrentUser%]);
   commit $WorkflowUserTask;
   set task outcome $WorkflowUserTask 'Approve';
 end;
 
 /**
- * Keep the manager's reason on the order, claim the approval task and complete it with Reject.
+ * Back to RFQ with the manager's reason on the order, then claim the approval task and complete it with Reject.
  *
  * @param $WorkflowUserTask the approval task
  * @param $PurchaseOrder the order, with ApprovalComment filled in
@@ -25,10 +28,28 @@ end;
 create or modify microflow Purchasing.SUB_PurchaseApprovalTask_Reject ($WorkflowUserTask: System.WorkflowUserTask, $PurchaseOrder: Purchasing.PurchaseOrder)
 folder 'Approval/Microflows'
 begin
-  commit $PurchaseOrder;
+  call microflow Purchasing.SUB_PurchaseOrder_Reject(PurchaseOrder = $PurchaseOrder);
   change $WorkflowUserTask (System.WorkflowUserTask_Assignees = [%CurrentUser%]);
   commit $WorkflowUserTask;
   set task outcome $WorkflowUserTask 'Reject';
+end;
+
+/**
+ * Validate a rejection: the reason for the purchaser is mandatory (F005-UC004 step 2).
+ *
+ * @param $PurchaseOrder the order being rejected
+ * @returns true when a reason is given
+ */
+create or modify microflow Purchasing.VAL_PurchaseOrder_Reject ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Boolean as $IsValid
+folder 'Approval/Microflows'
+begin
+  declare $Valid Boolean = true;
+  if $PurchaseOrder/ApprovalComment = empty or trim($PurchaseOrder/ApprovalComment) = '' then
+    validation feedback $PurchaseOrder/ApprovalComment message 'Give the purchaser a reason for the rejection.';
+    set $Valid = false;
+  end if;
+  return $Valid;
 end;
 
 /**
@@ -40,8 +61,8 @@ end;
 create or modify microflow Purchasing.ACT_PurchaseApprovalTask_Approve ($WorkflowUserTask: System.WorkflowUserTask, $PurchaseOrder: Purchasing.PurchaseOrder)
 folder 'Approval/Microflows'
 begin
-  call microflow Purchasing.SUB_PurchaseApprovalTask_Approve(WorkflowUserTask = $WorkflowUserTask);
-  close page;
+  call microflow Purchasing.SUB_PurchaseApprovalTask_Approve(WorkflowUserTask = $WorkflowUserTask, PurchaseOrder = $PurchaseOrder);
+  show page Purchasing.PurchaseApproval_Inbox();
 end;
 
 /**
@@ -55,11 +76,11 @@ create or modify microflow Purchasing.ACT_PurchaseOrder_Reject ($WorkflowUserTas
 returns Boolean as $Done
 folder 'Approval/Microflows'
 begin
-  if $PurchaseOrder/ApprovalComment = empty or trim($PurchaseOrder/ApprovalComment) = '' then
-    validation feedback $PurchaseOrder/ApprovalComment message 'Give the purchaser a reason for the rejection.';
+  $IsValid = call microflow Purchasing.VAL_PurchaseOrder_Reject(PurchaseOrder = $PurchaseOrder);
+  if not($IsValid) then
     return false;
   end if;
   call microflow Purchasing.SUB_PurchaseApprovalTask_Reject(WorkflowUserTask = $WorkflowUserTask, PurchaseOrder = $PurchaseOrder);
-  close page;
+  show page Purchasing.PurchaseApproval_Inbox();
   return true;
 end;

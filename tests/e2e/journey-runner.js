@@ -164,6 +164,7 @@ function describeAct(a, vars) {
     case 'fill':     return { verb: 'Type', target: `"${v(a.value)}" into ${a.label || a.widget}`, selector: `.mx-name-${a.widget}` };
     case 'combobox': return { verb: 'Select', target: `"${v(a.match)}" in ${a.label || a.widget}`, selector: `.mx-name-${a.widget}` };
     case 'wait':     return { verb: 'Wait', target: `${a.ms || 0}ms`, selector: null };
+    case 'clickRow': return { verb: 'Open', target: `row "${v(a.text)}" of ${a.widget}`, selector: `.mx-name-${a.widget}` };
     default:         return { verb: a.do, target: a.widget || '', selector: a.widget ? `.mx-name-${a.widget}` : null };
   }
 }
@@ -317,6 +318,16 @@ async function act(page, a, vars, note) {
           'the selection did not take. Every later assertion would be about the wrong row.');
       }
       note('ui', `combobox ${a.widget} committed the seeded value`, 'PASS', val);
+      break;
+    }
+    case 'clickRow': {
+      // erpv1 2026-10-15: open a data grid row by its visible text (inbox → task page). The row is clicked on its
+      // first cell containing the text, as a user would; not found within 8 s is a FAIL, never a click elsewhere.
+      const text = String(subst(a.text, vars));
+      const row = page.locator(`.mx-name-${a.widget} [role="row"], .mx-name-${a.widget} .tr`).filter({ hasText: text }).first();
+      if (!(await row.isVisible({ timeout: 8000 }).catch(() => false)))
+        throw new Error(`no row containing "${text}" in .mx-name-${a.widget}`);
+      await row.locator('[role="gridcell"], .td').filter({ hasText: text }).first().click().catch(() => row.click());
       break;
     }
     case 'dismissModal': await H.dismissModal(page); break;

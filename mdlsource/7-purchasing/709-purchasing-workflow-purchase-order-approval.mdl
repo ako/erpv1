@@ -4,7 +4,9 @@ mdl 1;
 
 /**
  * Manager approval of a purchase order above the company threshold (Odoo state 'to approve' + button_approve).
- * One user task for purchase managers; the outcome branches do the domain work, the task page's buttons only decide.
+ * One user task for purchase managers. The task page's buttons do the domain work synchronously (SUB_PurchaseApprovalTask_*)
+ * and then set the outcome, so the inbox the manager returns to is already up to date; the outcome branches stay empty
+ * (an outcome branch runs asynchronously, after the page has closed — journey J-PURCH-02, 2026-10-15).
  */
 create or modify workflow Purchasing.WF_PurchaseOrderApproval
   folder 'Approval/Workflows'
@@ -15,11 +17,5 @@ begin
   user task ApproveOrder 'Approve purchase order'
     page Purchasing.PurchaseApproval_Task
     targeting users xpath [System.UserRoles/System.UserRole/Name = 'PurchaseManager']
-    outcomes
-      'Approve' {
-        call microflow Purchasing.SUB_PurchaseOrder_Approve(PurchaseOrder = $WorkflowContext) caption 'Confirm the order';
-      }
-      'Reject' {
-        call microflow Purchasing.SUB_PurchaseOrder_Reject(PurchaseOrder = $WorkflowContext) caption 'Back to RFQ';
-      };
+    outcomes 'Approve' { } 'Reject' { };
 end workflow;
