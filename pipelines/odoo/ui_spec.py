@@ -263,7 +263,7 @@ screen('Inventory_Dashboard', 'dashboard', 'Inventory overview', 'Inventory.Oper
        open='Transfer_Overview')
 screen('Transfer_Overview', 'list', 'Transfers', 'Inventory.Transfer', INV, ['menu Inventory › Transfers', 'tile of Inventory_Dashboard'],
        tabs=['All', 'Receipts', 'Deliveries', 'Internal'],
-       columns=['Number', 'Transfer_Partner', 'ScheduledDate', 'SourceDocument', 'Transfer_OperationType', 'Status'],
+       sort='ScheduledDate', columns=['Number', 'Transfer_Partner', 'ScheduledDate', 'SourceDocument', 'Transfer_OperationType', 'Status'],
        filters=['Status', 'Transfer_OperationType'], open='Transfer_NewEdit', new='Transfer_NewEdit',
        rows=[['WH/OUT/00031', 'Azure Interior', '2026-10-15', 'S00042', 'Delivery orders', 'Waiting'],
              ['WH/IN/00012', 'Wood Corner', '2026-10-17', 'P00017', 'Receipts', 'Ready']])

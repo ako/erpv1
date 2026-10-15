@@ -6,7 +6,7 @@
   "_seedNote": "the receipt comes from an approved purchase order (J-PURCH-02 approves 12 Desk Combinations from Gemini)",
   "seeds": [
     { "name": "receiptNo",
-      "sql": "SELECT t.Number AS n FROM Inventory.Transfer AS t WHERE t.Status = 'Ready' AND t/Inventory.Transfer_OperationType/Inventory.OperationType/Kind = 'Receipt' AND t/Inventory.Transfer_PurchaseOrder/Purchasing.PurchaseOrder/Number != NULL ORDER BY t.Number DESC LIMIT 1" },
+      "sql": "SELECT t.Number AS n FROM Inventory.Transfer AS t WHERE t.Status = 'Ready' AND t/Inventory.Transfer_OperationType/Inventory.OperationType/Kind = 'Receipt' AND t/Inventory.Transfer_PurchaseOrder/Purchasing.PurchaseOrder/Number != NULL ORDER BY t.ScheduledDate DESC LIMIT 1" },
     { "name": "orderNo",
       "sql": "SELECT t/Inventory.Transfer_PurchaseOrder/Purchasing.PurchaseOrder/Number AS n FROM Inventory.Transfer AS t WHERE t.Number = '{{receiptNo}}'" }
   ],

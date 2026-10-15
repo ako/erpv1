@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-15T23:04:43.928Z",
-  "configuredUser": "inventory.manager",
-  "actualUser": "inventory.manager",
+  "capturedAt": "2026-10-15T23:10:41.043Z",
+  "configuredUser": "warehouse.user",
+  "actualUser": "warehouse.user",
   "usedFallback": false,
   "baseUrl": "http://localhost:8080",
   "positiveControl": false,
@@ -17,185 +17,385 @@
       "rung": "ui",
       "name": "login",
       "verdict": "PASS",
-      "detail": "inventory.manager",
+      "detail": "warehouse.user",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Stock: both stock levels are listed: reached",
+      "name": "Open Inventory > Transfers: the delivery is listed: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-lvLines",
-      "requirement": "F006-UC006"
+      "detail": ".mx-name-gridMain",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Stock: both stock levels are listed: page says \"Stock\"",
+      "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00061\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC006"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Stock: both stock levels are listed: page says \"Counted quantity\"",
+      "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-btnValidate0",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00061\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC006"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "ui",
-      "name": "Count {{counted}} Office Chairs and press the row's Apply: reached",
+      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
       "verdict": "PASS",
-      "detail": ".mx-name-lvLines",
-      "requirement": "F006-UC006"
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "data",
-      "name": "Count {{counted}} Office Chairs and press the row's Apply: Inventory.StockMove +1",
+      "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
       "verdict": "PASS",
-      "detail": "before=39 after=40 delta=1",
-      "requirement": "F006-UC006"
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreatebackorder",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "data",
-      "name": "Count {{counted}} Office Chairs and press the row's Apply: an adjustment move for the chairs is done",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
       "verdict": "PASS",
-      "detail": "got 7, need >= 1",
-      "requirement": "F006-UC006"
+      "detail": "before=41 after=42 delta=1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972475176)",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
+      "verdict": "PASS",
+      "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00073' (scoped to rows with id > 36591746972475176)",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "outcome",
-      "name": "J-INV-04 end state",
+      "name": "J-INV-01 end state",
       "verdict": "PASS",
       "detail": "got 1, need >= 1",
-      "requirement": "F006-UC006"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     }
   ],
   "walks": [
     {
-      "journey": "J-INV-04",
-      "title": "Inventory manager counts 5 more Office Chairs than recorded and applies the row's count: stock is corrected through one adjustment move",
-      "persona": "inventory.manager",
+      "journey": "J-INV-01",
+      "title": "Warehouse user delivers part of a confirmed sales order: 3 of 5 chairs, the rest to a backorder; the order reads partially delivered",
+      "persona": "warehouse.user",
       "requirement": [
-        "F006-UC006"
+        "F006-UC002",
+        "F006-UC004",
+        "F007-UC001",
+        "F007-UC002"
       ],
       "seeds": {
-        "counted": "3"
+        "deliveryNo": "WH/OUT/00061",
+        "orderNo": "S00073"
       },
       "steps": [
         {
           "n": 1,
-          "name": "Open Inventory > Stock: both stock levels are listed",
+          "name": "Open Inventory > Transfers: the delivery is listed",
           "requirement": [
-            "F006-UC006"
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Inventory › Stock",
+              "target": "Inventory › Transfers",
               "selector": null
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-lvLines",
+            "landsOn": ".mx-name-gridMain",
             "pageSays": [
-              "Stock",
-              "Counted quantity"
+              "{{deliveryNo}}"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-04-step1.png",
-            "title": "Mendix - Stock",
-            "url": "http://localhost:8080/p/stock-level-overview",
-            "at": "2026-10-15T23:04:40.482Z"
+            "file": "../tests/e2e/artifacts/J-INV-01-step1.png",
+            "title": "Mendix - Transfers",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T23:10:35.607Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Inventory > Stock: both stock levels are listed: reached",
+              "name": "Open Inventory > Transfers: the delivery is listed: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-lvLines"
+              "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Open Inventory > Stock: both stock levels are listed: page says \"Stock\"",
-              "verdict": "PASS",
-              "detail": ""
-            },
-            {
-              "rung": "ui",
-              "name": "Open Inventory > Stock: both stock levels are listed: page says \"Counted quantity\"",
+              "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00061\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1729
+          "ms": 1135
         },
         {
           "n": 2,
-          "name": "Count {{counted}} Office Chairs and press the row's Apply",
+          "name": "Open the delivery: Ready, the order's chairs reserved",
           "requirement": [
-            "F006-UC006"
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Open",
+              "target": "row \"WH/OUT/00061\" of gridMain",
+              "selector": ".mx-name-gridMain"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnValidate0",
+            "pageSays": [
+              "{{deliveryNo}}",
+              "Ready"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-step2.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T23:10:37.361Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnValidate0"
+            },
+            {
+              "rung": "ui",
+              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00061\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "ui",
+              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            }
+          ],
+          "ms": 1805
+        },
+        {
+          "n": 3,
+          "name": "Process 3 of the 5 chairs and validate: the backorder question opens",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
           ],
           "actions": [
             {
               "verb": "Type",
-              "target": "\"3\" into Counted quantity (Office Chair)",
-              "selector": ".mx-name-lntxtCountedQuantity"
+              "target": "\"3\" into Quantity (chairs processed)",
+              "selector": ".mx-name-lntxtQuantity"
             },
             {
               "verb": "Click",
-              "target": "Apply (Office Chair row) — straight after typing, as a user would",
-              "selector": ".mx-name-btnRowAction"
-            },
-            {
-              "verb": "dismissModal",
-              "target": "",
-              "selector": null
+              "target": "Validate — straight after typing, as a user would",
+              "selector": ".mx-name-btnValidate0"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-lvLines",
-            "pageSays": [],
+            "landsOn": ".mx-name-pbtnCreatebackorder",
+            "pageSays": [
+              "less than the initial demand"
+            ],
             "pageDoesNotSay": [],
             "microflows": [],
-            "writes": {
-              "entity": "Inventory.StockMove",
-              "delta": 1,
-              "associations": []
-            }
+            "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-04-step2.png",
-            "title": "Mendix - Stock",
-            "url": "http://localhost:8080/p/stock-level-overview",
-            "at": "2026-10-15T23:04:43.601Z"
+            "file": "../tests/e2e/artifacts/J-INV-01-step3.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T23:10:38.744Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Count {{counted}} Office Chairs and press the row's Apply: reached",
+              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-lvLines"
+              "detail": ".mx-name-pbtnCreatebackorder"
             },
             {
-              "rung": "data",
-              "name": "Count {{counted}} Office Chairs and press the row's Apply: Inventory.StockMove +1",
+              "rung": "ui",
+              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
               "verdict": "PASS",
-              "detail": "before=39 after=40 delta=1"
-            },
-            {
-              "rung": "data",
-              "name": "Count {{counted}} Office Chairs and press the row's Apply: an adjustment move for the chairs is done",
-              "verdict": "PASS",
-              "detail": "got 7, need >= 1"
+              "detail": ""
             }
           ],
-          "ms": 3255
+          "ms": 1328
+        },
+        {
+          "n": 4,
+          "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Create backorder",
+              "selector": ".mx-name-pbtnCreatebackorder"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [
+              "Done"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Inventory.Transfer",
+              "delta": 1,
+              "associations": [
+                "Inventory.Transfer_SalesOrder"
+              ]
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-step4.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T23:10:40.560Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-dvMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
+              "verdict": "PASS",
+              "detail": "before=41 after=42 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
+              "verdict": "PASS",
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972475176)"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
+              "verdict": "PASS",
+              "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00073' (scoped to rows with id > 36591746972475176)"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            }
+          ],
+          "ms": 2168
         }
       ]
     }

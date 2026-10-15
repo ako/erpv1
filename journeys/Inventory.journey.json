@@ -15,7 +15,7 @@
   "seeds": [
     {
       "name": "deliveryNo",
-      "sql": "SELECT t.Number AS n FROM Inventory.Transfer AS t WHERE t.Status = 'Ready' AND t/Inventory.Transfer_OperationType/Inventory.OperationType/Kind = 'Delivery' AND t/Inventory.Transfer_SalesOrder/Sales.SalesOrder/Number != NULL AND NOT EXISTS (SELECT b.ID FROM Inventory.Transfer AS b WHERE t/Inventory.Transfer_Backorder = b.ID) ORDER BY t.Number DESC LIMIT 1"
+      "sql": "SELECT t.Number AS n FROM Inventory.Transfer AS t WHERE t.Status = 'Ready' AND t/Inventory.Transfer_OperationType/Inventory.OperationType/Kind = 'Delivery' AND t/Inventory.Transfer_SalesOrder/Sales.SalesOrder/Number != NULL AND NOT EXISTS (SELECT b.ID FROM Inventory.Transfer AS b WHERE t/Inventory.Transfer_Backorder = b.ID) ORDER BY t.ScheduledDate DESC LIMIT 1"
     },
     {
       "name": "orderNo",

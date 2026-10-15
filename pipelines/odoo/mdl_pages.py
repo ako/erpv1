@@ -315,9 +315,9 @@ def gen_list(s):
         add = '%s.ACT_%s_Add' % (mod, s['entity'].split('.')[1]) if s.get('add') else None
         L += editable_listview(e, s['columns'], 'database %s sort by %s asc' % (D.qn(s['entity']), sort), '  ', add, delete=bool(s.get('add')), row_save=True)
         return L
-    sort = s['columns'][0]
+    sort = s.get('sort', s['columns'][0])
     # documents (numbered) list newest first, as Odoo does; the newest also stays on page 1 (J-INV-01 control, 2026-10-16)
-    direction = 'desc' if sort == 'Number' else 'asc'
+    direction = 'desc' if sort == 'Number' or (attr(e, sort) or {}).get('type') == 'DateTime' else 'asc'
     src = 'database %s sort by %s %s' % (D.qn(s['entity']), D.q(sort) if attr(e, sort) else sort + '/' + caption_attr(assoc(e, sort)['target']), direction)
     open_ = ''
     if s.get('open'):

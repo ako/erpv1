@@ -1,15 +1,15 @@
 {
   "id": "J-INV-04",
-  "title": "Inventory manager counts 5 more Office Chairs than recorded and applies the row's count: stock is corrected through one adjustment move",
+  "title": "Inventory manager counts 20 more Office Chairs than recorded and applies the row's count: stock is corrected through one adjustment move",
   "requirement": [
     "F006-UC006"
   ],
   "persona": "inventory.manager",
-  "_seedNote": "demo seed: stock levels for Desk Combination (row 1, sorted by product) and Office Chair (row 2) at WH/Stock. Counts 5 above what is recorded, so every run makes one adjustment move; also tops the chairs up so J-SALES-01 yields a Ready delivery on a re-run.",
+  "_seedNote": "demo seed: stock levels for Desk Combination (row 1, sorted by product) and Office Chair (row 2) at WH/Stock. Counts 20 above what is recorded, so every run makes one adjustment move; also tops the chairs up so J-SALES-01 yields a Ready delivery on a re-run.",
   "seeds": [
     {
       "name": "counted",
-      "sql": "SELECT CAST(l.Quantity + 5 AS INTEGER) AS n FROM Inventory.StockLevel AS l WHERE l/Inventory.StockLevel_Product/Products.Product/InternalReference = 'FURN_0269' AND l/Inventory.StockLevel_Location/Inventory.Location/Name = 'WH/Stock'"
+      "sql": "SELECT CAST(l.Quantity + 20 AS INTEGER) AS n FROM Inventory.StockLevel AS l WHERE l/Inventory.StockLevel_Product/Products.Product/InternalReference = 'FURN_0269' AND l/Inventory.StockLevel_Location/Inventory.Location/Name = 'WH/Stock'"
     }
   ],
   "steps": [

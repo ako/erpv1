@@ -1,6 +1,6 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-15 22:53:21",
+  "date": "2026-10-15 23:07:45",
   "overallScore": 49.1,
   "summary": {
     "total": 405,
@@ -33,8 +33,8 @@
       "infos": 6,
       "topActions": [
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
-        "Describe what the collection is for and where its images are used.",
-        "Extract logical sections into SUB_ microflows to keep each under 15 activities"
+        "Extract logical sections into SUB_ microflows to keep each under 15 activities",
+        "Describe what the collection is for and where its images are used."
       ]
     },
     {
