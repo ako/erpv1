@@ -5,7 +5,7 @@ Every gate decision lands here as `CONFIRMED` or `ASSUMED`, never silently decid
 
 ## Current stage
 
-**Stage 5 — Build**, in progress (manual gate: its verdict is a Decisions row, not a file) — gates passed: P, 0, 1, 2, 3, 4 · manual: 5 (derived by gate-check on 2026-10-14; re-run it rather than editing this line).
+**Stage 5 — Build**, needs attention — gates passed: P, 0, 1, 2, 3, 4 (derived by gate-check on 2026-10-15; re-run it rather than editing this line).
 
 Toolkit commit: d16f578
 Interview mode: assist
