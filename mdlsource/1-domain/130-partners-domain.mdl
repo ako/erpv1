@@ -23,8 +23,8 @@ create or modify persistent entity Partners."UserProfile" (
 /** Any customer, vendor or contact person — companies and their contacts/addresses. (Odoo res.partner; F001) */
 create or modify persistent entity Partners."Partner" (
   "Name": String(200),
-  "IsCompany": Boolean,
-  "AddressType": Enumeration(Partners.ENUM_AddressType),
+  "IsCompany": Boolean default false,
+  "AddressType": Enumeration(Partners.ENUM_AddressType) default Contact,
   "Email": String(200),
   "Phone": String(200),
   "Mobile": String(200),
@@ -37,8 +37,8 @@ create or modify persistent entity Partners."Partner" (
   "Website": String(200),
   "Reference": String(200),
   "Notes": String(unlimited),
-  "IsCustomer": Boolean,
-  "IsVendor": Boolean,
+  "IsCustomer": Boolean default false,
+  "IsVendor": Boolean default false,
   "Active": Boolean default true,
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,

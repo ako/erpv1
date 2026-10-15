@@ -54,8 +54,8 @@ create or modify persistent entity Core."Company" (
   "Website": String(200),
   "QuotationValidityDays": Integer default 30,
   "POApprovalEnabled": Boolean,
-  "POApprovalThreshold": Decimal,
-  "PurchaseLeadDays": Decimal,
+  "POApprovalThreshold": Decimal default 5000,
+  "PurchaseLeadDays": Decimal default 0,
   "InvoiceTerms": String(unlimited),
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
@@ -79,9 +79,9 @@ index ("Name");
 create or modify persistent entity Core."Currency" (
   "Name": String(3),
   "Symbol": String(200),
-  "Rounding": Decimal,
+  "Rounding": Decimal default 0.01,
   "DecimalPlaces": Integer,
-  "SymbolPosition": String(10),
+  "SymbolPosition": String(10) default 'after',
   "Active": Boolean default true,
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
@@ -105,12 +105,12 @@ create or modify persistent entity Core."Sequence" (
 /** A sales or purchase tax: percentage or fixed amount, price-included or not. (Odoo account.tax; F001) */
 create or modify persistent entity Core."Tax" (
   "Name": String(200),
-  "Scope": Enumeration(Core.ENUM_TaxScope),
-  "Computation": Enumeration(Core.ENUM_TaxComputation),
-  "Amount": Decimal,
+  "Scope": Enumeration(Core.ENUM_TaxScope) default Sales,
+  "Computation": Enumeration(Core.ENUM_TaxComputation) default Percentage,
+  "Amount": Decimal default 0,
   "IncludedInPrice": Boolean,
   "LabelOnInvoice": String(200),
-  "Sequence": Integer,
+  "Sequence": Integer default 1,
   "Active": Boolean default true,
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
@@ -123,7 +123,7 @@ index ("Name");
 create or modify persistent entity Core."PaymentTerm" (
   "Name": String(200),
   "Note": String(unlimited),
-  "Sequence": Integer,
+  "Sequence": Integer default 10,
   "Active": Boolean default true,
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
@@ -134,10 +134,10 @@ index ("Name");
 
 /** One instalment: percent or fixed amount, due N days after a reference date. (Odoo account.payment.term.line; F001) */
 create or modify persistent entity Core."PaymentTermLine" (
-  "Value": Enumeration(Core.ENUM_PaymentTermValue),
+  "Value": Enumeration(Core.ENUM_PaymentTermValue) default Percent,
   "ValueAmount": Decimal,
   "Days": Integer,
-  "DelayType": Enumeration(Core.ENUM_PaymentTermDelay),
+  "DelayType": Enumeration(Core.ENUM_PaymentTermDelay) default DaysAfterInvoiceDate,
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
   Owner: AutoOwner,

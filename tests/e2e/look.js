@@ -26,9 +26,10 @@ async function login(page, user) {
 async function nav(page, menu) {
   const [group, item] = menu;
   if (await page.locator('.region-sidebar .mx-navigationtree').isVisible().catch(() => false)) {
-    const leaf = page.locator('.mx-navigationtree li li a', { hasText: item }).first();
+    const groupLi = page.locator('.mx-navigationtree li', { has: page.locator(':scope > a', { hasText: group }) }).first();
+    const leaf = groupLi.locator('li a', { hasText: item }).first();
     if (!(await leaf.isVisible().catch(() => false))) {
-      await page.locator('.mx-navigationtree a', { hasText: group }).first().click();
+      await groupLi.locator(':scope > a').first().click();
       await page.waitForTimeout(300);
     }
     await leaf.click();

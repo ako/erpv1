@@ -1,5 +1,5 @@
 mdl 1;
 -- 020-settings.mdl — the ONE owner of runtime settings (learned-mdl-preflight STOP table: ALTER SETTINGS is
 -- announced in chat before exec). After-startup = Core reference-data seed; replaced by the cross-module
--- orchestrator once Products/Inventory seed their own reference data.
-alter settings runtime (AfterStartupMicroflow: 'Core.ASU_Core_SeedData');
+-- startup chain: the highest module's ASU calls the one below it first (Products -> Core).
+alter settings runtime (AfterStartupMicroflow: 'Products.ASU_Products_SeedData');

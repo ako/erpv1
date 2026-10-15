@@ -55,7 +55,7 @@ create or modify enumeration Invoicing."ENUM_PaymentStatus" (
 create or modify persistent entity Invoicing."Invoice" (
   "Number": String(200),
   "InvoiceType": Enumeration(Invoicing.ENUM_InvoiceType),
-  "Status": Enumeration(Invoicing.ENUM_InvoiceStatus),
+  "Status": Enumeration(Invoicing.ENUM_InvoiceStatus) default Draft,
   "PaymentStatus": Enumeration(Invoicing.ENUM_PaymentStatus),
   "InvoiceDate": DateTime not localized,
   "DueDate": DateTime not localized,
@@ -81,7 +81,7 @@ create or modify persistent entity Invoicing."InvoiceLine" (
   "Description": String(200),
   "Quantity": Decimal,
   "UnitPrice": Decimal,
-  "DiscountPercent": Decimal,
+  "DiscountPercent": Decimal default 0,
   "Subtotal": Decimal,
   "Total": Decimal,
   CreatedDate: AutoCreatedDate,
@@ -93,12 +93,12 @@ create or modify persistent entity Invoicing."InvoiceLine" (
 /** Money received from a customer or paid to a vendor, allocated to invoices. (Odoo account.payment; F008) */
 create or modify persistent entity Invoicing."Payment" (
   "Number": String(200),
-  "Direction": Enumeration(Invoicing.ENUM_PaymentDirection),
-  "PartnerKind": Enumeration(Invoicing.ENUM_PartnerKind),
+  "Direction": Enumeration(Invoicing.ENUM_PaymentDirection) default Inbound,
+  "PartnerKind": Enumeration(Invoicing.ENUM_PartnerKind) default Customer,
   "Amount": Decimal,
   "PaymentDate": DateTime not localized,
   "Memo": String(200),
-  "Status": Enumeration(Invoicing.ENUM_PaymentState),
+  "Status": Enumeration(Invoicing.ENUM_PaymentState) default Draft,
   "Method": Enumeration(Invoicing.ENUM_PaymentMethod),
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,

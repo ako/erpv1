@@ -44,7 +44,7 @@ index ("Name");
 create or modify persistent entity Inventory."Location" (
   "Name": String(200),
   "FullName": String(200),
-  "LocationType": Enumeration(Inventory.ENUM_LocationType),
+  "LocationType": Enumeration(Inventory.ENUM_LocationType) default Internal,
   "Barcode": String(200),
   "Active": Boolean default true,
   CreatedDate: AutoCreatedDate,
@@ -57,7 +57,7 @@ index ("Name");
 /** Receipts, Delivery orders, Internal transfers: numbering and default locations. (Odoo stock.picking.type; F006) */
 create or modify persistent entity Inventory."OperationType" (
   "Name": String(200),
-  "Kind": Enumeration(Inventory.ENUM_OperationKind),
+  "Kind": Enumeration(Inventory.ENUM_OperationKind) default Receipt,
   "SequenceCode": String(200),
   "CreateBackorder": Boolean,
   "Active": Boolean default true,
@@ -70,7 +70,7 @@ index ("Name");
 
 /** A receipt, delivery or internal transfer grouping stock moves. (Odoo stock.picking; F006, F007) */
 create or modify persistent entity Inventory."Transfer" (
-  "Number": String(200),
+  "Number": String(200) default '/',
   "Status": Enumeration(Inventory.ENUM_TransferStatus),
   "ScheduledDate": DateTime,
   "DateDone": DateTime,
@@ -87,11 +87,11 @@ index ("Number", "Status", "ScheduledDate");
 /** Movement of one product quantity between two locations (stock.move.line merged in). (Odoo stock.move; F006, F007) */
 create or modify persistent entity Inventory."StockMove" (
   "Description": String(200),
-  "Status": Enumeration(Inventory.ENUM_TransferStatus),
+  "Status": Enumeration(Inventory.ENUM_TransferStatus) default Draft,
   "Date": DateTime,
-  "DemandQuantity": Decimal,
+  "DemandQuantity": Decimal default 0,
   "Quantity": Decimal,
-  "Picked": Boolean,
+  "Picked": Boolean default false,
   "SourceDocument": String(200),
   "IsInventoryAdjustment": Boolean,
   CreatedDate: AutoCreatedDate,
@@ -104,9 +104,9 @@ index ("Status", "Date");
 /** Quantity of a product in an internal location (on hand, reserved, counted). (Odoo stock.quant; F006) */
 create or modify persistent entity Inventory."StockLevel" (
   "Quantity": Decimal,
-  "ReservedQuantity": Decimal,
+  "ReservedQuantity": Decimal default 0,
   "CountedQuantity": Decimal,
-  "CountSet": Boolean,
+  "CountSet": Boolean default false,
   "ScheduledCountDate": DateTime not localized,
   "IncomingDate": DateTime,
   CreatedDate: AutoCreatedDate,
@@ -118,9 +118,9 @@ create or modify persistent entity Inventory."StockLevel" (
 /** Min/max replenishment rule: below minimum, create an RFQ up to maximum. (Odoo stock.warehouse.orderpoint; F006) */
 create or modify persistent entity Inventory."ReorderRule" (
   "Name": String(200),
-  "MinQuantity": Decimal,
-  "MaxQuantity": Decimal,
-  "QuantityMultiple": Decimal,
+  "MinQuantity": Decimal default 0,
+  "MaxQuantity": Decimal default 0,
+  "QuantityMultiple": Decimal default 1,
   "Automatic": Boolean,
   "Active": Boolean default true,
   CreatedDate: AutoCreatedDate,

@@ -1,0 +1,56 @@
+{
+  "id": "J-PRODUCTS-01",
+  "title": "Sales manager creates a product: an empty save is refused, a valid product is listed with its unit",
+  "requirement": ["F003-UC001"],
+  "persona": "sales.manager",
+  "seeds": [
+    { "name": "unitName", "sql": "SELECT u.Name AS k FROM Products.UoM AS u WHERE u.Name = 'Units'" }
+  ],
+  "steps": [
+    {
+      "name": "Open Products > Products",
+      "actions": [ { "do": "nav", "group": "Products", "item": "Products" } ],
+      "ui": { "ready": ".mx-name-gridMain" }
+    },
+    {
+      "name": "New product, Save with every field empty: refused, message shown, nothing stored",
+      "actions": [
+        { "do": "click", "widget": "btnNew", "label": "New" },
+        { "do": "wait", "ms": 800 },
+        { "do": "click", "widget": "btnSave0", "label": "Save" }
+      ],
+      "ui": { "ready": ".mx-name-txtName", "textPresent": ["Name is required.", "Unit of measure is required."] },
+      "data": { "creates": "Products.Product", "delta": 0, "scope": { "newRowsBy": "id" } }
+    },
+    {
+      "name": "Fill name, unit and price and save: back on the list with the product shown",
+      "actions": [
+        { "do": "fill", "widget": "txtName", "value": "Journey Chair" },
+        { "do": "combobox", "widget": "cmbProductType", "match": "Goods" },
+        { "do": "combobox", "widget": "cmbProductUoM", "match": "{{unitName}}" },
+        { "do": "fill", "widget": "txtSalesPrice", "value": "120" },
+        { "do": "click", "widget": "btnSave0", "label": "Save" }
+      ],
+      "ui": { "ready": ".mx-name-gridMain", "textPresent": ["Journey Chair"] },
+      "data": {
+        "creates": "Products.Product",
+        "delta": 1,
+        "scope": { "newRowsBy": "id" },
+        "assocMustBeSet": [
+          { "entity": "Products.Product", "assoc": "Products.Product_UoM", "target": "Products.UoM",
+            "mustPointAt": { "attr": "Name", "value": "{{unitName}}" } }
+        ],
+        "oql": [
+          { "label": "the purchase unit defaults to the sales unit",
+            "sql": "SELECT COUNT(p.ID) AS n FROM Products.Product AS p WHERE p.Name = 'Journey Chair' AND p/Products.Product_PurchaseUoM/Products.UoM/Name = 'Units'",
+            "atLeast": 1 }
+        ]
+      }
+    }
+  ],
+  "outcome": {
+    "label": "the product is sellable at 120 per unit",
+    "sql": "SELECT COUNT(p.ID) AS n FROM Products.Product AS p WHERE p.Name = 'Journey Chair' AND p.SalesPrice = 120 AND p.Active = true",
+    "atLeast": 1
+  }
+}

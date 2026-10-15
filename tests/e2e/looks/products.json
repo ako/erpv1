@@ -1,0 +1,10 @@
+[
+ {"module":"Products","page":"Product_Overview","user":"sales.manager","menu":["Products","Products"]},
+ {"module":"Products","page":"Product_NewEdit","user":"sales.manager","menu":["Products","Products"],"openRow":1},
+ {"module":"Products","page":"Pricelist_Overview","user":"sales.manager","menu":["Products","Pricelists"]},
+ {"module":"Products","page":"Pricelist_NewEdit","user":"sales.manager","menu":["Products","Pricelists"],"openRow":1},
+ {"module":"Products","page":"UoMCategory_Overview","user":"sales.manager","menu":["Configuration","Units of measure"]},
+ {"module":"Products","page":"UoMCategory_NewEdit","user":"sales.manager","menu":["Configuration","Units of measure"],"openRow":1},
+ {"module":"Products","page":"ProductCategory_Overview","user":"sales.manager","menu":["Configuration","Product categories"]},
+ {"module":"Products","page":"ProductCategory_NewEdit","user":"sales.manager","menu":["Configuration","Product categories"],"openRow":2}
+]

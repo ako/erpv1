@@ -21,15 +21,15 @@ create or modify enumeration Purchasing."ENUM_ReceiptStatus" (
 
 /** A vendor''s price and lead time for a product (drives RFQ prices). (Odoo product.supplierinfo; F005) */
 create or modify persistent entity Purchasing."VendorPrice" (
-  "MinQuantity": Decimal,
-  "Price": Decimal,
+  "MinQuantity": Decimal default 0,
+  "Price": Decimal default 0,
   "Discount": Decimal,
-  "LeadTimeDays": Integer,
+  "LeadTimeDays": Integer default 1,
   "VendorProductCode": String(200),
   "VendorProductName": String(200),
   "ValidFrom": DateTime not localized,
   "ValidTo": DateTime not localized,
-  "Sequence": Integer,
+  "Sequence": Integer default 1,
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
   Owner: AutoOwner,
@@ -39,7 +39,7 @@ create or modify persistent entity Purchasing."VendorPrice" (
 /** A request for quotation that becomes a (possibly approved) purchase order. (Odoo purchase.order; F005, F007) */
 create or modify persistent entity Purchasing."PurchaseOrder" (
   "Number": String(200),
-  "Status": Enumeration(Purchasing.ENUM_PurchaseOrderStatus),
+  "Status": Enumeration(Purchasing.ENUM_PurchaseOrderStatus) default RFQ,
   "Locked": Boolean,
   "OrderDeadline": DateTime,
   "ConfirmationDate": DateTime,
@@ -51,7 +51,7 @@ create or modify persistent entity Purchasing."PurchaseOrder" (
   "AmountUntaxed": Decimal,
   "AmountTax": Decimal,
   "AmountTotal": Decimal,
-  "BillingStatus": Enumeration(Core.ENUM_InvoiceStatus),
+  "BillingStatus": Enumeration(Core.ENUM_InvoiceStatus) default NothingToInvoice,
   "ReceiptStatus": Enumeration(Purchasing.ENUM_ReceiptStatus),
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
@@ -62,7 +62,7 @@ index ("Number", "Status");
 
 /** A product, section or note line of a purchase order. (Odoo purchase.order.line; F005, F007) */
 create or modify persistent entity Purchasing."PurchaseOrderLine" (
-  "Sequence": Integer,
+  "Sequence": Integer default 10,
   "LineType": Enumeration(Core.ENUM_LineType),
   "Description": String(unlimited),
   "Quantity": Decimal,

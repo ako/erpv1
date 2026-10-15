@@ -1,6 +1,6 @@
 mdl 1;
 -- 405-products-mf-product-save.mdl — build-plan row 27 (F003-UC001, UC004). Owns Products.VAL_Product,
--- Products.SUB_Product_Save, Products.ACT_Product_Save, Products.ACT_Product_Archive and
+-- Products.SUB_Product_Save, Products.ACT_Product_Save, Products.ACT_Product_Archive (+ SUB_Product_Archive) and
 -- Products.SUB_ProductCategory_ComputeFullName (called by the generated ProductCategory save).
 
 /**
@@ -78,6 +78,18 @@ begin
 end;
 
 /**
+ * Deactivate a product.
+ *
+ * @param $Product the product
+ */
+create or modify microflow Products.SUB_Product_Archive ($Product: Products.Product)
+folder 'Catalogue/Microflows'
+begin
+  change $Product (Active = false);
+  commit $Product with events refresh;
+end;
+
+/**
  * Archive button (F003-UC004): the product leaves the pick lists but stays on existing documents.
  *
  * @param $Product the product to archive
@@ -85,8 +97,7 @@ end;
 create or modify microflow Products.ACT_Product_Archive ($Product: Products.Product)
 folder 'Catalogue/Microflows'
 begin
-  change $Product (Active = false);
-  commit $Product with events refresh;
+  call microflow Products.SUB_Product_Archive(Product = $Product);
   close page;
 end;
 

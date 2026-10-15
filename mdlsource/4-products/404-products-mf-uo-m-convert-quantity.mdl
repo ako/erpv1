@@ -30,6 +30,7 @@ end;
 
 /**
  * Convert a unit price between two units of one category (inverse of the quantity conversion, not rounded up).
+ * Rounded to 4 decimals: a bigger unit stores 1/n with 8 decimals (Dozens 0.08333333), so 120/dozen would read 9.9999996/unit.
  *
  * @param $Price price per FromUoM
  * @param $FromUoM unit the price is per
@@ -43,5 +44,5 @@ begin
   if $Price = empty or $FromUoM = empty or $ToUoM = empty or $FromUoM = $ToUoM then
     return $Price;
   end if;
-  return $Price * $FromUoM/Factor div $ToUoM/Factor;
+  return round($Price * $FromUoM/Factor div $ToUoM/Factor, 4);
 end;

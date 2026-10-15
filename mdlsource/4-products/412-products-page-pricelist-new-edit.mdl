@@ -37,12 +37,21 @@ begin
   end if;
 end;
 
-/** "+ Add a line" on Pricelist_NewEdit: a new PriceRule on the Pricelist, shown at once. */
-create or modify microflow Products.ACT_PriceRule_Add ($Pricelist: Products.Pricelist)
+/** A new PriceRule on the Pricelist, committed so the line editor shows it at once. */
+create or modify microflow Products.SUB_PriceRule_Add ($Pricelist: Products.Pricelist)
+returns Products.PriceRule as $Line
 folder 'Pricing/Microflows'
 begin
   $Line = create Products."PriceRule" (Products.PriceRule_Pricelist = $Pricelist);
   commit $Line refresh;
+  return $Line;
+end;
+
+/** "+ Add a line" on Pricelist_NewEdit. */
+create or modify microflow Products.ACT_PriceRule_Add ($Pricelist: Products.Pricelist)
+folder 'Pricing/Microflows'
+begin
+  $Line = call microflow Products.SUB_PriceRule_Add(Pricelist = $Pricelist);
 end;
 
 /** Pricelist — Pricelist_NewEdit. */
@@ -93,15 +102,15 @@ create or modify page Products.Pricelist_NewEdit folder 'Pricing/Pages'
     listview lvLines (DataSource: $currentObject/Products.PriceRule_Pricelist, Editable: true, Class: 'lines-list') {
       layoutgrid gridLine {
         row {
-          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox cmbAppliesTo (Label: 'Applies to', Attribute: "AppliesTo") }
-          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox cmbPriceRuleCategory (Label: 'Category', Attribute: PriceRule_Category, DataSource: database Products."ProductCategory" sort by "Name" asc, CaptionAttribute: "Name") }
-          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox cmbPriceRuleProduct (Label: 'Product', Attribute: PriceRule_Product, DataSource: database Products."Product" sort by "Name" asc, CaptionAttribute: "Name") }
-          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox txtMinQuantity (Label: 'Min quantity', Attribute: "MinQuantity", DecimalPrecision: 2, GroupDigits: true) }
-          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox cmbComputation (Label: 'Computation', Attribute: "Computation") }
-          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox txtFixedPrice (Label: 'Fixed price', Attribute: "FixedPrice", DecimalPrecision: 2, GroupDigits: true) }
-          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox txtDiscountPercent (Label: 'Discount percent', Attribute: "DiscountPercent", DecimalPrecision: 2, GroupDigits: true) }
-          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { datepicker dpValidFrom (Label: 'Valid from', Attribute: "ValidFrom") }
-          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { datepicker dpValidTo (Label: 'Valid to', Attribute: "ValidTo") }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbAppliesTo (Label: 'Applies to', Attribute: "AppliesTo") }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbPriceRuleCategory (Label: 'Category', Attribute: PriceRule_Category, DataSource: database Products."ProductCategory" sort by "Name" asc, CaptionAttribute: "Name") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox lncmbPriceRuleProduct (Label: 'Product', Attribute: PriceRule_Product, DataSource: database Products."Product" sort by "Name" asc, CaptionAttribute: "Name") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtMinQuantity (Label: 'Min quantity', Attribute: "MinQuantity", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox lncmbComputation (Label: 'Computation', Attribute: "Computation") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtFixedPrice (Label: 'Fixed price', Attribute: "FixedPrice", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtDiscountPercent (Label: 'Discount percent', Attribute: "DiscountPercent", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { datepicker lndpValidFrom (Label: 'Valid from', Attribute: "ValidFrom") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { datepicker lndpValidTo (Label: 'Valid to', Attribute: "ValidTo") }
           column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }
         }
       }

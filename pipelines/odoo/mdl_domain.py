@@ -109,10 +109,41 @@ def attr_type(a, enums):
     raise SystemExit('unmapped type %s on %s' % (t, a['name']))
 
 
+def odoo_default(a, enums):
+    """Odoo's own default when it is a plain literal (True/False/number/'string'/enum key); functions,
+    lambdas and fields.* stay with the microflows that create the object."""
+    v = str(a.get('odooDefault', '')).strip()
+    if not v or '(' in v or v.startswith(('lambda', 'fields.', '_')):
+        return None
+    t = a['type']
+    if t == 'Boolean':
+        return {'True': 'true', '1': 'true', 'False': 'false', '0': 'false'}.get(v)
+    if t in ('Decimal', 'Integer', 'Long'):
+        try:
+            f = float(v)
+        except ValueError:
+            return None
+        return str(int(f)) if t != 'Decimal' or f == int(f) else v
+    if t == 'Enumeration' and v[:1] in '\'"':
+        key = v.strip('\'"')
+        hit = next((x['name'] for x in enums[a['enumeration']]['values'] if str(x.get('odooValue')) == key), None)
+        return hit
+    if t == 'String' and v[:1] in '\'"':
+        return v.strip('\'"')
+    return None
+
+
 def default_clause(a, enums):
     v = a.get('default')
     if v is None:
-        return ''
+        v = odoo_default(a, enums)
+        if v is None:
+            return ''
+        if a['type'] == 'Enumeration':
+            return ' default %s' % v
+        if a['type'] == 'String':
+            return " default '%s'" % esc(v)
+        return ' default %s' % v
     t = a['type']
     if t == 'Boolean':
         return ' default %s' % ('true' if str(v).lower() in ('true', '1') else 'false')

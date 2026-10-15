@@ -1,0 +1,170 @@
+-- Products unit tests (build-plan row 31). Every test rolls back.
+
+/**
+ * @test 12 units convert to 1 dozen
+ * @expect $Qty = 1
+ */
+retrieve $Units from Products.UoM where [Name = 'Units'] first;
+retrieve $Dozens from Products.UoM where [Name = 'Dozens'] first;
+$Qty = call microflow Products.SUB_UoM_ConvertQuantity(Quantity = 12, FromUoM = $Units, ToUoM = $Dozens);
+/
+
+/**
+ * @test 13 units round UP to 1.09 dozen (rounding 0.01)
+ * @expect $Qty = 1.09
+ */
+retrieve $Units from Products.UoM where [Name = 'Units'] first;
+retrieve $Dozens from Products.UoM where [Name = 'Dozens'] first;
+$Qty = call microflow Products.SUB_UoM_ConvertQuantity(Quantity = 13, FromUoM = $Units, ToUoM = $Dozens);
+/
+
+/**
+ * @test 1.5 kg is 1500 g
+ * @expect $Qty = 1500
+ */
+retrieve $Kg from Products.UoM where [Name = 'kg'] first;
+retrieve $G from Products.UoM where [Name = 'g'] first;
+$Qty = call microflow Products.SUB_UoM_ConvertQuantity(Quantity = 1.5, FromUoM = $Kg, ToUoM = $G);
+/
+
+/**
+ * @test Units of different categories do not convert: quantity unchanged
+ * @expect $Qty = 5
+ */
+retrieve $Units from Products.UoM where [Name = 'Units'] first;
+retrieve $Kg from Products.UoM where [Name = 'kg'] first;
+$Qty = call microflow Products.SUB_UoM_ConvertQuantity(Quantity = 5, FromUoM = $Units, ToUoM = $Kg);
+/
+
+/**
+ * @test A price per dozen of 120 is 10 per unit
+ * @expect $Price = 10
+ */
+retrieve $Units from Products.UoM where [Name = 'Units'] first;
+retrieve $Dozens from Products.UoM where [Name = 'Dozens'] first;
+$Price = call microflow Products.SUB_UoM_ConvertPrice(Price = 120, FromUoM = $Dozens, ToUoM = $Units);
+/
+
+/**
+ * @test A category with two reference units is refused
+ * @expect $IsValid = false
+ */
+$Cat = create Products.UoMCategory (Name = 'Test volume');
+commit $Cat;
+$L = create Products.UoM (Name = 'Litre', UoMType = Products.ENUM_UoMType.Reference, Factor = 1, Rounding = 0.01, Active = true, Products.UoM_Category = $Cat);
+$M = create Products.UoM (Name = 'Millilitre', UoMType = Products.ENUM_UoMType.Reference, Factor = 1000, Rounding = 1, Active = true, Products.UoM_Category = $Cat);
+commit $L;
+commit $M;
+$IsValid = call microflow Products.VAL_UoMCategory(UoMCategory = $Cat);
+/
+
+/**
+ * @test A category with one reference unit and positive factors is valid
+ * @expect $IsValid = true
+ */
+retrieve $Unit from Products.UoMCategory where [Name = 'Unit'] first;
+$IsValid = call microflow Products.VAL_UoMCategory(UoMCategory = $Unit);
+/
+
+/**
+ * @test A service that tracks inventory is refused
+ * @expect $IsValid = false
+ */
+retrieve $Units from Products.UoM where [Name = 'Units'] first;
+$P = create Products.Product (Name = 'Consulting', ProductType = Products.ENUM_ProductType.Service, TrackInventory = true, SalesPrice = 80, Products.Product_UoM = $Units);
+$IsValid = call microflow Products.VAL_Product(Product = $P);
+/
+
+/**
+ * @test Purchase unit of another category is refused
+ * @expect $IsValid = false
+ */
+retrieve $Units from Products.UoM where [Name = 'Units'] first;
+retrieve $Kg from Products.UoM where [Name = 'kg'] first;
+$P = create Products.Product (Name = 'Chair', ProductType = Products.ENUM_ProductType.Goods, SalesPrice = 120, Products.Product_UoM = $Units, Products.Product_PurchaseUoM = $Kg);
+$IsValid = call microflow Products.VAL_Product(Product = $P);
+/
+
+/**
+ * @test No pricelist: the sales price
+ * @expect $Price = 120
+ */
+$P = create Products.Product (Name = 'Chair', SalesPrice = 120);
+$Price = call microflow Products.SUB_Pricelist_GetPrice(Pricelist = empty, Product = $P, Quantity = 1, Date = [%CurrentDateTime%]);
+/
+
+/**
+ * @test A product rule with a fixed price wins over a category discount
+ * @expect $Price = 99
+ */
+retrieve $Office from Products.ProductCategory where [FullName = 'All / Saleable / Office'] first;
+$PL = create Products.Pricelist (Name = 'Test PL');
+$P = create Products.Product (Name = 'Chair', SalesPrice = 120, Products.Product_Category = $Office);
+commit $PL;
+commit $P;
+$R1 = create Products.PriceRule (AppliesTo = Products.ENUM_PriceRuleScope.ProductCategory, Computation = Products.ENUM_PriceComputation.Discount, DiscountPercent = 10, MinQuantity = 0, Products.PriceRule_Pricelist = $PL, Products.PriceRule_Category = $Office);
+$R2 = create Products.PriceRule (AppliesTo = Products.ENUM_PriceRuleScope.Product, Computation = Products.ENUM_PriceComputation.FixedPrice, FixedPrice = 99, MinQuantity = 0, Products.PriceRule_Pricelist = $PL, Products.PriceRule_Product = $P);
+commit $R1;
+commit $R2;
+$Price = call microflow Products.SUB_Pricelist_GetPrice(Pricelist = $PL, Product = $P, Quantity = 1, Date = [%CurrentDateTime%]);
+/
+
+/**
+ * @test A discount on a parent category applies to products of a child category
+ * @expect $Price = 108
+ */
+retrieve $Office from Products.ProductCategory where [FullName = 'All / Saleable / Office'] first;
+retrieve $Saleable from Products.ProductCategory where [FullName = 'All / Saleable'] first;
+$PL = create Products.Pricelist (Name = 'Test PL 2');
+$P = create Products.Product (Name = 'Desk', SalesPrice = 120, Products.Product_Category = $Office);
+commit $PL;
+commit $P;
+$R = create Products.PriceRule (AppliesTo = Products.ENUM_PriceRuleScope.ProductCategory, Computation = Products.ENUM_PriceComputation.Discount, DiscountPercent = 10, MinQuantity = 0, Products.PriceRule_Pricelist = $PL, Products.PriceRule_Category = $Saleable);
+commit $R;
+$Price = call microflow Products.SUB_Pricelist_GetPrice(Pricelist = $PL, Product = $P, Quantity = 1, Date = [%CurrentDateTime%]);
+/
+
+/**
+ * @test A rule whose minimum quantity is not reached does not apply
+ * @expect $Price = 120
+ */
+$PL = create Products.Pricelist (Name = 'Test PL 3');
+$P = create Products.Product (Name = 'Lamp', SalesPrice = 120);
+commit $PL;
+commit $P;
+$R = create Products.PriceRule (AppliesTo = Products.ENUM_PriceRuleScope.AllProducts, Computation = Products.ENUM_PriceComputation.Discount, DiscountPercent = 50, MinQuantity = 10, Products.PriceRule_Pricelist = $PL);
+commit $R;
+$Price = call microflow Products.SUB_Pricelist_GetPrice(Pricelist = $PL, Product = $P, Quantity = 5, Date = [%CurrentDateTime%]);
+/
+
+/**
+ * @test An expired rule does not apply
+ * @expect $Price = 120
+ */
+$PL = create Products.Pricelist (Name = 'Test PL 4');
+$P = create Products.Product (Name = 'Lamp', SalesPrice = 120);
+commit $PL;
+commit $P;
+$R = create Products.PriceRule (AppliesTo = Products.ENUM_PriceRuleScope.AllProducts, Computation = Products.ENUM_PriceComputation.FixedPrice, FixedPrice = 1, MinQuantity = 0, ValidTo = dateTime(2020, 1, 1), Products.PriceRule_Pricelist = $PL);
+commit $R;
+$Price = call microflow Products.SUB_Pricelist_GetPrice(Pricelist = $PL, Product = $P, Quantity = 1, Date = [%CurrentDateTime%]);
+/
+
+/**
+ * @test Category full name follows the parent chain
+ * @expect $Cat/FullName = 'All / Saleable / Chairs'
+ */
+retrieve $Saleable from Products.ProductCategory where [FullName = 'All / Saleable'] first;
+$Cat = create Products.ProductCategory (Name = 'Chairs', Products.ProductCategory_Parent = $Saleable);
+call microflow Products.SUB_ProductCategory_ComputeFullName(ProductCategory = $Cat);
+/
+
+/**
+ * @test Archive deactivates the product
+ * @cleanup none
+ * @verify SELECT count(p.ID) AS n FROM Products.Product AS p WHERE p.Name = 'Archive me' AND p.Active = true = 0
+ */
+$P = create Products.Product (Name = 'Archive me', Active = true);
+commit $P;
+call microflow Products.ACT_Product_Archive(Product = $P);
+/

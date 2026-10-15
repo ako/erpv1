@@ -95,6 +95,10 @@ def esc(s):
     return (s or '').replace("'", "''")
 
 
+def _wid(prefix, name):
+    return prefix + re.sub(r'[^A-Za-z0-9]', '', name.split('/')[-1])
+
+
 def wid(prefix, name):
     return prefix + re.sub(r'[^A-Za-z0-9]', '', name.split('/')[-1])
 
@@ -114,7 +118,9 @@ def enum_value_for_caption(enum_name, caption):
 
 # ── widgets ──────────────────────────────────────────────────────────────────────────────────
 def input_widget(e, f, ind, readonly=False, prefix='in'):
-    """One input for field f (attribute or owned association) of entity e."""
+    """One input for field f (attribute or owned association) of entity e. Line-editor inputs (prefix 'ln')
+    get their own widget names so they never clash with the header fields (CE0495)."""
+    wid = (lambda k, n: _wid('ln' + k, n)) if prefix == 'ln' else _wid
     a = attr(e, f)
     lab = esc(label_of(e, f))
     ro = ', Editable: Never' if (readonly or is_readonly(a, f)) else ''
@@ -477,15 +483,25 @@ def line_add_microflows(s):
         if not ln.get('editable'):
             continue
         lmod, lshort = module_of(ln['entity']), ln['entity'].split('.')[1]
-        out.append('''/** "+ Add a line" on %s: a new %s on the %s, shown at once. */
-create or modify microflow %s.ACT_%s_Add ($%s: %s)
+        mf = folder_of(module_of(pq), s['name']).replace('/Pages', '/Microflows')
+        out.append('''/** A new %s on the %s, committed so the line editor shows it at once. */
+create or modify microflow %s.SUB_%s_Add ($%s: %s)
+returns %s as $Line
 folder '%s'
 begin
   $Line = create %s (%s.%s = $%s);
   commit $Line refresh;
+  return $Line;
 end;
-''' % (s['name'], lshort, pname, lmod, lshort, pname, pq, folder_of(module_of(pq), s['name']).replace('/Pages', '/Microflows'),
-           D.qn(ln['entity']), lmod, ln['via'], pname))
+
+/** "+ Add a line" on %s. */
+create or modify microflow %s.ACT_%s_Add ($%s: %s)
+folder '%s'
+begin
+  $Line = call microflow %s.SUB_%s_Add(%s = $%s);
+end;
+''' % (lshort, pname, lmod, lshort, pname, pq, ln['entity'], mf, D.qn(ln['entity']), lmod, ln['via'], pname,
+       s['name'], lmod, lshort, pname, pq, mf, lmod, lshort, pname, pname))
     return out
 
 
@@ -536,7 +552,8 @@ end;
     out.append('')
     if roles:
         out.append('grant view on page %s.%s to %s;' % (mod, name, ', '.join(roles)))
-    for mf in sorted(set(re.findall(r'microflow (%s\.(?:ACT_\w+_Add|ACT_\w+_Save|DS_\w+_Get)) \(' % mod, '\n'.join(out)))):
+    called = set(re.findall(r'(?:call microflow|microflow) ((?:%s)\.(?:ACT_\w+|DS_\w+_Get))' % '|'.join(D.MODULES), '\n'.join(out)))
+    for mf in sorted(m for m in called if m.startswith(mod + '.')):
         out.append('grant execute on microflow %s to %s;' % (mf, ', '.join(roles)))
     return '\n'.join(out) + '\n'
 

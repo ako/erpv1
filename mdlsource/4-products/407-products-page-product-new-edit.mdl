@@ -70,3 +70,5 @@ create or modify page Products.Product_NewEdit folder 'Catalogue/Pages'
 };
 
 grant view on page Products.Product_NewEdit to Products.Manager;
+grant execute on microflow Products.ACT_Product_Archive to Products.Manager;
+grant execute on microflow Products.ACT_Product_Save to Products.Manager;

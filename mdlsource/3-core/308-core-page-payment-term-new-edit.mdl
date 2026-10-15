@@ -33,12 +33,21 @@ begin
   end if;
 end;
 
-/** "+ Add a line" on PaymentTerm_NewEdit: a new PaymentTermLine on the PaymentTerm, shown at once. */
-create or modify microflow Core.ACT_PaymentTermLine_Add ($PaymentTerm: Core.PaymentTerm)
+/** A new PaymentTermLine on the PaymentTerm, committed so the line editor shows it at once. */
+create or modify microflow Core.SUB_PaymentTermLine_Add ($PaymentTerm: Core.PaymentTerm)
+returns Core.PaymentTermLine as $Line
 folder 'PaymentTerms/Microflows'
 begin
   $Line = create Core."PaymentTermLine" (Core.PaymentTermLine_PaymentTerm = $PaymentTerm);
   commit $Line refresh;
+  return $Line;
+end;
+
+/** "+ Add a line" on PaymentTerm_NewEdit. */
+create or modify microflow Core.ACT_PaymentTermLine_Add ($PaymentTerm: Core.PaymentTerm)
+folder 'PaymentTerms/Microflows'
+begin
+  $Line = call microflow Core.SUB_PaymentTermLine_Add(PaymentTerm = $PaymentTerm);
 end;
 
 /** Payment term — PaymentTerm_NewEdit. */
@@ -83,10 +92,10 @@ create or modify page Core.PaymentTerm_NewEdit folder 'PaymentTerms/Pages'
     listview lvLines (DataSource: $currentObject/Core.PaymentTermLine_PaymentTerm, Editable: true, Class: 'lines-list') {
       layoutgrid gridLine {
         row {
-          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { combobox cmbValue (Label: 'Value', Attribute: "Value") }
-          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { textbox txtValueAmount (Label: 'Value amount', Attribute: "ValueAmount", DecimalPrecision: 2, GroupDigits: true) }
-          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { textbox txtDays (Label: 'Days', Attribute: "Days") }
-          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox cmbDelayType (Label: 'Delay type', Attribute: "DelayType") }
+          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { combobox lncmbValue (Label: 'Value', Attribute: "Value") }
+          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { textbox lntxtValueAmount (Label: 'Value amount', Attribute: "ValueAmount", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { textbox lntxtDays (Label: 'Days', Attribute: "Days") }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbDelayType (Label: 'Delay type', Attribute: "DelayType") }
           column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }
         }
       }

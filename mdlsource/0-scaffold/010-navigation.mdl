@@ -10,10 +10,16 @@ create or modify navigation Responsive
   menu 'Contacts' ( Icon: Atlas_Core.Atlas.contacts ) {
     menu item 'Contacts' ( OnClick: show page Partners.Partner_Overview, Icon: Atlas_Core.Atlas.contacts )
   }
+  menu 'Products' ( Icon: Atlas_Core.Atlas.tag ) {
+    menu item 'Products' ( OnClick: show page Products.Product_Overview, Icon: Atlas_Core.Atlas.tag )
+    menu item 'Pricelists' ( OnClick: show page Products.Pricelist_Overview, Icon: Atlas_Core.Atlas.tag )
+  }
   menu 'Configuration' ( Icon: Atlas_Core.Atlas.cog ) {
     menu item 'Company' ( OnClick: show page Core.Company_Edit, Icon: Atlas_Core.Atlas.cog )
     menu item 'Numbering' ( OnClick: show page Core.Sequence_Overview, Icon: Atlas_Core.Atlas.cog )
     menu item 'Taxes' ( OnClick: show page Core.Tax_Overview, Icon: Atlas_Core.Atlas.cog )
     menu item 'Payment terms' ( OnClick: show page Core.PaymentTerm_Overview, Icon: Atlas_Core.Atlas.cog )
+    menu item 'Units of measure' ( OnClick: show page Products.UoMCategory_Overview, Icon: Atlas_Core.Atlas.cog )
+    menu item 'Product categories' ( OnClick: show page Products.ProductCategory_Overview, Icon: Atlas_Core.Atlas.cog )
   }
 };

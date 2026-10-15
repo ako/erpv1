@@ -1,12 +1,12 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-14 23:56:42",
-  "overallScore": 53.7,
+  "date": "2026-10-15 01:06:08",
+  "overallScore": 49.7,
   "summary": {
-    "total": 343,
+    "total": 374,
     "errors": 0,
-    "warnings": 119,
-    "infos": 224
+    "warnings": 113,
+    "infos": 261
   },
   "categories": [
     {
@@ -26,27 +26,28 @@
     },
     {
       "name": "Quality",
-      "score": 96,
-      "total": 4,
+      "score": 92,
+      "total": 8,
       "errors": 0,
       "warnings": 0,
-      "infos": 4,
+      "infos": 8,
       "topActions": [
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
+        "Extract logical sections into SUB_ microflows to keep each under 15 activities",
         "Describe what the collection is for and where its images are used."
       ]
     },
     {
       "name": "Architecture",
       "score": 0,
-      "total": 70,
+      "total": 64,
       "errors": 0,
-      "warnings": 70,
+      "warnings": 64,
       "infos": 0,
       "topActions": [
         "Add an attribute like 'CompanyCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE",
         "Create microflows (e.g., ACT_SaveLocation, VAL_Location) to handle create/update operations with proper validation.",
-        "Move the 'CreateObjectAction' action to a SUB_ microflow and call it from 'ACT_PaymentTermLine_Add'"
+        "Create a view entity in 'Products' that exposes the needed data from 'Core', or use a microflow to retrieve the data."
       ]
     },
     {
@@ -60,14 +61,14 @@
     },
     {
       "name": "Naming",
-      "score": 69,
-      "total": 31,
+      "score": 38,
+      "total": 62,
       "errors": 0,
       "warnings": 0,
-      "infos": 31,
+      "infos": 62,
       "topActions": [
-        "Rename to 'IsPOApprovalEnabled' or another appropriate prefix (Has, Can, Should, Was, Will)",
         "Remove the default value and set it in a Before Create (BCR_) microflow for 'Company'",
+        "Rename to 'IsPOApprovalEnabled' or another appropriate prefix (Has, Can, Should, Was, Will)",
         "Rename the page to include a suffix indicating its purpose, e.g., 'Company_Edit_Overview'"
       ]
     },
@@ -84,12 +85,14 @@
     },
     {
       "name": "Other",
-      "score": 99,
-      "total": 1,
+      "score": 97,
+      "total": 3,
       "errors": 0,
       "warnings": 0,
-      "infos": 1,
-      "topActions": null
+      "infos": 3,
+      "topActions": [
+        "Describing this microflow does not round-trip. Edit it in Studio Pro, or restructure so each branch reaches the decision's merge without passing through another branch's path. The condition can usually be folded into one decision instead (e.g. `not(a) or b`)."
+      ]
     }
   ]
 }

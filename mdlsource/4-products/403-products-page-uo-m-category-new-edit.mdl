@@ -20,12 +20,21 @@ begin
   end if;
 end;
 
-/** "+ Add a line" on UoMCategory_NewEdit: a new UoM on the UoMCategory, shown at once. */
-create or modify microflow Products.ACT_UoM_Add ($UoMCategory: Products.UoMCategory)
+/** A new UoM on the UoMCategory, committed so the line editor shows it at once. */
+create or modify microflow Products.SUB_UoM_Add ($UoMCategory: Products.UoMCategory)
+returns Products.UoM as $Line
 folder 'UnitsOfMeasure/Microflows'
 begin
   $Line = create Products."UoM" (Products.UoM_Category = $UoMCategory);
   commit $Line refresh;
+  return $Line;
+end;
+
+/** "+ Add a line" on UoMCategory_NewEdit. */
+create or modify microflow Products.ACT_UoM_Add ($UoMCategory: Products.UoMCategory)
+folder 'UnitsOfMeasure/Microflows'
+begin
+  $Line = call microflow Products.SUB_UoM_Add(UoMCategory = $UoMCategory);
 end;
 
 /** Unit category — UoMCategory_NewEdit. */
@@ -70,11 +79,11 @@ create or modify page Products.UoMCategory_NewEdit folder 'UnitsOfMeasure/Pages'
     listview lvLines (DataSource: $currentObject/Products.UoM_Category, Editable: true, Class: 'lines-list') {
       layoutgrid gridLine {
         row {
-          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { textbox txtName (Label: 'Name', Attribute: "Name") }
-          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox cmbUoMType (Label: 'Unit type', Attribute: "UoMType") }
-          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox txtFactor (Label: 'Factor', Attribute: "Factor", DecimalPrecision: 2, GroupDigits: true) }
-          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox txtRounding (Label: 'Rounding', Attribute: "Rounding", DecimalPrecision: 2, GroupDigits: true) }
-          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { checkbox cbActive (Label: 'Active', Attribute: "Active") }
+          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { textbox lntxtName (Label: 'Name', Attribute: "Name") }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbUoMType (Label: 'Unit type', Attribute: "UoMType") }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtFactor (Label: 'Factor', Attribute: "Factor", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtRounding (Label: 'Rounding', Attribute: "Rounding", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { checkbox lncbActive (Label: 'Active', Attribute: "Active") }
           column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }
         }
       }

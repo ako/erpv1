@@ -491,7 +491,18 @@ async function navTo(page, parentTitle, childTitle) {
     return false;
   }, t).catch(() => false);
   if (parentTitle) { await clickTitle(parentTitle); await page.waitForTimeout(Math.round(500 / cfg.speed)); }
-  await clickTitle(childTitle);
+  // erpv1 2026-10-15: a group and its item can share a title ("Products" › "Products"); a page-wide title
+  // match then re-clicks the group. With a parent, look for the child INSIDE the parent's sub-list first.
+  const inParent = parentTitle && await page.evaluate(([pt, ct]) => {
+    const groups = [...document.querySelectorAll('.mx-navigationtree a, .mx-navbar a')].filter((x) => x.getAttribute('title') === pt);
+    for (const g of groups) {
+      const li = g.closest('li');
+      const a = li && [...li.querySelectorAll('li a')].find((x) => x.getAttribute('title') === ct && x !== g);
+      if (a) { a.scrollIntoView({ block: 'nearest' }); a.click(); return true; }
+    }
+    return false;
+  }, [parentTitle, childTitle]).catch(() => false);
+  if (!inParent) await clickTitle(childTitle);
   await page.waitForTimeout(Math.round(1500 / cfg.speed));
   await dismissModal(page);
 }

@@ -54,9 +54,9 @@ index ("Name");
 /** A unit of measure and its conversion factor to the category reference unit. (Odoo uom.uom; F002) */
 create or modify persistent entity Products."UoM" (
   "Name": String(200),
-  "UoMType": Enumeration(Products.ENUM_UoMType),
-  "Factor": Decimal,
-  "Rounding": Decimal,
+  "UoMType": Enumeration(Products.ENUM_UoMType) default Reference,
+  "Factor": Decimal default 1,
+  "Rounding": Decimal default 0.01,
   "Active": Boolean default true,
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
@@ -81,12 +81,12 @@ create or modify persistent entity Products."Product" (
   "Name": String(200),
   "InternalReference": String(200),
   "Barcode": String(50),
-  "ProductType": Enumeration(Products.ENUM_ProductType),
-  "TrackInventory": Boolean,
-  "SalesPrice": Decimal,
+  "ProductType": Enumeration(Products.ENUM_ProductType) default Goods,
+  "TrackInventory": Boolean default false,
+  "SalesPrice": Decimal default 1,
   "Cost": Decimal,
-  "CanBeSold": Boolean,
-  "CanBePurchased": Boolean,
+  "CanBeSold": Boolean default true,
+  "CanBePurchased": Boolean default true,
   "InvoicePolicy": Enumeration(Products.ENUM_InvoicePolicy),
   "BillPolicy": Enumeration(Products.ENUM_BillPolicy),
   "SalesDescription": String(unlimited),
@@ -94,7 +94,7 @@ create or modify persistent entity Products."Product" (
   "InternalNotes": String(unlimited),
   "Weight": Decimal,
   "Volume": Decimal,
-  "CustomerLeadDays": Integer,
+  "CustomerLeadDays": Integer default 0,
   "Active": Boolean default true,
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
@@ -114,7 +114,7 @@ create or modify persistent entity Products."ProductImage" extends System.Image 
 /** Free tags on products. (Odoo product.tag; F003) */
 create or modify persistent entity Products."ProductTag" (
   "Name": String(200),
-  "Color": String(200),
+  "Color": String(200) default '#3C3C3C',
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
   Owner: AutoOwner,
@@ -125,7 +125,7 @@ index ("Name");
 /** A named set of price rules assigned to customers. (Odoo product.pricelist; F003) */
 create or modify persistent entity Products."Pricelist" (
   "Name": String(200),
-  "Sequence": Integer,
+  "Sequence": Integer default 16,
   "Active": Boolean default true,
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
@@ -136,11 +136,11 @@ index ("Name");
 
 /** One pricelist rule: fixed price or % discount, for all/category/product, from a minimum quantity. (Odoo product.pricelist.item; F003) */
 create or modify persistent entity Products."PriceRule" (
-  "AppliesTo": Enumeration(Products.ENUM_PriceRuleScope),
-  "Computation": Enumeration(Products.ENUM_PriceComputation),
+  "AppliesTo": Enumeration(Products.ENUM_PriceRuleScope) default AllProducts,
+  "Computation": Enumeration(Products.ENUM_PriceComputation) default FixedPrice,
   "FixedPrice": Decimal,
   "DiscountPercent": Decimal,
-  "MinQuantity": Decimal,
+  "MinQuantity": Decimal default 0,
   "ValidFrom": DateTime,
   "ValidTo": DateTime,
   CreatedDate: AutoCreatedDate,

@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-14T23:25:15.116Z",
-  "configuredUser": "invoicing.manager",
-  "actualUser": "invoicing.manager",
+  "capturedAt": "2026-10-15T00:49:11.006Z",
+  "configuredUser": "sales.manager",
+  "actualUser": "sales.manager",
   "usedFallback": false,
   "baseUrl": "http://localhost:8080",
   "positiveControl": false,
@@ -17,156 +17,164 @@
       "rung": "ui",
       "name": "login",
       "verdict": "PASS",
-      "detail": "invoicing.manager",
+      "detail": "sales.manager",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Configuration > Taxes and see the seeded taxes: reached",
+      "name": "Open Products > Products: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F008-UC009"
+      "requirement": "F003-UC001"
     },
     {
       "rung": "ui",
-      "name": "Open Configuration > Taxes and see the seeded taxes: page says \"21% (sales)\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F008-UC009"
-    },
-    {
-      "rung": "ui",
-      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: reached",
+      "name": "New product, Save with every field empty: refused, message shown, nothing stored: reached",
       "verdict": "PASS",
       "detail": ".mx-name-txtName",
-      "requirement": "F008-UC009"
+      "requirement": "F003-UC001"
     },
     {
       "rung": "ui",
-      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
+      "name": "New product, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F008-UC009"
+      "requirement": "F003-UC001"
+    },
+    {
+      "rung": "ui",
+      "name": "New product, Save with every field empty: refused, message shown, nothing stored: page says \"Unit of measure is required.\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F003-UC001"
     },
     {
       "rung": "data",
-      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: Core.Tax +0",
+      "name": "New product, Save with every field empty: refused, message shown, nothing stored: Products.Product +0",
       "verdict": "PASS",
-      "detail": "before=11 after=11 delta=0",
-      "requirement": "F008-UC009"
+      "detail": "before=0 after=0 delta=0",
+      "requirement": "F003-UC001"
     },
     {
       "rung": "ui",
-      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbScope committed the seeded value",
+      "name": "Fill name, unit and price and save: back on the list with the product shown: combobox cmbProductType committed the seeded value",
       "verdict": "PASS",
-      "detail": "Sales",
-      "requirement": "F008-UC009"
+      "detail": "Goods",
+      "requirement": "F003-UC001"
     },
     {
       "rung": "ui",
-      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbComputation committed the seeded value",
+      "name": "Fill name, unit and price and save: back on the list with the product shown: combobox cmbProductUoM committed the seeded value",
       "verdict": "PASS",
-      "detail": "Percentage of price",
-      "requirement": "F008-UC009"
+      "detail": "Units",
+      "requirement": "F003-UC001"
     },
     {
       "rung": "ui",
-      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: reached",
+      "name": "Fill name, unit and price and save: back on the list with the product shown: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F008-UC009"
+      "requirement": "F003-UC001"
     },
     {
       "rung": "ui",
-      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: page says \"Journey tax 5%\"",
+      "name": "Fill name, unit and price and save: back on the list with the product shown: page says \"Journey Chair\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F008-UC009"
+      "requirement": "F003-UC001"
     },
     {
       "rung": "data",
-      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: Core.Tax +1",
+      "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product +1",
       "verdict": "PASS",
-      "detail": "before=11 after=12 delta=1",
-      "requirement": "F008-UC009"
+      "detail": "before=0 after=1 delta=1",
+      "requirement": "F003-UC001"
     },
     {
       "rung": "data",
-      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: the new tax is a 5% sales tax computed as a percentage",
+      "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product_UoM set on every row",
       "verdict": "PASS",
-      "detail": "got 9, need >= 1",
-      "requirement": "F008-UC009"
+      "detail": "1/1 linked, 0 row(s) saved with no association (Products.Product was empty before this step, so every row is this step's)",
+      "requirement": "F003-UC001",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product_UoM points at the seeded Name",
+      "verdict": "PASS",
+      "detail": "1 row(s) link to Products.UoM where Name = 'Units' (Products.Product was empty before this step, so every row is this step's)",
+      "requirement": "F003-UC001",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Fill name, unit and price and save: back on the list with the product shown: the purchase unit defaults to the sales unit",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F003-UC001"
     },
     {
       "rung": "outcome",
-      "name": "J-CORE-01 end state",
+      "name": "J-PRODUCTS-01 end state",
       "verdict": "PASS",
-      "detail": "got 9, need >= 1",
-      "requirement": "F008-UC009"
+      "detail": "got 1, need >= 1",
+      "requirement": "F003-UC001"
     }
   ],
   "walks": [
     {
-      "journey": "J-CORE-01",
-      "title": "Invoicing manager adds a tax: an empty save is refused with a message, a valid save lands in the list",
-      "persona": "invoicing.manager",
+      "journey": "J-PRODUCTS-01",
+      "title": "Sales manager creates a product: an empty save is refused, a valid product is listed with its unit",
+      "persona": "sales.manager",
       "requirement": [
-        "F008-UC009"
+        "F003-UC001"
       ],
       "seeds": {
-        "existingTax": "21% (sales)"
+        "unitName": "Units"
       },
       "steps": [
         {
           "n": 1,
-          "name": "Open Configuration > Taxes and see the seeded taxes",
+          "name": "Open Products > Products",
           "requirement": [
-            "F008-UC009"
+            "F003-UC001"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Configuration › Taxes",
+              "target": "Products › Products",
               "selector": null
             }
           ],
           "expects": {
             "landsOn": ".mx-name-gridMain",
-            "pageSays": [
-              "{{existingTax}}"
-            ],
+            "pageSays": [],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-CORE-01-step1.png",
-            "title": "Mendix - Taxes",
-            "url": "http://localhost:8080/p/tax-overview",
-            "at": "2026-10-14T23:25:03.475Z"
+            "file": "../tests/e2e/artifacts/J-PRODUCTS-01-step1.png",
+            "title": "Mendix - Products",
+            "url": "http://localhost:8080/p/product-overview",
+            "at": "2026-10-15T00:48:59.484Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Configuration > Taxes and see the seeded taxes: reached",
+              "name": "Open Products > Products: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
-            },
-            {
-              "rung": "ui",
-              "name": "Open Configuration > Taxes and see the seeded taxes: page says \"21% (sales)\"",
-              "verdict": "PASS",
-              "detail": ""
             }
           ],
-          "ms": 1118
+          "ms": 1079
         },
         {
           "n": 2,
-          "name": "New tax, Save with every field empty: refused, message shown, nothing stored",
+          "name": "New product, Save with every field empty: refused, message shown, nothing stored",
           "requirement": [
-            "F008-UC009"
+            "F003-UC001"
           ],
           "actions": [
             {
@@ -188,71 +196,78 @@
           "expects": {
             "landsOn": ".mx-name-txtName",
             "pageSays": [
-              "Name is required."
+              "Name is required.",
+              "Unit of measure is required."
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Core.Tax",
+              "entity": "Products.Product",
               "delta": 0,
               "associations": []
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-CORE-01-step2.png",
-            "title": "Mendix - Taxes",
-            "url": "http://localhost:8080/p/tax-overview",
-            "at": "2026-10-14T23:25:06.658Z"
+            "file": "../tests/e2e/artifacts/J-PRODUCTS-01-step2.png",
+            "title": "Mendix - Product",
+            "url": "http://localhost:8080/p/product-overview",
+            "at": "2026-10-15T00:49:02.850Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: reached",
+              "name": "New product, Save with every field empty: refused, message shown, nothing stored: reached",
               "verdict": "PASS",
               "detail": ".mx-name-txtName"
             },
             {
               "rung": "ui",
-              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
+              "name": "New product, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "ui",
+              "name": "New product, Save with every field empty: refused, message shown, nothing stored: page says \"Unit of measure is required.\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: Core.Tax +0",
+              "name": "New product, Save with every field empty: refused, message shown, nothing stored: Products.Product +0",
               "verdict": "PASS",
-              "detail": "before=11 after=11 delta=0"
+              "detail": "before=0 after=0 delta=0"
             }
           ],
-          "ms": 3233
+          "ms": 3422
         },
         {
           "n": 3,
-          "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed",
+          "name": "Fill name, unit and price and save: back on the list with the product shown",
           "requirement": [
-            "F008-UC009"
+            "F003-UC001"
           ],
           "actions": [
             {
               "verb": "Type",
-              "target": "\"Journey tax 5%\" into txtName",
+              "target": "\"Journey Chair\" into txtName",
               "selector": ".mx-name-txtName"
             },
             {
               "verb": "Select",
-              "target": "\"Sales\" in cmbScope",
-              "selector": ".mx-name-cmbScope"
+              "target": "\"Goods\" in cmbProductType",
+              "selector": ".mx-name-cmbProductType"
             },
             {
               "verb": "Select",
-              "target": "\"Percentage of price\" in cmbComputation",
-              "selector": ".mx-name-cmbComputation"
+              "target": "\"Units\" in cmbProductUoM",
+              "selector": ".mx-name-cmbProductUoM"
             },
             {
               "verb": "Type",
-              "target": "\"5\" into txtAmount",
-              "selector": ".mx-name-txtAmount"
+              "target": "\"120\" into txtSalesPrice",
+              "selector": ".mx-name-txtSalesPrice"
             },
             {
               "verb": "Click",
@@ -263,62 +278,76 @@
           "expects": {
             "landsOn": ".mx-name-gridMain",
             "pageSays": [
-              "Journey tax 5%"
+              "Journey Chair"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Core.Tax",
+              "entity": "Products.Product",
               "delta": 1,
-              "associations": []
+              "associations": [
+                "Products.Product_UoM"
+              ]
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-CORE-01-step3.png",
-            "title": "Mendix - Taxes",
-            "url": "http://localhost:8080/p/tax-overview",
-            "at": "2026-10-14T23:25:14.842Z"
+            "file": "../tests/e2e/artifacts/J-PRODUCTS-01-step3.png",
+            "title": "Mendix - Products",
+            "url": "http://localhost:8080/p/product-overview",
+            "at": "2026-10-15T00:49:10.505Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbScope committed the seeded value",
+              "name": "Fill name, unit and price and save: back on the list with the product shown: combobox cmbProductType committed the seeded value",
               "verdict": "PASS",
-              "detail": "Sales"
+              "detail": "Goods"
             },
             {
               "rung": "ui",
-              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox cmbComputation committed the seeded value",
+              "name": "Fill name, unit and price and save: back on the list with the product shown: combobox cmbProductUoM committed the seeded value",
               "verdict": "PASS",
-              "detail": "Percentage of price"
+              "detail": "Units"
             },
             {
               "rung": "ui",
-              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: reached",
+              "name": "Fill name, unit and price and save: back on the list with the product shown: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: page says \"Journey tax 5%\"",
+              "name": "Fill name, unit and price and save: back on the list with the product shown: page says \"Journey Chair\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: Core.Tax +1",
+              "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product +1",
               "verdict": "PASS",
-              "detail": "before=11 after=12 delta=1"
+              "detail": "before=0 after=1 delta=1"
             },
             {
               "rung": "data",
-              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: the new tax is a 5% sales tax computed as a percentage",
+              "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product_UoM set on every row",
               "verdict": "PASS",
-              "detail": "got 9, need >= 1"
+              "detail": "1/1 linked, 0 row(s) saved with no association (Products.Product was empty before this step, so every row is this step's)"
+            },
+            {
+              "rung": "data",
+              "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product_UoM points at the seeded Name",
+              "verdict": "PASS",
+              "detail": "1 row(s) link to Products.UoM where Name = 'Units' (Products.Product was empty before this step, so every row is this step's)"
+            },
+            {
+              "rung": "data",
+              "name": "Fill name, unit and price and save: back on the list with the product shown: the purchase unit defaults to the sales unit",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
             }
           ],
-          "ms": 8238
+          "ms": 7907
         }
       ]
     }
