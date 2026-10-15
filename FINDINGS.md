@@ -23,3 +23,14 @@
   as "already in sync" (verified on 140-sales).
 - `rename module MyFirstModule to Core` moved the theme dir to themesource/core but left a stale
   themesource/myfirstmodule — deleted by hand.
+
+## 2026-10-15 — Core/Products build learnings
+- `create or modify microflow` also refuses adding an @annotation to a Return path, and any branch added before a commit
+  (MDL-V1-REBUILD); pattern stays: one-off drop + replay of the owning scripts (mdlsource/_oneoff/2026-10-15-*).
+- A `return` inside a loop is CE0068 (`mxcli check` MDL062); a category-chain walk became a recursive SUB.
+- Trial runtime caps concurrent sessions: screenshot/journey tools must sign out (layout now has Sign out).
+- journey-runner combobox: after a server round-trip with validation feedback the first toggle click is swallowed; runner
+  now re-clicks when aria-expanded stays false. helpers.navTo: same-title group/item ("Products" › "Products") needed a scoped click.
+- Data grid 2 has no phone column priority: horizontal scroll on phones via Core main.scss.
+- Decimal factor 1/12 stored at scale 8 → 120/dozen = 9.9999996/unit; price conversion rounds to 4 decimals (unit test).
+- The floating button at the right edge is Mendix's demo-user switcher (demo users enabled), not Feedback.

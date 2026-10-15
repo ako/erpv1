@@ -4,20 +4,25 @@
 
 ## Where we are
 
-Stage 4 (Build Plan) built — 2026-10-14; gate FAILS only on the missing ✋ sign-off (PD-1..PD-6 asked in chat). build-ready PASS.
+Stage 5 (Build), 2026-10-15. Done: Phase 0 (app/erpv1.mpr, ledger theme, Workflow Commons), walking skeleton (docs/skeleton-proof.md),
+demo script (docs/demo-script.md), Phase 1 (43 entities / 27 enums / 109 assocs / 9 roles / 9 demo users), Phase 3 Core and
+Phase 4 Products closed (unit tests 10 + 16 pass with fail control; journeys/Core + Products pass + positive control; verify-module:
+conformance, graph, coverage, journeys PASS; LOOK reports design/ui-reviews/ui-review-2026-10-14-core.html, -2026-10-15-products.html).
+Waiting on the user: lint security-tier acceptance (CONV006, SEC008), SEC014 external roles, demo-data seeding approval.
 
-- Plan (generated): `python3 -I pipelines/odoo/plan_render.py` → architecture/build-plan.md (95 rows, 66 BUILD / 49 use cases = 1.35,
-  10 phases), per-BRD ledgers `architecture/modules/<Home>/coverage-ledger/<F>.md` + index, 7 module-brief.md, design/wireframes/PAGE-MAP.tsv.
-  `bin/build-plan-status.sh . --html` → build-plan.html; toolkit `project-bin/build-plan-status.sh . --json` → build-plan.json (gitignored).
-- Coverage: all 8 BRDs 0 UNCLAIMED / 0 PHANTOM / 0 DOUBLE / 0 COUNT-MISMATCH (`~/Mendix/mxcli-project-toolkit/bin/coverage-check.sh --summary`).
-- Regenerate order: brd_generator → wf_render → assemble-prototype → check-prototype-links → arch_render → arch_blueprint → plan_render.
-- Model will live at `app/erpv1.mpr` (two-tree; ASSUMED row). .claude/agents/* completed.
+- Generators (never hand-edit their output): pipelines/odoo/mdl_domain.py (1-domain), mdl_pages.py <Page...> | --nav (list/form/popup
+  pages + VAL/SUB/ACT save + line Add), plan_render.py (plan, ledgers with model-derived status, briefs). Microflows are hand-written.
+- Every write: `./bin/exec.sh --commit-first <script>`; JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64 (in .claude/settings.json).
+- A reshaped microflow: drop + replay owning scripts in ONE _oneoff script (create or modify refuses: MDL-V1-REBUILD).
+- LOOK: node tests/e2e/look.js tests/e2e/looks/<module>.json design/ui-reviews/shots/<date> (NODE_PATH=/opt/node22/lib/node_modules
+  PW_CHROMIUM=/opt/pw-browsers/chromium), then review-agent writes the report; verify: TEST_USER=<persona> APP_PORT=8080
+  MXTK_ROOT=/root/Mendix/mxcli-project-toolkit ./bin/verify-module.sh <Module>.
 
 ## Next actions, in order
 
-1. On sign-off: add Stage 4 CONFIRMED rows (sign-off + PD-1..PD-6), close open question 4, re-run `gate-check.sh . 4`.
-2. Stage 5 phase 0: `./mxcli new erpv1 --version 11.15.0 --output-dir app`, theme ledger, marketplace modules, verify + boot
-   (walking-skeleton.md), then phase 1 domain scripts via `./bin/exec.sh`.
+1. Apply the user's answers (lint baseline, SEC014, demo seed).
+2. Phase 5 Partners (F001): ACT_Partner_Save/VAL_Partner (replaces skeleton), contact pages, UserProfile; then coherence pass 1.
+3. Phases 6–9: Sales, Purchasing (+ WF_PurchaseOrderApproval), Inventory, Invoicing; coherence 2 + close; gate-check . 5.
 
 ## Do not lose
 
