@@ -127,7 +127,10 @@
             "sql": "SELECT COUNT(m.ID) AS n FROM Inventory.StockMove AS m WHERE m/Inventory.StockMove_Transfer/Inventory.Transfer/Inventory.Transfer_Backorder/Inventory.Transfer/Number = '{{deliveryNo}}' AND m.DemandQuantity = 2",
             "atLeast": 1
           }
-        ]
+        ],
+        "scope": {
+          "newRowsBy": "id"
+        }
       }
     }
   ],

@@ -155,3 +155,6 @@
 1792095190	2026-10-15T20:13:10Z	Inventory.StockLevel_Overview	mdlsource/8-inventory/807-inventory-page-stock-level-overview.mdl
 1792095263	2026-10-15T20:14:23Z	Inventory.ReorderRule_Overview	mdlsource/8-inventory/810-inventory-page-reorder-rule-overview.mdl
 1792095336	2026-10-15T20:15:36Z	Purchasing.VendorPrice_Overview	mdlsource/7-purchasing/done-715-purchasing-page-vendor-price-overview.mdl
+1792099165	2026-10-15T21:19:25Z	Sales.SalesOrder_Overview	mdlsource/6-sales/done-605-sales-page-sales-order-overview.mdl
+1792099242	2026-10-15T21:20:42Z	Purchasing.PurchaseOrder_Overview	mdlsource/7-purchasing/done-706-purchasing-page-purchase-order-overview.mdl
+1792099317	2026-10-15T21:21:57Z	Inventory.Transfer_Overview	mdlsource/8-inventory/803-inventory-page-transfer-overview.mdl

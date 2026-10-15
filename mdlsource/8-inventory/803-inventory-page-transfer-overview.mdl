@@ -18,7 +18,7 @@ create or modify page Inventory.Transfer_Overview folder 'Operations/Pages'
       actionbutton btnNew (Caption: 'New', Action: call microflow Inventory.ACT_Transfer_New, ButtonStyle: Primary)
     }
   }
-  datagrid gridMain (DataSource: database Inventory."Transfer" sort by "Number" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Inventory.Transfer_NewEdit(Transfer = $currentObject)) {
+  datagrid gridMain (DataSource: database Inventory."Transfer" sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Inventory.Transfer_NewEdit(Transfer = $currentObject)) {
     column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumber }
     column (Attribute: Transfer_Partner/Name, Caption: 'Partner', WrapText: true)
     column (Attribute: "ScheduledDate", Caption: 'Scheduled date', WrapText: true) { datefilter fScheduledDate }

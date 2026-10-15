@@ -18,7 +18,7 @@ create or modify page Purchasing.PurchaseOrder_Overview folder 'RFQs/Pages'
       actionbutton btnNew (Caption: 'New', Action: call microflow Purchasing.ACT_PurchaseOrder_New, ButtonStyle: Primary)
     }
   }
-  datagrid gridMain (DataSource: database Purchasing."PurchaseOrder" sort by "Number" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $currentObject)) {
+  datagrid gridMain (DataSource: database Purchasing."PurchaseOrder" sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $currentObject)) {
     column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumber }
     column (Attribute: "OrderDeadline", Caption: 'Order deadline', WrapText: true) { datefilter fOrderDeadline }
     column (Attribute: PurchaseOrder_Vendor/Name, Caption: 'Vendor', WrapText: true)

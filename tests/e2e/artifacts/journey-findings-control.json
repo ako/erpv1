@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-15T20:06:52.975Z",
+  "capturedAt": "2026-10-15T21:24:08.390Z",
   "configuredUser": "warehouse.user",
   "actualUser": "warehouse.user",
   "usedFallback": false,
@@ -8,8 +8,8 @@
   "mutants": {
     "expectedPerJourney": 7,
     "expected": 7,
-    "supported": 3,
-    "proven": 2,
+    "supported": 5,
+    "proven": 5,
     "unsupported": [
       {
         "journey": "J-INV-01",
@@ -19,16 +19,6 @@
       {
         "journey": "J-INV-01",
         "rung": "trace-negative",
-        "why": "this journey declares nothing this mutant can break"
-      },
-      {
-        "journey": "J-INV-01",
-        "rung": "data-delta",
-        "why": "this journey declares nothing this mutant can break"
-      },
-      {
-        "journey": "J-INV-01",
-        "rung": "data-target",
         "why": "this journey declares nothing this mutant can break"
       }
     ]
@@ -46,14 +36,14 @@
       "name": "Open Inventory > Transfers: the delivery is listed: reached",
       "verdict": "FAIL",
       "detail": "\".mx-name-__this_widget_does_not_exist__\" never appeared — screenshot J-INV-01-CTL-ui-landing-step1-NOT-REACHED.png",
-      "requirement": "F006-UC002, F007-UC001, F007-UC002"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "ui",
       "name": "Open Inventory > Transfers: the delivery is listed: downstream rungs",
       "verdict": "INVALID",
       "detail": "not reached; nothing measured",
-      "requirement": "F006-UC002, F007-UC001, F007-UC002"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "control",
@@ -67,70 +57,114 @@
       "name": "Open Inventory > Transfers: the delivery is listed: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F006-UC002, F007-UC001, F007-UC002"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "ui",
       "name": "Open Inventory > Transfers: the delivery is listed: page says \"__text_this_page_will_never_render__\"",
       "verdict": "FAIL",
       "detail": "not found in rendered text",
-      "requirement": "F006-UC002, F007-UC001, F007-UC002"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "ui",
       "name": "Open the delivery: Ready, the order's chairs reserved: reached",
       "verdict": "PASS",
       "detail": ".mx-name-btnValidate0",
-      "requirement": "F006-UC002, F007-UC001, F007-UC002"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00036\"",
+      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00049\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F007-UC001, F007-UC002"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "ui",
       "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F007-UC001, F007-UC002"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "data",
       "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
       "verdict": "PASS",
       "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F007-UC001, F007-UC002"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "ui",
-      "name": "Validate: the delivery is done: reached",
+      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-dvMain",
-      "requirement": "F006-UC002, F007-UC001, F007-UC002"
+      "detail": ".mx-name-pbtnCreatebackorder",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "ui",
-      "name": "Validate: the delivery is done: page says \"Done\"",
+      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F007-UC001, F007-UC002"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "data",
-      "name": "Validate: the delivery is done: the delivery is done with a date",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
+      "verdict": "PASS",
+      "detail": "before=22 after=23 delta=1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449458)",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
+      "verdict": "PASS",
+      "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00067' (scoped to rows with id > 36591746972449458)",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
       "verdict": "PASS",
       "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F007-UC001, F007-UC002"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "outcome",
       "name": "J-INV-01-CTL-ui-text end state",
       "verdict": "PASS",
       "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F007-UC001, F007-UC002"
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "control",
@@ -154,31 +188,366 @@
       "requirement": ""
     },
     {
+      "rung": "ui",
+      "name": "Open Inventory > Transfers: the delivery is listed: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00048\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-btnValidate0",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00048\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreatebackorder",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +2",
+      "verdict": "FAIL",
+      "detail": "before=23 after=24 delta=1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449561)",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
+      "verdict": "PASS",
+      "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00066' (scoped to rows with id > 36591746972449561)",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "outcome",
+      "name": "J-INV-01-CTL-data-delta end state",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
       "rung": "control",
       "name": "J-INV-01 · data-delta: expect +2 rows from a +1 action",
-      "verdict": "INVALID",
-      "detail": "this journey declares nothing this mutant can break — this rung is UNPROVEN for J-INV-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)",
+      "verdict": "PASS",
+      "detail": "caught by \"Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +2\"",
       "requirement": ""
+    },
+    {
+      "rung": "ui",
+      "name": "Open Inventory > Transfers: the delivery is listed: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00047\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-btnValidate0",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00047\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreatebackorder",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
+      "verdict": "PASS",
+      "detail": "before=24 after=25 delta=1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449696)",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
+      "verdict": "FAIL",
+      "detail": "0 row(s) link to Sales.SalesOrder where Number = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 36591746972449696)",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "outcome",
+      "name": "J-INV-01-CTL-data-target end state",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "control",
       "name": "J-INV-01 · data-target: association must point at a value the journey never picked",
-      "verdict": "INVALID",
-      "detail": "this journey declares nothing this mutant can break — this rung is UNPROVEN for J-INV-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)",
+      "verdict": "PASS",
+      "detail": "caught by \"Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number\"",
       "requirement": ""
     },
     {
+      "rung": "ui",
+      "name": "Open Inventory > Transfers: the delivery is listed: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00041\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-btnValidate0",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00041\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
       "rung": "data",
-      "name": "J-INV-01-CTL-outcome: seeds resolved",
-      "verdict": "INVALID",
-      "detail": "\"deliveryNo\" returned nothing — the DB has no row to drive this journey, or the admin API is unreachable. Journey NOT run; this is not a feature failure.",
-      "requirement": "F006-UC002, F007-UC001, F007-UC002"
+      "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreatebackorder",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
+      "verdict": "PASS",
+      "detail": "before=25 after=26 delta=1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449893)",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
+      "verdict": "PASS",
+      "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00061' (scoped to rows with id > 36591746972449893)",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+    },
+    {
+      "rung": "outcome",
+      "name": "J-INV-01-CTL-outcome end state",
+      "verdict": "FAIL",
+      "detail": "got 1, need >= 999999",
+      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "control",
       "name": "J-INV-01 · outcome: outcome query with an unreachable floor or exact value",
-      "verdict": "FAIL",
-      "detail": "BROKEN PRECONDITION WENT GREEN — this rung proves nothing",
+      "verdict": "PASS",
+      "detail": "caught by \"J-INV-01-CTL-outcome end state\"",
       "requirement": ""
     }
   ],
@@ -189,12 +558,13 @@
       "persona": "warehouse.user",
       "requirement": [
         "F006-UC002",
+        "F006-UC004",
         "F007-UC001",
         "F007-UC002"
       ],
       "seeds": {
-        "deliveryNo": "WH/OUT/00036",
-        "orderNo": "S00056"
+        "deliveryNo": "WH/OUT/00049",
+        "orderNo": "S00067"
       },
       "steps": [
         {
@@ -202,6 +572,7 @@
           "name": "Open Inventory > Transfers: the delivery is listed",
           "requirement": [
             "F006-UC002",
+            "F006-UC004",
             "F007-UC001",
             "F007-UC002"
           ],
@@ -225,7 +596,7 @@
             "file": "../tests/e2e/artifacts/J-INV-01-CTL-ui-landing-step1-NOT-REACHED.png",
             "title": "Mendix - Transfers",
             "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T20:06:45.291Z"
+            "at": "2026-10-15T21:23:35.390Z"
           },
           "reached": false,
           "checks": [
@@ -242,7 +613,7 @@
               "detail": "not reached; nothing measured"
             }
           ],
-          "ms": 1146
+          "ms": 1137
         }
       ]
     },
@@ -252,12 +623,13 @@
       "persona": "warehouse.user",
       "requirement": [
         "F006-UC002",
+        "F006-UC004",
         "F007-UC001",
         "F007-UC002"
       ],
       "seeds": {
-        "deliveryNo": "WH/OUT/00036",
-        "orderNo": "S00056"
+        "deliveryNo": "WH/OUT/00049",
+        "orderNo": "S00067"
       },
       "steps": [
         {
@@ -265,6 +637,7 @@
           "name": "Open Inventory > Transfers: the delivery is listed",
           "requirement": [
             "F006-UC002",
+            "F006-UC004",
             "F007-UC001",
             "F007-UC002"
           ],
@@ -288,7 +661,7 @@
             "file": "../tests/e2e/artifacts/J-INV-01-CTL-ui-text-step1.png",
             "title": "Mendix - Transfers",
             "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T20:06:48.155Z"
+            "at": "2026-10-15T21:23:38.261Z"
           },
           "reached": true,
           "checks": [
@@ -305,20 +678,21 @@
               "detail": "not found in rendered text"
             }
           ],
-          "ms": 1115
+          "ms": 1118
         },
         {
           "n": 2,
           "name": "Open the delivery: Ready, the order's chairs reserved",
           "requirement": [
             "F006-UC002",
+            "F006-UC004",
             "F007-UC001",
             "F007-UC002"
           ],
           "actions": [
             {
               "verb": "Open",
-              "target": "row \"WH/OUT/00036\" of gridMain",
+              "target": "row \"WH/OUT/00049\" of gridMain",
               "selector": ".mx-name-gridMain"
             }
           ],
@@ -336,7 +710,7 @@
             "file": "../tests/e2e/artifacts/J-INV-01-CTL-ui-text-step2.png",
             "title": "Mendix - Transfer",
             "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T20:06:49.443Z"
+            "at": "2026-10-15T21:23:40.202Z"
           },
           "reached": true,
           "checks": [
@@ -348,7 +722,7 @@
             },
             {
               "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00036\"",
+              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00049\"",
               "verdict": "PASS",
               "detail": ""
             },
@@ -365,27 +739,33 @@
               "detail": "got 1, need >= 1"
             }
           ],
-          "ms": 1357
+          "ms": 1998
         },
         {
           "n": 3,
-          "name": "Validate: the delivery is done",
+          "name": "Process 3 of the 5 chairs and validate: the backorder question opens",
           "requirement": [
             "F006-UC002",
+            "F006-UC004",
             "F007-UC001",
             "F007-UC002"
           ],
           "actions": [
             {
+              "verb": "Type",
+              "target": "\"3\" into Quantity (chairs processed)",
+              "selector": ".mx-name-lntxtQuantity"
+            },
+            {
               "verb": "Click",
-              "target": "Validate",
+              "target": "Validate — straight after typing, as a user would",
               "selector": ".mx-name-btnValidate0"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-dvMain",
+            "landsOn": ".mx-name-pbtnCreatebackorder",
             "pageSays": [
-              "Done"
+              "less than the initial demand"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
@@ -395,30 +775,897 @@
             "file": "../tests/e2e/artifacts/J-INV-01-CTL-ui-text-step3.png",
             "title": "Mendix - Transfer",
             "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T20:06:51.148Z"
+            "at": "2026-10-15T21:23:41.762Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Validate: the delivery is done: reached",
+              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-pbtnCreatebackorder"
+            },
+            {
+              "rung": "ui",
+              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1501
+        },
+        {
+          "n": 4,
+          "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Create backorder",
+              "selector": ".mx-name-pbtnCreatebackorder"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [
+              "Done"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Inventory.Transfer",
+              "delta": 1,
+              "associations": [
+                "Inventory.Transfer_SalesOrder"
+              ]
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-CTL-ui-text-step4.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T21:23:43.023Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Validate: the delivery is done: page says \"Done\"",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "Validate: the delivery is done: the delivery is done with a date",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
+              "verdict": "PASS",
+              "detail": "before=22 after=23 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
+              "verdict": "PASS",
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449458)"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
+              "verdict": "PASS",
+              "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00067' (scoped to rows with id > 36591746972449458)"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
               "verdict": "PASS",
               "detail": "got 1, need >= 1"
             }
           ],
-          "ms": 1711
+          "ms": 1656
+        }
+      ]
+    },
+    {
+      "journey": "J-INV-01-CTL-data-delta",
+      "title": "(positive control · data-delta — expect +2 rows from a +1 action; MUST fail)",
+      "persona": "warehouse.user",
+      "requirement": [
+        "F006-UC002",
+        "F006-UC004",
+        "F007-UC001",
+        "F007-UC002"
+      ],
+      "seeds": {
+        "deliveryNo": "WH/OUT/00048",
+        "orderNo": "S00066"
+      },
+      "steps": [
+        {
+          "n": 1,
+          "name": "Open Inventory > Transfers: the delivery is listed",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Navigate",
+              "target": "Inventory › Transfers",
+              "selector": null
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-gridMain",
+            "pageSays": [
+              "{{deliveryNo}}"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-delta-step1.png",
+            "title": "Mendix - Transfers",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T21:23:46.457Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open Inventory > Transfers: the delivery is listed: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00048\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1146
+        },
+        {
+          "n": 2,
+          "name": "Open the delivery: Ready, the order's chairs reserved",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Open",
+              "target": "row \"WH/OUT/00048\" of gridMain",
+              "selector": ".mx-name-gridMain"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnValidate0",
+            "pageSays": [
+              "{{deliveryNo}}",
+              "Ready"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-delta-step2.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T21:23:48.232Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnValidate0"
+            },
+            {
+              "rung": "ui",
+              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00048\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "ui",
+              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            }
+          ],
+          "ms": 1834
+        },
+        {
+          "n": 3,
+          "name": "Process 3 of the 5 chairs and validate: the backorder question opens",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Type",
+              "target": "\"3\" into Quantity (chairs processed)",
+              "selector": ".mx-name-lntxtQuantity"
+            },
+            {
+              "verb": "Click",
+              "target": "Validate — straight after typing, as a user would",
+              "selector": ".mx-name-btnValidate0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-pbtnCreatebackorder",
+            "pageSays": [
+              "less than the initial demand"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-delta-step3.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T21:23:49.626Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-pbtnCreatebackorder"
+            },
+            {
+              "rung": "ui",
+              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1333
+        },
+        {
+          "n": 4,
+          "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Create backorder",
+              "selector": ".mx-name-pbtnCreatebackorder"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [
+              "Done"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Inventory.Transfer",
+              "delta": 2,
+              "associations": [
+                "Inventory.Transfer_SalesOrder"
+              ]
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-delta-step4.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T21:23:50.889Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-dvMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +2",
+              "verdict": "FAIL",
+              "detail": "before=23 after=24 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
+              "verdict": "PASS",
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449561)"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
+              "verdict": "PASS",
+              "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00066' (scoped to rows with id > 36591746972449561)"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            }
+          ],
+          "ms": 1702
+        }
+      ]
+    },
+    {
+      "journey": "J-INV-01-CTL-data-target",
+      "title": "(positive control · data-target — association must point at a value the journey never picked; MUST fail)",
+      "persona": "warehouse.user",
+      "requirement": [
+        "F006-UC002",
+        "F006-UC004",
+        "F007-UC001",
+        "F007-UC002"
+      ],
+      "seeds": {
+        "deliveryNo": "WH/OUT/00047",
+        "orderNo": "S00065"
+      },
+      "steps": [
+        {
+          "n": 1,
+          "name": "Open Inventory > Transfers: the delivery is listed",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Navigate",
+              "target": "Inventory › Transfers",
+              "selector": null
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-gridMain",
+            "pageSays": [
+              "{{deliveryNo}}"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-target-step1.png",
+            "title": "Mendix - Transfers",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T21:23:54.295Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open Inventory > Transfers: the delivery is listed: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00047\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1128
+        },
+        {
+          "n": 2,
+          "name": "Open the delivery: Ready, the order's chairs reserved",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Open",
+              "target": "row \"WH/OUT/00047\" of gridMain",
+              "selector": ".mx-name-gridMain"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnValidate0",
+            "pageSays": [
+              "{{deliveryNo}}",
+              "Ready"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-target-step2.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T21:23:56.010Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnValidate0"
+            },
+            {
+              "rung": "ui",
+              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00047\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "ui",
+              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            }
+          ],
+          "ms": 1803
+        },
+        {
+          "n": 3,
+          "name": "Process 3 of the 5 chairs and validate: the backorder question opens",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Type",
+              "target": "\"3\" into Quantity (chairs processed)",
+              "selector": ".mx-name-lntxtQuantity"
+            },
+            {
+              "verb": "Click",
+              "target": "Validate — straight after typing, as a user would",
+              "selector": ".mx-name-btnValidate0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-pbtnCreatebackorder",
+            "pageSays": [
+              "less than the initial demand"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-target-step3.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T21:23:57.457Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-pbtnCreatebackorder"
+            },
+            {
+              "rung": "ui",
+              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1361
+        },
+        {
+          "n": 4,
+          "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Create backorder",
+              "selector": ".mx-name-pbtnCreatebackorder"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [
+              "Done"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Inventory.Transfer",
+              "delta": 1,
+              "associations": [
+                "Inventory.Transfer_SalesOrder"
+              ]
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-target-step4.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T21:23:59.353Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-dvMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
+              "verdict": "PASS",
+              "detail": "before=24 after=25 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
+              "verdict": "PASS",
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449696)"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
+              "verdict": "FAIL",
+              "detail": "0 row(s) link to Sales.SalesOrder where Number = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 36591746972449696)"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            }
+          ],
+          "ms": 2256
+        }
+      ]
+    },
+    {
+      "journey": "J-INV-01-CTL-outcome",
+      "title": "(positive control · outcome — outcome query with an unreachable floor or exact value; MUST fail)",
+      "persona": "warehouse.user",
+      "requirement": [
+        "F006-UC002",
+        "F006-UC004",
+        "F007-UC001",
+        "F007-UC002"
+      ],
+      "seeds": {
+        "deliveryNo": "WH/OUT/00041",
+        "orderNo": "S00061"
+      },
+      "steps": [
+        {
+          "n": 1,
+          "name": "Open Inventory > Transfers: the delivery is listed",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Navigate",
+              "target": "Inventory › Transfers",
+              "selector": null
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-gridMain",
+            "pageSays": [
+              "{{deliveryNo}}"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-CTL-outcome-step1.png",
+            "title": "Mendix - Transfers",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T21:24:02.746Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open Inventory > Transfers: the delivery is listed: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00041\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1141
+        },
+        {
+          "n": 2,
+          "name": "Open the delivery: Ready, the order's chairs reserved",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Open",
+              "target": "row \"WH/OUT/00041\" of gridMain",
+              "selector": ".mx-name-gridMain"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnValidate0",
+            "pageSays": [
+              "{{deliveryNo}}",
+              "Ready"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-CTL-outcome-step2.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T21:24:04.533Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnValidate0"
+            },
+            {
+              "rung": "ui",
+              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00041\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "ui",
+              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            }
+          ],
+          "ms": 1846
+        },
+        {
+          "n": 3,
+          "name": "Process 3 of the 5 chairs and validate: the backorder question opens",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Type",
+              "target": "\"3\" into Quantity (chairs processed)",
+              "selector": ".mx-name-lntxtQuantity"
+            },
+            {
+              "verb": "Click",
+              "target": "Validate — straight after typing, as a user would",
+              "selector": ".mx-name-btnValidate0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-pbtnCreatebackorder",
+            "pageSays": [
+              "less than the initial demand"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-CTL-outcome-step3.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T21:24:05.924Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-pbtnCreatebackorder"
+            },
+            {
+              "rung": "ui",
+              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1331
+        },
+        {
+          "n": 4,
+          "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order",
+          "requirement": [
+            "F006-UC002",
+            "F006-UC004",
+            "F007-UC001",
+            "F007-UC002"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Create backorder",
+              "selector": ".mx-name-pbtnCreatebackorder"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [
+              "Done"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Inventory.Transfer",
+              "delta": 1,
+              "associations": [
+                "Inventory.Transfer_SalesOrder"
+              ]
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-01-CTL-outcome-step4.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-15T21:24:07.792Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-dvMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
+              "verdict": "PASS",
+              "detail": "before=25 after=26 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
+              "verdict": "PASS",
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449893)"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
+              "verdict": "PASS",
+              "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00061' (scoped to rows with id > 36591746972449893)"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            },
+            {
+              "rung": "data",
+              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            }
+          ],
+          "ms": 2277
         }
       ]
     }

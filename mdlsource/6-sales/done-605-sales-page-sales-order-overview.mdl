@@ -18,7 +18,7 @@ create or modify page Sales.SalesOrder_Overview folder 'Quotations/Pages'
       actionbutton btnNew (Caption: 'New', Action: call microflow Sales.ACT_SalesOrder_New, ButtonStyle: Primary)
     }
   }
-  datagrid gridMain (DataSource: database Sales."SalesOrder" sort by "Number" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Sales.SalesOrder_NewEdit(SalesOrder = $currentObject)) {
+  datagrid gridMain (DataSource: database Sales."SalesOrder" sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Sales.SalesOrder_NewEdit(SalesOrder = $currentObject)) {
     column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumber }
     column (Attribute: "OrderDate", Caption: 'Order date', WrapText: true) { datefilter fOrderDate }
     column (Attribute: SalesOrder_Customer/Name, Caption: 'Customer', WrapText: true)
