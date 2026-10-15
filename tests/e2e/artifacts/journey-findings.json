@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-15T20:37:27.380Z",
+  "capturedAt": "2026-10-15T20:39:51.330Z",
   "configuredUser": "warehouse.user",
   "actualUser": "warehouse.user",
   "usedFallback": false,
@@ -17,7 +17,7 @@
       "rung": "ui",
       "name": "login",
       "verdict": "INVALID",
-      "detail": "login faulted: \"Sign in failed.\" — not a credential failure. The runtime refused the session (measured cause on 2026-08-18: trial-licence concurrent-session cap). Check the runtime log; no rung below this ran.",
+      "detail": "login faulted: \"credentials rejected\" — not a credential failure. The runtime refused the session (measured cause on 2026-08-18: trial-licence concurrent-session cap). Check the runtime log; no rung below this ran.",
       "requirement": ""
     }
   ],
