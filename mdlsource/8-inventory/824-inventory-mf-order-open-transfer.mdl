@@ -1,0 +1,44 @@
+mdl 1;
+-- 824-inventory-mf-order-open-transfer.mdl — build-plan rows 71/77/80 (F006-UC003, F007): actions that open Transfer_NewEdit,
+-- so they come after that page (804): New on Transfers (ACT_Transfer_New) and the Delivery / Receipt smart buttons on the order
+-- forms (ACT_SalesOrder_OpenDelivery, ACT_PurchaseOrder_OpenReceipt; the order pages are regenerated afterwards to show them).
+
+/** New on Transfers (F006-UC003): a draft internal transfer, opened for its operations. */
+create or modify microflow Inventory.ACT_Transfer_New ()
+folder 'Transfers/Microflows'
+begin
+  $Type = call microflow Inventory.SUB_OperationType_GetByKind(Kind = Inventory.ENUM_OperationKind.Internal);
+  if $Type = empty then
+    show message 'No internal transfer operation type is configured (Configuration > Warehouse).' type Warning;
+    return;
+  end if;
+  $Transfer = call microflow Inventory.SUB_Transfer_Create(OperationType = $Type, Partner = empty);
+  show page Inventory.Transfer_NewEdit(Transfer = $Transfer);
+end;
+
+/** Delivery smart button on a sales order: its latest delivery. */
+create or modify microflow Inventory.ACT_SalesOrder_OpenDelivery ($SalesOrder: Sales.SalesOrder)
+folder 'Fulfilment/Microflows'
+begin
+  retrieve $Delivery from Inventory.Transfer where [Inventory.Transfer_SalesOrder = $SalesOrder] sort by Number desc first;
+  if $Delivery = empty then
+    show message 'This order has no delivery (it has no goods to deliver).' type Information;
+    return;
+  end if;
+  show page Inventory.Transfer_NewEdit(Transfer = $Delivery);
+end;
+
+/** Receipt smart button on a purchase order: its latest receipt. */
+create or modify microflow Inventory.ACT_PurchaseOrder_OpenReceipt ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'Fulfilment/Microflows'
+begin
+  retrieve $Receipt from Inventory.Transfer where [Inventory.Transfer_PurchaseOrder = $PurchaseOrder] sort by Number desc first;
+  if $Receipt = empty then
+    show message 'This order has no receipt (it has no goods to receive).' type Information;
+    return;
+  end if;
+  show page Inventory.Transfer_NewEdit(Transfer = $Receipt);
+end;
+
+grant execute on microflow Inventory.ACT_SalesOrder_OpenDelivery to Inventory.Reader, Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_PurchaseOrder_OpenReceipt to Inventory.Reader, Inventory.User, Inventory.Manager;

@@ -43,7 +43,8 @@ ONCHANGE = {('Sales.SalesOrder', 'SalesOrder_Customer'): 'Sales.ACT_SalesOrder_C
             **{('Purchasing.PurchaseOrderLine', f): 'Purchasing.ACT_PurchaseOrderLine_Recompute'
                for f in ('Quantity', 'UnitPrice', 'DiscountPercent', 'PurchaseOrderLine_Taxes')}}
 # The New button of a list whose new record needs defaults (number, dates, salesperson): a microflow, not create object.
-NEW_ACTION = {'SalesOrder_Overview': 'Sales.ACT_SalesOrder_New', 'PurchaseOrder_Overview': 'Purchasing.ACT_PurchaseOrder_New'}
+NEW_ACTION = {'SalesOrder_Overview': 'Sales.ACT_SalesOrder_New', 'PurchaseOrder_Overview': 'Purchasing.ACT_PurchaseOrder_New',
+              'Transfer_Overview': 'Inventory.ACT_Transfer_New'}
 # Buttons whose microflow belongs to a later phase: left off the page until that phase builds it (build plan).
 DEFERRED_BUTTONS = {'ACT_SalesOrder_CreateInvoice': 'Invoicing phase, build-plan row 52',
                     'ACT_PurchaseOrder_CreateBill': 'Invoicing phase, build-plan row 64'}
@@ -63,6 +64,20 @@ LINE_DELETE = {'Sales.SalesOrderLine': 'Sales.ACT_SalesOrderLine_Delete', 'Purch
 # Inputs shown only in some states (C1-04: a template replaces every line, so only on a quotation).
 VISIBLE_WHEN = {('Sales.SalesOrder', 'SalesOrder_QuotationTemplate'):
                 "$currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation or $currentObject/Status = Sales.ENUM_SalesOrderStatus.QuotationSent"}
+# Fields shown but never typed into: computed or system-maintained (stock is changed only by moves and counts).
+READONLY_FIELDS = {('Inventory.StockLevel', 'Quantity'), ('Inventory.StockLevel', 'ReservedQuantity'),
+                   ('Inventory.StockMove', 'Status'), ('Inventory.Transfer', 'DateDone')}
+# Page-level buttons on list pages: (page, caption) -> microflow without parameters.
+LIST_BUTTON = {('StockLevel_Overview', 'Apply counts'): 'Inventory.ACT_StockLevel_ApplyCounts',
+               ('ReorderRule_Overview', 'Run scheduler'): 'Inventory.ACT_ReorderRules_RunNow'}
+# Smart buttons (Odoo stat buttons) under the status pill: (page, caption) -> microflow taking the form's object.
+SMART_ACTION = {('SalesOrder_NewEdit', 'Delivery'): ('Inventory.ACT_SalesOrder_OpenDelivery',
+                                                     "$currentObject/Status = Sales.ENUM_SalesOrderStatus.SalesOrder"),
+                ('PurchaseOrder_NewEdit', 'Receipt'): ('Inventory.ACT_PurchaseOrder_OpenReceipt',
+                                                       "$currentObject/Status = Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder")}
+# Related links that open the object behind an association: (page, caption) -> (microflow taking the form's object, visible).
+LINK_ACTION = {('Transfer_NewEdit', 'Open sales order'): ('Inventory.ACT_Transfer_OpenSalesOrder', '$currentObject/Inventory.Transfer_SalesOrder != empty'),
+               ('Transfer_NewEdit', 'Open purchase order'): ('Inventory.ACT_Transfer_OpenPurchaseOrder', '$currentObject/Inventory.Transfer_PurchaseOrder != empty')}
 SAVE_HOOK = {'Products.ProductCategory': 'Products.SUB_ProductCategory_ComputeFullName'}
 LINK_CAPTION = {'Administration.Account_Overview': 'User accounts (Administration)'}
 
@@ -159,7 +174,7 @@ def input_widget(e, f, ind, readonly=False, prefix='in', row_save=False):
     wid = (lambda k, n: _wid('ln' + k, n)) if prefix == 'ln' else _wid
     a = attr(e, f)
     lab = esc(label_of(e, f))
-    ro = ', Editable: Never' if (readonly or is_readonly(a, f)) else ''
+    ro = ', Editable: Never' if (readonly or is_readonly(a, f) or (e['name'], f) in READONLY_FIELDS) else ''
     oc = ONCHANGE.get((e['name'], f))
     if oc and not ro:
         ro = ', OnChange: call microflow %s(%s = $currentObject)' % (oc, e['name'].split('.')[1])
@@ -274,6 +289,11 @@ def gen_list(s):
         else:
             actions.append("actionbutton btnNew (Caption: 'New', Action: create object %s then show page %s.%s, ButtonStyle: Primary)"
                            % (D.qn(s['entity']), page_module(tgt), tgt))
+    for i, b in enumerate(s.get('buttons', [])):
+        mf = LIST_BUTTON.get((s['name'], b[0]))
+        if mf:
+            actions.append("actionbutton %s (Caption: '%s', Action: call microflow %s, ButtonStyle: %s)"
+                           % (wid('btn', b[0] + str(i)), esc(b[0]), mf, 'Default' if actions else 'Primary'))
     L = page_head(None, "dynamictext txtTitle (Content: '%s', RenderMode: H1)" % esc(s['title']), actions)
     filt = set(s.get('filters', []))
     if s.get('editable'):
@@ -413,6 +433,11 @@ def gen_form(s, popup=False):
         L += page_head(s['title'], title, acts, ind='    ')
         if s.get('statusbar'):
             L.append("    dynamictext txtStatus (Content: '{1}', ContentParams: ({1} = %s), Class: 'pill pill-info spacing-outer-bottom-medium')" % D.q(s['statusbar'][0]))
+        for i, (cap, _target, _n) in enumerate(s.get('smart', [])):
+            sm = SMART_ACTION.get((s['name'], cap))
+            if sm:
+                L.append("    linkbutton %s (Caption: '%s', Action: call microflow %s(%s = $currentObject), Visible: %s)"
+                         % (wid('lnkSmart', cap), esc(cap), sm[0], pname, sm[1]))
     L += sections_block(e, s.get('sections', []), '    ', readonly_all=s.get('readonly', False),
                         popup_title=s['title'] if popup else None)
     for ln in ([s['lines']] if isinstance(s.get('lines'), dict) else s.get('lines', []) or []):
@@ -447,10 +472,13 @@ def gen_form(s, popup=False):
     if s.get('notes'):
         L.append(input_widget(e, s['notes'], '    '))
     links = [(t, LINK_TARGET.get(g) or existing_page(g)) for t, g in s.get('links', [])]
-    if any(p for _, p in links):
+    if any(p or LINK_ACTION.get((s['name'], t)) for t, p in links):
         L.append("    dynamictext hRelated (Content: 'Related', RenderMode: H2)")
     for i, (text, page) in enumerate(links):
-        if page:
+        la = LINK_ACTION.get((s['name'], text))
+        if la:
+            L.append("    linkbutton lnk%d (Caption: '%s', Action: call microflow %s(%s = $currentObject), Visible: %s)" % (i, esc(text), la[0], pname, la[1]))
+        elif page:
             L.append("    linkbutton lnk%d (Caption: '%s', Action: show page %s)" % (i, esc(LINK_CAPTION.get(page, text.split(':')[0])), page))
     if popup:
         L.append('    footer {')
@@ -690,8 +718,13 @@ end;
     for mf in sorted(m for m in called if m.startswith(mod + '.')):
         # the New microflow opens the form: only roles that may open the form get it, so Mendix hides New from the rest (C1-01)
         r = module_roles_for(mod, U.S[s['new']]['roles']) if mf == NEW_ACTION.get(name) else roles
+        # a Reader role views the page read-only: it gets navigation (…_Open…) and data sources only, so Mendix hides the
+        # page's state-changing buttons from it (sales users open a delivery from their order, 2026-10-15)
+        r = [x for x in r if not x.endswith('.Reader') or re.search(r'_Open|\.DS_', mf)]
+        if not r:
+            continue
         out.append('grant execute on microflow %s to %s;' % (mf, ', '.join(r)))
-        if r != roles:
+        if mf == NEW_ACTION.get(name) and r != roles:
             out.append('revoke execute on microflow %s from %s;' % (mf, ', '.join(x for x in roles if x not in r)))
     return '\n'.join(out) + '\n'
 

@@ -1,0 +1,38 @@
+mdl 1;
+-- 815-inventory-mf-sales-order-update-delivered.mdl — build-plan row 78 (F007-UC002). Owns Sales.SUB_SalesOrder_UpdateDelivered:
+-- called by Inventory when a delivery is done (Inventory sits above Sales, so this is a downward call).
+
+/**
+ * Delivered quantities and delivery status of an order (Odoo sale.order.line._compute_qty_delivered, delivery_status):
+ * per line the done quantity of its delivery moves; NotDelivered / PartiallyDelivered / FullyDelivered over the goods lines
+ * (PROJECT.md: 'Started' is not used). Then the invoice status, which depends on delivered quantities.
+ *
+ * @param $SalesOrder the order
+ * @returns true
+ */
+create or modify microflow Sales.SUB_SalesOrder_UpdateDelivered ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  retrieve $Lines from Sales.SalesOrderLine where [Sales.SalesOrderLine_SalesOrder = $SalesOrder][Sales.SalesOrderLine_Product/Products.Product/ProductType = 'Goods'];
+  declare $AnyDelivered Boolean = false;
+  declare $AllDelivered Boolean = true;
+  @annotation 'One loop over the goods lines (tens at most); the done moves of each line are one retrieve; one commit after the loop.'
+  loop $Line in $Lines begin
+    retrieve $DoneMoves from Inventory.StockMove where [Inventory.StockMove_SalesOrderLine = $Line][Status = 'Done'];
+    $Delivered = sum $DoneMoves by Quantity;
+    change $Line (QuantityDelivered = $Delivered);
+    if $Delivered > 0 then
+      set $AnyDelivered = true;
+    end if;
+    if $Delivered < (if $Line/Quantity = empty then 0 else $Line/Quantity) then
+      set $AllDelivered = false;
+    end if;
+  end loop;
+  commit $Lines with events refresh;
+  change $SalesOrder (DeliveryStatus = if $AnyDelivered and $AllDelivered then Sales.ENUM_DeliveryStatus.FullyDelivered
+    else if $AnyDelivered then Sales.ENUM_DeliveryStatus.PartiallyDelivered else Sales.ENUM_DeliveryStatus.NotDelivered);
+  commit $SalesOrder with events refresh;
+  $Invoicing = call microflow Sales.SUB_SalesOrder_UpdateInvoiceStatus(SalesOrder = $SalesOrder);
+  return true;
+end;

@@ -1,0 +1,25 @@
+mdl 1;
+-- 825-inventory-mf-transfer-validate-action.mdl — build-plan row 69 (F006-UC001/UC002/UC004): the Validate button. Separate
+-- from 819 because it opens ValidateTransfer_Popup (805), whose buttons call 819.
+
+/**
+ * Validate button: refused when done/cancelled or with nothing processed (VAL_Transfer_Validate); with a move below its demand
+ * the backorder question is asked (F006-UC004), else the transfer is done.
+ *
+ * @param $Transfer the transfer
+ */
+create or modify microflow Inventory.ACT_Transfer_Validate ($Transfer: Inventory.Transfer)
+folder 'Transfers/Microflows'
+begin
+  $IsValid = call microflow Inventory.VAL_Transfer_Validate(Transfer = $Transfer);
+  if not($IsValid) then
+    return;
+  end if;
+  $HasShortfall = call microflow Inventory.SUB_Transfer_HasShortfall(Transfer = $Transfer);
+  if $HasShortfall then
+    $Request = call microflow Inventory.SUB_ValidateTransferRequest_New(Transfer = $Transfer);
+    show page Inventory.ValidateTransfer_Popup(ValidateTransferRequest = $Request);
+    return;
+  end if;
+  call microflow Inventory.SUB_Transfer_Done(Transfer = $Transfer, CreateBackorder = false);
+end;

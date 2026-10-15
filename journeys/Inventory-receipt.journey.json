@@ -1,0 +1,33 @@
+{
+  "id": "J-INV-02",
+  "title": "Warehouse user validates the receipt of an approved purchase order: the order reads fully received",
+  "requirement": ["F006-UC001", "F007-UC004", "F007-UC005"],
+  "persona": "warehouse.user",
+  "_seedNote": "the receipt comes from an approved purchase order (J-PURCH-02 approves 12 Desk Combinations from Gemini)",
+  "seeds": [
+    { "name": "receiptNo",
+      "sql": "SELECT t.Number AS n FROM Inventory.Transfer AS t WHERE t.Status = 'Ready' AND t/Inventory.Transfer_OperationType/Inventory.OperationType/Kind = 'Receipt' AND t/Inventory.Transfer_PurchaseOrder/Purchasing.PurchaseOrder/Number != NULL ORDER BY t.Number DESC LIMIT 1" },
+    { "name": "orderNo",
+      "sql": "SELECT t/Inventory.Transfer_PurchaseOrder/Purchasing.PurchaseOrder/Number AS n FROM Inventory.Transfer AS t WHERE t.Number = '{{receiptNo}}'" }
+  ],
+  "steps": [
+    {
+      "name": "Open Inventory > Transfers and the receipt",
+      "actions": [
+        { "do": "nav", "group": "Inventory", "item": "Transfers" },
+        { "do": "clickRow", "widget": "gridMain", "text": "{{receiptNo}}" }
+      ],
+      "ui": { "ready": ".mx-name-btnValidate0", "textPresent": ["{{receiptNo}}", "Ready"] }
+    },
+    {
+      "name": "Validate: the receipt is done",
+      "actions": [{ "do": "click", "widget": "btnValidate0", "label": "Validate" }],
+      "ui": { "ready": ".mx-name-dvMain", "textPresent": ["Done"] }
+    }
+  ],
+  "outcome": {
+    "label": "the purchase order reads fully received",
+    "sql": "SELECT COUNT(o.ID) AS n FROM Purchasing.PurchaseOrder AS o WHERE o.Number = '{{orderNo}}' AND o.ReceiptStatus = 'FullyReceived'",
+    "atLeast": 1
+  }
+}

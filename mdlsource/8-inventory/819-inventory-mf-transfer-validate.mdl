@@ -1,0 +1,130 @@
+mdl 1;
+-- 819-inventory-mf-transfer-validate.mdl — build-plan rows 69/72 (F006-UC001/UC002/UC004, F007-UC002/UC005): validating a
+-- transfer. Owns SUB_Transfer_Done, SUB_Transfer_SplitBackorder, ACT_Transfer_Validate and the ValidateTransfer_Popup buttons
+-- ACT_ValidateTransferRequest_Backorder / _NoBackorder (the popup itself is 805, built after these).
+
+/**
+ * The backorder of a transfer (Odoo _create_backorder): a new transfer of the same type, partner and origin with one move per
+ * short move for the quantity not processed, confirmed at once.
+ *
+ * @param $Transfer the transfer being validated
+ * @param $Short the moves whose processed quantity is below their demand
+ */
+create or modify microflow Inventory.SUB_Transfer_SplitBackorder ($Transfer: Inventory.Transfer, $Short: List of Inventory.StockMove)
+folder 'Transfers/Microflows'
+begin
+  retrieve $Type from $Transfer/Inventory.Transfer_OperationType;
+  retrieve $Partner from $Transfer/Inventory.Transfer_Partner;
+  $Backorder = call microflow Inventory.SUB_Transfer_Create(OperationType = $Type, Partner = $Partner);
+  change $Backorder (SourceDocument = $Transfer/SourceDocument, Inventory.Transfer_Backorder = $Transfer,
+    Inventory.Transfer_SalesOrder = $Transfer/Inventory.Transfer_SalesOrder, Inventory.Transfer_PurchaseOrder = $Transfer/Inventory.Transfer_PurchaseOrder,
+    Inventory.Transfer_SourceLocation = $Transfer/Inventory.Transfer_SourceLocation, Inventory.Transfer_DestinationLocation = $Transfer/Inventory.Transfer_DestinationLocation);
+  commit $Backorder with events;
+  $Rests = create list of Inventory.StockMove;
+  @annotation 'One loop over the short moves (a handful): one new move each, linked to the same order line; one commit after the loop.'
+  loop $Move in $Short begin
+    retrieve $MoveProduct from $Move/Inventory.StockMove_Product;
+    $Rest = call microflow Inventory.SUB_Transfer_AddMove(Transfer = $Backorder, Product = $MoveProduct,
+      Demand = $Move/DemandQuantity - (if $Move/Quantity = empty then 0 else $Move/Quantity), Description = $Move/Description);
+    change $Rest (Inventory.StockMove_SalesOrderLine = $Move/Inventory.StockMove_SalesOrderLine,
+      Inventory.StockMove_PurchaseOrderLine = $Move/Inventory.StockMove_PurchaseOrderLine);
+    add $Rest to $Rests;
+  end loop;
+  commit $Rests with events;
+  $Ready = call microflow Inventory.SUB_Transfer_Reserve(Transfer = $Backorder);
+end;
+
+/**
+ * Validate (Odoo button_validate / _action_done): every move's processed quantity leaves its source and arrives at its
+ * destination (stock kept at internal locations only); a move processed below its demand keeps the processed quantity as done,
+ * and the rest goes to a backorder or is dropped; then the source order's delivered / received quantities are updated.
+ *
+ * @param $Transfer the transfer
+ * @param $CreateBackorder true: the unprocessed rest goes to a backorder; false: it is dropped
+ */
+create or modify microflow Inventory.SUB_Transfer_Done ($Transfer: Inventory.Transfer, $CreateBackorder: Boolean)
+folder 'Transfers/Microflows'
+begin
+  retrieve $Moves from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Done'][Status != 'Cancelled'];
+  $Short = filter $Moves where (if $currentObject/Quantity = empty then 0 else $currentObject/Quantity) < $currentObject/DemandQuantity;
+  $ShortCount = count $Short;
+  if $CreateBackorder and $ShortCount > 0 then
+    call microflow Inventory.SUB_Transfer_SplitBackorder(Transfer = $Transfer, Short = $Short);
+  end if;
+  @annotation 'One loop over the transfer''s moves (a handful): each processed move adjusts two stock levels; one commit after the loop.'
+  loop $Move in $Moves begin
+    declare $Qty Decimal = if $Move/Quantity = empty then 0 else $Move/Quantity;
+    if $Qty > 0 then
+      retrieve $Product from $Move/Inventory.StockMove_Product;
+      retrieve $From from $Move/Inventory.StockMove_SourceLocation;
+      retrieve $To from $Move/Inventory.StockMove_DestinationLocation;
+      call microflow Inventory.SUB_StockLevel_Adjust(Product = $Product, Location = $From, Delta = 0 - $Qty);
+      call microflow Inventory.SUB_StockLevel_Adjust(Product = $Product, Location = $To, Delta = $Qty);
+      change $Move (Status = Inventory.ENUM_TransferStatus.Done, DemandQuantity = $Qty, Picked = true, Date = [%CurrentDateTime%]);
+    else
+      change $Move (Status = Inventory.ENUM_TransferStatus.Cancelled);
+    end if;
+  end loop;
+  commit $Moves with events refresh;
+  change $Transfer (Status = Inventory.ENUM_TransferStatus.Done, DateDone = [%CurrentDateTime%]);
+  commit $Transfer with events refresh;
+  retrieve $SalesOrder from $Transfer/Inventory.Transfer_SalesOrder;
+  if $SalesOrder != empty then
+    $Delivered = call microflow Sales.SUB_SalesOrder_UpdateDelivered(SalesOrder = $SalesOrder);
+  end if;
+  retrieve $PurchaseOrder from $Transfer/Inventory.Transfer_PurchaseOrder;
+  if $PurchaseOrder != empty then
+    $Received = call microflow Purchasing.SUB_PurchaseOrder_UpdateReceived(PurchaseOrder = $PurchaseOrder);
+  end if;
+end;
+
+/**
+ * Whether a transfer has something to validate: open, with at least one processed quantity (F006 rule).
+ *
+ * @param $Transfer the transfer
+ * @returns true when it can be validated
+ */
+create or modify microflow Inventory.VAL_Transfer_Validate ($Transfer: Inventory.Transfer)
+returns Boolean as $IsValid
+folder 'Transfers/Microflows'
+begin
+  if $Transfer/Status = Inventory.ENUM_TransferStatus.Done or $Transfer/Status = Inventory.ENUM_TransferStatus.Cancelled then
+    show message 'This transfer is already done or cancelled.' type Warning;
+    return false;
+  end if;
+  retrieve $Processed from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Cancelled'][Quantity > 0] first;
+  if $Processed = empty then
+    show message 'Enter a quantity on at least one operation before validating.' type Warning;
+    return false;
+  end if;
+  return true;
+end;
+
+/**
+ * Whether any open move of a transfer was processed below its demand (then the backorder question is asked).
+ *
+ * @param $Transfer the transfer
+ * @returns true when at least one move is short
+ */
+create or modify microflow Inventory.SUB_Transfer_HasShortfall ($Transfer: Inventory.Transfer)
+returns Boolean as $HasShortfall
+folder 'Transfers/Microflows'
+begin
+  retrieve $Moves from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Done'][Status != 'Cancelled'];
+  $Short = find $Moves where (if $currentObject/Quantity = empty then 0 else $currentObject/Quantity) < $currentObject/DemandQuantity;
+  return $Short != empty;
+end;
+
+/**
+ * A backorder question for a transfer (the non-persistent object behind ValidateTransfer_Popup).
+ *
+ * @param $Transfer the transfer
+ * @returns the request
+ */
+create or modify microflow Inventory.SUB_ValidateTransferRequest_New ($Transfer: Inventory.Transfer)
+returns Inventory.ValidateTransferRequest as $Request
+folder 'Transfers/Microflows'
+begin
+  $Request = create Inventory.ValidateTransferRequest (CreateBackorder = true, Inventory.ValidateTransferRequest_Transfer = $Transfer);
+  return $Request;
+end;

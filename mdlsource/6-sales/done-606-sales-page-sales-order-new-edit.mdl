@@ -46,6 +46,7 @@ create or modify page Sales.SalesOrder_NewEdit folder 'Quotations/Pages'
       }
     }
     dynamictext txtStatus (Content: '{1}', ContentParams: ({1} = "Status"), Class: 'pill pill-info spacing-outer-bottom-medium')
+    linkbutton lnkSmartDelivery (Caption: 'Delivery', Action: call microflow Inventory.ACT_SalesOrder_OpenDelivery(SalesOrder = $currentObject), Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.SalesOrder)
     layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
       row {
         column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {

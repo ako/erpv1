@@ -1,0 +1,59 @@
+mdl 1;
+-- 805-inventory-page-validate-transfer-popup.mdl — build-plan row 72 (F006-UC004). The backorder question when a transfer is
+-- validated with less than its demand: its two decisions (ACT_ValidateTransferRequest_Backorder / _NoBackorder) and the popup
+-- ValidateTransfer_Popup. Wireframe design/wireframes/ValidateTransfer_Popup.html. Opened by ACT_Transfer_Validate (825).
+
+/**
+ * Create backorder: validate the processed quantities, the rest goes to a backorder.
+ *
+ * @param $ValidateTransferRequest the question
+ */
+create or modify microflow Inventory.ACT_ValidateTransferRequest_Backorder ($ValidateTransferRequest: Inventory.ValidateTransferRequest)
+folder 'Transfers/Microflows'
+begin
+  retrieve $Transfer from $ValidateTransferRequest/Inventory.ValidateTransferRequest_Transfer;
+  call microflow Inventory.SUB_Transfer_Done(Transfer = $Transfer, CreateBackorder = true);
+  close page;
+end;
+
+/**
+ * No backorder: validate the processed quantities, the rest is dropped.
+ *
+ * @param $ValidateTransferRequest the question
+ */
+create or modify microflow Inventory.ACT_ValidateTransferRequest_NoBackorder ($ValidateTransferRequest: Inventory.ValidateTransferRequest)
+folder 'Transfers/Microflows'
+begin
+  retrieve $Transfer from $ValidateTransferRequest/Inventory.ValidateTransferRequest_Transfer;
+  call microflow Inventory.SUB_Transfer_Done(Transfer = $Transfer, CreateBackorder = false);
+  close page;
+end;
+
+/** Create backorder? — ValidateTransfer_Popup. */
+create or modify page Inventory.ValidateTransfer_Popup folder 'Transfers/Pages'
+(
+  Params: ( $ValidateTransferRequest: Inventory.ValidateTransferRequest ),
+  Title: 'Create backorder?',
+  Layout: Atlas_Core.PopupLayout
+)
+{
+  layoutgrid gridPage {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvMain (DataSource: $ValidateTransferRequest) {
+    dynamictext ptxtMessage (Content: 'You have processed less than the initial demand. Create a backorder for the remaining products, or cancel them?', RenderMode: Paragraph)
+    footer {
+      actionbutton pbtnCreatebackorder (Caption: 'Create backorder', Action: call microflow Inventory.ACT_ValidateTransferRequest_Backorder(ValidateTransferRequest = $currentObject), ButtonStyle: Primary)
+      actionbutton pbtnNobackorder (Caption: 'No backorder', Action: call microflow Inventory.ACT_ValidateTransferRequest_NoBackorder(ValidateTransferRequest = $currentObject), ButtonStyle: Default)
+      actionbutton pbtnCancel (Caption: 'Cancel', Action: cancel changes close page)
+    }
+  }
+      }
+    }
+  }
+};
+
+grant read *, write * on entity Inventory.ValidateTransferRequest to Inventory.User, Inventory.Manager;
+grant view on page Inventory.ValidateTransfer_Popup to Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_ValidateTransferRequest_Backorder to Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_ValidateTransferRequest_NoBackorder to Inventory.User, Inventory.Manager;

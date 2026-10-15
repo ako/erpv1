@@ -267,17 +267,20 @@ screen('Transfer_Overview', 'list', 'Transfers', 'Inventory.Transfer', INV, ['me
        filters=['Status', 'Transfer_OperationType'], open='Transfer_NewEdit', new='Transfer_NewEdit',
        rows=[['WH/OUT/00031', 'Azure Interior', '2026-10-15', 'S00042', 'Delivery orders', 'Waiting'],
              ['WH/IN/00012', 'Wood Corner', '2026-10-17', 'P00017', 'Receipts', 'Ready']])
-screen('Transfer_NewEdit', 'form', 'Transfer', 'Inventory.Transfer', INV,
+screen('Transfer_NewEdit', 'form', 'Transfer', 'Inventory.Transfer', INV + ['SalesUser', 'SalesManager', 'Purchaser', 'PurchaseManager'],
        ['row of Transfer_Overview', 'Delivery / Receipt smart button on SalesOrder_NewEdit / PurchaseOrder_NewEdit'],
        param='Inventory.Transfer', statusbar=('Status', ['Draft', 'Waiting', 'Ready', 'Done'], 'Ready'),
-       buttons=[('Validate', 'ACT_Transfer_Validate', ['Ready']), ('Mark as to do', 'ACT_Transfer_Confirm', ['Draft']),
+       buttons=[('Validate', 'ACT_Transfer_Validate', ['Waiting', 'Ready']), ('Mark as to do', 'ACT_Transfer_Confirm', ['Draft']),
                 ('Check availability', 'ACT_Transfer_CheckAvailability', ['Waiting']),
-                ('Cancel', 'ACT_Transfer_Cancel', ['Draft', 'Waiting', 'Ready'])],
+                ('Cancel transfer', 'ACT_Transfer_Cancel', ['Draft', 'Waiting', 'Ready'])],
        header='Number',
        sections=[('Transfer', ['Transfer_Partner', 'Transfer_OperationType', 'Transfer_SourceLocation', 'Transfer_DestinationLocation']),
                  ('Dates', ['ScheduledDate', 'Deadline', 'DateDone']),
-                 ('Origin', ['SourceDocument', 'Transfer_SalesOrder', 'Transfer_PurchaseOrder', 'Transfer_Backorder', 'Transfer_Responsible'])],
-       links=[('Open sales order', 'SalesOrder_NewEdit'), ('Open purchase order', 'PurchaseOrder_NewEdit')],
+                 # order pickers left out: sales and purchase users open this page from their order (Inventory.Reader) and hold no
+                 # read access to the other side's orders (CE2729); the source document and the Open order links cover it
+                 ('Origin', ['SourceDocument', 'Transfer_Backorder', 'Transfer_Responsible'])],
+       # 'Open sales order' / 'Open purchase order' links wait for the read-only order views (PROJECT.md C1-01, Invoicing phase):
+       # opening the order forms from here made each side's users reach the other side's orders (CE2729)
        lines=dict(entity='Inventory.StockMove', via='StockMove_Transfer', title='Operations', editable=True,
                   columns=['StockMove_Product', 'DemandQuantity', 'Quantity', 'StockMove_UoM', 'Picked', 'Status'],
                   rows=[['[FURN_7800] Desk Combination', '2.00', '2.00', 'Units', 'yes', 'Ready'],

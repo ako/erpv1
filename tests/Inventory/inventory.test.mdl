@@ -1,0 +1,229 @@
+-- Inventory unit tests (build-plan rows 69-81). Every test rolls back unless it says otherwise.
+-- Fixtures: the reference seed (WH/Stock, Vendors, Customers, Inventory adjustment; Receipts / Delivery orders / Internal
+-- transfers) and the demo seed (Office Chair FURN_0269 tracked, Gemini Furniture, Azure Interior). Each test sets the stock it
+-- needs itself (inside its transaction), so earlier journeys do not change the expectations.
+
+/**
+ * @test A receipt from a vendor is Ready as soon as it is confirmed (the vendor location keeps no stock)
+ * @expect $Receipt/Status = Inventory.ENUM_TransferStatus.Ready
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+$Type = call microflow Inventory.SUB_OperationType_GetByKind(Kind = Inventory.ENUM_OperationKind.Receipt);
+$Receipt = call microflow Inventory.SUB_Transfer_Create(OperationType = $Type, Partner = empty);
+$Move = call microflow Inventory.SUB_Transfer_AddMove(Transfer = $Receipt, Product = $Chair, Demand = 5, Description = 'Chairs');
+call microflow Inventory.SUB_Transfer_Confirm(Transfer = $Receipt);
+/
+
+/**
+ * @test A delivery with enough stock is Ready and reserves the full demand
+ * @expect $Ok = true
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+retrieve $Stock from Inventory.Location where [Name = 'WH/Stock'] first;
+$Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Chair, Location = $Stock);
+change $Level (Quantity = 8);
+commit $Level;
+$Type = call microflow Inventory.SUB_OperationType_GetByKind(Kind = Inventory.ENUM_OperationKind.Delivery);
+$Delivery = call microflow Inventory.SUB_Transfer_Create(OperationType = $Type, Partner = empty);
+$Move = call microflow Inventory.SUB_Transfer_AddMove(Transfer = $Delivery, Product = $Chair, Demand = 5, Description = 'Chairs');
+call microflow Inventory.SUB_Transfer_Confirm(Transfer = $Delivery);
+retrieve $Reserved from Inventory.StockMove where [Inventory.StockMove_Transfer = $Delivery] first;
+declare $Ok Boolean = $Delivery/Status = Inventory.ENUM_TransferStatus.Ready and $Reserved/Quantity = 5;
+/
+
+/**
+ * @test A delivery with too little stock waits and reserves what is there
+ * @expect $Ok = true
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+retrieve $Stock from Inventory.Location where [Name = 'WH/Stock'] first;
+$Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Chair, Location = $Stock);
+change $Level (Quantity = 3);
+commit $Level;
+$Type = call microflow Inventory.SUB_OperationType_GetByKind(Kind = Inventory.ENUM_OperationKind.Delivery);
+$Delivery = call microflow Inventory.SUB_Transfer_Create(OperationType = $Type, Partner = empty);
+$Move = call microflow Inventory.SUB_Transfer_AddMove(Transfer = $Delivery, Product = $Chair, Demand = 5, Description = 'Chairs');
+call microflow Inventory.SUB_Transfer_Confirm(Transfer = $Delivery);
+retrieve $Reserved from Inventory.StockMove where [Inventory.StockMove_Transfer = $Delivery] first;
+declare $Ok Boolean = $Delivery/Status = Inventory.ENUM_TransferStatus.Waiting and $Reserved/Quantity = 3;
+/
+
+/**
+ * @test Validating a receipt adds the received quantity to stock
+ * @expect $After = 13
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+retrieve $Stock from Inventory.Location where [Name = 'WH/Stock'] first;
+$Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Chair, Location = $Stock);
+change $Level (Quantity = 8);
+commit $Level;
+$Type = call microflow Inventory.SUB_OperationType_GetByKind(Kind = Inventory.ENUM_OperationKind.Receipt);
+$Receipt = call microflow Inventory.SUB_Transfer_Create(OperationType = $Type, Partner = empty);
+$Move = call microflow Inventory.SUB_Transfer_AddMove(Transfer = $Receipt, Product = $Chair, Demand = 5, Description = 'Chairs');
+call microflow Inventory.SUB_Transfer_Confirm(Transfer = $Receipt);
+call microflow Inventory.SUB_Transfer_Done(Transfer = $Receipt, CreateBackorder = false);
+$After = call microflow Inventory.SUB_StockLevel_OnHand(Product = $Chair, Location = $Stock);
+/
+
+/**
+ * @test Delivering 3 of 5 with a backorder leaves a new transfer for the remaining 2
+ * @expect $Rest/DemandQuantity = 2
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+retrieve $Stock from Inventory.Location where [Name = 'WH/Stock'] first;
+$Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Chair, Location = $Stock);
+change $Level (Quantity = 3);
+commit $Level;
+$Type = call microflow Inventory.SUB_OperationType_GetByKind(Kind = Inventory.ENUM_OperationKind.Delivery);
+$Delivery = call microflow Inventory.SUB_Transfer_Create(OperationType = $Type, Partner = empty);
+$Move = call microflow Inventory.SUB_Transfer_AddMove(Transfer = $Delivery, Product = $Chair, Demand = 5, Description = 'Chairs');
+call microflow Inventory.SUB_Transfer_Confirm(Transfer = $Delivery);
+call microflow Inventory.SUB_Transfer_Done(Transfer = $Delivery, CreateBackorder = true);
+retrieve $Rest from Inventory.StockMove where [Inventory.StockMove_Transfer/Inventory.Transfer/Inventory.Transfer_Backorder = $Delivery] first;
+/
+
+/**
+ * @test Delivering 3 of 5 without a backorder creates no new transfer and empties the stock
+ * @expect $Ok = true
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+retrieve $Stock from Inventory.Location where [Name = 'WH/Stock'] first;
+$Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Chair, Location = $Stock);
+change $Level (Quantity = 3);
+commit $Level;
+$Type = call microflow Inventory.SUB_OperationType_GetByKind(Kind = Inventory.ENUM_OperationKind.Delivery);
+$Delivery = call microflow Inventory.SUB_Transfer_Create(OperationType = $Type, Partner = empty);
+$Move = call microflow Inventory.SUB_Transfer_AddMove(Transfer = $Delivery, Product = $Chair, Demand = 5, Description = 'Chairs');
+call microflow Inventory.SUB_Transfer_Confirm(Transfer = $Delivery);
+call microflow Inventory.SUB_Transfer_Done(Transfer = $Delivery, CreateBackorder = false);
+retrieve $Backorder from Inventory.Transfer where [Inventory.Transfer_Backorder = $Delivery] first;
+$After = call microflow Inventory.SUB_StockLevel_OnHand(Product = $Chair, Location = $Stock);
+declare $Ok Boolean = $Backorder = empty and $After = 0 and $Delivery/Status = Inventory.ENUM_TransferStatus.Done;
+/
+
+/**
+ * @test Confirming a sales order creates a delivery with a move for its goods line
+ * @expect $Moves = 1
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'] first;
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+call microflow Sales.SUB_SalesOrder_ApplyCustomer(SalesOrder = $SO);
+$Line = create Sales.SalesOrderLine (Quantity = 5, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Chair);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+retrieve $DeliveryMoves from Inventory.StockMove where [Inventory.StockMove_SalesOrderLine = $Line];
+$Moves = count $DeliveryMoves;
+/
+
+/**
+ * @test Validating the whole delivery marks the order fully delivered
+ * @expect $SO/DeliveryStatus = Sales.ENUM_DeliveryStatus.FullyDelivered
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'] first;
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+retrieve $Stock from Inventory.Location where [Name = 'WH/Stock'] first;
+$Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Chair, Location = $Stock);
+change $Level (Quantity = 8);
+commit $Level;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+call microflow Sales.SUB_SalesOrder_ApplyCustomer(SalesOrder = $SO);
+$Line = create Sales.SalesOrderLine (Quantity = 5, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Chair);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+retrieve $Delivery from Inventory.Transfer where [Inventory.Transfer_SalesOrder = $SO] first;
+call microflow Inventory.SUB_Transfer_Done(Transfer = $Delivery, CreateBackorder = false);
+/
+
+/**
+ * @test A confirmed line cannot go below what was delivered
+ * @expect $IsValid = false
+ */
+$Line = create Sales.SalesOrderLine (Quantity = 2, QuantityDelivered = 5);
+$IsValid = call microflow Sales.VAL_SalesOrderLine_Quantity(SalesOrderLine = $Line);
+/
+
+/**
+ * @test Raising a confirmed line's quantity adds the difference to the open delivery
+ * @expect $Planned = 7
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'] first;
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+call microflow Sales.SUB_SalesOrder_ApplyCustomer(SalesOrder = $SO);
+$Line = create Sales.SalesOrderLine (Quantity = 5, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Chair);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+change $Line (Quantity = 7);
+commit $Line;
+$Done = call microflow Sales.SUB_SalesOrderLine_RecomputeOrder(SalesOrderLine = $Line);
+retrieve $Open from Inventory.StockMove where [Inventory.StockMove_SalesOrderLine = $Line][Status != 'Cancelled'][Status != 'Done'];
+$Planned = sum $Open by DemandQuantity;
+/
+
+/**
+ * @test Validating a purchase order's receipt marks it fully received
+ * @expect $PO/ReceiptStatus = Purchasing.ENUM_ReceiptStatus.FullyReceived
+ */
+retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'] first;
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+change $PO (Purchasing.PurchaseOrder_Vendor = $Gemini);
+$Line = create Purchasing.PurchaseOrderLine (Quantity = 4, Purchasing.PurchaseOrderLine_PurchaseOrder = $PO, Purchasing.PurchaseOrderLine_Product = $Chair);
+call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $Line);
+commit $Line;
+call microflow Purchasing.SUB_PurchaseOrder_Approve(PurchaseOrder = $PO);
+retrieve $Receipt from Inventory.Transfer where [Inventory.Transfer_PurchaseOrder = $PO] first;
+call microflow Inventory.SUB_Transfer_Done(Transfer = $Receipt, CreateBackorder = false);
+/
+
+/**
+ * @test Applying a count of 5 on a stock of 8 sets the stock to 5 with an adjustment move
+ * @expect $Ok = true
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+retrieve $Stock from Inventory.Location where [Name = 'WH/Stock'] first;
+$Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Chair, Location = $Stock);
+change $Level (Quantity = 8, CountedQuantity = 5);
+commit $Level;
+$Applied = call microflow Inventory.SUB_StockLevel_ApplyCounts();
+$After = call microflow Inventory.SUB_StockLevel_OnHand(Product = $Chair, Location = $Stock);
+retrieve $Adjustment from Inventory.StockMove where [IsInventoryAdjustment = true()][Inventory.StockMove_Product = $Chair][DemandQuantity = 3] first;
+declare $Ok Boolean = $After = 5 and $Adjustment != empty;
+/
+
+/**
+ * @test A chair rule at min 10 / max 30 with 3 on hand orders 27 from Gemini
+ * @expect $Line/Quantity = 27
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+retrieve $Stock from Inventory.Location where [Name = 'WH/Stock'] first;
+retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'] first;
+retrieve $OpenMoves from Inventory.StockMove where [Inventory.StockMove_Product = $Chair][Status != 'Done'][Status != 'Cancelled'];
+delete $OpenMoves;
+retrieve $OpenRfqs from Purchasing.PurchaseOrder where [Purchasing.PurchaseOrder_Vendor = $Gemini][Status = 'RFQ'];
+delete $OpenRfqs;
+$Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Chair, Location = $Stock);
+change $Level (Quantity = 3);
+commit $Level;
+$Rule = create Inventory.ReorderRule (Name = 'Test chair rule', MinQuantity = 10, MaxQuantity = 30, QuantityMultiple = 1, Active = true, Automatic = true,
+  Inventory.ReorderRule_Product = $Chair, Inventory.ReorderRule_Location = $Stock, Inventory.ReorderRule_Vendor = $Gemini);
+commit $Rule;
+$Ordered = call microflow Inventory.SUB_ReorderRule_Replenish(Rule = $Rule);
+retrieve $Line from Purchasing.PurchaseOrderLine where [Purchasing.PurchaseOrderLine_Product = $Chair][Purchasing.PurchaseOrderLine_PurchaseOrder/Purchasing.PurchaseOrder/Status = 'RFQ'][Purchasing.PurchaseOrderLine_PurchaseOrder/Purchasing.PurchaseOrder/Purchasing.PurchaseOrder_Vendor = $Gemini] first;
+/
+
+/**
+ * @test Cancelling a transfer cancels it
+ * @expect $Transfer/Status = Inventory.ENUM_TransferStatus.Cancelled
+ */
+$Type = call microflow Inventory.SUB_OperationType_GetByKind(Kind = Inventory.ENUM_OperationKind.Internal);
+$Transfer = call microflow Inventory.SUB_Transfer_Create(OperationType = $Type, Partner = empty);
+$Done = call microflow Inventory.ACT_Transfer_Cancel(Transfer = $Transfer);
+/

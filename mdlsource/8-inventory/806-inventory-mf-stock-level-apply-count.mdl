@@ -1,0 +1,46 @@
+mdl 1;
+-- 806-inventory-mf-stock-level-apply-count.mdl — build-plan row 74 (F006-UC006). Owns SUB_StockLevel_ApplyCounts and the
+-- Apply counts button ACT_StockLevel_ApplyCounts. A counted quantity typed on the Stock list saves with the row; Apply turns
+-- every entered count into a done adjustment move (Odoo stock.quant.action_apply_inventory).
+
+/**
+ * Apply the entered counts: per stock level with a counted quantity, a done move for the difference between the inventory
+ * adjustment location and the level's location, the level set to the count, the count cleared.
+ *
+ * @returns the number of levels corrected
+ */
+create or modify microflow Inventory.SUB_StockLevel_ApplyCounts ()
+returns Integer as $Applied
+folder 'Stock/Microflows'
+begin
+  retrieve $Levels from Inventory.StockLevel where [CountedQuantity != empty];
+  retrieve $Adjustment from Inventory.Location where [LocationType = 'InventoryLoss'][Active = true()] first;
+  $Moves = create list of Inventory.StockMove;
+  declare $Count Integer = 0;
+  @annotation 'One loop over the levels with a count (a few per counting session); moves are collected and committed after the loop.'
+  loop $Level in $Levels begin
+    declare $OnHand Decimal = if $Level/Quantity = empty then 0 else $Level/Quantity;
+    declare $Delta Decimal = $Level/CountedQuantity - $OnHand;
+    if $Delta != 0 then
+      $Move = create Inventory.StockMove (Description = 'Inventory count', Status = Inventory.ENUM_TransferStatus.Done, Date = [%CurrentDateTime%],
+        DemandQuantity = abs($Delta), Quantity = abs($Delta), Picked = true, IsInventoryAdjustment = true, SourceDocument = 'Inventory count',
+        Inventory.StockMove_Product = $Level/Inventory.StockLevel_Product,
+        Inventory.StockMove_SourceLocation = if $Delta > 0 then $Adjustment else $Level/Inventory.StockLevel_Location,
+        Inventory.StockMove_DestinationLocation = if $Delta > 0 then $Level/Inventory.StockLevel_Location else $Adjustment);
+      add $Move to $Moves;
+      set $Count = $Count + 1;
+    end if;
+    change $Level (Quantity = $Level/CountedQuantity, CountedQuantity = empty, CountSet = false);
+  end loop;
+  commit $Moves with events;
+  commit $Levels with events refresh;
+  return $Count;
+end;
+
+/** Apply counts button on the Stock list (F006-UC006). */
+create or modify microflow Inventory.ACT_StockLevel_ApplyCounts ()
+folder 'Stock/Microflows'
+begin
+  $Applied = call microflow Inventory.SUB_StockLevel_ApplyCounts();
+  show message 'Counts applied: ' + toString($Applied) + ' stock level(s) corrected.' type Information;
+end;

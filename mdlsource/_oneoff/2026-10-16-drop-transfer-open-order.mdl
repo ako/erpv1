@@ -1,0 +1,6 @@
+mdl 1;
+-- One-off: the transfer form's Open sales order / Open purchase order links are withdrawn until the read-only order views
+-- exist (PROJECT.md C1-01, Invoicing phase) — opening the order forms from a transfer let each side's users reach the other
+-- side's orders (CE2729 on the order forms). Their microflows (823, removed) are dropped; 804 no longer references them.
+drop microflow Inventory.ACT_Transfer_OpenSalesOrder;
+drop microflow Inventory.ACT_Transfer_OpenPurchaseOrder;

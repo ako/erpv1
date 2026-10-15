@@ -8,6 +8,8 @@ create or modify navigation Responsive
   home page Sales.SalesOrder_Overview for SalesManager
   home page Purchasing.PurchaseOrder_Overview for Purchaser
   home page Purchasing.PurchaseApproval_Inbox for PurchaseManager
+  home page Inventory.Inventory_Dashboard for InventoryUser
+  home page Inventory.Inventory_Dashboard for InventoryManager
   home page Core.Company_Edit for Administrator
 {
   menu item 'Home' ( OnClick: show page Core.Home_Web, Icon: Atlas_Core.Atlas.home )
@@ -20,6 +22,12 @@ create or modify navigation Responsive
     menu item 'RFQs & orders' ( OnClick: show page Purchasing.PurchaseOrder_Overview, Icon: Atlas_Core.Atlas."shipment-box" )
     menu item 'Approvals' ( OnClick: show page Purchasing.PurchaseApproval_Inbox, Icon: Atlas_Core.Atlas."shipment-box" )
     menu item 'Vendor prices' ( OnClick: show page Purchasing.VendorPrice_Overview, Icon: Atlas_Core.Atlas."shipment-box" )
+  }
+  menu 'Inventory' ( Icon: Atlas_Core.Atlas."hierarchy-files" ) {
+    menu item 'Overview' ( OnClick: show page Inventory.Inventory_Dashboard, Icon: Atlas_Core.Atlas."hierarchy-files" )
+    menu item 'Transfers' ( OnClick: show page Inventory.Transfer_Overview, Icon: Atlas_Core.Atlas."hierarchy-files" )
+    menu item 'Stock' ( OnClick: show page Inventory.StockLevel_Overview, Icon: Atlas_Core.Atlas."hierarchy-files" )
+    menu item 'Reorder rules' ( OnClick: show page Inventory.ReorderRule_Overview, Icon: Atlas_Core.Atlas."hierarchy-files" )
   }
   menu 'Contacts' ( Icon: Atlas_Core.Atlas.contacts ) {
     menu item 'Contacts' ( OnClick: show page Partners.Partner_Overview, Icon: Atlas_Core.Atlas.contacts )
@@ -34,6 +42,7 @@ create or modify navigation Responsive
   }
   menu 'Configuration' ( Icon: Atlas_Core.Atlas.cog ) {
     menu item 'Company' ( OnClick: show page Core.Company_Edit, Icon: Atlas_Core.Atlas.cog )
+    menu item 'Warehouse' ( OnClick: show page Inventory.Warehouse_Edit, Icon: Atlas_Core.Atlas.cog )
     menu item 'Numbering' ( OnClick: show page Core.Sequence_Overview, Icon: Atlas_Core.Atlas.cog )
     menu item 'Taxes' ( OnClick: show page Core.Tax_Overview, Icon: Atlas_Core.Atlas.cog )
     menu item 'Payment terms' ( OnClick: show page Core.PaymentTerm_Overview, Icon: Atlas_Core.Atlas.cog )

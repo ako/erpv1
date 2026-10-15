@@ -4,7 +4,7 @@ mdl 1;
 -- (SUB/ACT_PurchaseOrderLine_Delete).
 
 /**
- * The totals of the order a line belongs to, and its billing status once confirmed.
+ * The totals of the order a line belongs to; once confirmed also its open receipt (re-synced) and billing status.
  *
  * @param $PurchaseOrderLine the changed line
  * @returns true
@@ -16,6 +16,7 @@ begin
   retrieve $Order from $PurchaseOrderLine/Purchasing.PurchaseOrderLine_PurchaseOrder;
   $Recomputed = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $Order);
   if $Order/Status = Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder then
+    call microflow Inventory.SUB_PurchaseOrder_CreateReceipt(PurchaseOrder = $Order);
     $Billing = call microflow Purchasing.SUB_PurchaseOrder_UpdateBillingStatus(PurchaseOrder = $Order);
   end if;
   return true;
@@ -40,6 +41,10 @@ end;
 create or modify microflow Purchasing.ACT_PurchaseOrderLine_Recompute ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
 folder 'RFQs/Microflows'
 begin
+  $IsValid = call microflow Purchasing.VAL_PurchaseOrderLine_Quantity(PurchaseOrderLine = $PurchaseOrderLine);
+  if not($IsValid) then
+    return;
+  end if;
   $Recomputed = call microflow Purchasing.SUB_PurchaseOrderLine_RecomputeOrder(PurchaseOrderLine = $PurchaseOrderLine);
 end;
 

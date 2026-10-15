@@ -28,7 +28,7 @@ begin
 end;
 
 /**
- * The totals of the order a line belongs to, and its invoice status once confirmed (coherence C1-04).
+ * The totals of the order a line belongs to; once confirmed also its open delivery (re-synced: row 79) and invoice status.
  *
  * @param $SalesOrderLine the changed line
  * @returns true
@@ -40,6 +40,7 @@ begin
   retrieve $Order from $SalesOrderLine/Sales.SalesOrderLine_SalesOrder;
   $Recomputed = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $Order);
   if $Order/Status = Sales.ENUM_SalesOrderStatus.SalesOrder then
+    call microflow Inventory.SUB_SalesOrder_CreateDelivery(SalesOrder = $Order);
     $Invoicing = call microflow Sales.SUB_SalesOrder_UpdateInvoiceStatus(SalesOrder = $Order);
   end if;
   return true;
@@ -67,9 +68,13 @@ begin
   return true;
 end;
 
-/** On change of a line's quantity, price, discount or taxes: the order totals. */
+/** On change of a line's quantity, price, discount or taxes: refused below the delivered quantity, else the order totals. */
 create or modify microflow Sales.ACT_SalesOrderLine_Recompute ($SalesOrderLine: Sales.SalesOrderLine)
 folder 'Quotations/Microflows'
 begin
+  $IsValid = call microflow Sales.VAL_SalesOrderLine_Quantity(SalesOrderLine = $SalesOrderLine);
+  if not($IsValid) then
+    return;
+  end if;
   $Recomputed = call microflow Sales.SUB_SalesOrderLine_RecomputeOrder(SalesOrderLine = $SalesOrderLine);
 end;

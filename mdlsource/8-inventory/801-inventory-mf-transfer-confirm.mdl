@@ -1,0 +1,222 @@
+mdl 1;
+-- 801-inventory-mf-transfer-confirm.mdl — build-plan row 69 (F006-UC001..UC005): stock levels and the transfer life cycle up to
+-- Ready. Owns SUB_StockLevel_Get, SUB_StockLevel_Adjust, SUB_StockLevel_OnHand, SUB_Transfer_Create, SUB_Transfer_AddMove,
+-- SUB_Transfer_Reserve, SUB_Transfer_Confirm, SUB_Transfer_Cancel and the buttons ACT_Transfer_Confirm,
+-- ACT_Transfer_CheckAvailability, ACT_Transfer_Cancel. Validate / done are in 819.
+-- Simplification (Odoo stock.quant reservations): availability is on-hand quantity at the source location; ReservedQuantity is
+-- not maintained. Units: a move's quantity is in its product's unit (no conversion on order lines in this POC).
+
+/**
+ * The stock level of a product at a location, created at zero when there is none yet.
+ *
+ * @param $Product the product
+ * @param $Location the location
+ * @returns the stock level
+ */
+create or modify microflow Inventory.SUB_StockLevel_Get ($Product: Products.Product, $Location: Inventory.Location)
+returns Inventory.StockLevel as $Level
+folder 'Stock/Microflows'
+begin
+  retrieve $Existing from Inventory.StockLevel where [Inventory.StockLevel_Product = $Product][Inventory.StockLevel_Location = $Location] first;
+  if $Existing != empty then
+    return $Existing;
+  end if;
+  $New = create Inventory.StockLevel (Quantity = 0, ReservedQuantity = 0, CountSet = false, IncomingDate = [%CurrentDateTime%],
+    Inventory.StockLevel_Product = $Product, Inventory.StockLevel_Location = $Location);
+  commit $New without events;
+  return $New;
+end;
+
+/**
+ * Add a quantity to (or take it from) a product's stock at a location. Only internal locations and inventory-tracked
+ * products keep stock (Odoo: vendor, customer and adjustment locations are virtual).
+ *
+ * @param $Product the product
+ * @param $Location the location
+ * @param $Delta the quantity to add (negative to take)
+ */
+create or modify microflow Inventory.SUB_StockLevel_Adjust ($Product: Products.Product, $Location: Inventory.Location, $Delta: Decimal)
+folder 'Stock/Microflows'
+begin
+  if $Location = empty or $Location/LocationType != Inventory.ENUM_LocationType.Internal or not($Product/TrackInventory) then
+    return;
+  end if;
+  $Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Product, Location = $Location);
+  change $Level (Quantity = (if $Level/Quantity = empty then 0 else $Level/Quantity) + $Delta);
+  commit $Level with events refresh;
+end;
+
+/**
+ * On-hand quantity of a product at a location (0 when none).
+ *
+ * @param $Product the product
+ * @param $Location the location
+ * @returns the quantity on hand
+ */
+create or modify microflow Inventory.SUB_StockLevel_OnHand ($Product: Products.Product, $Location: Inventory.Location)
+returns Decimal as $OnHand
+folder 'Stock/Microflows'
+begin
+  retrieve $Level from Inventory.StockLevel where [Inventory.StockLevel_Product = $Product][Inventory.StockLevel_Location = $Location] first;
+  return if $Level = empty or $Level/Quantity = empty then 0 else $Level/Quantity;
+end;
+
+/**
+ * A new draft transfer of an operation type: number from the type's sequence, default source and destination of the type,
+ * scheduled now.
+ *
+ * @param $OperationType receipts, delivery orders or internal
+ * @param $Partner the partner (vendor, customer address) or empty
+ * @returns the transfer
+ */
+create or modify microflow Inventory.SUB_Transfer_Create ($OperationType: Inventory.OperationType, $Partner: Partners.Partner)
+returns Inventory.Transfer as $Transfer
+folder 'Transfers/Microflows'
+begin
+  $Number = call microflow Core.SUB_Sequence_NextNumber(Code = $OperationType/SequenceCode);
+  $Transfer = create Inventory.Transfer (Number = $Number, Status = Inventory.ENUM_TransferStatus.Draft, ScheduledDate = [%CurrentDateTime%],
+    Inventory.Transfer_OperationType = $OperationType, Inventory.Transfer_Partner = $Partner,
+    Inventory.Transfer_SourceLocation = $OperationType/Inventory.OperationType_DefaultSource,
+    Inventory.Transfer_DestinationLocation = $OperationType/Inventory.OperationType_DefaultDestination);
+  commit $Transfer with events;
+  return $Transfer;
+end;
+
+/**
+ * A draft move of a product on a transfer, between the transfer's locations.
+ *
+ * @param $Transfer the transfer
+ * @param $Product the product
+ * @param $Demand the quantity to move
+ * @param $Description the move description
+ * @returns the move
+ */
+create or modify microflow Inventory.SUB_Transfer_AddMove ($Transfer: Inventory.Transfer, $Product: Products.Product, $Demand: Decimal, $Description: String)
+returns Inventory.StockMove as $Move
+folder 'Transfers/Microflows'
+begin
+  $Move = create Inventory.StockMove (Description = $Description, Status = Inventory.ENUM_TransferStatus.Draft, Date = [%CurrentDateTime%],
+    DemandQuantity = $Demand, Quantity = 0, Picked = false, SourceDocument = $Transfer/SourceDocument, IsInventoryAdjustment = false,
+    Inventory.StockMove_Transfer = $Transfer, Inventory.StockMove_Product = $Product, Inventory.StockMove_UoM = $Product/Products.Product_UoM,
+    Inventory.StockMove_SourceLocation = $Transfer/Inventory.Transfer_SourceLocation,
+    Inventory.StockMove_DestinationLocation = $Transfer/Inventory.Transfer_DestinationLocation);
+  commit $Move with events;
+  return $Move;
+end;
+
+/**
+ * Check availability (Odoo action_assign, simplified): each open move gets the quantity available at its source — the whole
+ * demand when the source keeps no stock (vendor) or the product is not tracked. All moves complete -> Ready, else Waiting.
+ *
+ * @param $Transfer a confirmed transfer
+ * @returns true when every move is fully available
+ */
+create or modify microflow Inventory.SUB_Transfer_Reserve ($Transfer: Inventory.Transfer)
+returns Boolean as $AllReady
+folder 'Transfers/Microflows'
+begin
+  retrieve $Moves from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Done'][Status != 'Cancelled'];
+  declare $Complete Boolean = true;
+  @annotation 'One loop over the transfer''s moves (a handful): the on-hand lookup is a per-product retrieve; one commit after the loop.'
+  loop $Move in $Moves begin
+    retrieve $Product from $Move/Inventory.StockMove_Product;
+    retrieve $Source from $Move/Inventory.StockMove_SourceLocation;
+    declare $Demand Decimal = if $Move/DemandQuantity = empty then 0 else $Move/DemandQuantity;
+    if $Source = empty or $Source/LocationType != Inventory.ENUM_LocationType.Internal or not($Product/TrackInventory) then
+      change $Move (Quantity = $Demand, Status = Inventory.ENUM_TransferStatus.Ready);
+    else
+      $OnHand = call microflow Inventory.SUB_StockLevel_OnHand(Product = $Product, Location = $Source);
+      declare $Take Decimal = if $OnHand >= $Demand then $Demand else (if $OnHand > 0 then $OnHand else 0);
+      change $Move (Quantity = $Take, Status = if $Take >= $Demand then Inventory.ENUM_TransferStatus.Ready else Inventory.ENUM_TransferStatus.Waiting);
+      if $Take < $Demand then
+        set $Complete = false;
+      end if;
+    end if;
+  end loop;
+  commit $Moves with events refresh;
+  change $Transfer (Status = if $Complete then Inventory.ENUM_TransferStatus.Ready else Inventory.ENUM_TransferStatus.Waiting);
+  commit $Transfer with events refresh;
+  return $Complete;
+end;
+
+/**
+ * Mark as to do (Odoo action_confirm): a draft transfer is confirmed and its availability checked.
+ *
+ * @param $Transfer the draft transfer
+ */
+create or modify microflow Inventory.SUB_Transfer_Confirm ($Transfer: Inventory.Transfer)
+folder 'Transfers/Microflows'
+begin
+  $Ready = call microflow Inventory.SUB_Transfer_Reserve(Transfer = $Transfer);
+end;
+
+/**
+ * Cancel a transfer (F006-UC005): its open moves and the transfer become Cancelled.
+ *
+ * @param $Transfer the transfer
+ */
+create or modify microflow Inventory.SUB_Transfer_Cancel ($Transfer: Inventory.Transfer)
+folder 'Transfers/Microflows'
+begin
+  retrieve $Moves from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Done'];
+  @annotation 'One loop over the transfer''s open moves (a handful), one commit after it.'
+  loop $Move in $Moves begin
+    change $Move (Status = Inventory.ENUM_TransferStatus.Cancelled, Quantity = 0);
+  end loop;
+  commit $Moves with events refresh;
+  change $Transfer (Status = Inventory.ENUM_TransferStatus.Cancelled);
+  commit $Transfer with events refresh;
+end;
+
+/**
+ * Mark as to do button: only a draft transfer with at least one move.
+ *
+ * @param $Transfer the transfer
+ * @returns true when confirmed
+ */
+create or modify microflow Inventory.ACT_Transfer_Confirm ($Transfer: Inventory.Transfer)
+returns Boolean as $Done
+folder 'Transfers/Microflows'
+begin
+  if $Transfer/Status != Inventory.ENUM_TransferStatus.Draft then
+    show message 'Only a draft transfer can be marked as to do.' type Warning;
+    return false;
+  end if;
+  call microflow Inventory.SUB_Transfer_Confirm(Transfer = $Transfer);
+  return true;
+end;
+
+/**
+ * Check availability button: re-reserve a waiting transfer.
+ *
+ * @param $Transfer the transfer
+ * @returns true when every move is now available
+ */
+create or modify microflow Inventory.ACT_Transfer_CheckAvailability ($Transfer: Inventory.Transfer)
+returns Boolean as $AllReady
+folder 'Transfers/Microflows'
+begin
+  if $Transfer/Status != Inventory.ENUM_TransferStatus.Waiting and $Transfer/Status != Inventory.ENUM_TransferStatus.Ready then
+    return false;
+  end if;
+  $AllReady = call microflow Inventory.SUB_Transfer_Reserve(Transfer = $Transfer);
+  return $AllReady;
+end;
+
+/**
+ * Cancel button (F006-UC005): refused once done.
+ *
+ * @param $Transfer the transfer
+ * @returns true when cancelled
+ */
+create or modify microflow Inventory.ACT_Transfer_Cancel ($Transfer: Inventory.Transfer)
+returns Boolean as $Done
+folder 'Transfers/Microflows'
+begin
+  if $Transfer/Status = Inventory.ENUM_TransferStatus.Done or $Transfer/Status = Inventory.ENUM_TransferStatus.Cancelled then
+    show message 'A done or cancelled transfer cannot be cancelled.' type Warning;
+    return false;
+  end if;
+  call microflow Inventory.SUB_Transfer_Cancel(Transfer = $Transfer);
+  return true;
+end;

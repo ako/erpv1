@@ -1,0 +1,42 @@
+mdl 1;
+-- 820-inventory-mf-order-line-quantity.mdl — build-plan row 79 (F007-UC003; PROJECT.md 5 (build) "Quantity change on a confirmed
+-- sales order"; coherence C1-09). Owns Sales.VAL_SalesOrderLine_Quantity and Purchasing.VAL_PurchaseOrderLine_Quantity; the line
+-- Recompute actions (Sales 603, Purchasing 704) call them and then re-sync the open delivery / receipt (812 / 816).
+
+/**
+ * A confirmed order line may not go below what was already delivered.
+ *
+ * @param $SalesOrderLine the changed line
+ * @returns true when the quantity is allowed
+ */
+create or modify microflow Sales.VAL_SalesOrderLine_Quantity ($SalesOrderLine: Sales.SalesOrderLine)
+returns Boolean as $IsValid
+folder 'Quotations/Microflows'
+begin
+  declare $Valid Boolean = true;
+  declare $Delivered Decimal = if $SalesOrderLine/QuantityDelivered = empty then 0 else $SalesOrderLine/QuantityDelivered;
+  if (if $SalesOrderLine/Quantity = empty then 0 else $SalesOrderLine/Quantity) < $Delivered then
+    validation feedback $SalesOrderLine/Quantity message 'The quantity cannot be lower than what was already delivered (' + toString($Delivered) + ').';
+    set $Valid = false;
+  end if;
+  return $Valid;
+end;
+
+/**
+ * A confirmed purchase order line may not go below what was already received.
+ *
+ * @param $PurchaseOrderLine the changed line
+ * @returns true when the quantity is allowed
+ */
+create or modify microflow Purchasing.VAL_PurchaseOrderLine_Quantity ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
+returns Boolean as $IsValid
+folder 'RFQs/Microflows'
+begin
+  declare $Valid Boolean = true;
+  declare $Received Decimal = if $PurchaseOrderLine/QuantityReceived = empty then 0 else $PurchaseOrderLine/QuantityReceived;
+  if (if $PurchaseOrderLine/Quantity = empty then 0 else $PurchaseOrderLine/Quantity) < $Received then
+    validation feedback $PurchaseOrderLine/Quantity message 'The quantity cannot be lower than what was already received (' + toString($Received) + ').';
+    set $Valid = false;
+  end if;
+  return $Valid;
+end;

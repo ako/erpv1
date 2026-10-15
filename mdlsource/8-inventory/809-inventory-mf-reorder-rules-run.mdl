@@ -1,0 +1,124 @@
+mdl 1;
+-- 809-inventory-mf-reorder-rules-run.mdl — build-plan row 75 (F006-UC007). Owns SUB_ReorderRule_Forecast,
+-- SUB_ReorderRule_Replenish, SCE_ReorderRules_Run (daily scheduled event), the Run now button ACT_ReorderRules_RunNow and the
+-- scheduled event Inventory.SE_ReorderRules. Inventory sits above Purchasing: creating RFQs is a downward call.
+
+/**
+ * Forecast of a product at a location (Odoo orderpoint qty_forecast): on hand + open incoming moves - open outgoing moves.
+ *
+ * @param $Product the product
+ * @param $Location the location
+ * @returns the forecast quantity
+ */
+create or modify microflow Inventory.SUB_ReorderRule_Forecast ($Product: Products.Product, $Location: Inventory.Location)
+returns Decimal as $Forecast
+folder 'Replenishment/Microflows'
+begin
+  $OnHand = call microflow Inventory.SUB_StockLevel_OnHand(Product = $Product, Location = $Location);
+  retrieve $Incoming from Inventory.StockMove where [Inventory.StockMove_Product = $Product][Inventory.StockMove_DestinationLocation = $Location][Status != 'Done'][Status != 'Cancelled'];
+  retrieve $Outgoing from Inventory.StockMove where [Inventory.StockMove_Product = $Product][Inventory.StockMove_SourceLocation = $Location][Status != 'Done'][Status != 'Cancelled'];
+  $In = sum $Incoming by DemandQuantity;
+  $Out = sum $Outgoing by DemandQuantity;
+  return $OnHand + $In - $Out;
+end;
+
+/**
+ * The vendor's open RFQ to add replenishment to (the newest one in status RFQ), or a new RFQ to the vendor with the rule as its
+ * source; either way linked to the rule.
+ *
+ * @param $Rule the reorder rule
+ * @param $Vendor the rule's vendor
+ * @returns the RFQ
+ */
+create or modify microflow Inventory.SUB_ReorderRule_GetOpenRfq ($Rule: Inventory.ReorderRule, $Vendor: Partners.Partner)
+returns Purchasing.PurchaseOrder as $Rfq
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Open from Purchasing.PurchaseOrder where [Purchasing.PurchaseOrder_Vendor = $Vendor][Status = 'RFQ'] sort by Number desc first;
+  if $Open != empty then
+    change $Rule (Inventory.ReorderRule_PurchaseOrders = $Open);
+    commit $Rule with events;
+    return $Open;
+  end if;
+  $New = call microflow Purchasing.SUB_PurchaseOrder_Create();
+  change $New (Source = 'Reorder rule ' + $Rule/Name, Purchasing.PurchaseOrder_Vendor = $Vendor);
+  call microflow Purchasing.SUB_PurchaseOrder_ApplyVendor(PurchaseOrder = $New);
+  commit $New with events;
+  change $Rule (Inventory.ReorderRule_PurchaseOrders = $New);
+  commit $Rule with events;
+  return $New;
+end;
+
+/**
+ * Replenish one rule (F006-UC007): when the forecast is below the minimum, order up to the maximum (rounded up to the multiple)
+ * from the rule's vendor — on an open RFQ to that vendor (its line for the product increased) or a new RFQ.
+ *
+ * @param $Rule the reorder rule
+ * @returns true when something was ordered
+ */
+create or modify microflow Inventory.SUB_ReorderRule_Replenish ($Rule: Inventory.ReorderRule)
+returns Boolean as $Ordered
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Product from $Rule/Inventory.ReorderRule_Product;
+  retrieve $Location from $Rule/Inventory.ReorderRule_Location;
+  retrieve $Vendor from $Rule/Inventory.ReorderRule_Vendor;
+  if $Product = empty or $Location = empty or $Vendor = empty then
+    return false;
+  end if;
+  $Forecast = call microflow Inventory.SUB_ReorderRule_Forecast(Product = $Product, Location = $Location);
+  if $Forecast >= $Rule/MinQuantity then
+    return false;
+  end if;
+  declare $Multiple Decimal = if $Rule/QuantityMultiple = empty or $Rule/QuantityMultiple <= 0 then 1 else $Rule/QuantityMultiple;
+  declare $Quantity Decimal = ceil(($Rule/MaxQuantity - $Forecast) div $Multiple) * $Multiple;
+  $Order = call microflow Inventory.SUB_ReorderRule_GetOpenRfq(Rule = $Rule, Vendor = $Vendor);
+  retrieve $Line from Purchasing.PurchaseOrderLine where [Purchasing.PurchaseOrderLine_PurchaseOrder = $Order][Purchasing.PurchaseOrderLine_Product = $Product] first;
+  if $Line != empty then
+    change $Line (Quantity = (if $Line/Quantity = empty then 0 else $Line/Quantity) + $Quantity);
+    commit $Line with events;
+  else
+    $NewLine = create Purchasing.PurchaseOrderLine (Quantity = $Quantity, Purchasing.PurchaseOrderLine_PurchaseOrder = $Order, Purchasing.PurchaseOrderLine_Product = $Product);
+    call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $NewLine);
+    commit $NewLine with events;
+  end if;
+  $Totals = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $Order);
+  return true;
+end;
+
+/**
+ * Run the active reorder rules (the daily scheduled event, and the Run now button).
+ *
+ * @returns the number of rules that ordered something
+ */
+create or modify microflow Inventory.SCE_ReorderRules_Run ()
+returns Integer as $OrderedCount
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Rules from Inventory.ReorderRule where [Active = true()];
+  declare $Count Integer = 0;
+  @annotation 'One loop over the active rules (tens): each rule is evaluated and replenished on its own.'
+  loop $Rule in $Rules begin
+    $Ordered = call microflow Inventory.SUB_ReorderRule_Replenish(Rule = $Rule);
+    if $Ordered then
+      set $Count = $Count + 1;
+    end if;
+  end loop;
+  return $Count;
+end;
+
+/** Run scheduler button on Reorder rules (F006-UC007: "user clicks Run scheduler"). */
+create or modify microflow Inventory.ACT_ReorderRules_RunNow ()
+folder 'Replenishment/Microflows'
+begin
+  $Count = call microflow Inventory.SCE_ReorderRules_Run();
+  show message 'Reorder rules run: ' + toString($Count) + ' rule(s) added to an RFQ.' type Information;
+end;
+
+/** Daily replenishment run (Odoo stock scheduler). */
+create or modify scheduled event Inventory.SE_ReorderRules folder 'Replenishment' (
+  Microflow: Inventory.SCE_ReorderRules_Run,
+  Repeat: Daily,
+  HourOfDay: 2,
+  MinuteOfHour: 0
+);

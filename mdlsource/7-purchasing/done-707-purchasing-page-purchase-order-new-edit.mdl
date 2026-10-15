@@ -46,6 +46,7 @@ create or modify page Purchasing.PurchaseOrder_NewEdit folder 'RFQs/Pages'
       }
     }
     dynamictext txtStatus (Content: '{1}', ContentParams: ({1} = "Status"), Class: 'pill pill-info spacing-outer-bottom-medium')
+    linkbutton lnkSmartReceipt (Caption: 'Receipt', Action: call microflow Inventory.ACT_PurchaseOrder_OpenReceipt(PurchaseOrder = $currentObject), Visible: $currentObject/Status = Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder)
     layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
       row {
         column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {

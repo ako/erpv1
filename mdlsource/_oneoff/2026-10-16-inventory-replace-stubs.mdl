@@ -1,0 +1,236 @@
+mdl 1;
+-- One-off: the 800 forward stubs (log-only) are replaced by the real Inventory bridges (812 delivery, 816 receipt).
+-- create or modify refuses the reshape (MDL-V1-REBUILD): drop the four stubs and replay 812 and 816 in the same script.
+drop microflow Inventory.SUB_SalesOrder_CreateDelivery;
+drop microflow Inventory.SUB_SalesOrder_CancelDeliveries;
+drop microflow Inventory.SUB_PurchaseOrder_CreateReceipt;
+drop microflow Inventory.SUB_PurchaseOrder_CancelReceipts;
+-- ── replay: mdlsource/8-inventory/812-inventory-mf-sales-order-create-delivery.mdl
+-- 812-inventory-mf-sales-order-create-delivery.mdl — build-plan rows 77/79 (F007-UC001, F007-UC003). Replaces the 800 forward
+-- stubs: Inventory.SUB_SalesOrder_CreateDelivery and SUB_SalesOrder_CancelDeliveries, plus SUB_OperationType_GetByKind.
+-- CreateDelivery is a SYNC (PROJECT.md 5 (build) "Quantity change on a confirmed sales order"): it brings the open delivery in
+-- line with what is still to deliver, so Confirm and a later quantity change call the same microflow.
+
+/**
+ * The (first active) operation type of a kind: receipts, delivery orders or internal transfers.
+ *
+ * @param $Kind the kind
+ * @returns the operation type, or empty
+ */
+create or modify microflow Inventory.SUB_OperationType_GetByKind ($Kind: Enumeration(Inventory.ENUM_OperationKind))
+returns Inventory.OperationType as $OperationType
+folder 'Configuration/Microflows'
+begin
+  retrieve $OperationType from Inventory.OperationType where [Kind = $Kind][Active = true()] first;
+  return $OperationType;
+end;
+
+/**
+ * The open delivery of an order, or a new draft one from the delivery operation type for the order's delivery address.
+ *
+ * @param $SalesOrder the order
+ * @param $Open its open delivery (may be empty)
+ * @param $OperationType the delivery operation type
+ * @returns the delivery
+ */
+create or modify microflow Inventory.SUB_Delivery_GetOrCreate ($SalesOrder: Sales.SalesOrder, $Open: Inventory.Transfer, $OperationType: Inventory.OperationType)
+returns Inventory.Transfer as $Delivery
+folder 'Fulfilment/Microflows'
+begin
+  if $Open != empty then
+    return $Open;
+  end if;
+  retrieve $Address from $SalesOrder/Sales.SalesOrder_DeliveryAddress;
+  $New = call microflow Inventory.SUB_Transfer_Create(OperationType = $OperationType, Partner = $Address);
+  change $New (SourceDocument = $SalesOrder/Number, Inventory.Transfer_SalesOrder = $SalesOrder);
+  commit $New with events;
+  return $New;
+end;
+
+/**
+ * Lower open moves by a quantity (latest first in list order), never below zero; a move lowered to zero is cancelled.
+ *
+ * @param $Moves the open moves of one order line
+ * @param $By the quantity to take off
+ */
+create or modify microflow Inventory.SUB_Moves_Lower ($Moves: List of Inventory.StockMove, $By: Decimal)
+folder 'Fulfilment/Microflows'
+begin
+  declare $Left Decimal = $By;
+  @annotation 'One loop over one line''s open moves (one or two): lower each until the quantity is taken off; one commit after the loop.'
+  loop $Move in $Moves begin
+    declare $Demand Decimal = if $Move/DemandQuantity = empty then 0 else $Move/DemandQuantity;
+    declare $Take Decimal = if $Left >= $Demand then $Demand else $Left;
+    if $Take > 0 then
+      change $Move (DemandQuantity = $Demand - $Take, Quantity = if $Move/Quantity > $Demand - $Take then $Demand - $Take else $Move/Quantity,
+        Status = if $Demand - $Take <= 0 then Inventory.ENUM_TransferStatus.Cancelled else $Move/Status);
+      set $Left = $Left - $Take;
+    end if;
+  end loop;
+  commit $Moves with events refresh;
+end;
+
+/**
+ * After a sync: a transfer with open moves is confirmed (availability checked); one without any is removed (draft) or cancelled.
+ *
+ * @param $Transfer the transfer
+ */
+create or modify microflow Inventory.SUB_Transfer_ConfirmOrDrop ($Transfer: Inventory.Transfer)
+folder 'Transfers/Microflows'
+begin
+  retrieve $OpenMove from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Done'][Status != 'Cancelled'] first;
+  if $OpenMove = empty then
+    if $Transfer/Status = Inventory.ENUM_TransferStatus.Draft then
+      delete $Transfer;
+    else
+      call microflow Inventory.SUB_Transfer_Cancel(Transfer = $Transfer);
+    end if;
+    return;
+  end if;
+  call microflow Inventory.SUB_Transfer_Confirm(Transfer = $Transfer);
+end;
+
+/**
+ * Delivery for a confirmed sales order (F007-UC001), and its adjustment after a quantity change (F007-UC003): per goods line,
+ * still-to-deliver = ordered - delivered - already planned on open delivery moves. A positive rest is added to the open delivery
+ * (created from WH/Stock to Customers for the delivery address when there is none); a negative rest lowers the open moves.
+ * The delivery is then confirmed (availability checked); an empty new delivery is removed again.
+ *
+ * @param $SalesOrder the confirmed order
+ */
+create or modify microflow Inventory.SUB_SalesOrder_CreateDelivery ($SalesOrder: Sales.SalesOrder)
+folder 'Fulfilment/Microflows'
+begin
+  if $SalesOrder/Status != Sales.ENUM_SalesOrderStatus.SalesOrder then
+    return;
+  end if;
+  $Type = call microflow Inventory.SUB_OperationType_GetByKind(Kind = Inventory.ENUM_OperationKind.Delivery);
+  if $Type = empty then
+    log warning node 'Inventory.Delivery' 'No delivery operation type: no delivery for ' + $SalesOrder/Number;
+    return;
+  end if;
+  retrieve $Open from Inventory.Transfer where [Inventory.Transfer_SalesOrder = $SalesOrder][Status != 'Done'][Status != 'Cancelled']
+    [Inventory.Transfer_OperationType/Inventory.OperationType/Kind = 'Delivery'] first;
+  retrieve $Lines from Sales.SalesOrderLine where [Sales.SalesOrderLine_SalesOrder = $SalesOrder][Sales.SalesOrderLine_Product/Products.Product/ProductType = 'Goods'];
+  $Delivery = call microflow Inventory.SUB_Delivery_GetOrCreate(SalesOrder = $SalesOrder, Open = $Open, OperationType = $Type);
+  $NewMoves = create list of Inventory.StockMove;
+  @annotation 'One loop over the goods lines (tens at most): the open moves of each line are one retrieve; new moves are committed after the loop.'
+  loop $Line in $Lines begin
+    retrieve $LineMoves from Inventory.StockMove where [Inventory.StockMove_SalesOrderLine = $Line][Status != 'Done'][Status != 'Cancelled'];
+    $Planned = sum $LineMoves by DemandQuantity;
+    declare $Rest Decimal = (if $Line/Quantity = empty then 0 else $Line/Quantity) - (if $Line/QuantityDelivered = empty then 0 else $Line/QuantityDelivered) - $Planned;
+    if $Rest > 0 then
+      retrieve $Product from $Line/Sales.SalesOrderLine_Product;
+      $Move = call microflow Inventory.SUB_Transfer_AddMove(Transfer = $Delivery, Product = $Product, Demand = $Rest,
+        Description = if $Line/Description = empty then $Product/Name else $Line/Description);
+      change $Move (Inventory.StockMove_SalesOrderLine = $Line);
+      add $Move to $NewMoves;
+    else
+      if $Rest < 0 then
+        call microflow Inventory.SUB_Moves_Lower(Moves = $LineMoves, By = 0 - $Rest);
+      end if;
+    end if;
+  end loop;
+  commit $NewMoves with events;
+  call microflow Inventory.SUB_Transfer_ConfirmOrDrop(Transfer = $Delivery);
+end;
+
+/**
+ * Cancel the open deliveries of a sales order (F004-UC004 Cancel).
+ *
+ * @param $SalesOrder the order
+ */
+create or modify microflow Inventory.SUB_SalesOrder_CancelDeliveries ($SalesOrder: Sales.SalesOrder)
+folder 'Fulfilment/Microflows'
+begin
+  retrieve $Open from Inventory.Transfer where [Inventory.Transfer_SalesOrder = $SalesOrder][Status != 'Done'][Status != 'Cancelled'];
+  @annotation 'An order has one open delivery (two with a backorder): cancel each.'
+  loop $Transfer in $Open begin
+    call microflow Inventory.SUB_Transfer_Cancel(Transfer = $Transfer);
+  end loop;
+end;
+-- ── replay: mdlsource/8-inventory/816-inventory-mf-purchase-order-create-receipt.mdl
+-- 816-inventory-mf-purchase-order-create-receipt.mdl — build-plan row 80 (F007-UC004). Replaces the 800 forward stubs:
+-- Inventory.SUB_PurchaseOrder_CreateReceipt and SUB_PurchaseOrder_CancelReceipts, plus SUB_Receipt_GetOrCreate. Like 812's
+-- delivery it is a SYNC, so approval and a later quantity change call the same microflow. Uses 812's helpers.
+
+/**
+ * The open receipt of a purchase order, or a new draft one from the receipt operation type for the vendor.
+ *
+ * @param $PurchaseOrder the order
+ * @param $Open its open receipt (may be empty)
+ * @param $OperationType the receipt operation type
+ * @returns the receipt
+ */
+create or modify microflow Inventory.SUB_Receipt_GetOrCreate ($PurchaseOrder: Purchasing.PurchaseOrder, $Open: Inventory.Transfer, $OperationType: Inventory.OperationType)
+returns Inventory.Transfer as $Receipt
+folder 'Fulfilment/Microflows'
+begin
+  if $Open != empty then
+    return $Open;
+  end if;
+  retrieve $Address from $PurchaseOrder/Purchasing.PurchaseOrder_Vendor;
+  $New = call microflow Inventory.SUB_Transfer_Create(OperationType = $OperationType, Partner = $Address);
+  change $New (SourceDocument = $PurchaseOrder/Number, Inventory.Transfer_PurchaseOrder = $PurchaseOrder);
+  commit $New with events;
+  return $New;
+end;
+
+/**
+ * Receipt for a confirmed purchase order (F007-UC004), and its adjustment after a quantity change: per goods line,
+ * still-to-receive = ordered - received - already planned on open receipt moves; a positive rest is added to the open receipt
+ * (created from Vendors to WH/Stock when there is none), a negative rest lowers the open moves. Then confirmed.
+ *
+ * @param $PurchaseOrder the confirmed purchase order
+ */
+create or modify microflow Inventory.SUB_PurchaseOrder_CreateReceipt ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'Fulfilment/Microflows'
+begin
+  if $PurchaseOrder/Status != Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder then
+    return;
+  end if;
+  $Type = call microflow Inventory.SUB_OperationType_GetByKind(Kind = Inventory.ENUM_OperationKind.Receipt);
+  if $Type = empty then
+    log warning node 'Inventory.Receipt' 'No receipt operation type: no receipt for ' + $PurchaseOrder/Number;
+    return;
+  end if;
+  retrieve $Open from Inventory.Transfer where [Inventory.Transfer_PurchaseOrder = $PurchaseOrder][Status != 'Done'][Status != 'Cancelled']
+    [Inventory.Transfer_OperationType/Inventory.OperationType/Kind = 'Receipt'] first;
+  retrieve $Lines from Purchasing.PurchaseOrderLine where [Purchasing.PurchaseOrderLine_PurchaseOrder = $PurchaseOrder][Purchasing.PurchaseOrderLine_Product/Products.Product/ProductType = 'Goods'];
+  $Receipt = call microflow Inventory.SUB_Receipt_GetOrCreate(PurchaseOrder = $PurchaseOrder, Open = $Open, OperationType = $Type);
+  $NewMoves = create list of Inventory.StockMove;
+  @annotation 'One loop over the goods lines (tens at most): the open moves of each line are one retrieve; new moves are committed after the loop.'
+  loop $Line in $Lines begin
+    retrieve $LineMoves from Inventory.StockMove where [Inventory.StockMove_PurchaseOrderLine = $Line][Status != 'Done'][Status != 'Cancelled'];
+    $Planned = sum $LineMoves by DemandQuantity;
+    declare $Rest Decimal = (if $Line/Quantity = empty then 0 else $Line/Quantity) - (if $Line/QuantityReceived = empty then 0 else $Line/QuantityReceived) - $Planned;
+    if $Rest > 0 then
+      retrieve $Product from $Line/Purchasing.PurchaseOrderLine_Product;
+      $Move = call microflow Inventory.SUB_Transfer_AddMove(Transfer = $Receipt, Product = $Product, Demand = $Rest,
+        Description = if $Line/Description = empty then $Product/Name else $Line/Description);
+      change $Move (Inventory.StockMove_PurchaseOrderLine = $Line);
+      add $Move to $NewMoves;
+    else
+      if $Rest < 0 then
+        call microflow Inventory.SUB_Moves_Lower(Moves = $LineMoves, By = 0 - $Rest);
+      end if;
+    end if;
+  end loop;
+  commit $NewMoves with events;
+  call microflow Inventory.SUB_Transfer_ConfirmOrDrop(Transfer = $Receipt);
+end;
+
+/**
+ * Cancel the open deliveries of a sales order (F004-UC004 Cancel).
+ *
+ * @param $PurchaseOrder the order
+ */
+create or modify microflow Inventory.SUB_PurchaseOrder_CancelReceipts ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'Fulfilment/Microflows'
+begin
+  retrieve $Open from Inventory.Transfer where [Inventory.Transfer_PurchaseOrder = $PurchaseOrder][Status != 'Done'][Status != 'Cancelled'];
+  @annotation 'An order has one open receipt (two with a backorder): cancel each.'
+  loop $Transfer in $Open begin
+    call microflow Inventory.SUB_Transfer_Cancel(Transfer = $Transfer);
+  end loop;
+end;

@@ -33,7 +33,7 @@ create or modify module role Invoicing.Manager description 'Full access incl. co
 create or modify module role Invoicing.Creator description 'Creates invoices from orders (bridge)';
 
 create or modify user role Administrator (
-  ModuleRoles: (System.Administrator, Administration.Administrator, Core.User, WorkflowCommons.Administrator, Core.Admin, Products.Manager, Partners.Admin, Inventory.Manager),
+  ModuleRoles: (System.Administrator, Administration.Administrator, Core.User, WorkflowCommons.Administrator, Core.Admin, Products.Manager, Partners.Admin, Sales.Reader, Purchasing.Reader, Inventory.Manager),
   ManageAllRoles: true,
   CheckSecurity: true
 );

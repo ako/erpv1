@@ -1,0 +1,38 @@
+mdl 1;
+-- 818-inventory-mf-purchase-order-update-received.mdl — build-plan row 81 (F007-UC005). Owns Purchasing.SUB_PurchaseOrder_UpdateReceived:
+-- called by Inventory when a receipt is done (Inventory sits above Purchasing, so this is a downward call).
+
+/**
+ * Received quantities and receipt status of a purchase order (Odoo purchase.order.line._compute_qty_received, receipt_status):
+ * per line the done quantity of its receipt moves; NotReceived / PartiallyReceived / FullyReceived over the goods lines.
+ * Then the billing status, which depends on received quantities.
+ *
+ * @param $PurchaseOrder the order
+ * @returns true
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_UpdateReceived ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  retrieve $Lines from Purchasing.PurchaseOrderLine where [Purchasing.PurchaseOrderLine_PurchaseOrder = $PurchaseOrder][Purchasing.PurchaseOrderLine_Product/Products.Product/ProductType = 'Goods'];
+  declare $AnyReceived Boolean = false;
+  declare $AllReceived Boolean = true;
+  @annotation 'One loop over the goods lines (tens at most); the done moves of each line are one retrieve; one commit after the loop.'
+  loop $Line in $Lines begin
+    retrieve $DoneMoves from Inventory.StockMove where [Inventory.StockMove_PurchaseOrderLine = $Line][Status = 'Done'];
+    $Received = sum $DoneMoves by Quantity;
+    change $Line (QuantityReceived = $Received);
+    if $Received > 0 then
+      set $AnyReceived = true;
+    end if;
+    if $Received < (if $Line/Quantity = empty then 0 else $Line/Quantity) then
+      set $AllReceived = false;
+    end if;
+  end loop;
+  commit $Lines with events refresh;
+  change $PurchaseOrder (ReceiptStatus = if $AnyReceived and $AllReceived then Purchasing.ENUM_ReceiptStatus.FullyReceived
+    else if $AnyReceived then Purchasing.ENUM_ReceiptStatus.PartiallyReceived else Purchasing.ENUM_ReceiptStatus.NotReceived);
+  commit $PurchaseOrder with events refresh;
+  $Billing = call microflow Purchasing.SUB_PurchaseOrder_UpdateBillingStatus(PurchaseOrder = $PurchaseOrder);
+  return true;
+end;

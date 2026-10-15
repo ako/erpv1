@@ -1,0 +1,35 @@
+mdl 1;
+-- 802-inventory-page-inventory-dashboard.mdl — build-plan row 69 (F006). Inventory_Dashboard: a tile per operation type with
+-- open transfers (Ready / Waiting, from Inventory.TransferSummary — "Late" deferred, see 808) opening Transfers, then stock on
+-- hand. Wireframe design/wireframes/Inventory_Dashboard.html. Home of InventoryUser / InventoryManager.
+
+/** Inventory overview — Inventory_Dashboard. */
+create or modify page Inventory.Inventory_Dashboard folder 'Transfers/Pages'
+(
+  Title: 'Inventory overview',
+  Layout: Core.App_Default,
+  Url: 'inventory-dashboard'
+)
+{
+  container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+    container ctnPageHeadTitle (Class: 'page-head-title') {
+      dynamictext txtTitle (Content: 'Inventory overview', RenderMode: H1)
+    }
+  }
+  listview lvTiles (DataSource: database Inventory."TransferSummary" sort by "OperationTypeName" asc, Class: 'spacing-outer-bottom-large') {
+    container ctnTile (Class: 'card spacing-inner-medium spacing-outer-bottom-medium') {
+      dynamictext txtTileName (Content: '{1}', ContentParams: ({1} = "OperationTypeName"), RenderMode: H3)
+      dynamictext txtTileCounts (Content: '{1} ready · {2} waiting', ContentParams: ({1} = "ReadyCount", {2} = "WaitingCount"), RenderMode: Text)
+      linkbutton btnOpenTransfers (Caption: 'Open transfers', Action: show page Inventory.Transfer_Overview)
+    }
+  }
+  dynamictext hStock (Content: 'Stock on hand', RenderMode: H2)
+  datagrid gridStock (DataSource: database Inventory."StockOnHand" sort by "ProductName" asc, PagingPosition: bottom, Class: 'density-compact') {
+    column (Attribute: "ProductReference", Caption: 'Reference', WrapText: true) { textfilter fProductReference }
+    column (Attribute: "ProductName", Caption: 'Product', WrapText: true) { textfilter fProductName }
+    column (Attribute: "LocationName", Caption: 'Location', WrapText: true) { textfilter fLocationName }
+    column (Attribute: "OnHand", Caption: 'On hand', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fOnHand }
+  }
+};
+
+grant view on page Inventory.Inventory_Dashboard to Inventory.User, Inventory.Manager;

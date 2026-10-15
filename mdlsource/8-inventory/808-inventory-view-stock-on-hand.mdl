@@ -1,0 +1,42 @@
+mdl 1;
+-- 808-inventory-view-stock-on-hand.mdl — build-plan row 74 (F006-UC006): Inventory.StockOnHand (replaces Odoo
+-- report.stock.quantity) — on-hand quantity per product at internal locations — and Inventory.TransferSummary (the dashboard
+-- tiles: open transfers per operation type). Same OQL rules as Sales 608 (no concat(); enums compared by value name).
+
+/** Stock on hand: quantity per product and internal location (Odoo stock.quant, report.stock.quantity). */
+create or modify view entity Inventory."StockOnHand" (
+  "ProductName": String(200),
+  "ProductReference": String(200),
+  "LocationName": String(200),
+  "OnHand": Decimal
+) as (
+  from Inventory.StockLevel as l
+  join l/Inventory.StockLevel_Product/Products.Product as p
+  join l/Inventory.StockLevel_Location/Inventory.Location as loc
+  where loc.LocationType = 'Internal'
+  group by p.Name, p.InternalReference, loc.Name
+  select
+    p.Name as ProductName,
+    p.InternalReference as ProductReference,
+    loc.Name as LocationName,
+    sum(l.Quantity) as OnHand
+);
+
+/** Open transfers per operation type, for the dashboard tiles (wireframe Inventory_Dashboard; "Late" needs receipt dates vs now, not in OQL views). */
+create or modify view entity Inventory."TransferSummary" (
+  "OperationTypeName": String(200),
+  "ReadyCount": Integer,
+  "WaitingCount": Integer
+) as (
+  from Inventory.Transfer as t
+  join t/Inventory.Transfer_OperationType/Inventory.OperationType as o
+  where t.Status = 'Ready' or t.Status = 'Waiting'
+  group by o.Name
+  select
+    o.Name as OperationTypeName,
+    sum(case when t.Status = 'Ready' then 1 else 0 end) as ReadyCount,
+    sum(case when t.Status = 'Waiting' then 1 else 0 end) as WaitingCount
+);
+
+grant read * on entity Inventory.StockOnHand to Inventory.User, Inventory.Manager, Inventory.Reader;
+grant read * on entity Inventory.TransferSummary to Inventory.User, Inventory.Manager;

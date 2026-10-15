@@ -1,0 +1,178 @@
+mdl 1;
+-- One-off: build-plan row 79 — the Sales and Purchasing line Recompute actions check the quantity against what was
+-- delivered / received (820) and the order-level recompute re-syncs the open delivery / receipt. Reshapes (MDL-V1-REBUILD):
+-- drop and replay done-603 and done-704 (their grants are restated by the page scripts' grants below).
+drop microflow Sales.ACT_SalesOrderLine_Recompute;
+drop microflow Sales.SUB_SalesOrderLine_RecomputeOrder;
+drop microflow Purchasing.ACT_PurchaseOrderLine_Recompute;
+drop microflow Purchasing.SUB_PurchaseOrderLine_RecomputeOrder;
+-- ── replay: mdlsource/6-sales/done-603-sales-mf-sales-order-new.mdl
+-- 603-sales-mf-sales-order-new.mdl — build-plan row 44 (F004-UC001). Owns Sales.SUB_SalesOrder_Create, SUB_SalesOrderLine_RecomputeOrder and the
+-- order form's on-change actions ACT_SalesOrder_ChangeCustomer, ACT_SalesOrderLine_ChangeProduct, ACT_SalesOrderLine_Recompute. ACT_SalesOrder_New is in 615 (it opens the form that calls these).
+
+/**
+ * A new quotation with company defaults (Odoo sale.order default_get + create): number from the 'sale.order'
+ * sequence, the current user as salesperson, order date now, expiration = today + company quotation validity,
+ * company currency. Committed, so lines can be added at once.
+ *
+ * @returns the quotation
+ */
+create or modify microflow Sales.SUB_SalesOrder_Create ()
+returns Sales.SalesOrder as $SalesOrder
+folder 'Quotations/Microflows'
+begin
+  retrieve $Company from Core.Company first;
+  declare $LoginName String = if $currentUser = empty then '' else $currentUser/Name;
+  retrieve $Me from Administration.Account where [Name = $LoginName] first;
+  $Number = call microflow Core.SUB_Sequence_NextNumber(Code = 'sale.order');
+  $SalesOrder = create Sales.SalesOrder (Number = $Number, Status = Sales.ENUM_SalesOrderStatus.Quotation, Locked = false,
+    OrderDate = [%CurrentDateTime%],
+    ExpirationDate = addDays([%BeginOfCurrentDay%], if $Company/QuotationValidityDays = empty then 30 else $Company/QuotationValidityDays),
+    InvoiceStatus = Core.ENUM_InvoiceStatus.NothingToInvoice, DeliveryStatus = Sales.ENUM_DeliveryStatus.NotDelivered,
+    AmountUntaxed = 0, AmountTax = 0, AmountTotal = 0, TermsAndConditions = $Company/InvoiceTerms,
+    Sales.SalesOrder_Salesperson = $Me, Sales.SalesOrder_Currency = $Company/Core.Company_Currency);
+  commit $SalesOrder with events;
+  return $SalesOrder;
+end;
+
+/**
+ * The totals of the order a line belongs to; once confirmed also its open delivery (re-synced: row 79) and invoice status.
+ *
+ * @param $SalesOrderLine the changed line
+ * @returns true
+ */
+create or modify microflow Sales.SUB_SalesOrderLine_RecomputeOrder ($SalesOrderLine: Sales.SalesOrderLine)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  retrieve $Order from $SalesOrderLine/Sales.SalesOrderLine_SalesOrder;
+  $Recomputed = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $Order);
+  if $Order/Status = Sales.ENUM_SalesOrderStatus.SalesOrder then
+    call microflow Inventory.SUB_SalesOrder_CreateDelivery(SalesOrder = $Order);
+    $Invoicing = call microflow Sales.SUB_SalesOrder_UpdateInvoiceStatus(SalesOrder = $Order);
+  end if;
+  return true;
+end;
+
+/** On change of the customer: addresses, pricelist and payment term from the customer. */
+create or modify microflow Sales.ACT_SalesOrder_ChangeCustomer ($SalesOrder: Sales.SalesOrder)
+folder 'Quotations/Microflows'
+begin
+  call microflow Sales.SUB_SalesOrder_ApplyCustomer(SalesOrder = $SalesOrder);
+end;
+
+/**
+ * On change of a line's product: product defaults, then the order totals.
+ *
+ * @param $SalesOrderLine the line
+ * @returns true
+ */
+create or modify microflow Sales.ACT_SalesOrderLine_ChangeProduct ($SalesOrderLine: Sales.SalesOrderLine)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $SalesOrderLine);
+  $Recomputed = call microflow Sales.SUB_SalesOrderLine_RecomputeOrder(SalesOrderLine = $SalesOrderLine);
+  return true;
+end;
+
+/** On change of a line's quantity, price, discount or taxes: refused below the delivered quantity, else the order totals. */
+create or modify microflow Sales.ACT_SalesOrderLine_Recompute ($SalesOrderLine: Sales.SalesOrderLine)
+folder 'Quotations/Microflows'
+begin
+  $IsValid = call microflow Sales.VAL_SalesOrderLine_Quantity(SalesOrderLine = $SalesOrderLine);
+  if not($IsValid) then
+    return;
+  end if;
+  $Recomputed = call microflow Sales.SUB_SalesOrderLine_RecomputeOrder(SalesOrderLine = $SalesOrderLine);
+end;
+-- ── replay: mdlsource/7-purchasing/done-704-purchasing-mf-purchase-order-line-change-product.mdl
+-- 704-purchasing-mf-purchase-order-line-change-product.mdl — build-plan row 57 (F005-UC001). Owns
+-- Purchasing.ACT_PurchaseOrderLine_ChangeProduct, ACT_PurchaseOrderLine_Recompute, SUB_PurchaseOrderLine_RecomputeOrder and the line Remove
+-- (SUB/ACT_PurchaseOrderLine_Delete).
+
+/**
+ * The totals of the order a line belongs to; once confirmed also its open receipt (re-synced) and billing status.
+ *
+ * @param $PurchaseOrderLine the changed line
+ * @returns true
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrderLine_RecomputeOrder ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  retrieve $Order from $PurchaseOrderLine/Purchasing.PurchaseOrderLine_PurchaseOrder;
+  $Recomputed = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $Order);
+  if $Order/Status = Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder then
+    call microflow Inventory.SUB_PurchaseOrder_CreateReceipt(PurchaseOrder = $Order);
+    $Billing = call microflow Purchasing.SUB_PurchaseOrder_UpdateBillingStatus(PurchaseOrder = $Order);
+  end if;
+  return true;
+end;
+
+/**
+ * On change of a line's product: product and vendor-price defaults, then the order totals.
+ *
+ * @param $PurchaseOrderLine the line
+ * @returns true
+ */
+create or modify microflow Purchasing.ACT_PurchaseOrderLine_ChangeProduct ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $PurchaseOrderLine);
+  $Recomputed = call microflow Purchasing.SUB_PurchaseOrderLine_RecomputeOrder(PurchaseOrderLine = $PurchaseOrderLine);
+  return true;
+end;
+
+/** On change of a line's quantity, price, discount or taxes: the order totals. */
+create or modify microflow Purchasing.ACT_PurchaseOrderLine_Recompute ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
+folder 'RFQs/Microflows'
+begin
+  $IsValid = call microflow Purchasing.VAL_PurchaseOrderLine_Quantity(PurchaseOrderLine = $PurchaseOrderLine);
+  if not($IsValid) then
+    return;
+  end if;
+  $Recomputed = call microflow Purchasing.SUB_PurchaseOrderLine_RecomputeOrder(PurchaseOrderLine = $PurchaseOrderLine);
+end;
+
+/**
+ * Delete a line and recompute its order (totals, and billing status once confirmed).
+ *
+ * @param $PurchaseOrderLine the line to remove
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrderLine_Delete ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
+folder 'RFQs/Microflows'
+begin
+  retrieve $Order from $PurchaseOrderLine/Purchasing.PurchaseOrderLine_PurchaseOrder;
+  delete $PurchaseOrderLine;
+  $Recomputed = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $Order);
+  if $Order/Status = Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder then
+    $Billing = call microflow Purchasing.SUB_PurchaseOrder_UpdateBillingStatus(PurchaseOrder = $Order);
+  end if;
+end;
+
+/**
+ * Remove on a purchase order line: refused on a locked order and for a line already received or billed.
+ *
+ * @param $PurchaseOrderLine the line
+ * @returns true when removed
+ */
+create or modify microflow Purchasing.ACT_PurchaseOrderLine_Delete ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
+returns Boolean as $Done
+folder 'RFQs/Microflows'
+begin
+  if $PurchaseOrderLine/Purchasing.PurchaseOrderLine_PurchaseOrder/Purchasing.PurchaseOrder/Locked then
+    show message 'This order is locked: unlock it before changing lines.' type Warning;
+    return false;
+  end if;
+  if ($PurchaseOrderLine/QuantityReceived != empty and $PurchaseOrderLine/QuantityReceived > 0)
+    or ($PurchaseOrderLine/QuantityBilled != empty and $PurchaseOrderLine/QuantityBilled > 0) then
+    show message 'This line was already received or billed and cannot be removed.' type Warning;
+    return false;
+  end if;
+  call microflow Purchasing.SUB_PurchaseOrderLine_Delete(PurchaseOrderLine = $PurchaseOrderLine);
+  return true;
+end;
+grant execute on microflow Sales.ACT_SalesOrderLine_Recompute to Sales.User, Sales.Manager;
+grant execute on microflow Purchasing.ACT_PurchaseOrderLine_Recompute to Purchasing.User, Purchasing.Manager;

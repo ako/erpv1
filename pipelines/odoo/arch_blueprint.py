@@ -27,8 +27,8 @@ MODULE_ROLES = {  # module role -> user roles (Q-F001-2)
                  'Reader': ['SalesUser', 'Purchaser', 'InventoryUser', 'Billing', 'InvoicingManager']},
     'Partners': {'Editor': ['SalesUser', 'SalesManager', 'Purchaser', 'PurchaseManager', 'Billing', 'InvoicingManager'], 'Admin': ['Administrator'],
                  'Reader': ['InventoryUser', 'InventoryManager']},
-    'Sales': {'User': ['SalesUser'], 'Manager': ['SalesManager'], 'Reader': ['Billing', 'InvoicingManager', 'InventoryUser', 'InventoryManager']},
-    'Purchasing': {'User': ['Purchaser'], 'Manager': ['PurchaseManager'], 'Reader': ['Billing', 'InvoicingManager', 'InventoryUser', 'InventoryManager']},
+    'Sales': {'User': ['SalesUser'], 'Manager': ['SalesManager'], 'Reader': ['Billing', 'InvoicingManager', 'InventoryUser', 'InventoryManager', 'Administrator']},
+    'Purchasing': {'User': ['Purchaser'], 'Manager': ['PurchaseManager'], 'Reader': ['Billing', 'InvoicingManager', 'InventoryUser', 'InventoryManager', 'Administrator']},
     'Inventory': {'User': ['InventoryUser'], 'Manager': ['InventoryManager', 'Administrator'], 'Reader': ['SalesUser', 'SalesManager', 'Purchaser', 'PurchaseManager']},
     'Invoicing': {'Billing': ['Billing'], 'Manager': ['InvoicingManager'], 'Creator': ['SalesUser', 'SalesManager', 'Purchaser', 'PurchaseManager']},
 }

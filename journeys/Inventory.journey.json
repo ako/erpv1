@@ -1,0 +1,43 @@
+{
+  "id": "J-INV-01",
+  "title": "Warehouse user validates the delivery of a confirmed sales order: stock goes down, the order reads fully delivered",
+  "requirement": ["F006-UC002", "F007-UC001", "F007-UC002"],
+  "persona": "warehouse.user",
+  "requires": ["delivery-ready"],
+  "_seedNote": "the delivery comes from a confirmed sales order (J-SALES-01 confirms 5 Office Chairs for Azure Interior; 8 on hand makes it Ready)",
+  "seeds": [
+    { "name": "deliveryNo",
+      "sql": "SELECT t.Number AS n FROM Inventory.Transfer AS t WHERE t.Status = 'Ready' AND t/Inventory.Transfer_OperationType/Inventory.OperationType/Kind = 'Delivery' AND t/Inventory.Transfer_SalesOrder/Sales.SalesOrder/Number != NULL ORDER BY t.Number DESC LIMIT 1" },
+    { "name": "orderNo",
+      "sql": "SELECT t/Inventory.Transfer_SalesOrder/Sales.SalesOrder/Number AS n FROM Inventory.Transfer AS t WHERE t.Number = '{{deliveryNo}}'" }
+  ],
+  "steps": [
+    {
+      "name": "Open Inventory > Transfers: the delivery is listed",
+      "actions": [{ "do": "nav", "group": "Inventory", "item": "Transfers" }],
+      "ui": { "ready": ".mx-name-gridMain", "textPresent": ["{{deliveryNo}}"] }
+    },
+    {
+      "name": "Open the delivery: Ready, the order's chairs reserved",
+      "actions": [{ "do": "clickRow", "widget": "gridMain", "text": "{{deliveryNo}}" }],
+      "ui": { "ready": ".mx-name-btnValidate0", "textPresent": ["{{deliveryNo}}", "Ready", "{{orderNo}}"] }
+    },
+    {
+      "name": "Validate: the delivery is done",
+      "actions": [{ "do": "click", "widget": "btnValidate0", "label": "Validate" }],
+      "ui": { "ready": ".mx-name-dvMain", "textPresent": ["Done"] },
+      "data": {
+        "oql": [
+          { "label": "the delivery is done with a date",
+            "sql": "SELECT COUNT(t.ID) AS n FROM Inventory.Transfer AS t WHERE t.Number = '{{deliveryNo}}' AND t.Status = 'Done' AND t.DateDone != NULL",
+            "atLeast": 1 }
+        ]
+      }
+    }
+  ],
+  "outcome": {
+    "label": "the sales order reads fully delivered",
+    "sql": "SELECT COUNT(o.ID) AS n FROM Sales.SalesOrder AS o WHERE o.Number = '{{orderNo}}' AND o.DeliveryStatus = 'FullyDelivered'",
+    "atLeast": 1
+  }
+}

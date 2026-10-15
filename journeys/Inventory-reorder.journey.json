@@ -1,0 +1,28 @@
+{
+  "id": "J-INV-03",
+  "title": "Inventory manager runs the reorder rules: the Office Chair (below its minimum of 10) is ordered from Gemini Furniture",
+  "requirement": ["F006-UC007"],
+  "persona": "inventory.manager",
+  "_seedNote": "demo seed: rule Office Chair WH/Stock min 10 / max 30 from Gemini Furniture; on hand 8 or less",
+  "seeds": [],
+  "steps": [
+    {
+      "name": "Open Inventory > Reorder rules: the chair rule is listed",
+      "actions": [{ "do": "nav", "group": "Inventory", "item": "Reorder rules" }],
+      "ui": { "ready": ".mx-name-lvLines", "textPresent": ["Reorder rules"] }
+    },
+    {
+      "name": "Run scheduler: the rules ran",
+      "actions": [
+        { "do": "click", "widget": "btnRunscheduler1", "label": "Run scheduler" },
+        { "do": "dismissModal" }
+      ],
+      "ui": { "ready": ".mx-name-lvLines", "textPresent": ["Reorder rules"] }
+    }
+  ],
+  "outcome": {
+    "label": "an RFQ to Gemini Furniture carries an Office Chair line",
+    "sql": "SELECT COUNT(l.ID) AS n FROM Purchasing.PurchaseOrderLine AS l WHERE l/Purchasing.PurchaseOrderLine_Product/Products.Product/InternalReference = 'FURN_0269' AND l/Purchasing.PurchaseOrderLine_PurchaseOrder/Purchasing.PurchaseOrder/Status = 'RFQ' AND l/Purchasing.PurchaseOrderLine_PurchaseOrder/Purchasing.PurchaseOrder/Purchasing.PurchaseOrder_Vendor/Partners.Partner/Name = 'Gemini Furniture'",
+    "atLeast": 1
+  }
+}
