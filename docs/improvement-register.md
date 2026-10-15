@@ -8,3 +8,7 @@
 | 2026-10-14 | Core | module-review §4d | other | P2 | Demo-user switcher overlaps content at 390px | partly — content gets bottom padding; switcher position rule not applied (P3 open) |
 | 2026-10-14 | Core | module-review §4c | vocabulary-mismatch | P2 | Company "Users" link unexplained | fixed same session — "Related" heading + caption "User accounts (Administration)" |
 | 2026-10-14 | Core | module-review §4c | other | P2 | One-click Remove on numbering sequences | fixed same session — editable list pages have no Remove (rows are configuration) |
+| 2026-10-15 | Products | module-review §4c (design/ui-reviews/ui-review-2026-10-15-products.html) | other | P2 | Mandatory product category not enforced (saved blank) | fixed same session — SUB_Product_Save files it under 'All' (Odoo default) |
+| 2026-10-15 | Products | module-review §4d | other | P2 | Image uploader and Vendor prices link not built on Product_NewEdit | deferred — Vendor prices link appears once Purchasing.VendorPrice_Overview exists (generator links only existing pages); product image not in demo scope (P3 after Purchasing) |
+| 2026-10-15 | Products | module-review §4d | other | P2 | Product list offers 1 of 4 wireframe filters | fixed same session — every attribute column filterable (generator); association filters (category) still absent |
+| 2026-10-15 | Products | module-review §4c | blank-render | P2 | Unit factor shown/edited at 2 decimals (0.0833 → 0.08), risk of write-back | fixed same session — Factor DecimalPrecision 8 |

@@ -1,0 +1,6 @@
+instrument	verdict	rc	elapsed	log
+conformance (reused)	PASS	0	-	docs/conformance/report-2026-10-15-F002-units-of-measure.tsv, docs/conformance/report-2026-10-15-F003-product-catalogue-pricing.tsv
+graph sweep (orphans + wiring shape)	PASS	0	1s	.claude/loop/review/Products/graph.tsv
+coverage (BRD leaves: UNCLAIMED/PHANTOM/DOUBLE · all 2 BRDs, one ledger each)	PASS	0	1s	.claude/loop/review/Products/coverage.txt
+journeys	FAULT	2	-	(no journey run in this invocation)
+look	FAULT	2	-	(no visual review in this invocation — module-review.md §4)

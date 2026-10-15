@@ -45,7 +45,8 @@ begin
 end;
 
 /**
- * Persist a validated product; a product without a purchase unit buys in its sales unit (Odoo default).
+ * Persist a validated product; a product without a purchase unit buys in its sales unit, and one without a
+ * category is filed under 'All' (both Odoo defaults; Product_Category is mandatory in F003).
  *
  * @param $Product the product
  */
@@ -54,6 +55,10 @@ folder 'Catalogue/Microflows'
 begin
   if $Product/Products.Product_PurchaseUoM = empty then
     change $Product (Products.Product_PurchaseUoM = $Product/Products.Product_UoM);
+  end if;
+  if $Product/Products.Product_Category = empty then
+    retrieve $All from Products.ProductCategory where [FullName = 'All'] first;
+    change $Product (Products.Product_Category = $All);
   end if;
   commit $Product with events refresh;
 end;

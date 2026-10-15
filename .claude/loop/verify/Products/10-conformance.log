@@ -1,0 +1,30 @@
+  measuring 1/32   measuring 2/32   measuring 3/32   measuring 4/32   measuring 5/32   measuring 6/32   measuring 7/32   measuring 8/32   measuring 9/32   measuring 10/32   measuring 11/32   measuring 12/32   measuring 13/32   measuring 14/32   measuring 15/32   measuring 16/32   measuring 17/32   measuring 18/32   measuring 19/32   measuring 20/32   measuring 21/32   measuring 22/32   measuring 23/32   measuring 24/32   measuring 25/32   measuring 26/32   measuring 27/32   measuring 28/32   measuring 29/32   measuring 30/32   measuring 31/32   measuring 32/32                               conformance-check · 2026-10-15
+  ledger rows            38   (measured 32 · prose-only 6)
+  OK                     14
+  STALE                  0   (claims built/partial, model says absent)
+  UNDERSTATED            18
+  report                 docs/conformance/report-2026-10-15-F002-units-of-measure.tsv
+  report                 docs/conformance/report-2026-10-15-F003-product-catalogue-pricing.tsv
+  newly baselined        32   (no baseline row yet — regressions measured from the next run)
+
+  mismatches:
+    Products                 F002-units-of-measure:`/actorRoleMapping/*` (4) not-built   -> PRESENT UNDERSTATED
+    Products                 F002-units-of-measure:`/actors/*` (3) not-built   -> PRESENT UNDERSTATED
+    Products                 F002-units-of-measure:`/microflows/0/*` (15) not-built   -> PRESENT UNDERSTATED
+    Products                 F002-units-of-measure:`/microflows/1/*` (13) not-built   -> PRESENT UNDERSTATED
+    Products                 F002-units-of-measure:`/microflows/2/*` (9) not-built   -> PRESENT UNDERSTATED
+    Products                 F002-units-of-measure:`/pages/0/*` (10) not-built   -> PRESENT UNDERSTATED
+    Products                 F002-units-of-measure:`/pages/1/*` (11) not-built   -> PRESENT UNDERSTATED
+    Products                 F003-product-catalogue-pricing:`/actorRoleMapping/*` (5) not-built   -> PRESENT UNDERSTATED
+    Products                 F003-product-catalogue-pricing:`/actors/*` (4) not-built   -> PRESENT UNDERSTATED
+    Products                 F003-product-catalogue-pricing:`/microflows/0/*` (14) not-built   -> PRESENT UNDERSTATED
+    Products                 F003-product-catalogue-pricing:`/microflows/1/*` (9) not-built   -> PRESENT UNDERSTATED
+    Products                 F003-product-catalogue-pricing:`/microflows/2/*` (17) not-built   -> PRESENT UNDERSTATED
+    Products                 F003-product-catalogue-pricing:`/pages/0/*` (12) not-built   -> PRESENT UNDERSTATED
+    Products                 F003-product-catalogue-pricing:`/pages/1/*` (14) not-built   -> PRESENT UNDERSTATED
+    Products                 F003-product-catalogue-pricing:`/pages/2/*` (10) not-built   -> PRESENT UNDERSTATED
+    Products                 F003-product-catalogue-pricing:`/pages/3/*` (10) not-built   -> PRESENT UNDERSTATED
+    Products                 F003-product-catalogue-pricing:`/pages/4/*` (11) not-built   -> PRESENT UNDERSTATED
+    Products                 F003-product-catalogue-pricing:`/pages/5/*` (10) not-built   -> PRESENT UNDERSTATED
+
+  no regressions against baseline.

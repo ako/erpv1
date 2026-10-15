@@ -1,0 +1,198 @@
+mdl 1;
+-- One-off: SUB_Product_Save gains the default-category branch (reshape refused by create or modify).
+drop microflow Products.ACT_Product_Save;
+drop microflow Products.SUB_Product_Save;
+-- 405-products-mf-product-save.mdl — build-plan row 27 (F003-UC001, UC004). Owns Products.VAL_Product,
+-- Products.SUB_Product_Save, Products.ACT_Product_Save, Products.ACT_Product_Archive (+ SUB_Product_Archive) and
+-- Products.SUB_ProductCategory_ComputeFullName (called by the generated ProductCategory save).
+
+/**
+ * Validate a product before save (Odoo product.template constraints), every invalid field on one submit:
+ * a name; a unit; the purchase unit in the same category as the unit; a service cannot track inventory;
+ * prices not negative.
+ *
+ * @param $Product the product being saved
+ * @returns true when valid
+ */
+create or modify microflow Products.VAL_Product ($Product: Products.Product)
+returns Boolean as $IsValid
+folder 'Catalogue/Microflows'
+begin
+  declare $IsValid Boolean = true;
+  if $Product/Name = empty or trim($Product/Name) = '' then
+    validation feedback $Product/Name message 'Name is required.';
+    set $IsValid = false;
+  end if;
+  if $Product/Products.Product_UoM = empty then
+    validation feedback $Product/Products.Product_UoM message 'Unit of measure is required.';
+    set $IsValid = false;
+  end if;
+  if $Product/Products.Product_UoM != empty and $Product/Products.Product_PurchaseUoM != empty
+     and $Product/Products.Product_UoM/Products.UoM/Products.UoM_Category != $Product/Products.Product_PurchaseUoM/Products.UoM/Products.UoM_Category then
+    validation feedback $Product/Products.Product_PurchaseUoM message 'The purchase unit must be in the same category as the unit of measure.';
+    set $IsValid = false;
+  end if;
+  if $Product/ProductType = Products.ENUM_ProductType.Service and $Product/TrackInventory then
+    validation feedback $Product/TrackInventory message 'A service cannot track inventory.';
+    set $IsValid = false;
+  end if;
+  if $Product/SalesPrice != empty and $Product/SalesPrice < 0 then
+    validation feedback $Product/SalesPrice message 'The sales price cannot be negative.';
+    set $IsValid = false;
+  end if;
+  if $Product/Cost != empty and $Product/Cost < 0 then
+    validation feedback $Product/Cost message 'The cost cannot be negative.';
+    set $IsValid = false;
+  end if;
+  return $IsValid;
+end;
+
+/**
+ * Persist a validated product; a product without a purchase unit buys in its sales unit, and one without a
+ * category is filed under 'All' (both Odoo defaults; Product_Category is mandatory in F003).
+ *
+ * @param $Product the product
+ */
+create or modify microflow Products.SUB_Product_Save ($Product: Products.Product)
+folder 'Catalogue/Microflows'
+begin
+  if $Product/Products.Product_PurchaseUoM = empty then
+    change $Product (Products.Product_PurchaseUoM = $Product/Products.Product_UoM);
+  end if;
+  if $Product/Products.Product_Category = empty then
+    retrieve $All from Products.ProductCategory where [FullName = 'All'] first;
+    change $Product (Products.Product_Category = $All);
+  end if;
+  commit $Product with events refresh;
+end;
+
+/**
+ * Save button on the product form: validate, persist, close.
+ *
+ * @param $Product the product being edited
+ * @returns true when saved
+ */
+create or modify microflow Products.ACT_Product_Save ($Product: Products.Product)
+returns Boolean as $Saved
+folder 'Catalogue/Microflows'
+begin
+  $IsValid = call microflow Products.VAL_Product(Product = $Product);
+  if $IsValid then
+    call microflow Products.SUB_Product_Save(Product = $Product);
+    close page;
+    return true;
+  end if;
+  return false;
+end;
+
+/**
+ * Deactivate a product.
+ *
+ * @param $Product the product
+ */
+create or modify microflow Products.SUB_Product_Archive ($Product: Products.Product)
+folder 'Catalogue/Microflows'
+begin
+  change $Product (Active = false);
+  commit $Product with events refresh;
+end;
+
+/**
+ * Archive button (F003-UC004): the product leaves the pick lists but stays on existing documents.
+ *
+ * @param $Product the product to archive
+ */
+create or modify microflow Products.ACT_Product_Archive ($Product: Products.Product)
+folder 'Catalogue/Microflows'
+begin
+  call microflow Products.SUB_Product_Archive(Product = $Product);
+  close page;
+end;
+
+/**
+ * Full path of a category ("All / Saleable / Office", Odoo complete_name), set before it is committed.
+ *
+ * @param $ProductCategory the category being saved
+ */
+create or modify microflow Products.SUB_ProductCategory_ComputeFullName ($ProductCategory: Products.ProductCategory)
+folder 'Catalogue/Microflows'
+begin
+  declare $Name String = if $ProductCategory/Name = empty then '' else trim($ProductCategory/Name);
+  declare $FullName String = if $ProductCategory/Products.ProductCategory_Parent = empty then $Name
+    else $ProductCategory/Products.ProductCategory_Parent/Products.ProductCategory/FullName + ' / ' + $Name;
+  change $ProductCategory (FullName = $FullName);
+end;
+-- ── replay: page grants
+-- GENERATED by pipelines/odoo/mdl_pages.py from ui_spec.py["Product_NewEdit"] — wireframe design/wireframes/Product_NewEdit.html.
+-- Regenerate, do not hand-edit. Reached from: row of Product_Overview; New on Product_Overview.
+
+/** Product — Product_NewEdit. */
+create or modify page Products.Product_NewEdit folder 'Catalogue/Pages'
+(
+  Params: ( $Product: Products.Product ),
+  Title: 'Product',
+  Layout: Core.App_Default
+)
+{
+  layoutgrid gridPage {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvMain (DataSource: $Product) {
+    container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+      container ctnPageHeadTitle (Class: 'page-head-title') {
+        dynamictext txtCrumb (Content: 'Product', RenderMode: Text, Class: 'crumb')
+        dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = "Name"), RenderMode: H1)
+      }
+      container ctnPageHeadActions (Class: 'page-head-actions') {
+        actionbutton btnSave0 (Caption: 'Save', Action: call microflow Products.ACT_Product_Save(Product = $currentObject), ButtonStyle: Primary)
+        actionbutton btnArchive1 (Caption: 'Archive', Action: call microflow Products.ACT_Product_Archive(Product = $currentObject), ButtonStyle: Default)
+      }
+    }
+    layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
+      row {
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hGeneral (Content: 'General', RenderMode: H2)
+          textbox txtName (Label: 'Name', Attribute: "Name")
+          textbox txtInternalReference (Label: 'Internal reference', Attribute: "InternalReference")
+          textbox txtBarcode (Label: 'Barcode', Attribute: "Barcode")
+          combobox cmbProductType (Label: 'Product type', Attribute: "ProductType")
+          checkbox cbTrackInventory (Label: 'Track inventory', Attribute: "TrackInventory")
+          combobox cmbProductCategory (Label: 'Category', Attribute: Product_Category, DataSource: database Products."ProductCategory" sort by "Name" asc, CaptionAttribute: "Name")
+          combobox cmbProductTags (Label: 'Tags', Attribute: Product_Tags, DataSource: database Products."ProductTag" sort by "Name" asc, CaptionAttribute: "Name")
+        }
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hSales (Content: 'Sales', RenderMode: H2)
+          checkbox cbCanBeSold (Label: 'Can be sold', Attribute: "CanBeSold")
+          textbox txtSalesPrice (Label: 'Sales price', Attribute: "SalesPrice", DecimalPrecision: 2, GroupDigits: true)
+          combobox cmbProductCustomerTaxes (Label: 'Customer taxes', Attribute: Product_CustomerTaxes, DataSource: database Core."Tax" sort by "Name" asc, CaptionAttribute: "Name")
+          combobox cmbInvoicePolicy (Label: 'Invoice policy', Attribute: "InvoicePolicy")
+          textarea taSalesDescription (Label: 'Sales description', Attribute: "SalesDescription")
+          textbox txtCustomerLeadDays (Label: 'Customer lead days', Attribute: "CustomerLeadDays")
+        }
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hPurchase (Content: 'Purchase', RenderMode: H2)
+          checkbox cbCanBePurchased (Label: 'Can be purchased', Attribute: "CanBePurchased")
+          textbox txtCost (Label: 'Cost', Attribute: "Cost", DecimalPrecision: 2, GroupDigits: true)
+          combobox cmbProductVendorTaxes (Label: 'Vendor taxes', Attribute: Product_VendorTaxes, DataSource: database Core."Tax" sort by "Name" asc, CaptionAttribute: "Name")
+          combobox cmbBillPolicy (Label: 'Bill policy', Attribute: "BillPolicy")
+          combobox cmbProductPurchaseUoM (Label: 'Purchase unit', Attribute: Product_PurchaseUoM, DataSource: database Products."UoM" sort by "Name" asc, CaptionAttribute: "Name")
+          textarea taPurchaseDescription (Label: 'Purchase description', Attribute: "PurchaseDescription")
+        }
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hInventory (Content: 'Inventory', RenderMode: H2)
+          combobox cmbProductUoM (Label: 'Unit', Attribute: Product_UoM, DataSource: database Products."UoM" sort by "Name" asc, CaptionAttribute: "Name")
+          textbox txtWeight (Label: 'Weight', Attribute: "Weight", DecimalPrecision: 2, GroupDigits: true)
+          textbox txtVolume (Label: 'Volume', Attribute: "Volume", DecimalPrecision: 2, GroupDigits: true)
+        }
+      }
+    }
+    textarea taInternalNotes (Label: 'Internal notes', Attribute: "InternalNotes")
+  }
+      }
+    }
+  }
+};
+
+grant view on page Products.Product_NewEdit to Products.Manager;
+grant execute on microflow Products.ACT_Product_Archive to Products.Manager;
+grant execute on microflow Products.ACT_Product_Save to Products.Manager;

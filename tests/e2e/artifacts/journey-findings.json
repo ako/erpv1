@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-15T00:49:11.006Z",
+  "capturedAt": "2026-10-15T01:30:40.085Z",
   "configuredUser": "sales.manager",
   "actualUser": "sales.manager",
   "usedFallback": false,
@@ -52,7 +52,7 @@
       "rung": "data",
       "name": "New product, Save with every field empty: refused, message shown, nothing stored: Products.Product +0",
       "verdict": "PASS",
-      "detail": "before=0 after=0 delta=0",
+      "detail": "before=6 after=6 delta=0",
       "requirement": "F003-UC001"
     },
     {
@@ -87,14 +87,14 @@
       "rung": "data",
       "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product +1",
       "verdict": "PASS",
-      "detail": "before=0 after=1 delta=1",
+      "detail": "before=6 after=7 delta=1",
       "requirement": "F003-UC001"
     },
     {
       "rung": "data",
       "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product_UoM set on every row",
       "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (Products.Product was empty before this step, so every row is this step's)",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 31243722414896359)",
       "requirement": "F003-UC001",
       "evidenceStrength": "strong"
     },
@@ -102,7 +102,7 @@
       "rung": "data",
       "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product_UoM points at the seeded Name",
       "verdict": "PASS",
-      "detail": "1 row(s) link to Products.UoM where Name = 'Units' (Products.Product was empty before this step, so every row is this step's)",
+      "detail": "1 row(s) link to Products.UoM where Name = 'Units' (scoped to rows with id > 31243722414896359)",
       "requirement": "F003-UC001",
       "evidenceStrength": "strong"
     },
@@ -110,14 +110,14 @@
       "rung": "data",
       "name": "Fill name, unit and price and save: back on the list with the product shown: the purchase unit defaults to the sales unit",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
+      "detail": "got 7, need >= 1",
       "requirement": "F003-UC001"
     },
     {
       "rung": "outcome",
       "name": "J-PRODUCTS-01 end state",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
+      "detail": "got 7, need >= 1",
       "requirement": "F003-UC001"
     }
   ],
@@ -157,7 +157,7 @@
             "file": "../tests/e2e/artifacts/J-PRODUCTS-01-step1.png",
             "title": "Mendix - Products",
             "url": "http://localhost:8080/p/product-overview",
-            "at": "2026-10-15T00:48:59.484Z"
+            "at": "2026-10-15T01:30:28.663Z"
           },
           "reached": true,
           "checks": [
@@ -168,7 +168,7 @@
               "detail": ".mx-name-gridMain"
             }
           ],
-          "ms": 1079
+          "ms": 1090
         },
         {
           "n": 2,
@@ -211,7 +211,7 @@
             "file": "../tests/e2e/artifacts/J-PRODUCTS-01-step2.png",
             "title": "Mendix - Product",
             "url": "http://localhost:8080/p/product-overview",
-            "at": "2026-10-15T00:49:02.850Z"
+            "at": "2026-10-15T01:30:31.829Z"
           },
           "reached": true,
           "checks": [
@@ -237,10 +237,10 @@
               "rung": "data",
               "name": "New product, Save with every field empty: refused, message shown, nothing stored: Products.Product +0",
               "verdict": "PASS",
-              "detail": "before=0 after=0 delta=0"
+              "detail": "before=6 after=6 delta=0"
             }
           ],
-          "ms": 3422
+          "ms": 3218
         },
         {
           "n": 3,
@@ -294,7 +294,7 @@
             "file": "../tests/e2e/artifacts/J-PRODUCTS-01-step3.png",
             "title": "Mendix - Products",
             "url": "http://localhost:8080/p/product-overview",
-            "at": "2026-10-15T00:49:10.505Z"
+            "at": "2026-10-15T01:30:39.603Z"
           },
           "reached": true,
           "checks": [
@@ -326,28 +326,28 @@
               "rung": "data",
               "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product +1",
               "verdict": "PASS",
-              "detail": "before=0 after=1 delta=1"
+              "detail": "before=6 after=7 delta=1"
             },
             {
               "rung": "data",
               "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product_UoM set on every row",
               "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (Products.Product was empty before this step, so every row is this step's)"
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 31243722414896359)"
             },
             {
               "rung": "data",
               "name": "Fill name, unit and price and save: back on the list with the product shown: Products.Product_UoM points at the seeded Name",
               "verdict": "PASS",
-              "detail": "1 row(s) link to Products.UoM where Name = 'Units' (Products.Product was empty before this step, so every row is this step's)"
+              "detail": "1 row(s) link to Products.UoM where Name = 'Units' (scoped to rows with id > 31243722414896359)"
             },
             {
               "rung": "data",
               "name": "Fill name, unit and price and save: back on the list with the product shown: the purchase unit defaults to the sales unit",
               "verdict": "PASS",
-              "detail": "got 1, need >= 1"
+              "detail": "got 7, need >= 1"
             }
           ],
-          "ms": 7907
+          "ms": 8048
         }
       ]
     }

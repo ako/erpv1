@@ -19,12 +19,12 @@ create or modify page Products.Product_Overview folder 'Catalogue/Pages'
     }
   }
   datagrid gridMain (DataSource: database Products."Product" sort by "InternalReference" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Products.Product_NewEdit(Product = $currentObject)) {
-    column (Attribute: "InternalReference", Caption: 'Internal reference')
-    column (Attribute: "Name", Caption: 'Name')
+    column (Attribute: "InternalReference", Caption: 'Internal reference') { textfilter fInternalReference }
+    column (Attribute: "Name", Caption: 'Name') { textfilter fName }
     column (Attribute: "ProductType", Caption: 'Product type') { dropdownfilter fProductType }
     column (Attribute: Product_Category/Name, Caption: 'Category')
-    column (Attribute: "SalesPrice", Caption: 'Sales price', Alignment: right, DynamicCellClass: 'num-right')
-    column (Attribute: "Cost", Caption: 'Cost', Alignment: right, DynamicCellClass: 'num-right')
+    column (Attribute: "SalesPrice", Caption: 'Sales price', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fSalesPrice }
+    column (Attribute: "Cost", Caption: 'Cost', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fCost }
     column (Attribute: Product_UoM/Name, Caption: 'Unit')
   }
 };

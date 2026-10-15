@@ -1,19 +1,19 @@
 {
   "counts": {
     "modules": 7,
-    "pagesTotal": 9,
+    "pagesTotal": 17,
     "perModule": {
       "Core": 7,
       "Inventory": 0,
       "Invoicing": 0,
       "Partners": 2,
-      "Products": 0,
+      "Products": 8,
       "Purchasing": 0,
       "Sales": 0
     }
   },
-  "distinctRolePageSets": 4,
-  "generatedAt": "2026-10-14T23:29:08Z",
+  "distinctRolePageSets": 6,
+  "generatedAt": "2026-10-15T01:20:04Z",
   "inScope": [
     "Core.Company_Edit",
     "Core.Home_Web",
@@ -23,7 +23,15 @@
     "Core.Tax_NewEdit",
     "Core.Tax_Overview",
     "Partners.Partner_NewEdit",
-    "Partners.Partner_Overview"
+    "Partners.Partner_Overview",
+    "Products.Pricelist_NewEdit",
+    "Products.Pricelist_Overview",
+    "Products.ProductCategory_NewEdit",
+    "Products.ProductCategory_Overview",
+    "Products.Product_NewEdit",
+    "Products.Product_Overview",
+    "Products.UoMCategory_NewEdit",
+    "Products.UoMCategory_Overview"
   ],
   "orphans": [],
   "provenance": {
@@ -83,6 +91,27 @@
         "Partners.Partner_Overview"
       ],
       "role": "Partners.Editor"
+    },
+    {
+      "inScopePages": 8,
+      "pages": [
+        "Products.Pricelist_NewEdit",
+        "Products.Pricelist_Overview",
+        "Products.ProductCategory_NewEdit",
+        "Products.ProductCategory_Overview",
+        "Products.Product_NewEdit",
+        "Products.Product_Overview",
+        "Products.UoMCategory_NewEdit",
+        "Products.UoMCategory_Overview"
+      ],
+      "role": "Products.Manager"
+    },
+    {
+      "inScopePages": 1,
+      "pages": [
+        "Products.Product_Overview"
+      ],
+      "role": "Products.Reader"
     }
   ]
 }

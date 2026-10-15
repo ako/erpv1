@@ -1,0 +1,6 @@
+kind	a	b	c
+wiring	Products	64	20|33
+orphan	Products.ASU_Products_SeedData	10	
+orphan	Products.SUB_Pricelist_GetPrice	12	
+orphan	Products.SUB_UoM_ConvertPrice	1	
+orphan	Products.SUB_UoM_ConvertQuantity	5	

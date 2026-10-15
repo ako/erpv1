@@ -1,0 +1,1187 @@
+{
+ "schemaVersion": "1.1",
+ "project": {
+  "id": "erpv1",
+  "displayName": "erpv1",
+  "mpr": "erpv1.mpr",
+  "mprModifiedAt": null,
+  "mendixVersion": null,
+  "toolkitCommit": "d16f578",
+  "gitCommit": "4064a78",
+  "branch": "claude/friendly-dirac-db6s4k"
+ },
+ "run": {
+  "startedAt": "2026-10-15T01:16:25Z",
+  "finishedAt": "2026-10-15T01:17:27Z",
+  "trigger": "review-module",
+  "target": "Products",
+  "env": {
+   "baseUrl": null,
+   "host": null,
+   "ownership": "unknown",
+   "ownershipBasis": "no app contacted — this is a model-side review, run with the app down",
+   "user": null,
+   "userFallbackUsed": false,
+   "database": null
+  },
+  "reproduce": {
+   "command": "bin/review-module.sh Products",
+   "seeds": null,
+   "monkeySeed": null
+  }
+ },
+ "checks": [
+  {
+   "id": "review/conformance/products/f002-units-of-measure-actorrolemapping-4",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F002-units-of-measure:/actorRoleMapping/* (4) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "SHOW USER ROLES"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f002-units-of-measure-actors-3",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F002-units-of-measure:/actors/* (3) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "SHOW USER ROLES"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f002-units-of-measure-domainentities-0-19",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F002-units-of-measure:/domainEntities/0/* (19) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Products.UoMCategory"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f002-units-of-measure-domainentities-1-54",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F002-units-of-measure:/domainEntities/1/* (54) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Products.UoM"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f002-units-of-measure-enumerations-0-13",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F002-units-of-measure:/enumerations/0/* (13) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Products.ENUM_UoMType"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f002-units-of-measure-microflows-0-15",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F002-units-of-measure:/microflows/0/* (15) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Products.SUB_UoM_ConvertQuantity"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f002-units-of-measure-microflows-1-13",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F002-units-of-measure:/microflows/1/* (13) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Products.SUB_UoM_ConvertPrice"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f002-units-of-measure-microflows-2-9",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F002-units-of-measure:/microflows/2/* (9) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Products.VAL_UoMCategory"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f002-units-of-measure-pages-0-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F002-units-of-measure:/pages/0/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Products.UoMCategory_Overview"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f002-units-of-measure-pages-1-11",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F002-units-of-measure:/pages/1/* (11) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Products.UoMCategory_NewEdit"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-actorrolemapping-5",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/actorRoleMapping/* (5) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "SHOW USER ROLES"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-actors-4",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/actors/* (4) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "SHOW USER ROLES"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-domainentities-0-35",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/domainEntities/0/* (35) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Products.ProductCategory"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-domainentities-1-189",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/domainEntities/1/* (189) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Products.Product"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-domainentities-2-18",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/domainEntities/2/* (18) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Products.ProductImage"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-domainentities-3-27",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/domainEntities/3/* (27) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Products.ProductTag"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-domainentities-4-37",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/domainEntities/4/* (37) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Products.Pricelist"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-domainentities-5-79",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/domainEntities/5/* (79) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Products.PriceRule"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-enumerations-0-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/enumerations/0/* (10) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Products.ENUM_BillPolicy"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-enumerations-1-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/enumerations/1/* (10) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Products.ENUM_InvoicePolicy"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-enumerations-2-11",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/enumerations/2/* (11) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Products.ENUM_PriceComputation"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-enumerations-3-14",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/enumerations/3/* (14) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Products.ENUM_PriceRuleScope"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-enumerations-4-11",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/enumerations/4/* (11) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Products.ENUM_ProductType"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-microflows-0-14",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/microflows/0/* (14) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Products.ACT_Product_Save"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-microflows-1-9",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/microflows/1/* (9) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Products.VAL_Product"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-microflows-2-17",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/microflows/2/* (17) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Products.SUB_Pricelist_GetPrice"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-pages-0-12",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/pages/0/* (12) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Products.Product_Overview"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-pages-1-14",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/pages/1/* (14) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Products.Product_NewEdit"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-pages-2-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/pages/2/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Products.ProductCategory_Overview"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-pages-3-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/pages/3/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Products.Pricelist_Overview"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-pages-4-11",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/pages/4/* (11) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Products.Pricelist_NewEdit"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/products/f003-product-catalogue-pricing-pages-5-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F003-product-catalogue-pricing:/pages/5/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Products.ProductCategory_NewEdit"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/wiring/products",
+   "instrument": "graph-sweep",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Products — module wiring shape",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "64 elements · 20 inbound · 33 outbound",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "graph sweep has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "query",
+     "sql": "objects/refs in .mxcli/catalog.db, grouped by module",
+     "value": "20 inbound"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/orphan/products-asu-products-seeddata",
+   "instrument": "graph-sweep",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Products.ASU_Products_SeedData — microflow with no inbound call",
+   "verdict": "manual",
+   "provenance": "judged",
+   "detail": "10 activities, and no inbound call / action / menu_item / show_page / datasource edge. Entry-point prefixes are already excluded. SHOW REFERENCES TO misses layout snippetcalls, so this is strong evidence of deadness, not proof.",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "graph sweep has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "query",
+     "sql": "microflows_data LEFT JOIN refs (catalog.db)",
+     "value": "Products.ASU_Products_SeedData"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/orphan/products-sub-pricelist-getprice",
+   "instrument": "graph-sweep",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Products.SUB_Pricelist_GetPrice — microflow with no inbound call",
+   "verdict": "manual",
+   "provenance": "judged",
+   "detail": "12 activities, and no inbound call / action / menu_item / show_page / datasource edge. Entry-point prefixes are already excluded. SHOW REFERENCES TO misses layout snippetcalls, so this is strong evidence of deadness, not proof.",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "graph sweep has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "query",
+     "sql": "microflows_data LEFT JOIN refs (catalog.db)",
+     "value": "Products.SUB_Pricelist_GetPrice"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/orphan/products-sub-uom-convertprice",
+   "instrument": "graph-sweep",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Products.SUB_UoM_ConvertPrice — microflow with no inbound call",
+   "verdict": "manual",
+   "provenance": "judged",
+   "detail": "1 activities, and no inbound call / action / menu_item / show_page / datasource edge. Entry-point prefixes are already excluded. SHOW REFERENCES TO misses layout snippetcalls, so this is strong evidence of deadness, not proof.",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "graph sweep has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "query",
+     "sql": "microflows_data LEFT JOIN refs (catalog.db)",
+     "value": "Products.SUB_UoM_ConvertPrice"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/orphan/products-sub-uom-convertquantity",
+   "instrument": "graph-sweep",
+   "kind": "conformance",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Products.SUB_UoM_ConvertQuantity — microflow with no inbound call",
+   "verdict": "manual",
+   "provenance": "judged",
+   "detail": "5 activities, and no inbound call / action / menu_item / show_page / datasource edge. Entry-point prefixes are already excluded. SHOW REFERENCES TO misses layout snippetcalls, so this is strong evidence of deadness, not proof.",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "graph sweep has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "query",
+     "sql": "microflows_data LEFT JOIN refs (catalog.db)",
+     "value": "Products.SUB_UoM_ConvertQuantity"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/coverage/products",
+   "instrument": "coverage",
+   "kind": "coverage",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Products — every BRD leaf claimed by exactly one ledger row",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "leaves 932 · claimed 807 · unclaimed 0 · phantom 0 · double-claimed 0 · summed over 2 BRD ledger(s)",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "coverage-check has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "log",
+     "path": "../../review/Products/coverage.txt"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/journey/products",
+   "instrument": "journey-runner",
+   "kind": "outcome",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Products — the running app was never contacted",
+   "verdict": "fault",
+   "provenance": "declared",
+   "notRun": true,
+   "detail": "no journey run in this invocation. bin/review-module.sh answers a MODEL question (does what was built match what was decided) and deliberately never starts the app. Nothing in this report is evidence about runtime behaviour. For that: bin/loop/verify-module.sh Products, with the stack up.",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "no journey ran, so no control could run either"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "bin/loop/verify-module.sh Products"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/look/products",
+   "instrument": "ui-review",
+   "kind": "outcome",
+   "module": "Products",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Products — no page in this module was looked at",
+   "verdict": "fault",
+   "provenance": "declared",
+   "notRun": true,
+   "detail": "module-review.md stage 4 (the LOOK) was not performed in this invocation and cannot be: it is a judgement pass over rendered pages, assessed against the wireframe, the design system, or §4d's unaided rubric where neither exists. Nothing in this report is evidence about how Products looks or whether a user could complete anything on it. For that: review-agent job 2, which writes design/ui-reviews/ui-review-<date>.html and appends P1/P2 findings to docs/improvement-register.md.",
+   "measuredAt": "2026-10-15T01:16:25Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "nobody looked, so there is nothing to control for"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "review-agent — module-review.md §4 over Products"
+    }
+   ],
+   "blocks": []
+  }
+ ],
+ "instruments": [
+  {
+   "name": "conformance",
+   "verdict": "pass",
+   "canExpressFault": true,
+   "evidenceStrength": "strong",
+   "expressibleVerdicts": [
+    "pass",
+    "fail",
+    "fault"
+   ],
+   "source": "architecture/modules/Products/coverage-ledger.md vs erpv1.mpr",
+   "rc": 0,
+   "elapsedSec": null,
+   "log": "docs/conformance/report-2026-10-15-F002-units-of-measure.tsv, docs/conformance/report-2026-10-15-F003-product-catalogue-pricing.tsv"
+  },
+  {
+   "name": "graph-sweep",
+   "verdict": "pass",
+   "canExpressFault": true,
+   "evidenceStrength": "medium",
+   "expressibleVerdicts": [
+    "pass",
+    "fault",
+    "manual"
+   ],
+   "source": ".mxcli/catalog.db",
+   "note": "wiring shape is measured; whether a given shape is a DEFECT is an intent question answered against the module brief, not here",
+   "rc": 0,
+   "elapsedSec": 1,
+   "log": ".claude/loop/review/Products/graph.tsv"
+  },
+  {
+   "name": "coverage",
+   "verdict": "pass",
+   "canExpressFault": true,
+   "evidenceStrength": "medium",
+   "expressibleVerdicts": [
+    "pass",
+    "fail",
+    "fault"
+   ],
+   "source": "BRD leaves vs coverage-ledger.md",
+   "rc": 0,
+   "elapsedSec": 1,
+   "log": ".claude/loop/review/Products/coverage.txt"
+  },
+  {
+   "name": "journey-runner",
+   "verdict": "fault",
+   "canExpressFault": true,
+   "evidenceStrength": "strong",
+   "expressibleVerdicts": [
+    "pass",
+    "fail",
+    "fault"
+   ],
+   "source": "journeys/Products.journey.json",
+   "rc": 2,
+   "elapsedSec": null,
+   "log": null,
+   "reason": "no journey run in this invocation"
+  },
+  {
+   "name": "ui-review",
+   "verdict": "fault",
+   "canExpressFault": true,
+   "evidenceStrength": "none",
+   "expressibleVerdicts": [
+    "fault"
+   ],
+   "source": "design/ui-reviews/ui-review-<date>.html (written by review-agent, not by this script)",
+   "note": "the visual assessment of every page in the module against wireframe, design system, or module-review.md §4d's unaided rubric. Judgement, not measurement — it is performed by a reviewer looking at rendered screens, and this chain never performs it",
+   "rc": 2,
+   "elapsedSec": null,
+   "log": null,
+   "reason": "no visual review in this invocation - module-review.md stage 4"
+  }
+ ],
+ "coverage": [
+  {
+   "module": "Products",
+   "brd": null,
+   "leaves": {
+    "total": 932,
+    "claimed": 807,
+    "unclaimed": 0,
+    "phantom": 0,
+    "doubleClaimed": 0
+   },
+   "rows": null,
+   "conformance": {
+    "checked": 32,
+    "ok": 14,
+    "stale": 0,
+    "understated": 18,
+    "unrunnable": 0
+   },
+   "journeys": [],
+   "source": "architecture/modules/Products/coverage-ledger.md",
+   "generatedAt": null
+  }
+ ],
+ "deferrals": [],
+ "walks": []
+}

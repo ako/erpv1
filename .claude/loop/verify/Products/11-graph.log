@@ -1,0 +1,14 @@
+graph-sweep · catalog 2026-10-15T01:05:09 (build_mode full) · 1065 objects · 3761 typed edges (member=1018 associate=428 parameter=379 xpath=361 call=249 show_page=178 action=175 retrieve=152)
+
+  module wiring (>= 20 elements)
+    MODULE                   ELEMENTS   INBOUND   OUTBOUND
+    Products                       64        20         33
+
+  orphaned microflows (no call / action / nav inbound, entry-point prefixes excluded): 4
+    Products.ASU_Products_SeedData                           10 activities
+    Products.SUB_Pricelist_GetPrice                          12 activities
+    Products.SUB_UoM_ConvertPrice                            1 activities
+    Products.SUB_UoM_ConvertQuantity                         5 activities
+
+  0 module(s) with no inbound references.
+  Whether that is a defect is an intent question — check the module brief.

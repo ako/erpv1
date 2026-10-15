@@ -1,0 +1,24 @@
+coverage · LEVEL 1 · MEASURED — ledger found for Products
+  ledger: architecture/modules/Products/coverage-ledger
+
+coverage-check: analysis/odoo/knowledge-base/brd/F002-units-of-measure.brd.json
+  ledger:        architecture/modules/Products/coverage-ledger/F002-units-of-measure.md
+  leaves:        210
+  CLAIMED:       183
+  LEDGERED:      27
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:0
+coverage-check: analysis/odoo/knowledge-base/brd/F003-product-catalogue-pricing.brd.json
+  ledger:        architecture/modules/Products/coverage-ledger/F003-product-catalogue-pricing.md
+  leaves:        722
+  CLAIMED:       624
+  LEDGERED:      98
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:0
+
+  per-BRD ledgers: 2 of 8 BRD(s) measured against architecture/modules/Products/coverage-ledger/<BRDID>.md;
+  6 BRD(s) have no ledger here (another module's, not measured): F001-contacts-company-users F004-sales F005-purchasing F006-inventory F007-order-fulfilment F008-invoicing-payments

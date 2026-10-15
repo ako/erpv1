@@ -1,0 +1,86 @@
+MONKEY_SEED=27124933   rounds=24   (re-run exactly: --seed 27124933)
+
+=== salesOrderOverview
+  [31mCRASH[0m salesOrderOverview · abuse: rapidTab  — blank page — no .mx-page or nav tree
+  [33minfo [0m salesOrderOverview · lost  — no page after round 1 (at http://localhost:8080/login.html) and re-landing failed — the remaining 0 round(s) NOT fuzzed
+
+=== quotationTemplateOverview
+  [33minfo [0m quotationTemplateOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== salesTeamOverview
+  [33minfo [0m salesTeamOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== purchaseOrderOverview
+  [33minfo [0m purchaseOrderOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== purchaseApprovalInbox
+  [33minfo [0m purchaseApprovalInbox · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== vendorPriceOverview
+  [33minfo [0m vendorPriceOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== inventoryDashboard
+  [33minfo [0m inventoryDashboard · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== transferOverview
+  [33minfo [0m transferOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== stockLevelOverview
+  [33minfo [0m stockLevelOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== reorderRuleOverview
+  [33minfo [0m reorderRuleOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== invoiceOverview
+  [33minfo [0m invoiceOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== paymentOverview
+  [33minfo [0m paymentOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== partnerOverview
+  [33minfo [0m partnerOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== productOverview
+  [33minfo [0m productOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== pricelistOverview
+  [33minfo [0m pricelistOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== salesAnalysisReport
+  [33minfo [0m salesAnalysisReport · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== purchaseAnalysisReport
+  [33minfo [0m purchaseAnalysisReport · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== invoiceAnalysisReport
+  [33minfo [0m invoiceAnalysisReport · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== companyEdit
+  [33minfo [0m companyEdit · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== warehouseEdit
+  [33minfo [0m warehouseEdit · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== sequenceOverview
+  [33minfo [0m sequenceOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== taxOverview
+  [33minfo [0m taxOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== paymentTermOverview
+  [33minfo [0m paymentTermOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== uoMCategoryOverview
+  [33minfo [0m uoMCategoryOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== productCategoryOverview
+  [33minfo [0m productCategoryOverview · not reached  — nav did not land — target skipped, NOT fuzzed
+
+=== MONKEY SUMMARY ===
+  seed 27124933 · 26 observations · 1 crash-class
+  ⚠ No spans were captured in ANY round. The OTel arm of the crash oracle
+    never ran, so swallowed-error crashes could not have been detected.
+    This run is a partial net, not a clean bill of health.
+  Read a clean run as "no unhandled crash on these inputs" and nothing more:
+  scripted journeys, not fuzzing, are what find defects in this stack.
+  findings → ../tests/e2e/artifacts/monkey-findings.json

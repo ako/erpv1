@@ -30,6 +30,8 @@ SYS_ATTR = {'CreatedDate': 'DateTime', 'ChangedDate': 'DateTime'}
 # links whose wireframe target is a prototype stand-in: the real page they open in the app
 LINK_TARGET = {'UserProfile_Edit': 'Administration.Account_Overview'}
 # hand-written logic a generated save runs just before its commit
+# ratios stored with 8 decimals must display them all (Dozens = 0.08333333; ui-review 2026-10-15 P2-4)
+DECIMAL_PRECISION = {'Factor': 8}
 SAVE_HOOK = {'Products.ProductCategory': 'Products.SUB_ProductCategory_ComputeFullName'}
 LINK_CAPTION = {'Administration.Account_Overview': 'User accounts (Administration)'}
 
@@ -135,7 +137,8 @@ def input_widget(e, f, ind, readonly=False, prefix='in'):
         if t == 'String' and (a.get('length') in (None, 'unlimited') or (isinstance(a.get('length'), int) and a['length'] > 2000)):
             return '%stextarea %s (Label: \'%s\', Attribute: %s%s)' % (ind, wid('ta', f), lab, D.q(f), ro)
         if t == 'Decimal':
-            return '%stextbox %s (Label: \'%s\', Attribute: %s, DecimalPrecision: 2, GroupDigits: true%s)' % (ind, wid('txt', f), lab, D.q(f), ro)
+            prec = DECIMAL_PRECISION.get(f, 2)
+            return '%stextbox %s (Label: \'%s\', Attribute: %s, DecimalPrecision: %d, GroupDigits: true%s)' % (ind, wid('txt', f), lab, D.q(f), prec, ro)
         return '%stextbox %s (Label: \'%s\', Attribute: %s%s)' % (ind, wid('txt', f), lab, D.q(f), ro)
     s = assoc(e, f)
     if s:
@@ -233,7 +236,7 @@ def gen_list(s):
         open_ = ', OnClick: %s' % show_page_action(s['open'], param_name(U.S[s['open']]['param']))
     L.append("  datagrid gridMain (DataSource: %s, PagingPosition: bottom, Class: 'density-compact'%s) {" % (src, open_))
     for c in s['columns']:
-        L.append('    ' + column(e, c, filters=(c in filt or not filt) and not assoc(e, c)))
+        L.append('    ' + column(e, c, filters=not assoc(e, c)))   # every attribute column filterable (P2-3)
     L.append('  }')
     return L
 
