@@ -120,7 +120,7 @@ $Moves = count $DeliveryMoves;
 
 /**
  * @test Validating the whole delivery marks the order fully delivered
- * @expect $SO/DeliveryStatus = Sales.ENUM_DeliveryStatus.FullyDelivered
+ * @expect $Fresh/DeliveryStatus = Sales.ENUM_DeliveryStatus.FullyDelivered
  */
 retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'] first;
 retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
@@ -137,6 +137,7 @@ commit $Line;
 call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
 retrieve $Delivery from Inventory.Transfer where [Inventory.Transfer_SalesOrder = $SO] first;
 call microflow Inventory.SUB_Transfer_Done(Transfer = $Delivery, CreateBackorder = false);
+retrieve $Fresh from Sales.SalesOrder where [Number = $SO/Number] first;
 /
 
 /**
@@ -169,7 +170,7 @@ $Planned = sum $Open by DemandQuantity;
 
 /**
  * @test Validating a purchase order's receipt marks it fully received
- * @expect $PO/ReceiptStatus = Purchasing.ENUM_ReceiptStatus.FullyReceived
+ * @expect $Fresh/ReceiptStatus = Purchasing.ENUM_ReceiptStatus.FullyReceived
  */
 retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'] first;
 retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
@@ -181,6 +182,7 @@ commit $Line;
 call microflow Purchasing.SUB_PurchaseOrder_Approve(PurchaseOrder = $PO);
 retrieve $Receipt from Inventory.Transfer where [Inventory.Transfer_PurchaseOrder = $PO] first;
 call microflow Inventory.SUB_Transfer_Done(Transfer = $Receipt, CreateBackorder = false);
+retrieve $Fresh from Purchasing.PurchaseOrder where [Number = $PO/Number] first;
 /
 
 /**
