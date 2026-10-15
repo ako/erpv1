@@ -11,8 +11,7 @@ mdl 1;
 create or modify microflow Inventory.ACT_ValidateTransferRequest_Backorder ($ValidateTransferRequest: Inventory.ValidateTransferRequest)
 folder 'Transfers/Microflows'
 begin
-  retrieve $Transfer from $ValidateTransferRequest/Inventory.ValidateTransferRequest_Transfer;
-  call microflow Inventory.SUB_Transfer_Done(Transfer = $Transfer, CreateBackorder = true);
+  call microflow Inventory.SUB_ValidateTransferRequest_Apply(ValidateTransferRequest = $ValidateTransferRequest, CreateBackorder = true);
   close page;
 end;
 
@@ -24,8 +23,7 @@ end;
 create or modify microflow Inventory.ACT_ValidateTransferRequest_NoBackorder ($ValidateTransferRequest: Inventory.ValidateTransferRequest)
 folder 'Transfers/Microflows'
 begin
-  retrieve $Transfer from $ValidateTransferRequest/Inventory.ValidateTransferRequest_Transfer;
-  call microflow Inventory.SUB_Transfer_Done(Transfer = $Transfer, CreateBackorder = false);
+  call microflow Inventory.SUB_ValidateTransferRequest_Apply(ValidateTransferRequest = $ValidateTransferRequest, CreateBackorder = false);
   close page;
 end;
 

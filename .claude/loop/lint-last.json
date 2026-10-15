@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-10-15T19:47:56Z",
+  "timestamp": "2026-10-15T19:54:56Z",
   "verdict": "FAIL",
-  "total": 414,
+  "total": 405,
   "rule_count": 19,
   "counts": {
     "ARCH001": 37,
@@ -13,8 +13,8 @@
     "CONV006": 38,
     "CONV007": 174,
     "CONV008": 14,
-    "CONV009": 5,
-    "CONV010": 6,
+    "CONV009": 1,
+    "CONV010": 1,
     "CUSTOM002": 7,
     "DESIGN001": 8,
     "MDL-FLOW01": 1,

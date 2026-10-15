@@ -1,12 +1,17 @@
 {
   "id": "J-INV-04",
-  "title": "Inventory manager counts 25 Office Chairs and applies the row's count: stock is corrected through an adjustment move",
+  "title": "Inventory manager counts 5 more Office Chairs than recorded and applies the row's count: stock is corrected through one adjustment move",
   "requirement": [
     "F006-UC006"
   ],
   "persona": "inventory.manager",
-  "_seedNote": "demo seed: stock levels for Desk Combination (row 1, sorted by product) and Office Chair (row 2) at WH/Stock. Also tops the chairs up so J-SALES-01 yields a Ready delivery on a re-run.",
-  "seeds": [],
+  "_seedNote": "demo seed: stock levels for Desk Combination (row 1, sorted by product) and Office Chair (row 2) at WH/Stock. Counts 5 above what is recorded, so every run makes one adjustment move; also tops the chairs up so J-SALES-01 yields a Ready delivery on a re-run.",
+  "seeds": [
+    {
+      "name": "counted",
+      "sql": "SELECT CAST(l.Quantity + 5 AS INTEGER) AS n FROM Inventory.StockLevel AS l WHERE l/Inventory.StockLevel_Product/Products.Product/InternalReference = 'FURN_0269' AND l/Inventory.StockLevel_Location/Inventory.Location/Name = 'WH/Stock'"
+    }
+  ],
   "steps": [
     {
       "name": "Open Inventory > Stock: both stock levels are listed",
@@ -26,13 +31,13 @@
       }
     },
     {
-      "name": "Count 25 Office Chairs and press the row's Apply",
+      "name": "Count {{counted}} Office Chairs and press the row's Apply",
       "actions": [
         {
           "do": "fill",
           "widget": "lntxtCountedQuantity",
           "nth": 1,
-          "value": "25",
+          "value": "{{counted}}",
           "label": "Counted quantity (Office Chair)"
         },
         {
@@ -62,8 +67,8 @@
     }
   ],
   "outcome": {
-    "label": "25 Office Chairs on hand at WH/Stock, the count cleared",
-    "sql": "SELECT COUNT(l.ID) AS n FROM Inventory.StockLevel AS l WHERE l/Inventory.StockLevel_Product/Products.Product/InternalReference = 'FURN_0269' AND l.Quantity = 25 AND l.CountedQuantity = NULL",
+    "label": "{{counted}} Office Chairs on hand at WH/Stock, the count cleared",
+    "sql": "SELECT COUNT(l.ID) AS n FROM Inventory.StockLevel AS l WHERE l/Inventory.StockLevel_Product/Products.Product/InternalReference = 'FURN_0269' AND l.Quantity = {{counted}} AND l.CountedQuantity = NULL",
     "atLeast": 1
   }
 }

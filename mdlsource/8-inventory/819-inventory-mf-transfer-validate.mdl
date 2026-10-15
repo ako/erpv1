@@ -35,6 +35,24 @@ begin
 end;
 
 /**
+ * After a transfer is done: the source order's delivered (sales) or received (purchase) quantities follow.
+ *
+ * @param $Transfer the done transfer
+ */
+create or modify microflow Inventory.SUB_Transfer_UpdateOrigin ($Transfer: Inventory.Transfer)
+folder 'Transfers/Microflows'
+begin
+  retrieve $SalesOrder from $Transfer/Inventory.Transfer_SalesOrder;
+  if $SalesOrder != empty then
+    $Delivered = call microflow Sales.SUB_SalesOrder_UpdateDelivered(SalesOrder = $SalesOrder);
+  end if;
+  retrieve $PurchaseOrder from $Transfer/Inventory.Transfer_PurchaseOrder;
+  if $PurchaseOrder != empty then
+    $Received = call microflow Purchasing.SUB_PurchaseOrder_UpdateReceived(PurchaseOrder = $PurchaseOrder);
+  end if;
+end;
+
+/**
  * Validate (Odoo button_validate / _action_done): every move's processed quantity leaves its source and arrives at its
  * destination (stock kept at internal locations only); a move processed below its demand keeps the processed quantity as done,
  * and the rest goes to a backorder or is dropped; then the source order's delivered / received quantities are updated.
@@ -68,14 +86,7 @@ begin
   commit $Moves with events refresh;
   change $Transfer (Status = Inventory.ENUM_TransferStatus.Done, DateDone = [%CurrentDateTime%]);
   commit $Transfer with events refresh;
-  retrieve $SalesOrder from $Transfer/Inventory.Transfer_SalesOrder;
-  if $SalesOrder != empty then
-    $Delivered = call microflow Sales.SUB_SalesOrder_UpdateDelivered(SalesOrder = $SalesOrder);
-  end if;
-  retrieve $PurchaseOrder from $Transfer/Inventory.Transfer_PurchaseOrder;
-  if $PurchaseOrder != empty then
-    $Received = call microflow Purchasing.SUB_PurchaseOrder_UpdateReceived(PurchaseOrder = $PurchaseOrder);
-  end if;
+  call microflow Inventory.SUB_Transfer_UpdateOrigin(Transfer = $Transfer);
 end;
 
 /**
@@ -127,4 +138,17 @@ folder 'Transfers/Microflows'
 begin
   $Request = create Inventory.ValidateTransferRequest (CreateBackorder = true, Inventory.ValidateTransferRequest_Transfer = $Transfer);
   return $Request;
+end;
+
+/**
+ * The backorder question answered: the request's transfer is validated, with or without a backorder.
+ *
+ * @param $ValidateTransferRequest the answered question
+ * @param $CreateBackorder true: the unprocessed rest goes to a backorder
+ */
+create or modify microflow Inventory.SUB_ValidateTransferRequest_Apply ($ValidateTransferRequest: Inventory.ValidateTransferRequest, $CreateBackorder: Boolean)
+folder 'Transfers/Microflows'
+begin
+  retrieve $Transfer from $ValidateTransferRequest/Inventory.ValidateTransferRequest_Transfer;
+  call microflow Inventory.SUB_Transfer_Done(Transfer = $Transfer, CreateBackorder = $CreateBackorder);
 end;

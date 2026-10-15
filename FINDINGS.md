@@ -76,3 +76,17 @@
   Purchasing.PurchaseApproval_Task.js" during a burst of execs; `run stop` + `run --local --ensure-db --watch --detach` fixed it.
   A new container also needs `--ensure-db` (Postgres not running → boot failed).
 - **journey-runner has no row click**: added `clickRow` (row of a grid by visible text) to tests/e2e/journey-runner.js.
+
+## 2026-10-16 — Inventory close-out
+
+- **Stock count Apply raced the row's save (fixed).** The Stock list saved a typed count on leave, and the page-level
+  Apply counts read counts from the database. A count typed and Apply clicked at once applied nothing, and a late save
+  then put back an already-applied count, so a second Apply would add the stock twice. Reproduced with J-INV-04
+  (count 21 typed: Apply corrected 0 levels; row Apply: 20 → 25, then the count of 25 reappeared). Fix: the count input no
+  longer saves on leave; a row Apply (ACT_StockLevel_ApplyCount) saves that row and applies. The page-level button was
+  removed — Odoo's "Apply all" is not offered (register row). Verified: J-INV-04 8/8 on two consecutive runs.
+- **Lint close-out.** CONV010 (retrieves/commits in five ACTs) and CONV009 (four microflows over 15 activities) were fixed
+  by moving work into SUBs (one drop-and-replay one-off). Remaining rises are the baselined classes (ARCH001 pickers,
+  CONV003 page names, CUSTOM002 ASU_/SCE_ — SCE_ReorderRules_Run is the BRD's name, so it stays).
+- **Journeys consume demo stock.** J-SALES-01 + J-INV-01 use 5 chairs each run; once below 5 the delivery is Waiting and
+  J-INV-01 reads INVALID (no Ready delivery). J-INV-04 now counts 5 above what is recorded, so running it first tops up.

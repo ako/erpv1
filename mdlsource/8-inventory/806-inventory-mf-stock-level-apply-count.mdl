@@ -39,6 +39,21 @@ begin
 end;
 
 /**
+ * Save one row's count and apply the entered counts.
+ *
+ * @param $StockLevel the row with its count
+ * @returns the number of levels corrected
+ */
+create or modify microflow Inventory.SUB_StockLevel_ApplyCount ($StockLevel: Inventory.StockLevel)
+returns Integer as $Applied
+folder 'Stock/Microflows'
+begin
+  commit $StockLevel with events;
+  $Applied = call microflow Inventory.SUB_StockLevel_ApplyCounts();
+  return $Applied;
+end;
+
+/**
  * Apply button on a Stock row (F006-UC006, Odoo stock.quant action_apply_inventory per line): the row arrives with the count
  * just typed (the input does not save on leave, so this is the count's only writer), is saved, and the count is applied.
  *
@@ -51,7 +66,6 @@ begin
     show message 'Enter a counted quantity on this row first.' type Warning;
     return;
   end if;
-  commit $StockLevel with events;
-  $Applied = call microflow Inventory.SUB_StockLevel_ApplyCounts();
+  $Applied = call microflow Inventory.SUB_StockLevel_ApplyCount(StockLevel = $StockLevel);
   show message 'Counts applied: ' + toString($Applied) + ' stock level(s) corrected.' type Information;
 end;

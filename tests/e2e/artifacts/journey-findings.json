@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-15T19:49:34.590Z",
+  "capturedAt": "2026-10-15T20:02:11.551Z",
   "configuredUser": "inventory.manager",
   "actualUser": "inventory.manager",
   "usedFallback": false,
@@ -43,23 +43,23 @@
     },
     {
       "rung": "ui",
-      "name": "Count 25 Office Chairs and press the row's Apply: reached",
+      "name": "Count {{counted}} Office Chairs and press the row's Apply: reached",
       "verdict": "PASS",
       "detail": ".mx-name-lvLines",
       "requirement": "F006-UC006"
     },
     {
       "rung": "data",
-      "name": "Count 25 Office Chairs and press the row's Apply: Inventory.StockMove +1",
+      "name": "Count {{counted}} Office Chairs and press the row's Apply: Inventory.StockMove +1",
       "verdict": "PASS",
-      "detail": "before=7 after=8 delta=1",
+      "detail": "before=11 after=12 delta=1",
       "requirement": "F006-UC006"
     },
     {
       "rung": "data",
-      "name": "Count 25 Office Chairs and press the row's Apply: an adjustment move for the chairs is done",
+      "name": "Count {{counted}} Office Chairs and press the row's Apply: an adjustment move for the chairs is done",
       "verdict": "PASS",
-      "detail": "got 3, need >= 1",
+      "detail": "got 5, need >= 1",
       "requirement": "F006-UC006"
     },
     {
@@ -73,12 +73,14 @@
   "walks": [
     {
       "journey": "J-INV-04",
-      "title": "Inventory manager counts 25 Office Chairs and applies the row's count: stock is corrected through an adjustment move",
+      "title": "Inventory manager counts 5 more Office Chairs than recorded and applies the row's count: stock is corrected through one adjustment move",
       "persona": "inventory.manager",
       "requirement": [
         "F006-UC006"
       ],
-      "seeds": {},
+      "seeds": {
+        "counted": "30"
+      },
       "steps": [
         {
           "n": 1,
@@ -107,7 +109,7 @@
             "file": "../tests/e2e/artifacts/J-INV-04-step1.png",
             "title": "Mendix - Stock",
             "url": "http://localhost:8080/p/stock-level-overview",
-            "at": "2026-10-15T19:49:31.151Z"
+            "at": "2026-10-15T20:02:08.358Z"
           },
           "reached": true,
           "checks": [
@@ -130,18 +132,18 @@
               "detail": ""
             }
           ],
-          "ms": 1991
+          "ms": 1739
         },
         {
           "n": 2,
-          "name": "Count 25 Office Chairs and press the row's Apply",
+          "name": "Count {{counted}} Office Chairs and press the row's Apply",
           "requirement": [
             "F006-UC006"
           ],
           "actions": [
             {
               "verb": "Type",
-              "target": "\"25\" into Counted quantity (Office Chair)",
+              "target": "\"30\" into Counted quantity (Office Chair)",
               "selector": ".mx-name-lntxtCountedQuantity"
             },
             {
@@ -170,30 +172,30 @@
             "file": "../tests/e2e/artifacts/J-INV-04-step2.png",
             "title": "Mendix - Stock",
             "url": "http://localhost:8080/p/stock-level-overview",
-            "at": "2026-10-15T19:49:34.264Z"
+            "at": "2026-10-15T20:02:11.306Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Count 25 Office Chairs and press the row's Apply: reached",
+              "name": "Count {{counted}} Office Chairs and press the row's Apply: reached",
               "verdict": "PASS",
               "detail": ".mx-name-lvLines"
             },
             {
               "rung": "data",
-              "name": "Count 25 Office Chairs and press the row's Apply: Inventory.StockMove +1",
+              "name": "Count {{counted}} Office Chairs and press the row's Apply: Inventory.StockMove +1",
               "verdict": "PASS",
-              "detail": "before=7 after=8 delta=1"
+              "detail": "before=11 after=12 delta=1"
             },
             {
               "rung": "data",
-              "name": "Count 25 Office Chairs and press the row's Apply: an adjustment move for the chairs is done",
+              "name": "Count {{counted}} Office Chairs and press the row's Apply: an adjustment move for the chairs is done",
               "verdict": "PASS",
-              "detail": "got 3, need >= 1"
+              "detail": "got 5, need >= 1"
             }
           ],
-          "ms": 3243
+          "ms": 3049
         }
       ]
     }

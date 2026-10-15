@@ -17,10 +17,38 @@ begin
 end;
 
 /** Delivery smart button on a sales order: its latest delivery. */
-create or modify microflow Inventory.ACT_SalesOrder_OpenDelivery ($SalesOrder: Sales.SalesOrder)
+/**
+ * The latest delivery of a sales order (the Delivery smart button opens it).
+ *
+ * @param $SalesOrder the order
+ * @returns its latest delivery, or empty
+ */
+create or modify microflow Inventory.SUB_SalesOrder_GetLatestDelivery ($SalesOrder: Sales.SalesOrder)
+returns Inventory.Transfer as $Delivery
 folder 'Fulfilment/Microflows'
 begin
   retrieve $Delivery from Inventory.Transfer where [Inventory.Transfer_SalesOrder = $SalesOrder] sort by Number desc first;
+  return $Delivery;
+end;
+
+/**
+ * The latest receipt of a purchase order (the Receipt smart button opens it).
+ *
+ * @param $PurchaseOrder the order
+ * @returns its latest receipt, or empty
+ */
+create or modify microflow Inventory.SUB_PurchaseOrder_GetLatestReceipt ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Inventory.Transfer as $Receipt
+folder 'Fulfilment/Microflows'
+begin
+  retrieve $Receipt from Inventory.Transfer where [Inventory.Transfer_PurchaseOrder = $PurchaseOrder] sort by Number desc first;
+  return $Receipt;
+end;
+
+create or modify microflow Inventory.ACT_SalesOrder_OpenDelivery ($SalesOrder: Sales.SalesOrder)
+folder 'Fulfilment/Microflows'
+begin
+  $Delivery = call microflow Inventory.SUB_SalesOrder_GetLatestDelivery(SalesOrder = $SalesOrder);
   if $Delivery = empty then
     show message 'This order has no delivery (it has no goods to deliver).' type Information;
     return;
@@ -32,7 +60,7 @@ end;
 create or modify microflow Inventory.ACT_PurchaseOrder_OpenReceipt ($PurchaseOrder: Purchasing.PurchaseOrder)
 folder 'Fulfilment/Microflows'
 begin
-  retrieve $Receipt from Inventory.Transfer where [Inventory.Transfer_PurchaseOrder = $PurchaseOrder] sort by Number desc first;
+  $Receipt = call microflow Inventory.SUB_PurchaseOrder_GetLatestReceipt(PurchaseOrder = $PurchaseOrder);
   if $Receipt = empty then
     show message 'This order has no receipt (it has no goods to receive).' type Information;
     return;

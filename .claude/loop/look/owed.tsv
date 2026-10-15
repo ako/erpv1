@@ -151,3 +151,4 @@
 1792091942	2026-10-15T19:19:02Z	Purchasing.PurchaseOrder_NewEdit	mdlsource/7-purchasing/done-707-purchasing-page-purchase-order-new-edit.mdl
 1792093246	2026-10-15T19:40:46Z	Inventory.StockLevel_Overview	mdlsource/8-inventory/807-inventory-page-stock-level-overview.mdl
 1792093620	2026-10-15T19:47:00Z	Inventory.StockLevel_Overview	mdlsource/8-inventory/807-inventory-page-stock-level-overview.mdl
+1792094110	2026-10-15T19:55:10Z	Inventory.ValidateTransfer_Popup	mdlsource/_oneoff/2026-10-16-rebuild-inventory-lint-splits.mdl

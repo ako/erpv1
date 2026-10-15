@@ -283,3 +283,4 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-15T19:45:44Z	806-inventory-mf-stock-level-apply-count.mdl	pass	applied-lint-rose	75	0	1	414	0	48.3	0	90	0	100	31	76	92	414	f683341
 2026-10-15T19:47:00Z	807-inventory-page-stock-level-overview.mdl	pass	applied-lint-rose	76	0	1	414	0	48.3	0	90	0	100	31	76	92	414	09fb518
 2026-10-15T19:48:08Z	2026-10-16-drop-stock-apply-all.mdl	pass	applied-lint-rose	67	0	1	414	0	48.3	0	90	0	100	31	76	92	414	a80bc55
+2026-10-15T19:55:09Z	2026-10-16-rebuild-inventory-lint-splits.mdl	pass	applied-lint-rose	98	0	1	405	0	49.1	0	94	0	100	31	76	92	405	7096ef7

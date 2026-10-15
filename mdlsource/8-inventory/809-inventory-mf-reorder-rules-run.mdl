@@ -50,6 +50,28 @@ begin
 end;
 
 /**
+ * Order a quantity of a product on an RFQ: its line for the product is increased, or a new line is added; totals follow.
+ *
+ * @param $PurchaseOrder the open RFQ
+ * @param $Product the product
+ * @param $Quantity the quantity to add
+ */
+create or modify microflow Inventory.SUB_ReorderRule_AddToRfq ($PurchaseOrder: Purchasing.PurchaseOrder, $Product: Products.Product, $Quantity: Decimal)
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Line from Purchasing.PurchaseOrderLine where [Purchasing.PurchaseOrderLine_PurchaseOrder = $PurchaseOrder][Purchasing.PurchaseOrderLine_Product = $Product] first;
+  if $Line != empty then
+    change $Line (Quantity = (if $Line/Quantity = empty then 0 else $Line/Quantity) + $Quantity);
+    commit $Line with events;
+  else
+    $NewLine = create Purchasing.PurchaseOrderLine (Quantity = $Quantity, Purchasing.PurchaseOrderLine_PurchaseOrder = $PurchaseOrder, Purchasing.PurchaseOrderLine_Product = $Product);
+    call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $NewLine);
+    commit $NewLine with events;
+  end if;
+  $Totals = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $PurchaseOrder);
+end;
+
+/**
  * Replenish one rule (F006-UC007): when the forecast is below the minimum, order up to the maximum (rounded up to the multiple)
  * from the rule's vendor — on an open RFQ to that vendor (its line for the product increased) or a new RFQ.
  *
@@ -73,16 +95,7 @@ begin
   declare $Multiple Decimal = if $Rule/QuantityMultiple = empty or $Rule/QuantityMultiple <= 0 then 1 else $Rule/QuantityMultiple;
   declare $Quantity Decimal = ceil(($Rule/MaxQuantity - $Forecast) div $Multiple) * $Multiple;
   $Order = call microflow Inventory.SUB_ReorderRule_GetOpenRfq(Rule = $Rule, Vendor = $Vendor);
-  retrieve $Line from Purchasing.PurchaseOrderLine where [Purchasing.PurchaseOrderLine_PurchaseOrder = $Order][Purchasing.PurchaseOrderLine_Product = $Product] first;
-  if $Line != empty then
-    change $Line (Quantity = (if $Line/Quantity = empty then 0 else $Line/Quantity) + $Quantity);
-    commit $Line with events;
-  else
-    $NewLine = create Purchasing.PurchaseOrderLine (Quantity = $Quantity, Purchasing.PurchaseOrderLine_PurchaseOrder = $Order, Purchasing.PurchaseOrderLine_Product = $Product);
-    call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $NewLine);
-    commit $NewLine with events;
-  end if;
-  $Totals = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $Order);
+  call microflow Inventory.SUB_ReorderRule_AddToRfq(PurchaseOrder = $Order, Product = $Product, Quantity = $Quantity);
   return true;
 end;
 

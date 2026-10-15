@@ -1,0 +1,637 @@
+mdl 1;
+-- One-off: Inventory lint close-out (CONV010 / CONV009). Retrieves and commits move out of five ACTs into SUBs, and four long
+-- microflows are split (SUB_Transfer_Done -> SUB_Transfer_UpdateOrigin; Replenish -> SUB_ReorderRule_AddToRfq; the seeds ->
+-- SUB_Warehouse_Ensure / SUB_StockLevel_Seed / SUB_Sequence_RaiseTo). Reshapes (MDL-V1-REBUILD): drop and replay 819, 805,
+-- 806, 809, 821 and 824 in dependency order; the ACT grants are restated at the end.
+drop microflow Inventory.SUB_Transfer_Done;
+drop microflow Inventory.ACT_StockLevel_ApplyCount;
+drop microflow Inventory.SUB_ReorderRule_Replenish;
+drop microflow Inventory.SUB_Inventory_SeedDemo;
+drop microflow Inventory.SUB_Inventory_SeedReference;
+drop microflow Inventory.ACT_ValidateTransferRequest_Backorder;
+drop microflow Inventory.ACT_ValidateTransferRequest_NoBackorder;
+-- ── replay: mdlsource/8-inventory/819-inventory-mf-transfer-validate.mdl
+-- 819-inventory-mf-transfer-validate.mdl — build-plan rows 69/72 (F006-UC001/UC002/UC004, F007-UC002/UC005): validating a
+-- transfer. Owns SUB_Transfer_Done, SUB_Transfer_SplitBackorder, ACT_Transfer_Validate and the ValidateTransfer_Popup buttons
+-- ACT_ValidateTransferRequest_Backorder / _NoBackorder (the popup itself is 805, built after these).
+
+/**
+ * The backorder of a transfer (Odoo _create_backorder): a new transfer of the same type, partner and origin with one move per
+ * short move for the quantity not processed, confirmed at once.
+ *
+ * @param $Transfer the transfer being validated
+ * @param $Short the moves whose processed quantity is below their demand
+ */
+create or modify microflow Inventory.SUB_Transfer_SplitBackorder ($Transfer: Inventory.Transfer, $Short: List of Inventory.StockMove)
+folder 'Transfers/Microflows'
+begin
+  retrieve $Type from $Transfer/Inventory.Transfer_OperationType;
+  retrieve $Partner from $Transfer/Inventory.Transfer_Partner;
+  $Backorder = call microflow Inventory.SUB_Transfer_Create(OperationType = $Type, Partner = $Partner);
+  change $Backorder (SourceDocument = $Transfer/SourceDocument, Inventory.Transfer_Backorder = $Transfer,
+    Inventory.Transfer_SalesOrder = $Transfer/Inventory.Transfer_SalesOrder, Inventory.Transfer_PurchaseOrder = $Transfer/Inventory.Transfer_PurchaseOrder,
+    Inventory.Transfer_SourceLocation = $Transfer/Inventory.Transfer_SourceLocation, Inventory.Transfer_DestinationLocation = $Transfer/Inventory.Transfer_DestinationLocation);
+  commit $Backorder with events;
+  $Rests = create list of Inventory.StockMove;
+  @annotation 'One loop over the short moves (a handful): one new move each, linked to the same order line; one commit after the loop.'
+  loop $Move in $Short begin
+    retrieve $MoveProduct from $Move/Inventory.StockMove_Product;
+    $Rest = call microflow Inventory.SUB_Transfer_AddMove(Transfer = $Backorder, Product = $MoveProduct,
+      Demand = $Move/DemandQuantity - (if $Move/Quantity = empty then 0 else $Move/Quantity), Description = $Move/Description);
+    change $Rest (Inventory.StockMove_SalesOrderLine = $Move/Inventory.StockMove_SalesOrderLine,
+      Inventory.StockMove_PurchaseOrderLine = $Move/Inventory.StockMove_PurchaseOrderLine);
+    add $Rest to $Rests;
+  end loop;
+  commit $Rests with events;
+  $Ready = call microflow Inventory.SUB_Transfer_Reserve(Transfer = $Backorder);
+end;
+
+/**
+ * After a transfer is done: the source order's delivered (sales) or received (purchase) quantities follow.
+ *
+ * @param $Transfer the done transfer
+ */
+create or modify microflow Inventory.SUB_Transfer_UpdateOrigin ($Transfer: Inventory.Transfer)
+folder 'Transfers/Microflows'
+begin
+  retrieve $SalesOrder from $Transfer/Inventory.Transfer_SalesOrder;
+  if $SalesOrder != empty then
+    $Delivered = call microflow Sales.SUB_SalesOrder_UpdateDelivered(SalesOrder = $SalesOrder);
+  end if;
+  retrieve $PurchaseOrder from $Transfer/Inventory.Transfer_PurchaseOrder;
+  if $PurchaseOrder != empty then
+    $Received = call microflow Purchasing.SUB_PurchaseOrder_UpdateReceived(PurchaseOrder = $PurchaseOrder);
+  end if;
+end;
+
+/**
+ * Validate (Odoo button_validate / _action_done): every move's processed quantity leaves its source and arrives at its
+ * destination (stock kept at internal locations only); a move processed below its demand keeps the processed quantity as done,
+ * and the rest goes to a backorder or is dropped; then the source order's delivered / received quantities are updated.
+ *
+ * @param $Transfer the transfer
+ * @param $CreateBackorder true: the unprocessed rest goes to a backorder; false: it is dropped
+ */
+create or modify microflow Inventory.SUB_Transfer_Done ($Transfer: Inventory.Transfer, $CreateBackorder: Boolean)
+folder 'Transfers/Microflows'
+begin
+  retrieve $Moves from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Done'][Status != 'Cancelled'];
+  $Short = filter $Moves where (if $currentObject/Quantity = empty then 0 else $currentObject/Quantity) < $currentObject/DemandQuantity;
+  $ShortCount = count $Short;
+  if $CreateBackorder and $ShortCount > 0 then
+    call microflow Inventory.SUB_Transfer_SplitBackorder(Transfer = $Transfer, Short = $Short);
+  end if;
+  @annotation 'One loop over the transfer''s moves (a handful): each processed move adjusts two stock levels; one commit after the loop.'
+  loop $Move in $Moves begin
+    declare $Qty Decimal = if $Move/Quantity = empty then 0 else $Move/Quantity;
+    if $Qty > 0 then
+      retrieve $Product from $Move/Inventory.StockMove_Product;
+      retrieve $From from $Move/Inventory.StockMove_SourceLocation;
+      retrieve $To from $Move/Inventory.StockMove_DestinationLocation;
+      call microflow Inventory.SUB_StockLevel_Adjust(Product = $Product, Location = $From, Delta = 0 - $Qty);
+      call microflow Inventory.SUB_StockLevel_Adjust(Product = $Product, Location = $To, Delta = $Qty);
+      change $Move (Status = Inventory.ENUM_TransferStatus.Done, DemandQuantity = $Qty, Picked = true, Date = [%CurrentDateTime%]);
+    else
+      change $Move (Status = Inventory.ENUM_TransferStatus.Cancelled);
+    end if;
+  end loop;
+  commit $Moves with events refresh;
+  change $Transfer (Status = Inventory.ENUM_TransferStatus.Done, DateDone = [%CurrentDateTime%]);
+  commit $Transfer with events refresh;
+  call microflow Inventory.SUB_Transfer_UpdateOrigin(Transfer = $Transfer);
+end;
+
+/**
+ * Whether a transfer has something to validate: open, with at least one processed quantity (F006 rule).
+ *
+ * @param $Transfer the transfer
+ * @returns true when it can be validated
+ */
+create or modify microflow Inventory.VAL_Transfer_Validate ($Transfer: Inventory.Transfer)
+returns Boolean as $IsValid
+folder 'Transfers/Microflows'
+begin
+  if $Transfer/Status = Inventory.ENUM_TransferStatus.Done or $Transfer/Status = Inventory.ENUM_TransferStatus.Cancelled then
+    show message 'This transfer is already done or cancelled.' type Warning;
+    return false;
+  end if;
+  retrieve $Processed from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Cancelled'][Quantity > 0] first;
+  if $Processed = empty then
+    show message 'Enter a quantity on at least one operation before validating.' type Warning;
+    return false;
+  end if;
+  return true;
+end;
+
+/**
+ * Whether any open move of a transfer was processed below its demand (then the backorder question is asked).
+ *
+ * @param $Transfer the transfer
+ * @returns true when at least one move is short
+ */
+create or modify microflow Inventory.SUB_Transfer_HasShortfall ($Transfer: Inventory.Transfer)
+returns Boolean as $HasShortfall
+folder 'Transfers/Microflows'
+begin
+  retrieve $Moves from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Done'][Status != 'Cancelled'];
+  $Short = find $Moves where (if $currentObject/Quantity = empty then 0 else $currentObject/Quantity) < $currentObject/DemandQuantity;
+  return $Short != empty;
+end;
+
+/**
+ * A backorder question for a transfer (the non-persistent object behind ValidateTransfer_Popup).
+ *
+ * @param $Transfer the transfer
+ * @returns the request
+ */
+create or modify microflow Inventory.SUB_ValidateTransferRequest_New ($Transfer: Inventory.Transfer)
+returns Inventory.ValidateTransferRequest as $Request
+folder 'Transfers/Microflows'
+begin
+  $Request = create Inventory.ValidateTransferRequest (CreateBackorder = true, Inventory.ValidateTransferRequest_Transfer = $Transfer);
+  return $Request;
+end;
+
+/**
+ * The backorder question answered: the request's transfer is validated, with or without a backorder.
+ *
+ * @param $ValidateTransferRequest the answered question
+ * @param $CreateBackorder true: the unprocessed rest goes to a backorder
+ */
+create or modify microflow Inventory.SUB_ValidateTransferRequest_Apply ($ValidateTransferRequest: Inventory.ValidateTransferRequest, $CreateBackorder: Boolean)
+folder 'Transfers/Microflows'
+begin
+  retrieve $Transfer from $ValidateTransferRequest/Inventory.ValidateTransferRequest_Transfer;
+  call microflow Inventory.SUB_Transfer_Done(Transfer = $Transfer, CreateBackorder = $CreateBackorder);
+end;
+-- ── replay: mdlsource/8-inventory/805-inventory-page-validate-transfer-popup.mdl
+-- 805-inventory-page-validate-transfer-popup.mdl — build-plan row 72 (F006-UC004). The backorder question when a transfer is
+-- validated with less than its demand: its two decisions (ACT_ValidateTransferRequest_Backorder / _NoBackorder) and the popup
+-- ValidateTransfer_Popup. Wireframe design/wireframes/ValidateTransfer_Popup.html. Opened by ACT_Transfer_Validate (825).
+
+/**
+ * Create backorder: validate the processed quantities, the rest goes to a backorder.
+ *
+ * @param $ValidateTransferRequest the question
+ */
+create or modify microflow Inventory.ACT_ValidateTransferRequest_Backorder ($ValidateTransferRequest: Inventory.ValidateTransferRequest)
+folder 'Transfers/Microflows'
+begin
+  call microflow Inventory.SUB_ValidateTransferRequest_Apply(ValidateTransferRequest = $ValidateTransferRequest, CreateBackorder = true);
+  close page;
+end;
+
+/**
+ * No backorder: validate the processed quantities, the rest is dropped.
+ *
+ * @param $ValidateTransferRequest the question
+ */
+create or modify microflow Inventory.ACT_ValidateTransferRequest_NoBackorder ($ValidateTransferRequest: Inventory.ValidateTransferRequest)
+folder 'Transfers/Microflows'
+begin
+  call microflow Inventory.SUB_ValidateTransferRequest_Apply(ValidateTransferRequest = $ValidateTransferRequest, CreateBackorder = false);
+  close page;
+end;
+
+/** Create backorder? — ValidateTransfer_Popup. */
+create or modify page Inventory.ValidateTransfer_Popup folder 'Transfers/Pages'
+(
+  Params: ( $ValidateTransferRequest: Inventory.ValidateTransferRequest ),
+  Title: 'Create backorder?',
+  Layout: Atlas_Core.PopupLayout
+)
+{
+  layoutgrid gridPage {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvMain (DataSource: $ValidateTransferRequest) {
+    dynamictext ptxtMessage (Content: 'You have processed less than the initial demand. Create a backorder for the remaining products, or cancel them?', RenderMode: Paragraph)
+    footer {
+      actionbutton pbtnCreatebackorder (Caption: 'Create backorder', Action: call microflow Inventory.ACT_ValidateTransferRequest_Backorder(ValidateTransferRequest = $currentObject), ButtonStyle: Primary)
+      actionbutton pbtnNobackorder (Caption: 'No backorder', Action: call microflow Inventory.ACT_ValidateTransferRequest_NoBackorder(ValidateTransferRequest = $currentObject), ButtonStyle: Default)
+      actionbutton pbtnCancel (Caption: 'Cancel', Action: cancel changes close page)
+    }
+  }
+      }
+    }
+  }
+};
+
+grant read *, write * on entity Inventory.ValidateTransferRequest to Inventory.User, Inventory.Manager;
+grant view on page Inventory.ValidateTransfer_Popup to Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_ValidateTransferRequest_Backorder to Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_ValidateTransferRequest_NoBackorder to Inventory.User, Inventory.Manager;
+-- ── replay: mdlsource/8-inventory/806-inventory-mf-stock-level-apply-count.mdl
+-- 806-inventory-mf-stock-level-apply-count.mdl — build-plan row 74 (F006-UC006). Owns SUB_StockLevel_ApplyCounts and the
+-- row button ACT_StockLevel_ApplyCount. A counted quantity typed on a Stock row is saved by that row's Apply, which turns it
+-- into a done adjustment move (Odoo stock.quant.action_apply_inventory). The page-level Apply counts button was removed
+-- 2026-10-16: it read counts from the database while the typed count was still saving (J-INV-04).
+
+/**
+ * Apply the entered counts: per stock level with a counted quantity, a done move for the difference between the inventory
+ * adjustment location and the level's location, the level set to the count, the count cleared.
+ *
+ * @returns the number of levels corrected
+ */
+create or modify microflow Inventory.SUB_StockLevel_ApplyCounts ()
+returns Integer as $Applied
+folder 'Stock/Microflows'
+begin
+  retrieve $Levels from Inventory.StockLevel where [CountedQuantity != empty];
+  retrieve $Adjustment from Inventory.Location where [LocationType = 'InventoryLoss'][Active = true()] first;
+  $Moves = create list of Inventory.StockMove;
+  declare $Count Integer = 0;
+  @annotation 'One loop over the levels with a count (a few per counting session); moves are collected and committed after the loop.'
+  loop $Level in $Levels begin
+    declare $OnHand Decimal = if $Level/Quantity = empty then 0 else $Level/Quantity;
+    declare $Delta Decimal = $Level/CountedQuantity - $OnHand;
+    if $Delta != 0 then
+      $Move = create Inventory.StockMove (Description = 'Inventory count', Status = Inventory.ENUM_TransferStatus.Done, Date = [%CurrentDateTime%],
+        DemandQuantity = abs($Delta), Quantity = abs($Delta), Picked = true, IsInventoryAdjustment = true, SourceDocument = 'Inventory count',
+        Inventory.StockMove_Product = $Level/Inventory.StockLevel_Product,
+        Inventory.StockMove_SourceLocation = if $Delta > 0 then $Adjustment else $Level/Inventory.StockLevel_Location,
+        Inventory.StockMove_DestinationLocation = if $Delta > 0 then $Level/Inventory.StockLevel_Location else $Adjustment);
+      add $Move to $Moves;
+      set $Count = $Count + 1;
+    end if;
+    change $Level (Quantity = $Level/CountedQuantity, CountedQuantity = empty, CountSet = false);
+  end loop;
+  commit $Moves with events;
+  commit $Levels with events refresh;
+  return $Count;
+end;
+
+/**
+ * Save one row's count and apply the entered counts.
+ *
+ * @param $StockLevel the row with its count
+ * @returns the number of levels corrected
+ */
+create or modify microflow Inventory.SUB_StockLevel_ApplyCount ($StockLevel: Inventory.StockLevel)
+returns Integer as $Applied
+folder 'Stock/Microflows'
+begin
+  commit $StockLevel with events;
+  $Applied = call microflow Inventory.SUB_StockLevel_ApplyCounts();
+  return $Applied;
+end;
+
+/**
+ * Apply button on a Stock row (F006-UC006, Odoo stock.quant action_apply_inventory per line): the row arrives with the count
+ * just typed (the input does not save on leave, so this is the count's only writer), is saved, and the count is applied.
+ *
+ * @param $StockLevel the row
+ */
+create or modify microflow Inventory.ACT_StockLevel_ApplyCount ($StockLevel: Inventory.StockLevel)
+folder 'Stock/Microflows'
+begin
+  if $StockLevel/CountedQuantity = empty then
+    show message 'Enter a counted quantity on this row first.' type Warning;
+    return;
+  end if;
+  $Applied = call microflow Inventory.SUB_StockLevel_ApplyCount(StockLevel = $StockLevel);
+  show message 'Counts applied: ' + toString($Applied) + ' stock level(s) corrected.' type Information;
+end;
+-- ── replay: mdlsource/8-inventory/809-inventory-mf-reorder-rules-run.mdl
+-- 809-inventory-mf-reorder-rules-run.mdl — build-plan row 75 (F006-UC007). Owns SUB_ReorderRule_Forecast,
+-- SUB_ReorderRule_Replenish, SCE_ReorderRules_Run (daily scheduled event), the Run now button ACT_ReorderRules_RunNow and the
+-- scheduled event Inventory.SE_ReorderRules. Inventory sits above Purchasing: creating RFQs is a downward call.
+
+/**
+ * Forecast of a product at a location (Odoo orderpoint qty_forecast): on hand + open incoming moves - open outgoing moves.
+ *
+ * @param $Product the product
+ * @param $Location the location
+ * @returns the forecast quantity
+ */
+create or modify microflow Inventory.SUB_ReorderRule_Forecast ($Product: Products.Product, $Location: Inventory.Location)
+returns Decimal as $Forecast
+folder 'Replenishment/Microflows'
+begin
+  $OnHand = call microflow Inventory.SUB_StockLevel_OnHand(Product = $Product, Location = $Location);
+  retrieve $Incoming from Inventory.StockMove where [Inventory.StockMove_Product = $Product][Inventory.StockMove_DestinationLocation = $Location][Status != 'Done'][Status != 'Cancelled'];
+  retrieve $Outgoing from Inventory.StockMove where [Inventory.StockMove_Product = $Product][Inventory.StockMove_SourceLocation = $Location][Status != 'Done'][Status != 'Cancelled'];
+  $In = sum $Incoming by DemandQuantity;
+  $Out = sum $Outgoing by DemandQuantity;
+  return $OnHand + $In - $Out;
+end;
+
+/**
+ * The vendor's open RFQ to add replenishment to (the newest one in status RFQ), or a new RFQ to the vendor with the rule as its
+ * source; either way linked to the rule.
+ *
+ * @param $Rule the reorder rule
+ * @param $Vendor the rule's vendor
+ * @returns the RFQ
+ */
+create or modify microflow Inventory.SUB_ReorderRule_GetOpenRfq ($Rule: Inventory.ReorderRule, $Vendor: Partners.Partner)
+returns Purchasing.PurchaseOrder as $Rfq
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Open from Purchasing.PurchaseOrder where [Purchasing.PurchaseOrder_Vendor = $Vendor][Status = 'RFQ'] sort by Number desc first;
+  if $Open != empty then
+    change $Rule (Inventory.ReorderRule_PurchaseOrders = $Open);
+    commit $Rule with events;
+    return $Open;
+  end if;
+  $New = call microflow Purchasing.SUB_PurchaseOrder_Create();
+  change $New (Source = 'Reorder rule ' + $Rule/Name, Purchasing.PurchaseOrder_Vendor = $Vendor);
+  call microflow Purchasing.SUB_PurchaseOrder_ApplyVendor(PurchaseOrder = $New);
+  commit $New with events;
+  change $Rule (Inventory.ReorderRule_PurchaseOrders = $New);
+  commit $Rule with events;
+  return $New;
+end;
+
+/**
+ * Order a quantity of a product on an RFQ: its line for the product is increased, or a new line is added; totals follow.
+ *
+ * @param $PurchaseOrder the open RFQ
+ * @param $Product the product
+ * @param $Quantity the quantity to add
+ */
+create or modify microflow Inventory.SUB_ReorderRule_AddToRfq ($PurchaseOrder: Purchasing.PurchaseOrder, $Product: Products.Product, $Quantity: Decimal)
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Line from Purchasing.PurchaseOrderLine where [Purchasing.PurchaseOrderLine_PurchaseOrder = $PurchaseOrder][Purchasing.PurchaseOrderLine_Product = $Product] first;
+  if $Line != empty then
+    change $Line (Quantity = (if $Line/Quantity = empty then 0 else $Line/Quantity) + $Quantity);
+    commit $Line with events;
+  else
+    $NewLine = create Purchasing.PurchaseOrderLine (Quantity = $Quantity, Purchasing.PurchaseOrderLine_PurchaseOrder = $PurchaseOrder, Purchasing.PurchaseOrderLine_Product = $Product);
+    call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $NewLine);
+    commit $NewLine with events;
+  end if;
+  $Totals = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $PurchaseOrder);
+end;
+
+/**
+ * Replenish one rule (F006-UC007): when the forecast is below the minimum, order up to the maximum (rounded up to the multiple)
+ * from the rule's vendor — on an open RFQ to that vendor (its line for the product increased) or a new RFQ.
+ *
+ * @param $Rule the reorder rule
+ * @returns true when something was ordered
+ */
+create or modify microflow Inventory.SUB_ReorderRule_Replenish ($Rule: Inventory.ReorderRule)
+returns Boolean as $Ordered
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Product from $Rule/Inventory.ReorderRule_Product;
+  retrieve $Location from $Rule/Inventory.ReorderRule_Location;
+  retrieve $Vendor from $Rule/Inventory.ReorderRule_Vendor;
+  if $Product = empty or $Location = empty or $Vendor = empty then
+    return false;
+  end if;
+  $Forecast = call microflow Inventory.SUB_ReorderRule_Forecast(Product = $Product, Location = $Location);
+  if $Forecast >= $Rule/MinQuantity then
+    return false;
+  end if;
+  declare $Multiple Decimal = if $Rule/QuantityMultiple = empty or $Rule/QuantityMultiple <= 0 then 1 else $Rule/QuantityMultiple;
+  declare $Quantity Decimal = ceil(($Rule/MaxQuantity - $Forecast) div $Multiple) * $Multiple;
+  $Order = call microflow Inventory.SUB_ReorderRule_GetOpenRfq(Rule = $Rule, Vendor = $Vendor);
+  call microflow Inventory.SUB_ReorderRule_AddToRfq(PurchaseOrder = $Order, Product = $Product, Quantity = $Quantity);
+  return true;
+end;
+
+/**
+ * Run the active reorder rules (the daily scheduled event, and the Run now button).
+ *
+ * @returns the number of rules that ordered something
+ */
+create or modify microflow Inventory.SCE_ReorderRules_Run ()
+returns Integer as $OrderedCount
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Rules from Inventory.ReorderRule where [Active = true()];
+  declare $Count Integer = 0;
+  @annotation 'One loop over the active rules (tens): each rule is evaluated and replenished on its own.'
+  loop $Rule in $Rules begin
+    $Ordered = call microflow Inventory.SUB_ReorderRule_Replenish(Rule = $Rule);
+    if $Ordered then
+      set $Count = $Count + 1;
+    end if;
+  end loop;
+  return $Count;
+end;
+
+/** Run scheduler button on Reorder rules (F006-UC007: "user clicks Run scheduler"). */
+create or modify microflow Inventory.ACT_ReorderRules_RunNow ()
+folder 'Replenishment/Microflows'
+begin
+  $Count = call microflow Inventory.SCE_ReorderRules_Run();
+  show message 'Reorder rules run: ' + toString($Count) + ' rule(s) added to an RFQ.' type Information;
+end;
+
+/** Daily replenishment run (Odoo stock scheduler). */
+create or modify scheduled event Inventory.SE_ReorderRules folder 'Replenishment' (
+  Microflow: Inventory.SCE_ReorderRules_Run,
+  Repeat: Daily,
+  HourOfDay: 2,
+  MinuteOfHour: 0
+);
+-- ── replay: mdlsource/8-inventory/821-inventory-mf-seed-data.mdl
+-- 821-inventory-mf-seed-data.mdl — reference data + PROJECT.md 5 (build) "Demo data" + startup chain head. Owns
+-- SUB_Location_Ensure, SUB_OperationType_Ensure, SUB_Inventory_SeedReference (always: warehouse WH, its locations and operation
+-- types — the app cannot deliver or receive without them), SUB_Inventory_SeedDemo (docs/demo-script.md: Office Chair 8 and
+-- Desk Combination 2 on hand, chair reorder rule 10/30 from Gemini, WH/IN and WH/OUT numbers not starting at 1) and
+-- ASU_Inventory_SeedData = Purchasing's chain (which runs Sales'), then these. Inventory sits above Sales and Purchasing.
+
+/** Ensure a location (business key: name). */
+create or modify microflow Inventory.SUB_Location_Ensure ($Name: String, $FullName: String, $LocationType: Enumeration(Inventory.ENUM_LocationType), $Warehouse: Inventory.Warehouse)
+returns Inventory.Location as $Location
+folder 'Setup/Microflows'
+begin
+  retrieve $Existing from Inventory.Location where [Name = $Name] first;
+  if $Existing != empty then
+    return $Existing;
+  end if;
+  $New = create Inventory.Location (Name = $Name, FullName = $FullName, LocationType = $LocationType, Active = true, Inventory.Location_Warehouse = $Warehouse);
+  commit $New without events;
+  return $New;
+end;
+
+/** Ensure an operation type (business key: kind). */
+create or modify microflow Inventory.SUB_OperationType_Ensure ($Name: String, $Kind: Enumeration(Inventory.ENUM_OperationKind), $SequenceCode: String,
+  $Source: Inventory.Location, $Destination: Inventory.Location, $Warehouse: Inventory.Warehouse)
+folder 'Setup/Microflows'
+begin
+  retrieve $Existing from Inventory.OperationType where [Kind = $Kind] first;
+  if $Existing != empty then
+    return;
+  end if;
+  $New = create Inventory.OperationType (Name = $Name, Kind = $Kind, SequenceCode = $SequenceCode, CreateBackorder = true, Active = true,
+    Inventory.OperationType_Warehouse = $Warehouse, Inventory.OperationType_DefaultSource = $Source, Inventory.OperationType_DefaultDestination = $Destination);
+  commit $New without events;
+end;
+
+/** Ensure the main warehouse WH (business key: one warehouse), addressed at the company's partner. */
+create or modify microflow Inventory.SUB_Warehouse_Ensure ()
+returns Inventory.Warehouse as $Warehouse
+folder 'Setup/Microflows'
+begin
+  retrieve $Existing from Inventory.Warehouse first;
+  if $Existing != empty then
+    return $Existing;
+  end if;
+  retrieve $Company from Core.Company first;
+  retrieve $Address from Partners.Partner where [Name = $Company/Name] first;
+  $New = create Inventory.Warehouse (Name = 'Main warehouse', ShortName = 'WH', Active = true, Inventory.Warehouse_Address = $Address);
+  commit $New without events;
+  return $New;
+end;
+
+/** Demo stock: set a product's on-hand quantity at a location. */
+create or modify microflow Inventory.SUB_StockLevel_Seed ($Product: Products.Product, $Location: Inventory.Location, $Quantity: Decimal)
+folder 'Setup/Microflows'
+begin
+  $Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Product, Location = $Location);
+  change $Level (Quantity = $Quantity);
+  commit $Level without events;
+end;
+
+/** Demo numbering: raise a sequence's next number to at least a value (transfer numbers continue Odoo's demo). */
+create or modify microflow Inventory.SUB_Sequence_RaiseTo ($Code: String, $NextNumber: Integer)
+folder 'Setup/Microflows'
+begin
+  retrieve $Sequence from Core.Sequence where [Code = $Code] first;
+  if $Sequence != empty and $Sequence/NextNumber < $NextNumber then
+    change $Sequence (NextNumber = $NextNumber);
+    commit $Sequence without events;
+  end if;
+end;
+
+/** Reference data, always: warehouse WH with its stock, vendor, customer and adjustment locations and the three operation types. */
+create or modify microflow Inventory.SUB_Inventory_SeedReference ()
+folder 'Setup/Microflows'
+begin
+  call microflow Core.SUB_Sequence_Ensure(Code = 'stock.picking.internal', Prefix = 'WH/INT/', Padding = 5);
+  $Warehouse = call microflow Inventory.SUB_Warehouse_Ensure();
+  $Stock = call microflow Inventory.SUB_Location_Ensure(Name = 'WH/Stock', FullName = 'WH/Stock', LocationType = Inventory.ENUM_LocationType.Internal, Warehouse = $Warehouse);
+  $Vendors = call microflow Inventory.SUB_Location_Ensure(Name = 'Vendors', FullName = 'Partners/Vendors', LocationType = Inventory.ENUM_LocationType.Vendor, Warehouse = empty);
+  $Customers = call microflow Inventory.SUB_Location_Ensure(Name = 'Customers', FullName = 'Partners/Customers', LocationType = Inventory.ENUM_LocationType.Customer, Warehouse = empty);
+  $Adjustment = call microflow Inventory.SUB_Location_Ensure(Name = 'Inventory adjustment', FullName = 'Virtual Locations/Inventory adjustment', LocationType = Inventory.ENUM_LocationType.InventoryLoss, Warehouse = empty);
+  if $Warehouse/Inventory.Warehouse_StockLocation = empty then
+    change $Warehouse (Inventory.Warehouse_StockLocation = $Stock);
+    commit $Warehouse without events;
+  end if;
+  call microflow Inventory.SUB_OperationType_Ensure(Name = 'Receipts', Kind = Inventory.ENUM_OperationKind.Receipt, SequenceCode = 'stock.picking.in',
+    Source = $Vendors, Destination = $Stock, Warehouse = $Warehouse);
+  call microflow Inventory.SUB_OperationType_Ensure(Name = 'Delivery orders', Kind = Inventory.ENUM_OperationKind.Delivery, SequenceCode = 'stock.picking.out',
+    Source = $Stock, Destination = $Customers, Warehouse = $Warehouse);
+  call microflow Inventory.SUB_OperationType_Ensure(Name = 'Internal transfers', Kind = Inventory.ENUM_OperationKind.Internal, SequenceCode = 'stock.picking.internal',
+    Source = $Stock, Destination = $Stock, Warehouse = $Warehouse);
+end;
+
+/** Demo fixtures: chairs 8 and desks 2 on hand (only when no stock was recorded yet), the chair reorder rule, transfer numbers. */
+create or modify microflow Inventory.SUB_Inventory_SeedDemo ()
+folder 'Setup/Microflows'
+begin
+  retrieve $Stock from Inventory.Location where [Name = 'WH/Stock'] first;
+  retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+  retrieve $Desk from Products.Product where [InternalReference = 'FURN_7800'] first;
+  retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+  retrieve $AnyStock from Inventory.StockLevel first;
+  if $AnyStock = empty and $Stock != empty and $Chair != empty and $Desk != empty then
+    call microflow Inventory.SUB_StockLevel_Seed(Product = $Chair, Location = $Stock, Quantity = 8);
+    call microflow Inventory.SUB_StockLevel_Seed(Product = $Desk, Location = $Stock, Quantity = 2);
+  end if;
+  retrieve $Rule from Inventory.ReorderRule where [Name = 'Office Chair WH/Stock'] first;
+  if $Rule = empty and $Chair != empty then
+    $NewRule = create Inventory.ReorderRule (Name = 'Office Chair WH/Stock', MinQuantity = 10, MaxQuantity = 30, QuantityMultiple = 1, Automatic = true, Active = true,
+      Inventory.ReorderRule_Product = $Chair, Inventory.ReorderRule_Location = $Stock, Inventory.ReorderRule_Vendor = $Gemini);
+    commit $NewRule without events;
+  end if;
+  call microflow Inventory.SUB_Sequence_RaiseTo(Code = 'stock.picking.in', NextNumber = 12);
+  call microflow Inventory.SUB_Sequence_RaiseTo(Code = 'stock.picking.out', NextNumber = 31);
+end;
+
+/**
+ * After-startup microflow (top of the chain): Purchasing's chain (which runs Sales'), the warehouse reference data, then the
+ * Inventory demo fixtures when Core.SeedDemoData.
+ *
+ * @returns true
+ */
+create or modify microflow Inventory.ASU_Inventory_SeedData ()
+returns Boolean as $Done
+folder 'Setup/Microflows'
+begin
+  $PurchasingDone = call microflow Purchasing.ASU_Purchasing_SeedData();
+  call microflow Inventory.SUB_Inventory_SeedReference();
+  if @Core.SeedDemoData then
+    call microflow Inventory.SUB_Inventory_SeedDemo();
+  end if;
+  return true;
+end;
+-- ── replay: mdlsource/8-inventory/824-inventory-mf-order-open-transfer.mdl
+-- 824-inventory-mf-order-open-transfer.mdl — build-plan rows 71/77/80 (F006-UC003, F007): actions that open Transfer_NewEdit,
+-- so they come after that page (804): New on Transfers (ACT_Transfer_New) and the Delivery / Receipt smart buttons on the order
+-- forms (ACT_SalesOrder_OpenDelivery, ACT_PurchaseOrder_OpenReceipt; the order pages are regenerated afterwards to show them).
+
+/** New on Transfers (F006-UC003): a draft internal transfer, opened for its operations. */
+create or modify microflow Inventory.ACT_Transfer_New ()
+folder 'Transfers/Microflows'
+begin
+  $Type = call microflow Inventory.SUB_OperationType_GetByKind(Kind = Inventory.ENUM_OperationKind.Internal);
+  if $Type = empty then
+    show message 'No internal transfer operation type is configured (Configuration > Warehouse).' type Warning;
+    return;
+  end if;
+  $Transfer = call microflow Inventory.SUB_Transfer_Create(OperationType = $Type, Partner = empty);
+  show page Inventory.Transfer_NewEdit(Transfer = $Transfer);
+end;
+
+/** Delivery smart button on a sales order: its latest delivery. */
+/**
+ * The latest delivery of a sales order (the Delivery smart button opens it).
+ *
+ * @param $SalesOrder the order
+ * @returns its latest delivery, or empty
+ */
+create or modify microflow Inventory.SUB_SalesOrder_GetLatestDelivery ($SalesOrder: Sales.SalesOrder)
+returns Inventory.Transfer as $Delivery
+folder 'Fulfilment/Microflows'
+begin
+  retrieve $Delivery from Inventory.Transfer where [Inventory.Transfer_SalesOrder = $SalesOrder] sort by Number desc first;
+  return $Delivery;
+end;
+
+/**
+ * The latest receipt of a purchase order (the Receipt smart button opens it).
+ *
+ * @param $PurchaseOrder the order
+ * @returns its latest receipt, or empty
+ */
+create or modify microflow Inventory.SUB_PurchaseOrder_GetLatestReceipt ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Inventory.Transfer as $Receipt
+folder 'Fulfilment/Microflows'
+begin
+  retrieve $Receipt from Inventory.Transfer where [Inventory.Transfer_PurchaseOrder = $PurchaseOrder] sort by Number desc first;
+  return $Receipt;
+end;
+
+create or modify microflow Inventory.ACT_SalesOrder_OpenDelivery ($SalesOrder: Sales.SalesOrder)
+folder 'Fulfilment/Microflows'
+begin
+  $Delivery = call microflow Inventory.SUB_SalesOrder_GetLatestDelivery(SalesOrder = $SalesOrder);
+  if $Delivery = empty then
+    show message 'This order has no delivery (it has no goods to deliver).' type Information;
+    return;
+  end if;
+  show page Inventory.Transfer_NewEdit(Transfer = $Delivery);
+end;
+
+/** Receipt smart button on a purchase order: its latest receipt. */
+create or modify microflow Inventory.ACT_PurchaseOrder_OpenReceipt ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'Fulfilment/Microflows'
+begin
+  $Receipt = call microflow Inventory.SUB_PurchaseOrder_GetLatestReceipt(PurchaseOrder = $PurchaseOrder);
+  if $Receipt = empty then
+    show message 'This order has no receipt (it has no goods to receive).' type Information;
+    return;
+  end if;
+  show page Inventory.Transfer_NewEdit(Transfer = $Receipt);
+end;
+
+grant execute on microflow Inventory.ACT_SalesOrder_OpenDelivery to Inventory.Reader, Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_PurchaseOrder_OpenReceipt to Inventory.Reader, Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_StockLevel_ApplyCount to Inventory.User, Inventory.Manager;

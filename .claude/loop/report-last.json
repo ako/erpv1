@@ -1,12 +1,12 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-15 19:48:08",
-  "overallScore": 48.3,
+  "date": "2026-10-15 19:55:09",
+  "overallScore": 49.1,
   "summary": {
-    "total": 414,
+    "total": 405,
     "errors": 0,
-    "warnings": 138,
-    "infos": 276
+    "warnings": 133,
+    "infos": 272
   },
   "categories": [
     {
@@ -26,29 +26,29 @@
     },
     {
       "name": "Quality",
-      "score": 90,
-      "total": 10,
+      "score": 94,
+      "total": 6,
       "errors": 0,
       "warnings": 0,
-      "infos": 10,
+      "infos": 6,
       "topActions": [
-        "Extract logical sections into SUB_ microflows to keep each under 15 activities",
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
+        "Extract logical sections into SUB_ microflows to keep each under 15 activities",
         "Describe what the collection is for and where its images are used."
       ]
     },
     {
       "name": "Architecture",
       "score": 0,
-      "total": 89,
+      "total": 84,
       "errors": 0,
-      "warnings": 89,
+      "warnings": 84,
       "infos": 0,
       "topActions": [
         "Add an attribute like 'CompanyCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE",
         "Create a view entity in 'Inventory' that exposes the needed data from 'Products', or use a microflow to retrieve the data.",
         "Create microflows (e.g., ACT_SaveInvoice, VAL_Invoice) to handle create/update operations with proper validation.",
-        "Move the 'RetrieveAction' action to a SUB_ microflow and call it from 'ACT_PurchaseOrder_OpenReceipt'"
+        "Move the 'OpenUserTaskAction' action to a SUB_ microflow and call it from 'ACT_PurchaseApproval_Open'"
       ]
     },
     {
