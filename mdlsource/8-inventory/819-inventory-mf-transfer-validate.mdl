@@ -2,6 +2,8 @@ mdl 1;
 -- 819-inventory-mf-transfer-validate.mdl — build-plan rows 69/72 (F006-UC001/UC002/UC004, F007-UC002/UC005): validating a
 -- transfer. Owns SUB_Transfer_Done, SUB_Transfer_SplitBackorder, ACT_Transfer_Validate and the ValidateTransfer_Popup buttons
 -- ACT_ValidateTransferRequest_Backorder / _NoBackorder (the popup itself is 805, built after these).
+-- The validate path reads a transfer's moves over the association, never by XPath: the quantities a user just typed on the
+-- form travel with the Validate call but are not in the database yet (J-INV-01, 2026-10-16: 3 typed, 5 validated).
 
 /**
  * The backorder of a transfer (Odoo _create_backorder): a new transfer of the same type, partner and origin with one move per
@@ -63,7 +65,8 @@ end;
 create or modify microflow Inventory.SUB_Transfer_Done ($Transfer: Inventory.Transfer, $CreateBackorder: Boolean)
 folder 'Transfers/Microflows'
 begin
-  retrieve $Moves from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Done'][Status != 'Cancelled'];
+  retrieve $AllMoves from $Transfer/Inventory.StockMove_Transfer;
+  $Moves = filter $AllMoves where $currentObject/Status != Inventory.ENUM_TransferStatus.Done and $currentObject/Status != Inventory.ENUM_TransferStatus.Cancelled;
   $Short = filter $Moves where (if $currentObject/Quantity = empty then 0 else $currentObject/Quantity) < $currentObject/DemandQuantity;
   $ShortCount = count $Short;
   if $CreateBackorder and $ShortCount > 0 then
@@ -103,7 +106,8 @@ begin
     show message 'This transfer is already done or cancelled.' type Warning;
     return false;
   end if;
-  retrieve $Processed from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Cancelled'][Quantity > 0] first;
+  retrieve $AllMoves from $Transfer/Inventory.StockMove_Transfer;
+  $Processed = find $AllMoves where $currentObject/Status != Inventory.ENUM_TransferStatus.Cancelled and $currentObject/Quantity > 0;
   if $Processed = empty then
     show message 'Enter a quantity on at least one operation before validating.' type Warning;
     return false;
@@ -121,7 +125,8 @@ create or modify microflow Inventory.SUB_Transfer_HasShortfall ($Transfer: Inven
 returns Boolean as $HasShortfall
 folder 'Transfers/Microflows'
 begin
-  retrieve $Moves from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Done'][Status != 'Cancelled'];
+  retrieve $AllMoves from $Transfer/Inventory.StockMove_Transfer;
+  $Moves = filter $AllMoves where $currentObject/Status != Inventory.ENUM_TransferStatus.Done and $currentObject/Status != Inventory.ENUM_TransferStatus.Cancelled;
   $Short = find $Moves where (if $currentObject/Quantity = empty then 0 else $currentObject/Quantity) < $currentObject/DemandQuantity;
   return $Short != empty;
 end;

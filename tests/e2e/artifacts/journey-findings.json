@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-15T20:18:22.427Z",
-  "configuredUser": "inventory.manager",
-  "actualUser": "inventory.manager",
+  "capturedAt": "2026-10-15T20:28:21.185Z",
+  "configuredUser": "warehouse.user",
+  "actualUser": "warehouse.user",
   "usedFallback": false,
   "baseUrl": "http://localhost:8080",
   "positiveControl": false,
@@ -16,131 +16,12 @@
     {
       "rung": "ui",
       "name": "login",
-      "verdict": "PASS",
-      "detail": "inventory.manager",
-      "requirement": ""
-    },
-    {
-      "rung": "ui",
-      "name": "Open Inventory > Stock: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-lvLines",
-      "requirement": ""
-    },
-    {
-      "rung": "ui",
-      "name": "Row 1: location WH/Stock: combobox lncmbStockLevelLocation committed the seeded value",
-      "verdict": "PASS",
-      "detail": "WH/Stock",
-      "requirement": ""
-    },
-    {
-      "rung": "ui",
-      "name": "Row 1: location WH/Stock: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-lvLines",
-      "requirement": ""
-    },
-    {
-      "rung": "outcome",
-      "name": "REPAIR-STOCK end state",
-      "verdict": "PASS",
-      "detail": "got 2, expected 2",
+      "verdict": "INVALID",
+      "detail": "login faulted: \"Sign in failed.\" — not a credential failure. The runtime refused the session (measured cause on 2026-08-18: trial-licence concurrent-session cap). Check the runtime log; no rung below this ran.",
       "requirement": ""
     }
   ],
-  "walks": [
-    {
-      "journey": "REPAIR-STOCK",
-      "title": "Data repair after the verify monkey cleared product/location on both stock rows (2026-10-16)",
-      "persona": "inventory.manager",
-      "requirement": [],
-      "seeds": {},
-      "steps": [
-        {
-          "n": 1,
-          "name": "Open Inventory > Stock",
-          "requirement": [],
-          "actions": [
-            {
-              "verb": "Navigate",
-              "target": "Inventory › Stock",
-              "selector": null
-            }
-          ],
-          "expects": {
-            "landsOn": ".mx-name-lvLines",
-            "pageSays": [],
-            "pageDoesNotSay": [],
-            "microflows": [],
-            "writes": null
-          },
-          "shot": {
-            "file": "../tests/e2e/artifacts/REPAIR-STOCK-step1.png",
-            "title": "Mendix - Stock",
-            "url": "http://localhost:8080/p/stock-level-overview",
-            "at": "2026-10-15T20:18:17.474Z"
-          },
-          "reached": true,
-          "checks": [
-            {
-              "rung": "ui",
-              "name": "Open Inventory > Stock: reached",
-              "verdict": "PASS",
-              "detail": ".mx-name-lvLines"
-            }
-          ],
-          "ms": 1734
-        },
-        {
-          "n": 2,
-          "name": "Row 1: location WH/Stock",
-          "requirement": [],
-          "actions": [
-            {
-              "verb": "Select",
-              "target": "\"WH/Stock\" in lncmbStockLevelLocation",
-              "selector": ".mx-name-lncmbStockLevelLocation"
-            },
-            {
-              "verb": "Wait",
-              "target": "1500ms",
-              "selector": null
-            }
-          ],
-          "expects": {
-            "landsOn": ".mx-name-lvLines",
-            "pageSays": [],
-            "pageDoesNotSay": [],
-            "microflows": [],
-            "writes": null
-          },
-          "shot": {
-            "file": "../tests/e2e/artifacts/REPAIR-STOCK-step2.png",
-            "title": "Mendix - Stock",
-            "url": "http://localhost:8080/p/stock-level-overview",
-            "at": "2026-10-15T20:18:22.288Z"
-          },
-          "reached": true,
-          "checks": [
-            {
-              "rung": "ui",
-              "name": "Row 1: location WH/Stock: combobox lncmbStockLevelLocation committed the seeded value",
-              "verdict": "PASS",
-              "detail": "WH/Stock"
-            },
-            {
-              "rung": "ui",
-              "name": "Row 1: location WH/Stock: reached",
-              "verdict": "PASS",
-              "detail": ".mx-name-lvLines"
-            }
-          ],
-          "ms": 4813
-        }
-      ]
-    }
-  ],
+  "walks": [],
   "appDown": [],
   "appDiedIn": []
 }

@@ -90,3 +90,10 @@
   CONV003 page names, CUSTOM002 ASU_/SCE_ — SCE_ReorderRules_Run is the BRD's name, so it stays).
 - **Journeys consume demo stock.** J-SALES-01 + J-INV-01 use 5 chairs each run; once below 5 the delivery is Waiting and
   J-INV-01 reads INVALID (no Ready delivery). J-INV-04 now counts 5 above what is recorded, so running it first tops up.
+- **Validate ignored typed quantities (fixed).** On the transfer form, quantities typed on the lines are unsaved until a
+  call carries them; Validate's microflows read moves by XPath from the database, so they saw the reserved quantity and
+  validated 5 when 3 was typed (J-INV-01's backorder walk, screenshot J-INV-01-step3-NOT-REACHED.png). The validate path now
+  retrieves over the association. General rule for this app: a microflow behind a form button reads the form's objects
+  over associations, never by XPath.
+- **Identity pickers on editable lists (fixed).** verify-module's monkey cleared product and location on both stock rows;
+  the pickers saved on change. They are now editable only while empty. Data repaired through the UI.
