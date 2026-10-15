@@ -1,0 +1,1229 @@
+mdl 1;
+-- One-off: form edits on lines were never saved (sweep 2026-10-16). Generated Saves committed only the header, so lines typed
+-- on Payment terms, Units of measure, Pricelists, Quotation templates and Warehouse forms were dropped; the transfer form had
+-- no Save and its state buttons read moves by XPath. SUB_<E>_Save now commits the form's editable lines first; the transfer
+-- form gets Save, and Mark as to do / Check availability / Cancel save the lines first (SUB_Transfer_SaveLines). Also:
+-- reorder rules can be added / removed and ordered once per row; warehouse users may remove transfer lines (security grant).
+-- Reshapes (MDL-V1-REBUILD): drop and replay the owning scripts; grants restated by the replayed page scripts.
+drop microflow Core.SUB_PaymentTerm_Save;
+drop microflow Products.SUB_UoMCategory_Save;
+drop microflow Products.SUB_Pricelist_Save;
+drop microflow Sales.SUB_QuotationTemplate_Save;
+drop microflow Inventory.SUB_Warehouse_Save;
+drop microflow Inventory.ACT_Transfer_Confirm;
+drop microflow Inventory.ACT_Transfer_CheckAvailability;
+drop microflow Inventory.ACT_Transfer_Cancel;
+-- ── replay: mdlsource/8-inventory/801-inventory-mf-transfer-confirm.mdl
+-- 801-inventory-mf-transfer-confirm.mdl — build-plan row 69 (F006-UC001..UC005): stock levels and the transfer life cycle up to
+-- Ready. Owns SUB_StockLevel_Get, SUB_StockLevel_Adjust, SUB_StockLevel_OnHand, SUB_Transfer_Create, SUB_Transfer_AddMove,
+-- SUB_Transfer_Reserve, SUB_Transfer_Confirm, SUB_Transfer_Cancel and the buttons ACT_Transfer_Confirm,
+-- ACT_Transfer_CheckAvailability, ACT_Transfer_Cancel. Validate / done are in 819.
+-- Simplification (Odoo stock.quant reservations): availability is on-hand quantity at the source location; ReservedQuantity is
+-- not maintained. Units: a move's quantity is in its product's unit (no conversion on order lines in this POC).
+
+/**
+ * The stock level of a product at a location, created at zero when there is none yet.
+ *
+ * @param $Product the product
+ * @param $Location the location
+ * @returns the stock level
+ */
+create or modify microflow Inventory.SUB_StockLevel_Get ($Product: Products.Product, $Location: Inventory.Location)
+returns Inventory.StockLevel as $Level
+folder 'Stock/Microflows'
+begin
+  retrieve $Existing from Inventory.StockLevel where [Inventory.StockLevel_Product = $Product][Inventory.StockLevel_Location = $Location] first;
+  if $Existing != empty then
+    return $Existing;
+  end if;
+  $New = create Inventory.StockLevel (Quantity = 0, ReservedQuantity = 0, CountSet = false, IncomingDate = [%CurrentDateTime%],
+    Inventory.StockLevel_Product = $Product, Inventory.StockLevel_Location = $Location);
+  commit $New without events;
+  return $New;
+end;
+
+/**
+ * Add a quantity to (or take it from) a product's stock at a location. Only internal locations and inventory-tracked
+ * products keep stock (Odoo: vendor, customer and adjustment locations are virtual).
+ *
+ * @param $Product the product
+ * @param $Location the location
+ * @param $Delta the quantity to add (negative to take)
+ */
+create or modify microflow Inventory.SUB_StockLevel_Adjust ($Product: Products.Product, $Location: Inventory.Location, $Delta: Decimal)
+folder 'Stock/Microflows'
+begin
+  if $Location = empty or $Location/LocationType != Inventory.ENUM_LocationType.Internal or not($Product/TrackInventory) then
+    return;
+  end if;
+  $Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Product, Location = $Location);
+  change $Level (Quantity = (if $Level/Quantity = empty then 0 else $Level/Quantity) + $Delta);
+  commit $Level with events refresh;
+end;
+
+/**
+ * On-hand quantity of a product at a location (0 when none).
+ *
+ * @param $Product the product
+ * @param $Location the location
+ * @returns the quantity on hand
+ */
+create or modify microflow Inventory.SUB_StockLevel_OnHand ($Product: Products.Product, $Location: Inventory.Location)
+returns Decimal as $OnHand
+folder 'Stock/Microflows'
+begin
+  retrieve $Level from Inventory.StockLevel where [Inventory.StockLevel_Product = $Product][Inventory.StockLevel_Location = $Location] first;
+  return if $Level = empty or $Level/Quantity = empty then 0 else $Level/Quantity;
+end;
+
+/**
+ * A new draft transfer of an operation type: number from the type's sequence, default source and destination of the type,
+ * scheduled now.
+ *
+ * @param $OperationType receipts, delivery orders or internal
+ * @param $Partner the partner (vendor, customer address) or empty
+ * @returns the transfer
+ */
+create or modify microflow Inventory.SUB_Transfer_Create ($OperationType: Inventory.OperationType, $Partner: Partners.Partner)
+returns Inventory.Transfer as $Transfer
+folder 'Transfers/Microflows'
+begin
+  $Number = call microflow Core.SUB_Sequence_NextNumber(Code = $OperationType/SequenceCode);
+  $Transfer = create Inventory.Transfer (Number = $Number, Status = Inventory.ENUM_TransferStatus.Draft, ScheduledDate = [%CurrentDateTime%],
+    Inventory.Transfer_OperationType = $OperationType, Inventory.Transfer_Partner = $Partner,
+    Inventory.Transfer_SourceLocation = $OperationType/Inventory.OperationType_DefaultSource,
+    Inventory.Transfer_DestinationLocation = $OperationType/Inventory.OperationType_DefaultDestination);
+  commit $Transfer with events;
+  return $Transfer;
+end;
+
+/**
+ * A draft move of a product on a transfer, between the transfer's locations.
+ *
+ * @param $Transfer the transfer
+ * @param $Product the product
+ * @param $Demand the quantity to move
+ * @param $Description the move description
+ * @returns the move
+ */
+create or modify microflow Inventory.SUB_Transfer_AddMove ($Transfer: Inventory.Transfer, $Product: Products.Product, $Demand: Decimal, $Description: String)
+returns Inventory.StockMove as $Move
+folder 'Transfers/Microflows'
+begin
+  $Move = create Inventory.StockMove (Description = $Description, Status = Inventory.ENUM_TransferStatus.Draft, Date = [%CurrentDateTime%],
+    DemandQuantity = $Demand, Quantity = 0, Picked = false, SourceDocument = $Transfer/SourceDocument, IsInventoryAdjustment = false,
+    Inventory.StockMove_Transfer = $Transfer, Inventory.StockMove_Product = $Product, Inventory.StockMove_UoM = $Product/Products.Product_UoM,
+    Inventory.StockMove_SourceLocation = $Transfer/Inventory.Transfer_SourceLocation,
+    Inventory.StockMove_DestinationLocation = $Transfer/Inventory.Transfer_DestinationLocation);
+  commit $Move with events;
+  return $Move;
+end;
+
+/**
+ * Check availability (Odoo action_assign, simplified): each open move gets the quantity available at its source — the whole
+ * demand when the source keeps no stock (vendor) or the product is not tracked. All moves complete -> Ready, else Waiting.
+ *
+ * @param $Transfer a confirmed transfer
+ * @returns true when every move is fully available
+ */
+create or modify microflow Inventory.SUB_Transfer_Reserve ($Transfer: Inventory.Transfer)
+returns Boolean as $AllReady
+folder 'Transfers/Microflows'
+begin
+  retrieve $Moves from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Done'][Status != 'Cancelled'];
+  declare $Complete Boolean = true;
+  @annotation 'One loop over the transfer''s moves (a handful): the on-hand lookup is a per-product retrieve; one commit after the loop.'
+  loop $Move in $Moves begin
+    retrieve $Product from $Move/Inventory.StockMove_Product;
+    retrieve $Source from $Move/Inventory.StockMove_SourceLocation;
+    declare $Demand Decimal = if $Move/DemandQuantity = empty then 0 else $Move/DemandQuantity;
+    if $Source = empty or $Source/LocationType != Inventory.ENUM_LocationType.Internal or not($Product/TrackInventory) then
+      change $Move (Quantity = $Demand, Status = Inventory.ENUM_TransferStatus.Ready);
+    else
+      $OnHand = call microflow Inventory.SUB_StockLevel_OnHand(Product = $Product, Location = $Source);
+      declare $Take Decimal = if $OnHand >= $Demand then $Demand else (if $OnHand > 0 then $OnHand else 0);
+      change $Move (Quantity = $Take, Status = if $Take >= $Demand then Inventory.ENUM_TransferStatus.Ready else Inventory.ENUM_TransferStatus.Waiting);
+      if $Take < $Demand then
+        set $Complete = false;
+      end if;
+    end if;
+  end loop;
+  commit $Moves with events refresh;
+  change $Transfer (Status = if $Complete then Inventory.ENUM_TransferStatus.Ready else Inventory.ENUM_TransferStatus.Waiting);
+  commit $Transfer with events refresh;
+  return $Complete;
+end;
+
+/**
+ * Mark as to do (Odoo action_confirm): a draft transfer is confirmed and its availability checked.
+ *
+ * @param $Transfer the draft transfer
+ */
+create or modify microflow Inventory.SUB_Transfer_Confirm ($Transfer: Inventory.Transfer)
+folder 'Transfers/Microflows'
+begin
+  $Ready = call microflow Inventory.SUB_Transfer_Reserve(Transfer = $Transfer);
+end;
+
+/**
+ * Cancel a transfer (F006-UC005): its open moves and the transfer become Cancelled.
+ *
+ * @param $Transfer the transfer
+ */
+create or modify microflow Inventory.SUB_Transfer_Cancel ($Transfer: Inventory.Transfer)
+folder 'Transfers/Microflows'
+begin
+  retrieve $Moves from Inventory.StockMove where [Inventory.StockMove_Transfer = $Transfer][Status != 'Done'];
+  @annotation 'One loop over the transfer''s open moves (a handful), one commit after it.'
+  loop $Move in $Moves begin
+    change $Move (Status = Inventory.ENUM_TransferStatus.Cancelled, Quantity = 0);
+  end loop;
+  commit $Moves with events refresh;
+  change $Transfer (Status = Inventory.ENUM_TransferStatus.Cancelled);
+  commit $Transfer with events refresh;
+end;
+
+/**
+ * Persist what the transfer form holds: its moves (typed demand / quantity travel with the button's call but are not in the
+ * database) and the transfer itself. The state buttons call this first, because what they do next reads moves by XPath
+ * (sweep 2026-10-16: a typed demand of 9 999 read back as 0 after Mark as to do).
+ *
+ * @param $Transfer the transfer on the form
+ */
+create or modify microflow Inventory.SUB_Transfer_SaveLines ($Transfer: Inventory.Transfer)
+folder 'Transfers/Microflows'
+begin
+  retrieve $Moves from $Transfer/Inventory.StockMove_Transfer;
+  commit $Moves with events;
+  commit $Transfer with events;
+end;
+
+/**
+ * Mark as to do button: only a draft transfer with at least one move.
+ *
+ * @param $Transfer the transfer
+ * @returns true when confirmed
+ */
+create or modify microflow Inventory.ACT_Transfer_Confirm ($Transfer: Inventory.Transfer)
+returns Boolean as $Done
+folder 'Transfers/Microflows'
+begin
+  call microflow Inventory.SUB_Transfer_SaveLines(Transfer = $Transfer);
+  if $Transfer/Status != Inventory.ENUM_TransferStatus.Draft then
+    show message 'Only a draft transfer can be marked as to do.' type Warning;
+    return false;
+  end if;
+  call microflow Inventory.SUB_Transfer_Confirm(Transfer = $Transfer);
+  return true;
+end;
+
+/**
+ * Check availability button: re-reserve a waiting transfer.
+ *
+ * @param $Transfer the transfer
+ * @returns true when every move is now available
+ */
+create or modify microflow Inventory.ACT_Transfer_CheckAvailability ($Transfer: Inventory.Transfer)
+returns Boolean as $AllReady
+folder 'Transfers/Microflows'
+begin
+  call microflow Inventory.SUB_Transfer_SaveLines(Transfer = $Transfer);
+  if $Transfer/Status != Inventory.ENUM_TransferStatus.Waiting and $Transfer/Status != Inventory.ENUM_TransferStatus.Ready then
+    return false;
+  end if;
+  $AllReady = call microflow Inventory.SUB_Transfer_Reserve(Transfer = $Transfer);
+  return $AllReady;
+end;
+
+/**
+ * Cancel button (F006-UC005): refused once done.
+ *
+ * @param $Transfer the transfer
+ * @returns true when cancelled
+ */
+create or modify microflow Inventory.ACT_Transfer_Cancel ($Transfer: Inventory.Transfer)
+returns Boolean as $Done
+folder 'Transfers/Microflows'
+begin
+  call microflow Inventory.SUB_Transfer_SaveLines(Transfer = $Transfer);
+  if $Transfer/Status = Inventory.ENUM_TransferStatus.Done or $Transfer/Status = Inventory.ENUM_TransferStatus.Cancelled then
+    show message 'A done or cancelled transfer cannot be cancelled.' type Warning;
+    return false;
+  end if;
+  call microflow Inventory.SUB_Transfer_Cancel(Transfer = $Transfer);
+  return true;
+end;
+-- ── replay: mdlsource/3-core/done-308-core-page-payment-term-new-edit.mdl
+-- GENERATED by pipelines/odoo/mdl_pages.py from ui_spec.py["PaymentTerm_NewEdit"] — wireframe design/wireframes/PaymentTerm_NewEdit.html.
+-- Regenerate, do not hand-edit. Reached from: row of PaymentTerm_Overview.
+
+/** Validate a PaymentTerm before save: every required field on PaymentTerm_NewEdit, all flagged on one submit. */
+create or modify microflow Core.VAL_PaymentTerm ($PaymentTerm: Core.PaymentTerm)
+returns Boolean as $IsValid
+folder 'PaymentTerms/Microflows'
+begin
+  declare $IsValid Boolean = true;
+  if $PaymentTerm/Name = empty or trim($PaymentTerm/Name) = '' then
+    validation feedback $PaymentTerm/Name message 'Name is required.';
+    set $IsValid = false;
+  end if;
+  return $IsValid;
+end;
+
+/** Persist a validated PaymentTerm. */
+create or modify microflow Core.SUB_PaymentTerm_Save ($PaymentTerm: Core.PaymentTerm)
+folder 'PaymentTerms/Microflows'
+begin
+  retrieve $Lines0 from $PaymentTerm/Core.PaymentTermLine_PaymentTerm;
+  commit $Lines0 with events;
+  commit $PaymentTerm with events refresh;
+end;
+
+/** Save button on PaymentTerm_NewEdit: validate, persist, close. */
+create or modify microflow Core.ACT_PaymentTerm_Save ($PaymentTerm: Core.PaymentTerm)
+folder 'PaymentTerms/Microflows'
+begin
+  $IsValid = call microflow Core.VAL_PaymentTerm(PaymentTerm = $PaymentTerm);
+  if $IsValid then
+    call microflow Core.SUB_PaymentTerm_Save(PaymentTerm = $PaymentTerm);
+    close page;
+  end if;
+end;
+
+/** A new PaymentTermLine on the PaymentTerm, committed so the line editor shows it at once. */
+create or modify microflow Core.SUB_PaymentTermLine_Add ($PaymentTerm: Core.PaymentTerm)
+returns Core.PaymentTermLine as $Line
+folder 'PaymentTerms/Microflows'
+begin
+  $Line = create Core."PaymentTermLine" (Core.PaymentTermLine_PaymentTerm = $PaymentTerm);
+  commit $Line refresh;
+  return $Line;
+end;
+
+/** "+ Add a line" on PaymentTerm_NewEdit. */
+create or modify microflow Core.ACT_PaymentTermLine_Add ($PaymentTerm: Core.PaymentTerm)
+folder 'PaymentTerms/Microflows'
+begin
+  $Line = call microflow Core.SUB_PaymentTermLine_Add(PaymentTerm = $PaymentTerm);
+end;
+
+/** Payment term — PaymentTerm_NewEdit. */
+create or modify page Core.PaymentTerm_NewEdit folder 'PaymentTerms/Pages'
+(
+  Params: ( $PaymentTerm: Core.PaymentTerm ),
+  Title: 'Payment term',
+  Layout: Core.App_Default
+)
+{
+  layoutgrid gridPage {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvMain (DataSource: $PaymentTerm) {
+    container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+      container ctnPageHeadTitle (Class: 'page-head-title') {
+        dynamictext txtCrumb (Content: 'Payment term', RenderMode: Text, Class: 'crumb')
+        dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = if $currentObject/Name = empty or trim($currentObject/Name) = '' then 'New' else $currentObject/Name), RenderMode: H1)
+      }
+      container ctnPageHeadActions (Class: 'page-head-actions') {
+        actionbutton btnSave0 (Caption: 'Save', Action: call microflow Core.ACT_PaymentTerm_Save(PaymentTerm = $currentObject), ButtonStyle: Primary)
+      }
+    }
+    layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
+      row {
+        column (DesktopWidth: 12, TabletWidth: 12, PhoneWidth: 12) {
+          dynamictext hTerm (Content: 'Term', RenderMode: H2)
+          textbox txtName (Label: 'Name', Attribute: "Name")
+          textarea taNote (Label: 'Note', Attribute: "Note")
+        }
+      }
+    }
+    dynamictext hInstalments (Content: 'Instalments', RenderMode: H2)
+    layoutgrid gridLinesHead (Class: 'th lines-head hide-phone') {
+      row {
+        column (DesktopWidth: 3) { dynamictext hdValue (Content: 'Value', RenderMode: Text) }
+        column (DesktopWidth: 3) { dynamictext hdValueAmount (Content: 'Value amount', RenderMode: Text) }
+        column (DesktopWidth: 3) { dynamictext hdDays (Content: 'Days', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdDelayType (Content: 'Delay type', RenderMode: Text) }
+      }
+    }
+    listview lvLines (DataSource: $currentObject/Core.PaymentTermLine_PaymentTerm, Editable: true, Class: 'lines-list') {
+      layoutgrid gridLine {
+        row {
+          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { combobox lncmbValue (Label: 'Value', Attribute: "Value") }
+          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { textbox lntxtValueAmount (Label: 'Value amount', Attribute: "ValueAmount", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { textbox lntxtDays (Label: 'Days', Attribute: "Days") }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbDelayType (Label: 'Delay type', Attribute: "DelayType") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }
+        }
+      }
+    }
+    linkbutton btnAddLine (Caption: '+ Add a line', Action: call microflow Core.ACT_PaymentTermLine_Add(PaymentTerm = $currentObject))
+  }
+      }
+    }
+  }
+};
+
+grant view on page Core.PaymentTerm_NewEdit to Core.Admin, Core.Config;
+grant execute on microflow Core.ACT_PaymentTermLine_Add to Core.Admin, Core.Config;
+grant execute on microflow Core.ACT_PaymentTerm_Save to Core.Admin, Core.Config;
+-- ── replay: mdlsource/4-products/done-403-products-page-uo-m-category-new-edit.mdl
+-- GENERATED by pipelines/odoo/mdl_pages.py from ui_spec.py["UoMCategory_NewEdit"] — wireframe design/wireframes/UoMCategory_NewEdit.html.
+-- Regenerate, do not hand-edit. Reached from: row of UoMCategory_Overview.
+
+/** Persist a validated UoMCategory. */
+create or modify microflow Products.SUB_UoMCategory_Save ($UoMCategory: Products.UoMCategory)
+folder 'UnitsOfMeasure/Microflows'
+begin
+  retrieve $Lines0 from $UoMCategory/Products.UoM_Category;
+  commit $Lines0 with events;
+  commit $UoMCategory with events refresh;
+end;
+
+/** Save button on UoMCategory_NewEdit: validate, persist, close. */
+create or modify microflow Products.ACT_UoMCategory_Save ($UoMCategory: Products.UoMCategory)
+folder 'UnitsOfMeasure/Microflows'
+begin
+  $IsValid = call microflow Products.VAL_UoMCategory(UoMCategory = $UoMCategory);
+  if $IsValid then
+    call microflow Products.SUB_UoMCategory_Save(UoMCategory = $UoMCategory);
+    close page;
+  end if;
+end;
+
+/** A new UoM on the UoMCategory, committed so the line editor shows it at once. */
+create or modify microflow Products.SUB_UoM_Add ($UoMCategory: Products.UoMCategory)
+returns Products.UoM as $Line
+folder 'UnitsOfMeasure/Microflows'
+begin
+  $Line = create Products."UoM" (Products.UoM_Category = $UoMCategory);
+  commit $Line refresh;
+  return $Line;
+end;
+
+/** "+ Add a line" on UoMCategory_NewEdit. */
+create or modify microflow Products.ACT_UoM_Add ($UoMCategory: Products.UoMCategory)
+folder 'UnitsOfMeasure/Microflows'
+begin
+  $Line = call microflow Products.SUB_UoM_Add(UoMCategory = $UoMCategory);
+end;
+
+/** Unit category — UoMCategory_NewEdit. */
+create or modify page Products.UoMCategory_NewEdit folder 'UnitsOfMeasure/Pages'
+(
+  Params: ( $UoMCategory: Products.UoMCategory ),
+  Title: 'Unit category',
+  Layout: Core.App_Default
+)
+{
+  layoutgrid gridPage {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvMain (DataSource: $UoMCategory) {
+    container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+      container ctnPageHeadTitle (Class: 'page-head-title') {
+        dynamictext txtCrumb (Content: 'Unit category', RenderMode: Text, Class: 'crumb')
+        dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = if $currentObject/Name = empty or trim($currentObject/Name) = '' then 'New' else $currentObject/Name), RenderMode: H1)
+      }
+      container ctnPageHeadActions (Class: 'page-head-actions') {
+        actionbutton btnSave0 (Caption: 'Save', Action: call microflow Products.ACT_UoMCategory_Save(UoMCategory = $currentObject), ButtonStyle: Primary)
+      }
+    }
+    layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
+      row {
+        column (DesktopWidth: 12, TabletWidth: 12, PhoneWidth: 12) {
+          dynamictext hCategory (Content: 'Category', RenderMode: H2)
+          textbox txtName (Label: 'Name', Attribute: "Name")
+        }
+      }
+    }
+    dynamictext hUnits (Content: 'Units', RenderMode: H2)
+    layoutgrid gridLinesHead (Class: 'th lines-head hide-phone') {
+      row {
+        column (DesktopWidth: 3) { dynamictext hdName (Content: 'Name', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdUoMType (Content: 'Unit type', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdFactor (Content: 'Factor', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdRounding (Content: 'Rounding', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdActive (Content: 'Active', RenderMode: Text) }
+      }
+    }
+    listview lvLines (DataSource: $currentObject/Products.UoM_Category, Editable: true, Class: 'lines-list') {
+      layoutgrid gridLine {
+        row {
+          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { textbox lntxtName (Label: 'Name', Attribute: "Name") }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbUoMType (Label: 'Unit type', Attribute: "UoMType") }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtFactor (Label: 'Factor', Attribute: "Factor", DecimalPrecision: 8, GroupDigits: true) }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtRounding (Label: 'Rounding', Attribute: "Rounding", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { checkbox lncbActive (Label: 'Active', Attribute: "Active") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }
+        }
+      }
+    }
+    linkbutton btnAddLine (Caption: '+ Add a line', Action: call microflow Products.ACT_UoM_Add(UoMCategory = $currentObject))
+  }
+      }
+    }
+  }
+};
+
+grant view on page Products.UoMCategory_NewEdit to Products.Manager;
+grant execute on microflow Products.ACT_UoMCategory_Save to Products.Manager;
+grant execute on microflow Products.ACT_UoM_Add to Products.Manager;
+-- ── replay: mdlsource/4-products/done-412-products-page-pricelist-new-edit.mdl
+-- GENERATED by pipelines/odoo/mdl_pages.py from ui_spec.py["Pricelist_NewEdit"] — wireframe design/wireframes/Pricelist_NewEdit.html.
+-- Regenerate, do not hand-edit. Reached from: row of Pricelist_Overview.
+
+/** Validate a Pricelist before save: every required field on Pricelist_NewEdit, all flagged on one submit. */
+create or modify microflow Products.VAL_Pricelist ($Pricelist: Products.Pricelist)
+returns Boolean as $IsValid
+folder 'Pricing/Microflows'
+begin
+  declare $IsValid Boolean = true;
+  if $Pricelist/Name = empty or trim($Pricelist/Name) = '' then
+    validation feedback $Pricelist/Name message 'Name is required.';
+    set $IsValid = false;
+  end if;
+  if $Pricelist/Products.Pricelist_Currency = empty then
+    validation feedback $Pricelist/Products.Pricelist_Currency message 'Currency is required.';
+    set $IsValid = false;
+  end if;
+  return $IsValid;
+end;
+
+/** Persist a validated Pricelist. */
+create or modify microflow Products.SUB_Pricelist_Save ($Pricelist: Products.Pricelist)
+folder 'Pricing/Microflows'
+begin
+  retrieve $Lines0 from $Pricelist/Products.PriceRule_Pricelist;
+  commit $Lines0 with events;
+  commit $Pricelist with events refresh;
+end;
+
+/** Save button on Pricelist_NewEdit: validate, persist, close. */
+create or modify microflow Products.ACT_Pricelist_Save ($Pricelist: Products.Pricelist)
+folder 'Pricing/Microflows'
+begin
+  $IsValid = call microflow Products.VAL_Pricelist(Pricelist = $Pricelist);
+  if $IsValid then
+    call microflow Products.SUB_Pricelist_Save(Pricelist = $Pricelist);
+    close page;
+  end if;
+end;
+
+/** A new PriceRule on the Pricelist, committed so the line editor shows it at once. */
+create or modify microflow Products.SUB_PriceRule_Add ($Pricelist: Products.Pricelist)
+returns Products.PriceRule as $Line
+folder 'Pricing/Microflows'
+begin
+  $Line = create Products."PriceRule" (Products.PriceRule_Pricelist = $Pricelist);
+  commit $Line refresh;
+  return $Line;
+end;
+
+/** "+ Add a line" on Pricelist_NewEdit. */
+create or modify microflow Products.ACT_PriceRule_Add ($Pricelist: Products.Pricelist)
+folder 'Pricing/Microflows'
+begin
+  $Line = call microflow Products.SUB_PriceRule_Add(Pricelist = $Pricelist);
+end;
+
+/** Pricelist — Pricelist_NewEdit. */
+create or modify page Products.Pricelist_NewEdit folder 'Pricing/Pages'
+(
+  Params: ( $Pricelist: Products.Pricelist ),
+  Title: 'Pricelist',
+  Layout: Core.App_Default
+)
+{
+  layoutgrid gridPage {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvMain (DataSource: $Pricelist) {
+    container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+      container ctnPageHeadTitle (Class: 'page-head-title') {
+        dynamictext txtCrumb (Content: 'Pricelist', RenderMode: Text, Class: 'crumb')
+        dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = if $currentObject/Name = empty or trim($currentObject/Name) = '' then 'New' else $currentObject/Name), RenderMode: H1)
+      }
+      container ctnPageHeadActions (Class: 'page-head-actions') {
+        actionbutton btnSave0 (Caption: 'Save', Action: call microflow Products.ACT_Pricelist_Save(Pricelist = $currentObject), ButtonStyle: Primary)
+      }
+    }
+    layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
+      row {
+        column (DesktopWidth: 12, TabletWidth: 12, PhoneWidth: 12) {
+          dynamictext hPricelist (Content: 'Pricelist', RenderMode: H2)
+          textbox txtName (Label: 'Name', Attribute: "Name")
+          combobox cmbPricelistCurrency (Label: 'Currency', Attribute: Pricelist_Currency, DataSource: database Core."Currency" sort by "Name" asc, CaptionAttribute: "Name")
+          textbox txtSequence (Label: 'Sequence', Attribute: "Sequence")
+        }
+      }
+    }
+    dynamictext hPricerules (Content: 'Price rules', RenderMode: H2)
+    layoutgrid gridLinesHead (Class: 'th lines-head hide-phone') {
+      row {
+        column (DesktopWidth: 2) { dynamictext hdAppliesTo (Content: 'Applies to', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdPriceRuleCategory (Content: 'Category', RenderMode: Text) }
+        column (DesktopWidth: 1) { dynamictext hdPriceRuleProduct (Content: 'Product', RenderMode: Text) }
+        column (DesktopWidth: 1) { dynamictext hdMinQuantity (Content: 'Min quantity', RenderMode: Text) }
+        column (DesktopWidth: 1) { dynamictext hdComputation (Content: 'Computation', RenderMode: Text) }
+        column (DesktopWidth: 1) { dynamictext hdFixedPrice (Content: 'Fixed price', RenderMode: Text) }
+        column (DesktopWidth: 1) { dynamictext hdDiscountPercent (Content: 'Discount percent', RenderMode: Text) }
+        column (DesktopWidth: 1) { dynamictext hdValidFrom (Content: 'Valid from', RenderMode: Text) }
+        column (DesktopWidth: 1) { dynamictext hdValidTo (Content: 'Valid to', RenderMode: Text) }
+      }
+    }
+    listview lvLines (DataSource: $currentObject/Products.PriceRule_Pricelist, Editable: true, Class: 'lines-list') {
+      layoutgrid gridLine {
+        row {
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbAppliesTo (Label: 'Applies to', Attribute: "AppliesTo") }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbPriceRuleCategory (Label: 'Category', Attribute: PriceRule_Category, DataSource: database Products."ProductCategory" sort by "Name" asc, CaptionAttribute: "Name") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox lncmbPriceRuleProduct (Label: 'Product', Attribute: PriceRule_Product, DataSource: database Products."Product" where [Active = true()] sort by "Name" asc, CaptionAttribute: "Name") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtMinQuantity (Label: 'Min quantity', Attribute: "MinQuantity", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox lncmbComputation (Label: 'Computation', Attribute: "Computation") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtFixedPrice (Label: 'Fixed price', Attribute: "FixedPrice", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtDiscountPercent (Label: 'Discount percent', Attribute: "DiscountPercent", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { datepicker lndpValidFrom (Label: 'Valid from', Attribute: "ValidFrom") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { datepicker lndpValidTo (Label: 'Valid to', Attribute: "ValidTo") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }
+        }
+      }
+    }
+    linkbutton btnAddLine (Caption: '+ Add a line', Action: call microflow Products.ACT_PriceRule_Add(Pricelist = $currentObject))
+  }
+      }
+    }
+  }
+};
+
+grant view on page Products.Pricelist_NewEdit to Products.Manager;
+grant execute on microflow Products.ACT_PriceRule_Add to Products.Manager;
+grant execute on microflow Products.ACT_Pricelist_Save to Products.Manager;
+-- ── replay: mdlsource/6-sales/done-609-sales-page-quotation-template-new-edit.mdl
+-- GENERATED by pipelines/odoo/mdl_pages.py from ui_spec.py["QuotationTemplate_NewEdit"] — wireframe design/wireframes/QuotationTemplate_NewEdit.html.
+-- Regenerate, do not hand-edit. Reached from: row of QuotationTemplate_Overview.
+
+/** Validate a QuotationTemplate before save: every required field on QuotationTemplate_NewEdit, all flagged on one submit. */
+create or modify microflow Sales.VAL_QuotationTemplate ($QuotationTemplate: Sales.QuotationTemplate)
+returns Boolean as $IsValid
+folder 'Templates/Microflows'
+begin
+  declare $IsValid Boolean = true;
+  if $QuotationTemplate/Name = empty or trim($QuotationTemplate/Name) = '' then
+    validation feedback $QuotationTemplate/Name message 'Name is required.';
+    set $IsValid = false;
+  end if;
+  return $IsValid;
+end;
+
+/** Persist a validated QuotationTemplate. */
+create or modify microflow Sales.SUB_QuotationTemplate_Save ($QuotationTemplate: Sales.QuotationTemplate)
+folder 'Templates/Microflows'
+begin
+  retrieve $Lines0 from $QuotationTemplate/Sales.QuotationTemplateLine_Template;
+  commit $Lines0 with events;
+  commit $QuotationTemplate with events refresh;
+end;
+
+/** Save button on QuotationTemplate_NewEdit: validate, persist, close. */
+create or modify microflow Sales.ACT_QuotationTemplate_Save ($QuotationTemplate: Sales.QuotationTemplate)
+folder 'Templates/Microflows'
+begin
+  $IsValid = call microflow Sales.VAL_QuotationTemplate(QuotationTemplate = $QuotationTemplate);
+  if $IsValid then
+    call microflow Sales.SUB_QuotationTemplate_Save(QuotationTemplate = $QuotationTemplate);
+    close page;
+  end if;
+end;
+
+/** A new QuotationTemplateLine on the QuotationTemplate, committed so the line editor shows it at once. */
+create or modify microflow Sales.SUB_QuotationTemplateLine_Add ($QuotationTemplate: Sales.QuotationTemplate)
+returns Sales.QuotationTemplateLine as $Line
+folder 'Templates/Microflows'
+begin
+  $Line = create Sales."QuotationTemplateLine" (Sales.QuotationTemplateLine_Template = $QuotationTemplate);
+  commit $Line refresh;
+  return $Line;
+end;
+
+/** "+ Add a line" on QuotationTemplate_NewEdit. */
+create or modify microflow Sales.ACT_QuotationTemplateLine_Add ($QuotationTemplate: Sales.QuotationTemplate)
+folder 'Templates/Microflows'
+begin
+  $Line = call microflow Sales.SUB_QuotationTemplateLine_Add(QuotationTemplate = $QuotationTemplate);
+end;
+
+/** Quotation template — QuotationTemplate_NewEdit. */
+create or modify page Sales.QuotationTemplate_NewEdit folder 'Templates/Pages'
+(
+  Params: ( $QuotationTemplate: Sales.QuotationTemplate ),
+  Title: 'Quotation template',
+  Layout: Core.App_Default
+)
+{
+  layoutgrid gridPage {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvMain (DataSource: $QuotationTemplate) {
+    container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+      container ctnPageHeadTitle (Class: 'page-head-title') {
+        dynamictext txtCrumb (Content: 'Quotation template', RenderMode: Text, Class: 'crumb')
+        dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = if $currentObject/Name = empty or trim($currentObject/Name) = '' then 'New' else $currentObject/Name), RenderMode: H1)
+      }
+      container ctnPageHeadActions (Class: 'page-head-actions') {
+        actionbutton btnSave0 (Caption: 'Save', Action: call microflow Sales.ACT_QuotationTemplate_Save(QuotationTemplate = $currentObject), ButtonStyle: Primary)
+      }
+    }
+    layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
+      row {
+        column (DesktopWidth: 12, TabletWidth: 12, PhoneWidth: 12) {
+          dynamictext hTemplate (Content: 'Template', RenderMode: H2)
+          textbox txtName (Label: 'Name', Attribute: "Name")
+          textbox txtValidityDays (Label: 'Validity days', Attribute: "ValidityDays")
+        }
+      }
+    }
+    dynamictext hLines (Content: 'Lines', RenderMode: H2)
+    layoutgrid gridLinesHead (Class: 'th lines-head hide-phone') {
+      row {
+        column (DesktopWidth: 2) { dynamictext hdLineType (Content: 'Line type', RenderMode: Text) }
+        column (DesktopWidth: 3) { dynamictext hdQuotationTemplateLineProduct (Content: 'Product', RenderMode: Text) }
+        column (DesktopWidth: 3) { dynamictext hdDescription (Content: 'Description', RenderMode: Text) }
+        column (DesktopWidth: 1) { dynamictext hdQuantity (Content: 'Quantity', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdQuotationTemplateLineUoM (Content: 'Unit', RenderMode: Text) }
+      }
+    }
+    listview lvLines (DataSource: $currentObject/Sales.QuotationTemplateLine_Template, Editable: true, Class: 'lines-list') {
+      layoutgrid gridLine {
+        row {
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbLineType (Label: 'Line type', Attribute: "LineType") }
+          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { combobox lncmbQuotationTemplateLineProduct (Label: 'Product', Attribute: QuotationTemplateLine_Product, DataSource: database Products."Product" where [Active = true()][CanBeSold = true()] sort by "Name" asc, CaptionAttribute: "Name") }
+          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { textarea lntaDescription (Label: 'Description', Attribute: "Description") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtQuantity (Label: 'Quantity', Attribute: "Quantity", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbQuotationTemplateLineUoM (Label: 'Unit', Attribute: QuotationTemplateLine_UoM, DataSource: database Products."UoM" sort by "Name" asc, CaptionAttribute: "Name") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }
+        }
+      }
+    }
+    linkbutton btnAddLine (Caption: '+ Add a line', Action: call microflow Sales.ACT_QuotationTemplateLine_Add(QuotationTemplate = $currentObject))
+    textarea taTermsAndConditions (Label: 'Terms and conditions', Attribute: "TermsAndConditions")
+  }
+      }
+    }
+  }
+};
+
+grant view on page Sales.QuotationTemplate_NewEdit to Sales.Manager;
+grant execute on microflow Sales.ACT_QuotationTemplateLine_Add to Sales.Manager;
+grant execute on microflow Sales.ACT_QuotationTemplate_Save to Sales.Manager;
+-- ── replay: mdlsource/8-inventory/804-inventory-page-transfer-new-edit.mdl
+-- GENERATED by pipelines/odoo/mdl_pages.py from ui_spec.py["Transfer_NewEdit"] — wireframe design/wireframes/Transfer_NewEdit.html.
+-- Regenerate, do not hand-edit. Reached from: row of Transfer_Overview; Delivery / Receipt smart button on SalesOrder_NewEdit / PurchaseOrder_NewEdit.
+
+/** Validate a Transfer before save: every required field on Transfer_NewEdit, all flagged on one submit. */
+create or modify microflow Inventory.VAL_Transfer ($Transfer: Inventory.Transfer)
+returns Boolean as $IsValid
+folder 'Operations/Microflows'
+begin
+  declare $IsValid Boolean = true;
+  if $Transfer/Inventory.Transfer_OperationType = empty then
+    validation feedback $Transfer/Inventory.Transfer_OperationType message 'Operation type is required.';
+    set $IsValid = false;
+  end if;
+  if $Transfer/Inventory.Transfer_SourceLocation = empty then
+    validation feedback $Transfer/Inventory.Transfer_SourceLocation message 'Source location is required.';
+    set $IsValid = false;
+  end if;
+  if $Transfer/Inventory.Transfer_DestinationLocation = empty then
+    validation feedback $Transfer/Inventory.Transfer_DestinationLocation message 'Destination location is required.';
+    set $IsValid = false;
+  end if;
+  return $IsValid;
+end;
+
+/** Persist a validated Transfer. */
+create or modify microflow Inventory.SUB_Transfer_Save ($Transfer: Inventory.Transfer)
+folder 'Operations/Microflows'
+begin
+  retrieve $Lines0 from $Transfer/Inventory.StockMove_Transfer;
+  commit $Lines0 with events;
+  commit $Transfer with events refresh;
+end;
+
+/** Save button on Transfer_NewEdit: validate, persist, close. */
+create or modify microflow Inventory.ACT_Transfer_Save ($Transfer: Inventory.Transfer)
+folder 'Operations/Microflows'
+begin
+  $IsValid = call microflow Inventory.VAL_Transfer(Transfer = $Transfer);
+  if $IsValid then
+    call microflow Inventory.SUB_Transfer_Save(Transfer = $Transfer);
+    close page;
+  end if;
+end;
+
+/** A new StockMove on the Transfer, committed so the line editor shows it at once. */
+create or modify microflow Inventory.SUB_StockMove_Add ($Transfer: Inventory.Transfer)
+returns Inventory.StockMove as $Line
+folder 'Operations/Microflows'
+begin
+  $Line = create Inventory."StockMove" (Inventory.StockMove_Transfer = $Transfer);
+  commit $Line refresh;
+  return $Line;
+end;
+
+/** "+ Add a line" on Transfer_NewEdit. */
+create or modify microflow Inventory.ACT_StockMove_Add ($Transfer: Inventory.Transfer)
+folder 'Operations/Microflows'
+begin
+  $Line = call microflow Inventory.SUB_StockMove_Add(Transfer = $Transfer);
+end;
+
+/** Transfer — Transfer_NewEdit. */
+create or modify page Inventory.Transfer_NewEdit folder 'Operations/Pages'
+(
+  Params: ( $Transfer: Inventory.Transfer ),
+  Title: 'Transfer',
+  Layout: Core.App_Default
+)
+{
+  layoutgrid gridPage {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvMain (DataSource: $Transfer) {
+    container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+      container ctnPageHeadTitle (Class: 'page-head-title') {
+        dynamictext txtCrumb (Content: 'Transfer', RenderMode: Text, Class: 'crumb')
+        dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = if $currentObject/Number = empty or trim($currentObject/Number) = '' then 'New' else $currentObject/Number), RenderMode: H1)
+      }
+      container ctnPageHeadActions (Class: 'page-head-actions') {
+        actionbutton btnValidate0 (Caption: 'Validate', Action: call microflow Inventory.ACT_Transfer_Validate(Transfer = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Inventory.ENUM_TransferStatus.Waiting or $currentObject/Status = Inventory.ENUM_TransferStatus.Ready)
+        actionbutton btnMarkastodo1 (Caption: 'Mark as to do', Action: call microflow Inventory.ACT_Transfer_Confirm(Transfer = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Inventory.ENUM_TransferStatus.Draft)
+        actionbutton btnCheckavailability2 (Caption: 'Check availability', Action: call microflow Inventory.ACT_Transfer_CheckAvailability(Transfer = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Inventory.ENUM_TransferStatus.Waiting)
+        actionbutton btnCanceltransfer3 (Caption: 'Cancel transfer', Action: call microflow Inventory.ACT_Transfer_Cancel(Transfer = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Inventory.ENUM_TransferStatus.Draft or $currentObject/Status = Inventory.ENUM_TransferStatus.Waiting or $currentObject/Status = Inventory.ENUM_TransferStatus.Ready)
+        actionbutton btnSave4 (Caption: 'Save', Action: call microflow Inventory.ACT_Transfer_Save(Transfer = $currentObject), ButtonStyle: Primary)
+      }
+    }
+    dynamictext txtStatus (Content: '{1}', ContentParams: ({1} = "Status"), Class: 'pill pill-info spacing-outer-bottom-medium')
+    layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
+      row {
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hTransfer (Content: 'Transfer', RenderMode: H2)
+          combobox cmbTransferPartner (Label: 'Partner', Attribute: Transfer_Partner, DataSource: database Partners."Partner" sort by "Name" asc, CaptionAttribute: "Name")
+          combobox cmbTransferOperationType (Label: 'Operation type', Attribute: Transfer_OperationType, DataSource: database Inventory."OperationType" sort by "Name" asc, CaptionAttribute: "Name")
+          combobox cmbTransferSourceLocation (Label: 'Source location', Attribute: Transfer_SourceLocation, DataSource: database Inventory."Location" sort by "Name" asc, CaptionAttribute: "Name")
+          combobox cmbTransferDestinationLocation (Label: 'Destination location', Attribute: Transfer_DestinationLocation, DataSource: database Inventory."Location" sort by "Name" asc, CaptionAttribute: "Name")
+        }
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hDates (Content: 'Dates', RenderMode: H2)
+          datepicker dpScheduledDate (Label: 'Scheduled date', Attribute: "ScheduledDate")
+          datepicker dpDeadline (Label: 'Deadline', Attribute: "Deadline")
+          datepicker dpDateDone (Label: 'Date done', Attribute: "DateDone", Editable: Never)
+        }
+        column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+          dynamictext hOrigin (Content: 'Origin', RenderMode: H2)
+          textbox txtSourceDocument (Label: 'Source document', Attribute: "SourceDocument")
+          combobox cmbTransferBackorder (Label: 'Backorder', Attribute: Transfer_Backorder, DataSource: database Inventory."Transfer" sort by "Number" asc, CaptionAttribute: "Number")
+          combobox cmbTransferResponsible (Label: 'Responsible', Attribute: Transfer_Responsible, DataSource: database Administration."Account" sort by "FullName" asc, CaptionAttribute: "FullName")
+        }
+      }
+    }
+    dynamictext hOperations (Content: 'Operations', RenderMode: H2)
+    layoutgrid gridLinesHead (Class: 'th lines-head hide-phone') {
+      row {
+        column (DesktopWidth: 4) { dynamictext hdStockMoveProduct (Content: 'Product', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdDemandQuantity (Content: 'Demand quantity', RenderMode: Text) }
+        column (DesktopWidth: 1) { dynamictext hdQuantity (Content: 'Quantity', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdStockMoveUoM (Content: 'Unit', RenderMode: Text) }
+        column (DesktopWidth: 1) { dynamictext hdPicked (Content: 'Picked', RenderMode: Text) }
+        column (DesktopWidth: 1) { dynamictext hdStatus (Content: 'Status', RenderMode: Text) }
+      }
+    }
+    listview lvLines (DataSource: $currentObject/Inventory.StockMove_Transfer, Editable: true, Class: 'lines-list') {
+      layoutgrid gridLine {
+        row {
+          column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) { combobox lncmbStockMoveProduct (Label: 'Product', Attribute: StockMove_Product, DataSource: database Products."Product" sort by "Name" asc, CaptionAttribute: "Name") }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtDemandQuantity (Label: 'Demand quantity', Attribute: "DemandQuantity", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtQuantity (Label: 'Quantity', Attribute: "Quantity", DecimalPrecision: 2, GroupDigits: true) }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbStockMoveUoM (Label: 'Unit', Attribute: StockMove_UoM, DataSource: database Products."UoM" sort by "Name" asc, CaptionAttribute: "Name") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { checkbox lncbPicked (Label: 'Picked', Attribute: "Picked") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox lncmbStatus (Label: 'Status', Attribute: "Status", Editable: Never) }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }
+        }
+      }
+    }
+    linkbutton btnAddLine (Caption: '+ Add a line', Action: call microflow Inventory.ACT_StockMove_Add(Transfer = $currentObject))
+    textarea taNotes (Label: 'Notes', Attribute: "Notes")
+  }
+      }
+    }
+  }
+};
+
+grant view on page Inventory.Transfer_NewEdit to Inventory.User, Inventory.Manager, Inventory.Reader;
+grant execute on microflow Inventory.ACT_StockMove_Add to Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_Transfer_Cancel to Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_Transfer_CheckAvailability to Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_Transfer_Confirm to Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_Transfer_Save to Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_Transfer_Validate to Inventory.User, Inventory.Manager;
+-- ── replay: mdlsource/8-inventory/809-inventory-mf-reorder-rules-run.mdl
+-- 809-inventory-mf-reorder-rules-run.mdl — build-plan row 75 (F006-UC007). Owns SUB_ReorderRule_Forecast,
+-- SUB_ReorderRule_Replenish, SCE_ReorderRules_Run (daily scheduled event), the Run now button ACT_ReorderRules_RunNow and the
+-- scheduled event Inventory.SE_ReorderRules. Inventory sits above Purchasing: creating RFQs is a downward call.
+
+/**
+ * Forecast of a product at a location (Odoo orderpoint qty_forecast): on hand + open incoming moves - open outgoing moves.
+ *
+ * @param $Product the product
+ * @param $Location the location
+ * @returns the forecast quantity
+ */
+create or modify microflow Inventory.SUB_ReorderRule_Forecast ($Product: Products.Product, $Location: Inventory.Location)
+returns Decimal as $Forecast
+folder 'Replenishment/Microflows'
+begin
+  $OnHand = call microflow Inventory.SUB_StockLevel_OnHand(Product = $Product, Location = $Location);
+  retrieve $Incoming from Inventory.StockMove where [Inventory.StockMove_Product = $Product][Inventory.StockMove_DestinationLocation = $Location][Status != 'Done'][Status != 'Cancelled'];
+  retrieve $Outgoing from Inventory.StockMove where [Inventory.StockMove_Product = $Product][Inventory.StockMove_SourceLocation = $Location][Status != 'Done'][Status != 'Cancelled'];
+  $In = sum $Incoming by DemandQuantity;
+  $Out = sum $Outgoing by DemandQuantity;
+  return $OnHand + $In - $Out;
+end;
+
+/**
+ * The vendor's open RFQ to add replenishment to (the newest one in status RFQ), or a new RFQ to the vendor with the rule as its
+ * source; either way linked to the rule.
+ *
+ * @param $Rule the reorder rule
+ * @param $Vendor the rule's vendor
+ * @returns the RFQ
+ */
+create or modify microflow Inventory.SUB_ReorderRule_GetOpenRfq ($Rule: Inventory.ReorderRule, $Vendor: Partners.Partner)
+returns Purchasing.PurchaseOrder as $Rfq
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Open from Purchasing.PurchaseOrder where [Purchasing.PurchaseOrder_Vendor = $Vendor][Status = 'RFQ'] sort by Number desc first;
+  if $Open != empty then
+    change $Rule (Inventory.ReorderRule_PurchaseOrders = $Open);
+    commit $Rule with events;
+    return $Open;
+  end if;
+  $New = call microflow Purchasing.SUB_PurchaseOrder_Create();
+  change $New (Source = 'Reorder rule ' + $Rule/Name, Purchasing.PurchaseOrder_Vendor = $Vendor);
+  call microflow Purchasing.SUB_PurchaseOrder_ApplyVendor(PurchaseOrder = $New);
+  commit $New with events;
+  change $Rule (Inventory.ReorderRule_PurchaseOrders = $New);
+  commit $Rule with events;
+  return $New;
+end;
+
+/**
+ * Order a quantity of a product on an RFQ: its line for the product is increased, or a new line is added; totals follow.
+ *
+ * @param $PurchaseOrder the open RFQ
+ * @param $Product the product
+ * @param $Quantity the quantity to add
+ */
+create or modify microflow Inventory.SUB_ReorderRule_AddToRfq ($PurchaseOrder: Purchasing.PurchaseOrder, $Product: Products.Product, $Quantity: Decimal)
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Line from Purchasing.PurchaseOrderLine where [Purchasing.PurchaseOrderLine_PurchaseOrder = $PurchaseOrder][Purchasing.PurchaseOrderLine_Product = $Product] first;
+  if $Line != empty then
+    change $Line (Quantity = (if $Line/Quantity = empty then 0 else $Line/Quantity) + $Quantity);
+    commit $Line with events;
+  else
+    $NewLine = create Purchasing.PurchaseOrderLine (Quantity = $Quantity, Purchasing.PurchaseOrderLine_PurchaseOrder = $PurchaseOrder, Purchasing.PurchaseOrderLine_Product = $Product);
+    call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $NewLine);
+    commit $NewLine with events;
+  end if;
+  $Totals = call microflow Purchasing.SUB_PurchaseOrder_RecomputeTotals(PurchaseOrder = $PurchaseOrder);
+end;
+
+/**
+ * Replenish one rule (F006-UC007): when the forecast is below the minimum, order up to the maximum (rounded up to the multiple)
+ * from the rule's vendor — on an open RFQ to that vendor (its line for the product increased) or a new RFQ.
+ *
+ * @param $Rule the reorder rule
+ * @returns true when something was ordered
+ */
+create or modify microflow Inventory.SUB_ReorderRule_Replenish ($Rule: Inventory.ReorderRule)
+returns Boolean as $Ordered
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Product from $Rule/Inventory.ReorderRule_Product;
+  retrieve $Location from $Rule/Inventory.ReorderRule_Location;
+  retrieve $Vendor from $Rule/Inventory.ReorderRule_Vendor;
+  if $Product = empty or $Location = empty or $Vendor = empty then
+    return false;
+  end if;
+  $Forecast = call microflow Inventory.SUB_ReorderRule_Forecast(Product = $Product, Location = $Location);
+  if $Forecast >= $Rule/MinQuantity then
+    return false;
+  end if;
+  declare $Multiple Decimal = if $Rule/QuantityMultiple = empty or $Rule/QuantityMultiple <= 0 then 1 else $Rule/QuantityMultiple;
+  declare $Quantity Decimal = ceil(($Rule/MaxQuantity - $Forecast) div $Multiple) * $Multiple;
+  $Order = call microflow Inventory.SUB_ReorderRule_GetOpenRfq(Rule = $Rule, Vendor = $Vendor);
+  call microflow Inventory.SUB_ReorderRule_AddToRfq(PurchaseOrder = $Order, Product = $Product, Quantity = $Quantity);
+  return true;
+end;
+
+/**
+ * Run the active reorder rules (the daily scheduled event, and the Run now button).
+ *
+ * @returns the number of rules that ordered something
+ */
+create or modify microflow Inventory.SCE_ReorderRules_Run ()
+returns Integer as $OrderedCount
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Rules from Inventory.ReorderRule where [Active = true()];
+  declare $Count Integer = 0;
+  @annotation 'One loop over the active rules (tens): each rule is evaluated and replenished on its own.'
+  loop $Rule in $Rules begin
+    $Ordered = call microflow Inventory.SUB_ReorderRule_Replenish(Rule = $Rule);
+    if $Ordered then
+      set $Count = $Count + 1;
+    end if;
+  end loop;
+  return $Count;
+end;
+
+/** Run scheduler button on Reorder rules (F006-UC007: "user clicks Run scheduler"). */
+create or modify microflow Inventory.ACT_ReorderRules_RunNow ()
+folder 'Replenishment/Microflows'
+begin
+  $Count = call microflow Inventory.SCE_ReorderRules_Run();
+  show message 'Reorder rules run: ' + toString($Count) + ' rule(s) added to an RFQ.' type Information;
+end;
+
+/**
+ * Order once on a reorder rule row (Odoo action_replenish): replenish this rule now; the row arrives with its unsaved edits.
+ *
+ * @param $ReorderRule the rule
+ */
+create or modify microflow Inventory.ACT_ReorderRule_OrderOnce ($ReorderRule: Inventory.ReorderRule)
+folder 'Replenishment/Microflows'
+begin
+  $Ordered = call microflow Inventory.SUB_ReorderRule_Replenish(Rule = $ReorderRule);
+  if $Ordered then
+    show message 'Ordered: the quantity up to the maximum was added to an RFQ to the rule''s vendor.' type Information;
+  else
+    show message 'Nothing to order: the forecast is at or above the minimum, or the rule has no product, location or vendor.' type Information;
+  end if;
+end;
+
+/** Daily replenishment run (Odoo stock scheduler). */
+create or modify scheduled event Inventory.SE_ReorderRules folder 'Replenishment' (
+  Microflow: Inventory.SCE_ReorderRules_Run,
+  Repeat: Daily,
+  HourOfDay: 2,
+  MinuteOfHour: 0
+);
+-- ── replay: mdlsource/8-inventory/810-inventory-page-reorder-rule-overview.mdl
+-- GENERATED by pipelines/odoo/mdl_pages.py from ui_spec.py["ReorderRule_Overview"] — wireframe design/wireframes/ReorderRule_Overview.html.
+-- Regenerate, do not hand-edit. Reached from: menu Inventory › Reorder rules.
+
+/** A new ReorderRule row, committed so the list shows it at once. */
+create or modify microflow Inventory.SUB_ReorderRule_Add ()
+returns Inventory.ReorderRule as $Row
+folder 'Replenishment/Microflows'
+begin
+  $Row = create Inventory."ReorderRule" ();
+  commit $Row refresh;
+  return $Row;
+end;
+
+/** "+ Add a line" on ReorderRule_Overview. */
+create or modify microflow Inventory.ACT_ReorderRule_Add ()
+folder 'Replenishment/Microflows'
+begin
+  $Row = call microflow Inventory.SUB_ReorderRule_Add();
+end;
+
+/** Reorder rules — ReorderRule_Overview. */
+create or modify page Inventory.ReorderRule_Overview folder 'Replenishment/Pages'
+(
+  Title: 'Reorder rules',
+  Layout: Core.App_Default,
+  Url: 'reorder-rule-overview'
+)
+{
+  container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+    container ctnPageHeadTitle (Class: 'page-head-title') {
+      dynamictext txtTitle (Content: 'Reorder rules', RenderMode: H1)
+    }
+    container ctnPageHeadActions (Class: 'page-head-actions') {
+      actionbutton btnRunscheduler1 (Caption: 'Run scheduler', Action: call microflow Inventory.ACT_ReorderRules_RunNow, ButtonStyle: Primary)
+    }
+  }
+  layoutgrid gridLinesHead (Class: 'th lines-head hide-phone') {
+    row {
+      column (DesktopWidth: 2) { dynamictext hdReorderRuleProduct (Content: 'Product', RenderMode: Text) }
+      column (DesktopWidth: 2) { dynamictext hdReorderRuleLocation (Content: 'Location', RenderMode: Text) }
+      column (DesktopWidth: 2) { dynamictext hdReorderRuleVendor (Content: 'Vendor', RenderMode: Text) }
+      column (DesktopWidth: 1) { dynamictext hdMinQuantity (Content: 'Min quantity', RenderMode: Text) }
+      column (DesktopWidth: 1) { dynamictext hdMaxQuantity (Content: 'Max quantity', RenderMode: Text) }
+      column (DesktopWidth: 1) { dynamictext hdQuantityMultiple (Content: 'Quantity multiple', RenderMode: Text) }
+      column (DesktopWidth: 1) { dynamictext hdAutomatic (Content: 'Automatic', RenderMode: Text) }
+    }
+  }
+  listview lvLines (DataSource: database Inventory."ReorderRule" sort by ReorderRule_Product/Name asc, Editable: true, Class: 'lines-list') {
+    layoutgrid gridLine {
+      row {
+        column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbReorderRuleProduct (Label: 'Product', Attribute: ReorderRule_Product, DataSource: database Products."Product" sort by "Name" asc, CaptionAttribute: "Name", OnChange: save changes, Editable: $currentObject/Inventory.ReorderRule_Product = empty) }
+        column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbReorderRuleLocation (Label: 'Location', Attribute: ReorderRule_Location, DataSource: database Inventory."Location" sort by "Name" asc, CaptionAttribute: "Name", OnChange: save changes, Editable: $currentObject/Inventory.ReorderRule_Location = empty) }
+        column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbReorderRuleVendor (Label: 'Vendor', Attribute: ReorderRule_Vendor, DataSource: database Partners."Partner" sort by "Name" asc, CaptionAttribute: "Name", OnChange: save changes) }
+        column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtMinQuantity (Label: 'Min quantity', Attribute: "MinQuantity", DecimalPrecision: 2, GroupDigits: true, OnChange: save changes) }
+        column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtMaxQuantity (Label: 'Max quantity', Attribute: "MaxQuantity", DecimalPrecision: 2, GroupDigits: true, OnChange: save changes) }
+        column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtQuantityMultiple (Label: 'Quantity multiple', Attribute: "QuantityMultiple", DecimalPrecision: 2, GroupDigits: true, OnChange: save changes) }
+        column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { checkbox lncbAutomatic (Label: 'Automatic', Attribute: "Automatic", OnChange: save changes) }
+        column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnRowAction (Caption: 'Order once', Action: call microflow Inventory.ACT_ReorderRule_OrderOnce(ReorderRule = $currentObject)) }
+        column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }
+      }
+    }
+  }
+  linkbutton btnAddLine (Caption: '+ Add a line', Action: call microflow Inventory.ACT_ReorderRule_Add)
+};
+
+grant view on page Inventory.ReorderRule_Overview to Inventory.Manager, Inventory.Reader;
+grant execute on microflow Inventory.ACT_ReorderRule_Add to Inventory.Manager;
+grant execute on microflow Inventory.ACT_ReorderRule_OrderOnce to Inventory.Manager;
+grant execute on microflow Inventory.ACT_ReorderRules_RunNow to Inventory.Manager;
+-- ── replay: mdlsource/8-inventory/811-inventory-page-warehouse-edit.mdl
+-- GENERATED by pipelines/odoo/mdl_pages.py from ui_spec.py["Warehouse_Edit"] — wireframe design/wireframes/Warehouse_Edit.html.
+-- Regenerate, do not hand-edit. Reached from: menu Configuration › Warehouse.
+
+/** Validate a Warehouse before save: every required field on Warehouse_Edit, all flagged on one submit. */
+create or modify microflow Inventory.VAL_Warehouse ($Warehouse: Inventory.Warehouse)
+returns Boolean as $IsValid
+folder 'Configuration/Microflows'
+begin
+  declare $IsValid Boolean = true;
+  if $Warehouse/ShortName = empty or trim($Warehouse/ShortName) = '' then
+    validation feedback $Warehouse/ShortName message 'Short name is required.';
+    set $IsValid = false;
+  end if;
+  if $Warehouse/Inventory.Warehouse_StockLocation = empty then
+    validation feedback $Warehouse/Inventory.Warehouse_StockLocation message 'Stock location is required.';
+    set $IsValid = false;
+  end if;
+  return $IsValid;
+end;
+
+/** Persist a validated Warehouse. */
+create or modify microflow Inventory.SUB_Warehouse_Save ($Warehouse: Inventory.Warehouse)
+folder 'Configuration/Microflows'
+begin
+  retrieve $Lines0 from $Warehouse/Inventory.OperationType_Warehouse;
+  commit $Lines0 with events;
+  commit $Warehouse with events refresh;
+end;
+
+/** Save button on Warehouse_Edit: validate, persist, close. */
+create or modify microflow Inventory.ACT_Warehouse_Save ($Warehouse: Inventory.Warehouse)
+folder 'Configuration/Microflows'
+begin
+  $IsValid = call microflow Inventory.VAL_Warehouse(Warehouse = $Warehouse);
+  if $IsValid then
+    call microflow Inventory.SUB_Warehouse_Save(Warehouse = $Warehouse);
+    close page;
+  end if;
+end;
+
+/** A new OperationType on the Warehouse, committed so the line editor shows it at once. */
+create or modify microflow Inventory.SUB_OperationType_Add ($Warehouse: Inventory.Warehouse)
+returns Inventory.OperationType as $Line
+folder 'Configuration/Microflows'
+begin
+  $Line = create Inventory."OperationType" (Inventory.OperationType_Warehouse = $Warehouse);
+  commit $Line refresh;
+  return $Line;
+end;
+
+/** "+ Add a line" on Warehouse_Edit. */
+create or modify microflow Inventory.ACT_OperationType_Add ($Warehouse: Inventory.Warehouse)
+folder 'Configuration/Microflows'
+begin
+  $Line = call microflow Inventory.SUB_OperationType_Add(Warehouse = $Warehouse);
+end;
+
+/** Data source of Warehouse_Edit: DS_Warehouse_Get (the one warehouse). */
+create or modify microflow Inventory.DS_Warehouse_Get ()
+returns Inventory.Warehouse as $Warehouse
+folder 'Configuration/Microflows'
+begin
+  retrieve $Warehouse from Inventory.Warehouse first;
+  return $Warehouse;
+end;
+
+/** Warehouse — Warehouse_Edit. */
+create or modify page Inventory.Warehouse_Edit folder 'Configuration/Pages'
+(
+  Title: 'Warehouse',
+  Layout: Core.App_Default,
+  Url: 'warehouse-edit'
+)
+{
+  layoutgrid gridPage {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvMain (DataSource: microflow Inventory.DS_Warehouse_Get) {
+    container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+      container ctnPageHeadTitle (Class: 'page-head-title') {
+        dynamictext txtCrumb (Content: 'Warehouse', RenderMode: Text, Class: 'crumb')
+        dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = if $currentObject/Name = empty or trim($currentObject/Name) = '' then 'New' else $currentObject/Name), RenderMode: H1)
+      }
+      container ctnPageHeadActions (Class: 'page-head-actions') {
+        actionbutton btnSave0 (Caption: 'Save', Action: call microflow Inventory.ACT_Warehouse_Save(Warehouse = $currentObject), ButtonStyle: Primary)
+      }
+    }
+    layoutgrid gridSections (Class: 'spacing-outer-bottom-large') {
+      row {
+        column (DesktopWidth: 12, TabletWidth: 12, PhoneWidth: 12) {
+          dynamictext hWarehouse (Content: 'Warehouse', RenderMode: H2)
+          textbox txtName (Label: 'Name', Attribute: "Name")
+          textbox txtShortName (Label: 'Short name', Attribute: "ShortName")
+          combobox cmbWarehouseAddress (Label: 'Address', Attribute: Warehouse_Address, DataSource: database Partners."Partner" sort by "Name" asc, CaptionAttribute: "Name")
+          combobox cmbWarehouseStockLocation (Label: 'Stock location', Attribute: Warehouse_StockLocation, DataSource: database Inventory."Location" sort by "Name" asc, CaptionAttribute: "Name")
+        }
+      }
+    }
+    dynamictext hOperationtypes (Content: 'Operation types', RenderMode: H2)
+    layoutgrid gridLinesHead (Class: 'th lines-head hide-phone') {
+      row {
+        column (DesktopWidth: 3) { dynamictext hdName (Content: 'Name', RenderMode: Text) }
+        column (DesktopWidth: 1) { dynamictext hdKind (Content: 'Kind', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdSequenceCode (Content: 'Sequence code', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdOperationTypeDefaultSource (Content: 'Default source', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdOperationTypeDefaultDestination (Content: 'Default destination', RenderMode: Text) }
+        column (DesktopWidth: 1) { dynamictext hdCreateBackorder (Content: 'Create backorder', RenderMode: Text) }
+      }
+    }
+    listview lvLines (DataSource: $currentObject/Inventory.OperationType_Warehouse, Editable: true, Class: 'lines-list') {
+      layoutgrid gridLine {
+        row {
+          column (DesktopWidth: 3, TabletWidth: 3, PhoneWidth: 12) { textbox lntxtName (Label: 'Name', Attribute: "Name") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox lncmbKind (Label: 'Kind', Attribute: "Kind") }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtSequenceCode (Label: 'Sequence code', Attribute: "SequenceCode") }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbOperationTypeDefaultSource (Label: 'Default source', Attribute: OperationType_DefaultSource, DataSource: database Inventory."Location" sort by "Name" asc, CaptionAttribute: "Name") }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbOperationTypeDefaultDestination (Label: 'Default destination', Attribute: OperationType_DefaultDestination, DataSource: database Inventory."Location" sort by "Name" asc, CaptionAttribute: "Name") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { checkbox lncbCreateBackorder (Label: 'Create backorder', Attribute: "CreateBackorder") }
+          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { linkbutton btnLineDelete (Caption: 'Remove', Action: delete) }
+        }
+      }
+    }
+    linkbutton btnAddLine (Caption: '+ Add a line', Action: call microflow Inventory.ACT_OperationType_Add(Warehouse = $currentObject))
+  }
+      }
+    }
+  }
+};
+
+grant view on page Inventory.Warehouse_Edit to Inventory.Manager;
+grant execute on microflow Inventory.ACT_OperationType_Add to Inventory.Manager;
+grant execute on microflow Inventory.ACT_Warehouse_Save to Inventory.Manager;
+grant execute on microflow Inventory.DS_Warehouse_Get to Inventory.Manager;
+-- ── replay: mdlsource/_oneoff/2026-10-16-grant-stock-move-delete.mdl
+-- One-off (security): warehouse users may remove a transfer's lines — a stock move is the transfer's document line, and the
+-- document-line rule (whoever edits the document removes its lines) now covers it (sweep 2026-10-16: no Remove for
+-- warehouse.user). Mirrors done-160 and the Inventory module brief's access table.
+grant create, delete, read *, write * on entity Inventory."StockMove" to Inventory.User;

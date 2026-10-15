@@ -63,7 +63,8 @@ PICKER_WHERE = {('Sales.SalesOrder', 'SalesOrder_Customer'): ACTIVE + '[IsCustom
 LINE_DELETE = {'Sales.SalesOrderLine': 'Sales.ACT_SalesOrderLine_Delete', 'Purchasing.PurchaseOrderLine': 'Purchasing.ACT_PurchaseOrderLine_Delete'}
 # A button on each row of an editable list: entity -> (caption, microflow taking the row). The row goes to the microflow with
 # its unsaved edits, so it cannot race the row's save-on-leave (Apply counts after typing a count applied nothing, J-INV-04).
-ROW_ACTION = {'Inventory.StockLevel': ('Apply', 'Inventory.ACT_StockLevel_ApplyCount')}
+ROW_ACTION = {'Inventory.StockLevel': ('Apply', 'Inventory.ACT_StockLevel_ApplyCount'),
+              'Inventory.ReorderRule': ('Order once', 'Inventory.ACT_ReorderRule_OrderOnce')}
 # Inputs on an editable list that do NOT save on leave: the row action is their only writer. A counted quantity that saved on
 # leave landed after Apply had cleared it, so the count came back and a second Apply would add the stock twice (J-INV-04).
 NO_ROW_SAVE = {('Inventory.StockLevel', 'CountedQuantity')}
@@ -536,6 +537,11 @@ def save_microflows(s, folder):
     mfolder = folder.replace('/Pages', '/Microflows')
     hook = SAVE_HOOK.get(e['name'])
     hook_call = ('  call microflow %s(%s = $%s);\n' % (hook, short, short)) if hook else ''
+    # Lines typed on the form travel with the Save call but are not committed by committing the header: commit them over
+    # the association first (sweep 2026-10-16: a new Warehouse operation type lost its typed name on Save).
+    lines = [ln for ln in ([s['lines']] if isinstance(s.get('lines'), dict) else (s.get('lines') or [])) if ln.get('editable')]
+    hook_call += ''.join('  retrieve $Lines%d from $%s/%s.%s;\n  commit $Lines%d with events;\n'
+                         % (i, short, module_of(ln['entity']), ln['via'], i) for i, ln in enumerate(lines))
     val_doc = '' if own_val else '''/** Validate a %(short)s before save: every required field on %(page)s, all flagged on one submit. */
 create or modify microflow %(mod)s.VAL_%(short)s ($%(short)s: %(q)s)
 returns Boolean as $IsValid
@@ -579,7 +585,7 @@ end;
 create or modify microflow %(mod)s.SUB_%(short)s_Save ($%(short)s: %(q)s)
 folder '%(f)s'
 begin
-  commit $%(short)s with events refresh;
+%(hook)s  commit $%(short)s with events refresh;
 end;
 
 /** Save button on %(page)s: validate, persist, close. */
@@ -592,7 +598,7 @@ begin
     close page;
   end if;
 end;
-''' % dict(short=short, mod=mod, q=e['name'], page=s['name'], f=mfolder, body=body)]
+''' % dict(short=short, mod=mod, q=e['name'], page=s['name'], f=mfolder, body=body, hook=hook_call)]
 
 
 def child_add_microflows(s):

@@ -23,6 +23,8 @@ end;
 create or modify microflow Products.SUB_Pricelist_Save ($Pricelist: Products.Pricelist)
 folder 'Pricing/Microflows'
 begin
+  retrieve $Lines0 from $Pricelist/Products.PriceRule_Pricelist;
+  commit $Lines0 with events;
   commit $Pricelist with events refresh;
 end;
 

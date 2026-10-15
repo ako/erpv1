@@ -6,6 +6,8 @@ mdl 1;
 create or modify microflow Products.SUB_UoMCategory_Save ($UoMCategory: Products.UoMCategory)
 folder 'UnitsOfMeasure/Microflows'
 begin
+  retrieve $Lines0 from $UoMCategory/Products.UoM_Category;
+  commit $Lines0 with events;
   commit $UoMCategory with events refresh;
 end;
 

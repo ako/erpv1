@@ -19,6 +19,8 @@ end;
 create or modify microflow Sales.SUB_QuotationTemplate_Save ($QuotationTemplate: Sales.QuotationTemplate)
 folder 'Templates/Microflows'
 begin
+  retrieve $Lines0 from $QuotationTemplate/Sales.QuotationTemplateLine_Template;
+  commit $Lines0 with events;
   commit $QuotationTemplate with events refresh;
 end;
 

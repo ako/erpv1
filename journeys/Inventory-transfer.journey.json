@@ -1,0 +1,101 @@
+{
+  "id": "J-INV-05",
+  "title": "Warehouse user creates an internal transfer, types a line and marks it as to do: the typed demand is what gets planned",
+  "requirement": [
+    "F006-UC003"
+  ],
+  "persona": "warehouse.user",
+  "_seedNote": "no seed: New creates an internal transfer (WH/Stock to WH/Stock). Guards the sweep finding of 2026-10-16 \u2014 a demand typed on the line read back as 0 after Mark as to do.",
+  "seeds": [],
+  "steps": [
+    {
+      "name": "Open Inventory > Transfers",
+      "actions": [
+        {
+          "do": "nav",
+          "group": "Inventory",
+          "item": "Transfers"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-gridMain"
+      }
+    },
+    {
+      "name": "New: a draft internal transfer opens",
+      "actions": [
+        {
+          "do": "click",
+          "widget": "btnNew",
+          "label": "New"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-btnMarkastodo1",
+        "textPresent": [
+          "WH/INT/"
+        ]
+      },
+      "data": {
+        "creates": "Inventory.Transfer",
+        "delta": 1,
+        "scope": {
+          "newRowsBy": "id"
+        }
+      }
+    },
+    {
+      "name": "Add a line: 2 Office Chairs",
+      "actions": [
+        {
+          "do": "click",
+          "widget": "btnAddLine",
+          "label": "+ Add a line"
+        },
+        {
+          "do": "combobox",
+          "widget": "lncmbStockMoveProduct",
+          "match": "Office Chair",
+          "label": "Product"
+        },
+        {
+          "do": "fill",
+          "widget": "lntxtDemandQuantity",
+          "value": "2",
+          "label": "Demand quantity"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-lvLines"
+      },
+      "data": {
+        "creates": "Inventory.StockMove",
+        "delta": 1,
+        "scope": {
+          "newRowsBy": "id"
+        }
+      }
+    },
+    {
+      "name": "Mark as to do \u2014 straight after typing: the transfer is planned with the typed demand",
+      "actions": [
+        {
+          "do": "click",
+          "widget": "btnMarkastodo1",
+          "label": "Mark as to do"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-dvMain",
+        "textAbsent": [
+          "Draft"
+        ]
+      }
+    }
+  ],
+  "outcome": {
+    "label": "the newest move is 2 Office Chairs (the typed demand, not 0), planned",
+    "sql": "SELECT COUNT(m.ID) AS n FROM Inventory.StockMove AS m WHERE m.ID = (SELECT MAX(x.ID) FROM Inventory.StockMove AS x) AND m.DemandQuantity = 2 AND m.Status != 'Draft' AND m/Inventory.StockMove_Product/Products.Product/Name = 'Office Chair'",
+    "expect": 1
+  }
+}

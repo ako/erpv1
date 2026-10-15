@@ -272,7 +272,7 @@ screen('Transfer_NewEdit', 'form', 'Transfer', 'Inventory.Transfer', INV + ['Sal
        param='Inventory.Transfer', statusbar=('Status', ['Draft', 'Waiting', 'Ready', 'Done'], 'Ready'),
        buttons=[('Validate', 'ACT_Transfer_Validate', ['Waiting', 'Ready']), ('Mark as to do', 'ACT_Transfer_Confirm', ['Draft']),
                 ('Check availability', 'ACT_Transfer_CheckAvailability', ['Waiting']),
-                ('Cancel transfer', 'ACT_Transfer_Cancel', ['Draft', 'Waiting', 'Ready'])],
+                ('Cancel transfer', 'ACT_Transfer_Cancel', ['Draft', 'Waiting', 'Ready']), ('Save', 'save')],
        header='Number',
        sections=[('Transfer', ['Transfer_Partner', 'Transfer_OperationType', 'Transfer_SourceLocation', 'Transfer_DestinationLocation']),
                  ('Dates', ['ScheduledDate', 'Deadline', 'DateDone']),
@@ -297,7 +297,7 @@ screen('StockLevel_Overview', 'list', 'Stock', 'Inventory.StockLevel', INV, ['me
              ['[FURN_8888] Office Lamp', 'WH/Stock', '61.00', '4.00', '', '']])
 screen('ReorderRule_Overview', 'list', 'Reorder rules', 'Inventory.ReorderRule', ['InventoryManager', 'Purchaser'], ['menu Inventory › Reorder rules'],
        columns=['ReorderRule_Product', 'ReorderRule_Location', 'ReorderRule_Vendor', 'MinQuantity', 'MaxQuantity', 'QuantityMultiple', 'Automatic'],
-       editable=True, buttons=[('Order once', 'SUB_ReorderRule_Replenish'), ('Run scheduler', 'SCE_ReorderRules_Run')],
+       editable=True, add=True, buttons=[('Order once', 'SUB_ReorderRule_Replenish'), ('Run scheduler', 'SCE_ReorderRules_Run')],
        rows=[['[FURN_8888] Office Lamp', 'WH/Stock', 'Wood Corner', '20.00', '100.00', '10.00', 'yes'],
              ['[FURN_7800] Desk Combination', 'WH/Stock', 'Wood Corner', '5.00', '15.00', '1.00', '']])
 screen('Warehouse_Edit', 'form', 'Warehouse', 'Inventory.Warehouse', ['InventoryManager', 'Administrator'], ['menu Configuration › Warehouse'],

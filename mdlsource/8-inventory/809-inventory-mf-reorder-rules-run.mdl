@@ -128,6 +128,22 @@ begin
   show message 'Reorder rules run: ' + toString($Count) + ' rule(s) added to an RFQ.' type Information;
 end;
 
+/**
+ * Order once on a reorder rule row (Odoo action_replenish): replenish this rule now; the row arrives with its unsaved edits.
+ *
+ * @param $ReorderRule the rule
+ */
+create or modify microflow Inventory.ACT_ReorderRule_OrderOnce ($ReorderRule: Inventory.ReorderRule)
+folder 'Replenishment/Microflows'
+begin
+  $Ordered = call microflow Inventory.SUB_ReorderRule_Replenish(Rule = $ReorderRule);
+  if $Ordered then
+    show message 'Ordered: the quantity up to the maximum was added to an RFQ to the rule''s vendor.' type Information;
+  else
+    show message 'Nothing to order: the forecast is at or above the minimum, or the rule has no product, location or vendor.' type Information;
+  end if;
+end;
+
 /** Daily replenishment run (Odoo stock scheduler). */
 create or modify scheduled event Inventory.SE_ReorderRules folder 'Replenishment' (
   Microflow: Inventory.SCE_ReorderRules_Run,

@@ -23,6 +23,8 @@ end;
 create or modify microflow Inventory.SUB_Warehouse_Save ($Warehouse: Inventory.Warehouse)
 folder 'Configuration/Microflows'
 begin
+  retrieve $Lines0 from $Warehouse/Inventory.OperationType_Warehouse;
+  commit $Lines0 with events;
   commit $Warehouse with events refresh;
 end;
 

@@ -1,0 +1,5 @@
+mdl 1;
+-- One-off (security): warehouse users may remove a transfer's lines — a stock move is the transfer's document line, and the
+-- document-line rule (whoever edits the document removes its lines) now covers it (sweep 2026-10-16: no Remove for
+-- warehouse.user). Mirrors done-160 and the Inventory module brief's access table.
+grant create, delete, read *, write * on entity Inventory."StockMove" to Inventory.User;

@@ -46,7 +46,7 @@
 | Inventory.Transfer | entity | Inventory.User | create, read *, write * |
 | Inventory.Transfer | entity | Inventory.Manager | create, delete, read *, write * |
 | Inventory.Transfer | entity | Inventory.Reader | read * |
-| Inventory.StockMove | entity | Inventory.User | create, read *, write * |
+| Inventory.StockMove | entity | Inventory.User | create, delete, read *, write * |
 | Inventory.StockMove | entity | Inventory.Manager | create, delete, read *, write * |
 | Inventory.StockMove | entity | Inventory.Reader | read * |
 | Inventory.StockLevel | entity | Inventory.User | create, read *, write * |

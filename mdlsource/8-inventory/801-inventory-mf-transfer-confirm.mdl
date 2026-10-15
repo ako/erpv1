@@ -169,6 +169,21 @@ begin
 end;
 
 /**
+ * Persist what the transfer form holds: its moves (typed demand / quantity travel with the button's call but are not in the
+ * database) and the transfer itself. The state buttons call this first, because what they do next reads moves by XPath
+ * (sweep 2026-10-16: a typed demand of 9 999 read back as 0 after Mark as to do).
+ *
+ * @param $Transfer the transfer on the form
+ */
+create or modify microflow Inventory.SUB_Transfer_SaveLines ($Transfer: Inventory.Transfer)
+folder 'Transfers/Microflows'
+begin
+  retrieve $Moves from $Transfer/Inventory.StockMove_Transfer;
+  commit $Moves with events;
+  commit $Transfer with events;
+end;
+
+/**
  * Mark as to do button: only a draft transfer with at least one move.
  *
  * @param $Transfer the transfer
@@ -178,6 +193,7 @@ create or modify microflow Inventory.ACT_Transfer_Confirm ($Transfer: Inventory.
 returns Boolean as $Done
 folder 'Transfers/Microflows'
 begin
+  call microflow Inventory.SUB_Transfer_SaveLines(Transfer = $Transfer);
   if $Transfer/Status != Inventory.ENUM_TransferStatus.Draft then
     show message 'Only a draft transfer can be marked as to do.' type Warning;
     return false;
@@ -196,6 +212,7 @@ create or modify microflow Inventory.ACT_Transfer_CheckAvailability ($Transfer: 
 returns Boolean as $AllReady
 folder 'Transfers/Microflows'
 begin
+  call microflow Inventory.SUB_Transfer_SaveLines(Transfer = $Transfer);
   if $Transfer/Status != Inventory.ENUM_TransferStatus.Waiting and $Transfer/Status != Inventory.ENUM_TransferStatus.Ready then
     return false;
   end if;
@@ -213,6 +230,7 @@ create or modify microflow Inventory.ACT_Transfer_Cancel ($Transfer: Inventory.T
 returns Boolean as $Done
 folder 'Transfers/Microflows'
 begin
+  call microflow Inventory.SUB_Transfer_SaveLines(Transfer = $Transfer);
   if $Transfer/Status = Inventory.ENUM_TransferStatus.Done or $Transfer/Status = Inventory.ENUM_TransferStatus.Cancelled then
     show message 'A done or cancelled transfer cannot be cancelled.' type Warning;
     return false;

@@ -19,6 +19,8 @@ end;
 create or modify microflow Core.SUB_PaymentTerm_Save ($PaymentTerm: Core.PaymentTerm)
 folder 'PaymentTerms/Microflows'
 begin
+  retrieve $Lines0 from $PaymentTerm/Core.PaymentTermLine_PaymentTerm;
+  commit $Lines0 with events;
   commit $PaymentTerm with events refresh;
 end;
 

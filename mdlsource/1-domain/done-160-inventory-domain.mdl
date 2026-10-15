@@ -266,7 +266,7 @@ grant read * on entity Inventory."OperationType" to Inventory.Reader;
 grant create, read *, write * on entity Inventory."Transfer" to Inventory.User;
 grant create, delete, read *, write * on entity Inventory."Transfer" to Inventory.Manager;
 grant read * on entity Inventory."Transfer" to Inventory.Reader;
-grant create, read *, write * on entity Inventory."StockMove" to Inventory.User;
+grant create, delete, read *, write * on entity Inventory."StockMove" to Inventory.User;
 grant create, delete, read *, write * on entity Inventory."StockMove" to Inventory.Manager;
 grant read * on entity Inventory."StockMove" to Inventory.Reader;
 grant create, read *, write * on entity Inventory."StockLevel" to Inventory.User;
