@@ -65,17 +65,18 @@ Generated. Refresh after a toolkit pull with `/root/Mendix/mxcli-project-toolkit
 reverts any edit inside the markers; everything outside them is yours.
 
 <!-- ROUTING:BEGIN baseline -->
-Triggers, not a reading list: open a row's file only when its trigger happens now, at *every stage* or the stage PROJECT.md records. Main session = **lead**; a role stub reads only its own rows and *every role*.
+Triggers, not a reading list: open a row's file only when its trigger happens now, at *every stage* or the stage PROJECT.md records. Main session = **lead**; a role stub reads only its own rows and *every role*; a role named *on demand* opens that row only when its trigger fires.
 
 Full trigger text and the why behind each row: `/root/Mendix/mxcli-project-toolkit/ROUTING.md`.
 
 | Trigger | Reference this (under `/root/Mendix/mxcli-project-toolkit/`) | Stage(s) | Role(s) |
 |---|---|---|---|
-| Before writing any .js or .sh for a check, gate or report | `skills/skills-over-scripts.md` | every stage | every role |
+| Script or skill? Before writing any .js or bash/.sh for a check, checker, linter, gate or report, or adding a rule or regex to an existing one | `skills/skills-over-scripts.md` | every stage | every role except mdl, review (on demand for those) |
 | Any pass whose input is missing, stale or unresolvable | `skills/degrade-to-judgement.md` | every stage | every role |
 | Any time an exit code, a tool's output or a subagent's report is about to become a stated finding | `skills/tool-output-is-not-ground-truth.md` | every stage | every role |
 | Before obeying any learned-* STOP or workaround that costs a detour | `skills/retesting-learned-rules.md` | every stage | every role |
-| Any pipeline work at all | `skills/conversion-runbook.md` | P,0,1,2,3,4,5,6,7 | every role |
+| Any pipeline work at all | `skills/conversion-runbook.md` | P,0,1,2,3,4,5,6,7 | lead, ba, architect |
+| Any pipeline work at all, as a helper | `bin/runbook-slice.sh` | P,0,1,2,3,4,5,6,7 | mdl, gate, test, review |
 | Any question before asking the user or writing anything | `skills/query-the-model.md` | P,0,1,2,3,4,5,6,7 | every role |
 | Putting a question TO the user | `skills/interview-protocol.md` | P,0,1,2,3,4,5,6,7 | lead, ba, architect |
 | The user gives feedback or asks for a change mid-project | `skills/change-intake.md` | 2,3,4,5,6,7 | lead, ba |
@@ -96,18 +97,18 @@ Full trigger text and the why behind each row: `/root/Mendix/mxcli-project-toolk
 | Writing a microflow with any loop, a retrieve/commit/call inside a loop, nested or multiple loops, >20 activities counting loop bodies, or a list built from a list | `skills/microflow-preflight.md` | 5 | mdl |
 | Building any page or snippet | `skills/ui-preflight-pages.md` | 5 | mdl |
 | Writing or reviewing any page or snippet | `skills/design-spacing.md` | 5 | mdl, review |
-| After every page-building script, and any time the UI looks wrong | `skills/ui-loop.md` | 5 | mdl, review |
+| After every page-building script, and any time the UI looks wrong | `skills/ui-loop.md` | 5 | review (mdl: on demand) |
 | After the FIRST build that follows any design-system port, and before any page is built on it | `project-bin/check-design-reaches-app.sh` | 3,5 | architect, mdl, gate, review |
 | Before exec'ing ANY page script | `project-bin/check-page-shell.sh` | 5 | mdl, gate, review |
 | After drafting and again after exec'ing any page script | `project-bin/page-fidelity.js` | 5 | mdl, gate, review |
-| Reviewing any module before calling it done | `skills/module-review.md` | 5,6 | mdl, review, test |
+| Is the module done? Reviewing any module before calling it done | `skills/module-review.md` | 5,6 | review, test (mdl: on demand) |
 | Before any mxcli exec / exec.sh / --mcp write | `bin/exec-approval.sh` | 5,6 | mdl, gate |
 | Before calling any module tested, or before re-running tests after a change | `skills/testing-shape.md` | 5,6 | test, gate, review |
 | Finishing any module | `project-bin/verify-module.sh` | 5,6 | mdl, gate, test, review |
-| A style change that appears to have done nothing, a focus ring that paints on every page landing, or an app still grey after a design port every instrument called green | `skills/learned-css-that-never-applied.md` | 5,6 | mdl, review, gate |
+| A CSS/SCSS or style change that appears to have done nothing (a colour or class that won't show), a focus ring or outline that paints on every page landing or load, or an app still grey after a design port every instrument called green | `skills/learned-css-that-never-applied.md` | 5,6 | review, gate (mdl: on demand) |
 | Before trusting a green check/exec/DESCRIBE result as proof, or when a runtime symptom appears over a fully green model | `skills/learned-detection-gaps.md` | 5,6 | mdl, gate, review |
 | Creating any entity, or calling a module security-ready | `skills/security-is-not-a-later-script.md` | 5 | mdl, gate, review |
-| A CE error or behavior that looks like a known mxcli quirk rather than a modeling mistake | `bin/bug-lookup.sh` | 5,6 | mdl, gate |
+| A CE error (mx check or mxbuild: CE0066, CE0117…), a cited BUG-n, or behavior that looks like a known mxcli quirk rather than a modeling mistake | `bin/bug-lookup.sh` | 5,6 | mdl, gate |
 | The first command of every session, and any time someone asks "where are we" or "what next" | `bin/status.sh` | P,0,1,2,3,4,5,6,7 | every role |
-| Any session that will push a model to Mendix Team Server, and BEFORE telling the user a Team Server push is blocked | `skills/teamserver-alignment.md` | 5,6,7 | mdl, gate, review |
+| Any session that will push a model to Mendix Team Server, and BEFORE telling the user a Team Server push is blocked | `skills/teamserver-alignment.md` | 5,6,7 | gate (mdl, review: on demand) |
 <!-- ROUTING:END -->

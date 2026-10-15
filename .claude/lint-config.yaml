@@ -25,4 +25,7 @@ excludeModules:
 #     severity: warning
 #     options:
 #       maxObjects: 20
-rules: {}
+rules:
+  SEC014:
+    options:
+      external_roles: "none"   # user, 2026-10-15 ("all as proposed"): no portal/guest/external users — PROJECT.md

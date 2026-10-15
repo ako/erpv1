@@ -566,7 +566,14 @@ def script_path(name):
     m = re.search(r'`(mdlsource/[^`]*?-page-%s\.mdl)`' % re.escape(re.sub(r'(?<!^)(?=[A-Z])', '-', name).replace('_-', '-').replace('_', '-').lower()), plan)
     if not m:
         raise SystemExit('no plan row names a page script for %s' % name)
-    return os.path.join(ROOT, m.group(1))
+    return done_aware(os.path.join(ROOT, m.group(1)))
+
+
+def done_aware(path):
+    """iterative-build-loop.md: a verified script is renamed done-<name>; regenerate into that file."""
+    d, b = os.path.split(path)
+    done = os.path.join(d, 'done-' + b)
+    return done if os.path.exists(done) else path
 
 
 def gen_nav():
@@ -599,7 +606,7 @@ def gen_nav():
             L.append("    menu item '%s' ( OnClick: show page %s, Icon: Atlas_Core.Atlas.%s )" % (esc(label), q, D.q(icons[g]) if '-' in icons[g] else icons[g]))
         L.append('  }')
     L.append('};')
-    p = os.path.join(ROOT, 'mdlsource/0-scaffold/010-navigation.mdl')
+    p = done_aware(os.path.join(ROOT, 'mdlsource/0-scaffold/010-navigation.mdl'))
     open(p, 'w').write('\n'.join(L) + '\n')
     print('wrote', os.path.relpath(p, ROOT), '(%d groups)' % len(seen))
 

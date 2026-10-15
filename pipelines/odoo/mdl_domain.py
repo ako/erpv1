@@ -300,7 +300,8 @@ def main():
     for m in MODULES:
         files['%d-%s-domain.mdl' % (NUM[m], m.lower())] = gen_module(m, ents, enums, acc)
     for n, s in files.items():
-        open(os.path.join(OUT, n), 'w').write(s)
+        target = os.path.join(OUT, 'done-' + n) if os.path.exists(os.path.join(OUT, 'done-' + n)) else os.path.join(OUT, n)
+        open(target, 'w').write(s)
     print('wrote %d scripts; %d entities, %d enumerations, %d associations' % (
         len(files), len(ents), len(enums), sum(len(e['associations']) for e in ents.values())))
 
