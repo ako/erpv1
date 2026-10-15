@@ -4,14 +4,16 @@
 
 ## Where we are
 
-Stage 5 (Build), 2026-10-15. Closed: Core, Products, Partners, Sales, Purchasing (unit tests 10/16/11/12/15 with fail
-control; journeys incl. Purchasing approve + reject; positive control 5/7 everywhere — trace rungs need Jaeger, absent here;
-verify-module conformance/graph/coverage/journeys PASS; LOOK reports in design/ui-reviews/). Coherence pass 1 done
-(docs/coherence/coherence-2026-10-15-cluster1.md; fixes applied; cadence recorded). Startup chain head:
-Purchasing.ASU_Purchasing_SeedData. Approval workflow Purchasing.WF_PurchaseOrderApproval (decisions synchronous in the task SUBs).
-Waiting on the user: coherence decisions C1-01 (read-only order view / Billing entry for row 52), C1-06 (typed price vs
-re-price), C1-08 (QuantityInvoiced on draft or post), C1-15 (lock/archive actors); lint baseline for Purchasing debt;
-toolkit update a503c30 -> 95bf240 (8 guidance files).
+Stage 5 (Build), 2026-10-16. Built: Core, Products, Partners, Sales, Purchasing, Inventory (unit tests 10/16/12/15/14;
+journeys incl. Inventory J-INV-01 backorder walk, -02 receipt, -03 reorder, -04 count, -05 manual transfer; positive control
+5/7 — trace rungs need Jaeger). Inventory close: sweep done (.claude/loop/sweep/Inventory), verify conformance/graph/coverage/
+journeys PASS, fidelity rows logged; consolidated LOOK re-shoot in progress (shots/2026-10-16b, model 63626bc) after the
+P1 fixes below — the review-agent writes design/ui-reviews/ui-review-2026-10-16b.html.
+P1s fixed 2026-10-16: form Saves now commit their lines; transfer state buttons save lines first; Validate reads moves over the
+association; stock count Apply is per row; identity pickers editable only while empty. Startup chain head:
+Inventory.ASU_Inventory_SeedData. Waiting on the user: lint baseline for Inventory (ARCH001 +8, CONV003 +2, CUSTOM002 +2);
+order-list tabs/filters (LOOK P2 intent); C1-06 / C1-15 implementation (decided).
+App on a trial licence (~5 sessions): never leave a browser script running; restart the app if logins are refused.
 
 - Generators (never hand-edit their output): pipelines/odoo/mdl_domain.py (1-domain), mdl_pages.py <Page...> | --nav (list/form/popup
   pages + VAL/SUB/ACT save + line Add), plan_render.py (plan, ledgers with model-derived status, briefs). Microflows are hand-written.
@@ -23,11 +25,11 @@ toolkit update a503c30 -> 95bf240 (8 guidance files).
 
 ## Next actions, in order
 
-1. Apply the user's answers above (C1-01 shapes row 52; C1-08 before Invoicing).
-2. Phase 8 Inventory: replace the 800 stubs (deliveries, receipts), stock, reorder rules; Inventory ASU heads the startup chain;
-   C1-09 (row 79) and C1-18 (DeliveryStatus.Started) first.
-3. Phase 9 Invoicing (+ Sales row 52, Purchasing row 64); coherence pass 2 (incl. Purchasing + Inventory); configure
-   tests/e2e/project.config.js WALKTHROUGH for erpv1 (still the toolkit template); pre-demo cleanup; gate-check . 5.
+1. Review the 2026-10-16b shots (review-agent, all six modules, one file), then rename 8-inventory scripts to done-, gate-check.
+2. Invoicing phase: read-only SalesOrder_View / PurchaseOrder_View with Create invoice (C1-01), rows 52/64, QuantityInvoiced
+   on draft (C1-08); restore the transfer Open order links to those views. C1-06 re-pricing, C1-15 manager-only actions.
+3. Coherence pass 2 (incl. Purchasing + Inventory; audit form buttons reading their own objects by XPath — register P2);
+   configure WALKTHROUGH; pre-demo cleanup of journey/sweep data; gate-check . 5.
 
 ## Do not lose
 
