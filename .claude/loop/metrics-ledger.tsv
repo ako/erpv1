@@ -228,3 +228,17 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-15T09:57:33Z	2026-10-15-rebuild-purchase-reject.mdl	pass	applied-lint-rose	49	0	1	400	0	49.4	0	94	0	100	33	76	94	400	2acdb80
 2026-10-15T10:04:59Z	2026-10-15-rebuild-purchase-approval-sync.mdl	pass	applied-lint-rose	48	0	1	400	0	49.4	0	94	0	100	33	76	94	400	a9af73b
 2026-10-15T10:06:54Z	2026-10-15-rebuild-purchase-approval-inbox.mdl	pass	applied-lint-rose	50	0	1	400	0	49.4	0	94	0	100	33	76	94	400	64fe3cf
+2026-10-15T10:46:23Z	done-307-core-page-tax-overview.mdl	pass	applied-lint-rose	46	0	1	400	0	49.4	0	94	0	100	33	76	94	400	a57ee62
+2026-10-15T10:47:10Z	done-310-core-page-payment-term-overview.mdl	pass	applied-lint-rose	46	0	1	400	0	49.4	0	94	0	100	33	76	94	400	0563ed5
+2026-10-15T10:47:59Z	done-402-products-page-uo-m-category-overview.mdl	pass	applied-lint-rose	49	0	1	400	0	49.4	0	94	0	100	33	76	94	400	8725d1c
+2026-10-15T10:48:48Z	done-406-products-page-product-overview.mdl	pass	applied-lint-rose	48	0	1	400	0	49.4	0	94	0	100	33	76	94	400	73b7e26
+2026-10-15T10:49:35Z	done-408-products-page-product-category-overview.mdl	pass	applied-lint-rose	46	0	1	400	0	49.4	0	94	0	100	33	76	94	400	2b5bf75
+2026-10-15T10:50:25Z	done-411-products-page-pricelist-overview.mdl	pass	applied-lint-rose	49	0	1	400	0	49.4	0	94	0	100	33	76	94	400	ab1c440
+2026-10-15T10:51:13Z	done-504-partners-page-partner-overview.mdl	pass	applied-lint-rose	47	0	1	400	0	49.4	0	94	0	100	33	76	94	400	f229286
+2026-10-15T10:52:05Z	done-505-partners-page-partner-new-edit.mdl	pass	applied-lint-rose	51	0	1	400	0	49.4	0	94	0	100	33	76	94	400	a57efd3
+2026-10-15T10:52:55Z	done-605-sales-page-sales-order-overview.mdl	pass	applied-lint-rose	50	0	1	400	0	49.4	0	94	0	100	33	76	94	400	aa24439
+2026-10-15T10:53:50Z	done-606-sales-page-sales-order-new-edit.mdl	pass	applied-lint-rose	54	0	1	400	0	49.4	0	94	0	100	33	76	94	400	fe7843e
+2026-10-15T10:54:42Z	done-611-sales-page-quotation-template-overview.mdl	pass	applied-lint-rose	52	0	1	400	0	49.4	0	94	0	100	33	76	94	400	1317f4e
+2026-10-15T10:55:32Z	done-612-sales-page-sales-team-overview.mdl	pass	applied-lint-rose	50	0	1	400	0	49.4	0	94	0	100	33	76	94	400	6ab8895
+2026-10-15T10:56:22Z	706-purchasing-page-purchase-order-overview.mdl	pass	applied-lint-rose	49	0	1	400	0	49.4	0	94	0	100	33	76	94	400	df8e956
+2026-10-15T10:57:15Z	707-purchasing-page-purchase-order-new-edit.mdl	pass	applied-lint-rose	52	0	1	400	0	49.4	0	94	0	100	33	76	94	400	651478e

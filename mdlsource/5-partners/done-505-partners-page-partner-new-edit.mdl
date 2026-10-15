@@ -81,11 +81,11 @@ create or modify page Partners.Partner_NewEdit folder 'Contacts/Pages'
     }
     dynamictext hContactsaddresses (Content: 'Contacts & addresses', RenderMode: H2)
     datagrid gridContactsaddresses (DataSource: database Partners."Partner" where [Partners.Partner_ParentCompany = '[%CurrentObject%]'], Class: 'density-compact', OnClick: show page Partners.PartnerChild_NewEdit(Partner = $currentObject)) {
-      column (Attribute: "AddressType", Caption: 'Address type')
-      column (Attribute: "Name", Caption: 'Name')
-      column (Attribute: "Email", Caption: 'Email')
-      column (Attribute: "Phone", Caption: 'Phone')
-      column (Attribute: "City", Caption: 'City')
+      column (Attribute: "AddressType", Caption: 'Address type', WrapText: true)
+      column (Attribute: "Name", Caption: 'Name', WrapText: true)
+      column (Attribute: "Email", Caption: 'Email', WrapText: true)
+      column (Attribute: "Phone", Caption: 'Phone', WrapText: true)
+      column (Attribute: "City", Caption: 'City', WrapText: true)
     }
     linkbutton btnAddChild (Caption: '+ Add', Action: call microflow Partners.ACT_Partner_AddToPartner(Partner = $currentObject))
     textarea taNotes (Label: 'Notes', Attribute: "Notes")

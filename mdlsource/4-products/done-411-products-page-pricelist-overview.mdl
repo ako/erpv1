@@ -19,9 +19,9 @@ create or modify page Products.Pricelist_Overview folder 'Pricing/Pages'
     }
   }
   datagrid gridMain (DataSource: database Products."Pricelist" sort by "Name" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Products.Pricelist_NewEdit(Pricelist = $currentObject)) {
-    column (Attribute: "Name", Caption: 'Name') { textfilter fName }
-    column (Attribute: Pricelist_Currency/Name, Caption: 'Currency')
-    column (Attribute: "Active", Caption: 'Active') { dropdownfilter fActive }
+    column (Attribute: "Name", Caption: 'Name', WrapText: true) { textfilter fName }
+    column (Attribute: Pricelist_Currency/Name, Caption: 'Currency', WrapText: true)
+    column (Attribute: "Active", Caption: 'Active', WrapText: true) { dropdownfilter fActive }
   }
 };
 

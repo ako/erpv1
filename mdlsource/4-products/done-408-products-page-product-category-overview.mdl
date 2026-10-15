@@ -19,7 +19,7 @@ create or modify page Products.ProductCategory_Overview folder 'Catalogue/Pages'
     }
   }
   datagrid gridMain (DataSource: database Products."ProductCategory" sort by "FullName" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Products.ProductCategory_NewEdit(ProductCategory = $currentObject)) {
-    column (Attribute: "FullName", Caption: 'Full name') { textfilter fFullName }
+    column (Attribute: "FullName", Caption: 'Full name', WrapText: true) { textfilter fFullName }
   }
 };
 

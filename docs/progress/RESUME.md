@@ -4,12 +4,14 @@
 
 ## Where we are
 
-Stage 5 (Build), 2026-10-15. Done: Phase 0, walking skeleton, demo script, Phase 1 domain, Phases 3 Core / 4 Products /
-5 Partners closed (unit tests 10/16/11 with fail control; journeys + positive control 5/7 — trace rungs need Jaeger, absent here;
-verify-module conformance/graph/coverage/journeys PASS; LOOK reports in design/ui-reviews/). Phase 6 Sales built: order logic
-(600-604, 615), pages (605-612), analysis view entities + report (607/608), seed + startup chain top Sales.ASU_Sales_SeedData (616);
-12 unit tests pass + fail control; journey J-SALES-01 21/21. Sales LOOK + verify-module were running at last commit.
-Waiting on the user: lint baseline raise for Partners/Sales debt (ARCH001 Account pickers, CONV003 *_Edit, CUSTOM002 ASU_).
+Stage 5 (Build), 2026-10-15. Closed: Core, Products, Partners, Sales, Purchasing (unit tests 10/16/11/12/15 with fail
+control; journeys incl. Purchasing approve + reject; positive control 5/7 everywhere — trace rungs need Jaeger, absent here;
+verify-module conformance/graph/coverage/journeys PASS; LOOK reports in design/ui-reviews/). Coherence pass 1 done
+(docs/coherence/coherence-2026-10-15-cluster1.md; fixes applied; cadence recorded). Startup chain head:
+Purchasing.ASU_Purchasing_SeedData. Approval workflow Purchasing.WF_PurchaseOrderApproval (decisions synchronous in the task SUBs).
+Waiting on the user: coherence decisions C1-01 (read-only order view / Billing entry for row 52), C1-06 (typed price vs
+re-price), C1-08 (QuantityInvoiced on draft or post), C1-15 (lock/archive actors); lint baseline for Purchasing debt;
+toolkit update a503c30 -> 95bf240 (8 guidance files).
 
 - Generators (never hand-edit their output): pipelines/odoo/mdl_domain.py (1-domain), mdl_pages.py <Page...> | --nav (list/form/popup
   pages + VAL/SUB/ACT save + line Add), plan_render.py (plan, ledgers with model-derived status, briefs). Microflows are hand-written.
@@ -21,10 +23,11 @@ Waiting on the user: lint baseline raise for Partners/Sales debt (ARCH001 Accoun
 
 ## Next actions, in order
 
-1. Read the Sales LOOK report + verify log; fix P1/P2; rename verified 6-sales scripts to done-.
-2. Coherence pass 1 (process-coherence-pass.md) over Core, Products, Partners, Sales; UserProfile_Edit entry point (P2).
-3. Phases 7-9: Purchasing (+ WF_PurchaseOrderApproval), Inventory (replace 800 stubs), Invoicing (+ Sales row 52 create
-   invoice); coherence 2 + close; pre-demo cleanup of journey fixtures; gate-check . 5.
+1. Apply the user's answers above (C1-01 shapes row 52; C1-08 before Invoicing).
+2. Phase 8 Inventory: replace the 800 stubs (deliveries, receipts), stock, reorder rules; Inventory ASU heads the startup chain;
+   C1-09 (row 79) and C1-18 (DeliveryStatus.Started) first.
+3. Phase 9 Invoicing (+ Sales row 52, Purchasing row 64); coherence pass 2 (incl. Purchasing + Inventory); configure
+   tests/e2e/project.config.js WALKTHROUGH for erpv1 (still the toolkit template); pre-demo cleanup; gate-check . 5.
 
 ## Do not lose
 

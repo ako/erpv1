@@ -19,8 +19,8 @@ create or modify page Core.PaymentTerm_Overview folder 'PaymentTerms/Pages'
     }
   }
   datagrid gridMain (DataSource: database Core."PaymentTerm" sort by "Name" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Core.PaymentTerm_NewEdit(PaymentTerm = $currentObject)) {
-    column (Attribute: "Name", Caption: 'Name') { textfilter fName }
-    column (Attribute: "Note", Caption: 'Note') { textfilter fNote }
+    column (Attribute: "Name", Caption: 'Name', WrapText: true) { textfilter fName }
+    column (Attribute: "Note", Caption: 'Note', WrapText: true) { textfilter fNote }
   }
 };
 

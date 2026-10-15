@@ -19,14 +19,14 @@ create or modify page Purchasing.PurchaseOrder_Overview folder 'RFQs/Pages'
     }
   }
   datagrid gridMain (DataSource: database Purchasing."PurchaseOrder" sort by "Number" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $currentObject)) {
-    column (Attribute: "Number", Caption: 'Number') { textfilter fNumber }
-    column (Attribute: "OrderDeadline", Caption: 'Order deadline') { datefilter fOrderDeadline }
-    column (Attribute: PurchaseOrder_Vendor/Name, Caption: 'Vendor')
-    column (Attribute: PurchaseOrder_Buyer/FullName, Caption: 'Buyer')
-    column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fAmountTotal }
-    column (Attribute: "Status", Caption: 'Status') { dropdownfilter fStatus }
-    column (Attribute: "ReceiptStatus", Caption: 'Receipt status') { dropdownfilter fReceiptStatus }
-    column (Attribute: "BillingStatus", Caption: 'Billing status') { dropdownfilter fBillingStatus }
+    column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumber }
+    column (Attribute: "OrderDeadline", Caption: 'Order deadline', WrapText: true) { datefilter fOrderDeadline }
+    column (Attribute: PurchaseOrder_Vendor/Name, Caption: 'Vendor', WrapText: true)
+    column (Attribute: PurchaseOrder_Buyer/FullName, Caption: 'Buyer', WrapText: true)
+    column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotal }
+    column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatus }
+    column (Attribute: "ReceiptStatus", Caption: 'Receipt status', WrapText: true) { dropdownfilter fReceiptStatus }
+    column (Attribute: "BillingStatus", Caption: 'Billing status', WrapText: true) { dropdownfilter fBillingStatus }
   }
 };
 

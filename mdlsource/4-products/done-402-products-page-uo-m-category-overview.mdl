@@ -19,7 +19,7 @@ create or modify page Products.UoMCategory_Overview folder 'UnitsOfMeasure/Pages
     }
   }
   datagrid gridMain (DataSource: database Products."UoMCategory" sort by "Name" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Products.UoMCategory_NewEdit(UoMCategory = $currentObject)) {
-    column (Attribute: "Name", Caption: 'Name') { textfilter fName }
+    column (Attribute: "Name", Caption: 'Name', WrapText: true) { textfilter fName }
   }
 };
 

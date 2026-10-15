@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-15T10:29:24.287Z",
+  "capturedAt": "2026-10-15T10:39:21.292Z",
   "configuredUser": "purchaser",
   "actualUser": "purchaser",
   "usedFallback": false,
@@ -52,7 +52,7 @@
       "rung": "data",
       "name": "New RFQ: numbered, status Request for quotation: Purchasing.PurchaseOrder +1",
       "verdict": "PASS",
-      "detail": "before=4 after=5 delta=1",
+      "detail": "before=5 after=6 delta=1",
       "requirement": "F005-UC001, F005-UC003"
     },
     {
@@ -101,14 +101,14 @@
       "rung": "data",
       "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine +1",
       "verdict": "PASS",
-      "detail": "before=4 after=5 delta=1",
+      "detail": "before=5 after=6 delta=1",
       "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "data",
       "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product set on every row",
       "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 33214047251870535)",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 33214047251870685)",
       "requirement": "F005-UC001, F005-UC003",
       "evidenceStrength": "strong"
     },
@@ -116,7 +116,7 @@
       "rung": "data",
       "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product points at the seeded Name",
       "verdict": "PASS",
-      "detail": "1 row(s) link to Products.Product where Name = 'Desk Combination' (scoped to rows with id > 33214047251870535)",
+      "detail": "1 row(s) link to Products.Product where Name = 'Desk Combination' (scoped to rows with id > 33214047251870685)",
       "requirement": "F005-UC001, F005-UC003",
       "evidenceStrength": "strong"
     },
@@ -145,7 +145,7 @@
       "rung": "data",
       "name": "Confirm order: above the threshold, it goes to a purchase manager: an approval task is open for purchase managers",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
+      "detail": "got 2, need >= 1",
       "requirement": "F005-UC001, F005-UC003"
     },
     {
@@ -166,7 +166,7 @@
       "rung": "outcome",
       "name": "J-PURCH-01 end state",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
+      "detail": "got 2, need >= 1",
       "requirement": "F005-UC001, F005-UC003"
     }
   ],
@@ -208,7 +208,7 @@
             "file": "../tests/e2e/artifacts/J-PURCH-01-step1.png",
             "title": "Mendix - Requests for quotation & purchase orders",
             "url": "http://localhost:8080/p/purchase-order-overview",
-            "at": "2026-10-15T10:29:11.610Z"
+            "at": "2026-10-15T10:39:09.346Z"
           },
           "reached": true,
           "checks": [
@@ -225,7 +225,7 @@
               "detail": ""
             }
           ],
-          "ms": 1083
+          "ms": 1089
         },
         {
           "n": 2,
@@ -258,7 +258,7 @@
             "file": "../tests/e2e/artifacts/J-PURCH-01-step2.png",
             "title": "Mendix - Purchase order",
             "url": "http://localhost:8080/p/purchase-order-overview",
-            "at": "2026-10-15T10:29:13.413Z"
+            "at": "2026-10-15T10:39:10.536Z"
           },
           "reached": true,
           "checks": [
@@ -278,10 +278,10 @@
               "rung": "data",
               "name": "New RFQ: numbered, status Request for quotation: Purchasing.PurchaseOrder +1",
               "verdict": "PASS",
-              "detail": "before=4 after=5 delta=1"
+              "detail": "before=5 after=6 delta=1"
             }
           ],
-          "ms": 1851
+          "ms": 1238
         },
         {
           "n": 3,
@@ -310,7 +310,7 @@
             "file": "../tests/e2e/artifacts/J-PURCH-01-step3.png",
             "title": "Mendix - Purchase order",
             "url": "http://localhost:8080/p/purchase-order-overview",
-            "at": "2026-10-15T10:29:16.148Z"
+            "at": "2026-10-15T10:39:13.257Z"
           },
           "reached": true,
           "checks": [
@@ -333,7 +333,7 @@
               "detail": ""
             }
           ],
-          "ms": 2684
+          "ms": 2671
         },
         {
           "n": 4,
@@ -383,7 +383,7 @@
             "file": "../tests/e2e/artifacts/J-PURCH-01-step4.png",
             "title": "Mendix - Purchase order",
             "url": "http://localhost:8080/p/purchase-order-overview",
-            "at": "2026-10-15T10:29:21.152Z"
+            "at": "2026-10-15T10:39:18.227Z"
           },
           "reached": true,
           "checks": [
@@ -409,19 +409,19 @@
               "rung": "data",
               "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine +1",
               "verdict": "PASS",
-              "detail": "before=4 after=5 delta=1"
+              "detail": "before=5 after=6 delta=1"
             },
             {
               "rung": "data",
               "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product set on every row",
               "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 33214047251870535)"
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 33214047251870685)"
             },
             {
               "rung": "data",
               "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product points at the seeded Name",
               "verdict": "PASS",
-              "detail": "1 row(s) link to Products.Product where Name = 'Desk Combination' (scoped to rows with id > 33214047251870535)"
+              "detail": "1 row(s) link to Products.Product where Name = 'Desk Combination' (scoped to rows with id > 33214047251870685)"
             },
             {
               "rung": "data",
@@ -430,7 +430,7 @@
               "detail": "got 2, need >= 1"
             }
           ],
-          "ms": 5241
+          "ms": 5175
         },
         {
           "n": 5,
@@ -464,7 +464,7 @@
             "file": "../tests/e2e/artifacts/J-PURCH-01-step5.png",
             "title": "Mendix - Purchase order",
             "url": "http://localhost:8080/p/purchase-order-overview",
-            "at": "2026-10-15T10:29:23.371Z"
+            "at": "2026-10-15T10:39:20.360Z"
           },
           "reached": true,
           "checks": [
@@ -484,10 +484,10 @@
               "rung": "data",
               "name": "Confirm order: above the threshold, it goes to a purchase manager: an approval task is open for purchase managers",
               "verdict": "PASS",
-              "detail": "got 1, need >= 1"
+              "detail": "got 2, need >= 1"
             }
           ],
-          "ms": 2019
+          "ms": 1974
         },
         {
           "n": 6,
@@ -516,7 +516,7 @@
             "file": "../tests/e2e/artifacts/J-PURCH-01-step6.png",
             "title": "Mendix - Requests for quotation & purchase orders",
             "url": "http://localhost:8080/p/purchase-order-overview",
-            "at": "2026-10-15T10:29:24.153Z"
+            "at": "2026-10-15T10:39:21.161Z"
           },
           "reached": true,
           "checks": [
@@ -533,7 +533,7 @@
               "detail": ""
             }
           ],
-          "ms": 743
+          "ms": 754
         }
       ]
     }

@@ -1,0 +1,33 @@
+coverage · LEVEL 1 · MEASURED — ledger found for Purchasing
+  ledger: architecture/modules/Purchasing/coverage-ledger
+
+coverage-check: analysis/odoo/knowledge-base/brd/F005-purchasing.brd.json
+  ledger:        architecture/modules/Purchasing/coverage-ledger/F005-purchasing.md
+  leaves:        805
+  CLAIMED:       754
+  LEDGERED:      51
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:0
+coverage-check: analysis/odoo/knowledge-base/brd/F007-order-fulfilment.brd.json
+  ledger:        architecture/modules/Purchasing/coverage-ledger/F007-order-fulfilment.md
+  leaves:        294
+  CLAIMED:       264
+  LEDGERED:      30
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:0
+coverage-check: analysis/odoo/knowledge-base/brd/F008-invoicing-payments.brd.json
+  ledger:        architecture/modules/Purchasing/coverage-ledger/F008-invoicing-payments.md
+  leaves:        1192
+  CLAIMED:       1100
+  LEDGERED:      92
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:0
+
+  per-BRD ledgers: 3 of 8 BRD(s) measured against architecture/modules/Purchasing/coverage-ledger/<BRDID>.md;
+  5 BRD(s) have no ledger here (another module's, not measured): F001-contacts-company-users F002-units-of-measure F003-product-catalogue-pricing F004-sales F006-inventory

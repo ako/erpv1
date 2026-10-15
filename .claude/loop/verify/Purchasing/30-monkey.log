@@ -1,0 +1,85 @@
+MONKEY_SEED=60827046   rounds=24   (re-run exactly: --seed 60827046)
+
+=== salesOrderOverview
+  [32mok   [0m salesOrderOverview · field ← format string  — no spans — OTel arm of the oracle did NOT run
+
+=== quotationTemplateOverview
+  [32mok   [0m quotationTemplateOverview · field ← single space  — no spans — OTel arm of the oracle did NOT run
+
+=== salesTeamOverview
+  [32mok   [0m salesTeamOverview · field ← script tag  — no spans — OTel arm of the oracle did NOT run
+
+=== purchaseOrderOverview
+  [32mok   [0m purchaseOrderOverview · field ← format string  — no spans — OTel arm of the oracle did NOT run
+
+=== purchaseApprovalInbox
+  [32mok   [0m purchaseApprovalInbox · field ← format string  — no spans — OTel arm of the oracle did NOT run
+
+=== vendorPriceOverview
+  [32mok   [0m vendorPriceOverview · field ← single space  — no spans — OTel arm of the oracle did NOT run
+
+=== inventoryDashboard
+  [32mok   [0m inventoryDashboard · field ← null-ish  — no spans — OTel arm of the oracle did NOT run
+
+=== transferOverview
+  [32mok   [0m transferOverview · abuse: reloadMidFlow  — no spans — OTel arm of the oracle did NOT run
+
+=== stockLevelOverview
+  [32mok   [0m stockLevelOverview · field ← numeric overflow  — no spans — OTel arm of the oracle did NOT run
+
+=== reorderRuleOverview
+  [32mok   [0m reorderRuleOverview · field ← emoji + combining  — no spans — OTel arm of the oracle did NOT run
+
+=== invoiceOverview
+  [32mok   [0m invoiceOverview · abuse: rapidTab  — no spans — OTel arm of the oracle did NOT run
+
+=== paymentOverview
+  [32mok   [0m paymentOverview · field ← numeric overflow  — no spans — OTel arm of the oracle did NOT run
+
+=== partnerOverview
+  [32mok   [0m partnerOverview · field ← format string  — no spans — OTel arm of the oracle did NOT run
+
+=== productOverview
+  [32mok   [0m productOverview · abuse: reloadMidFlow  — no spans — OTel arm of the oracle did NOT run
+
+=== pricelistOverview
+  [32mok   [0m pricelistOverview · field ← negative  — no spans — OTel arm of the oracle did NOT run
+
+=== salesAnalysisReport
+  [32mok   [0m salesAnalysisReport · field ← oversized 5000ch  — no spans — OTel arm of the oracle did NOT run
+
+=== purchaseAnalysisReport
+  [32mok   [0m purchaseAnalysisReport · field ← single space  — no spans — OTel arm of the oracle did NOT run
+
+=== invoiceAnalysisReport
+  [32mok   [0m invoiceAnalysisReport · field ← empty  — no spans — OTel arm of the oracle did NOT run
+
+=== companyEdit
+  [32mok   [0m companyEdit · abuse: doubleClick  — no spans — OTel arm of the oracle did NOT run
+
+=== warehouseEdit
+  [32mok   [0m warehouseEdit · abuse: rapidTab  — no spans — OTel arm of the oracle did NOT run
+
+=== sequenceOverview
+  [32mok   [0m sequenceOverview · abuse: doubleClick  — no spans — OTel arm of the oracle did NOT run
+
+=== taxOverview
+  [32mok   [0m taxOverview · field ← numeric overflow  — no spans — OTel arm of the oracle did NOT run
+
+=== paymentTermOverview
+  [32mok   [0m paymentTermOverview · field ← leading zeros  — no spans — OTel arm of the oracle did NOT run
+
+=== uoMCategoryOverview
+  [32mok   [0m uoMCategoryOverview · field ← negative  — no spans — OTel arm of the oracle did NOT run
+
+=== productCategoryOverview
+  [32mok   [0m productCategoryOverview · field ← CJK  — no spans — OTel arm of the oracle did NOT run
+
+=== MONKEY SUMMARY ===
+  seed 60827046 · 25 observations · 0 crash-class
+  ⚠ No spans were captured in ANY round. The OTel arm of the crash oracle
+    never ran, so swallowed-error crashes could not have been detected.
+    This run is a partial net, not a clean bill of health.
+  Read a clean run as "no unhandled crash on these inputs" and nothing more:
+  scripted journeys, not fuzzing, are what find defects in this stack.
+  findings → ../tests/e2e/artifacts/monkey-findings.json

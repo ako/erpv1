@@ -19,12 +19,12 @@ create or modify page Core.Tax_Overview folder 'Taxes/Pages'
     }
   }
   datagrid gridMain (DataSource: database Core."Tax" sort by "Name" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Core.Tax_NewEdit(Tax = $currentObject)) {
-    column (Attribute: "Name", Caption: 'Name') { textfilter fName }
-    column (Attribute: "Scope", Caption: 'Scope') { dropdownfilter fScope }
-    column (Attribute: "Computation", Caption: 'Computation') { dropdownfilter fComputation }
-    column (Attribute: "Amount", Caption: 'Amount', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fAmount }
-    column (Attribute: "IncludedInPrice", Caption: 'Included in price') { dropdownfilter fIncludedInPrice }
-    column (Attribute: "Active", Caption: 'Active') { dropdownfilter fActive }
+    column (Attribute: "Name", Caption: 'Name', WrapText: true) { textfilter fName }
+    column (Attribute: "Scope", Caption: 'Scope', WrapText: true) { dropdownfilter fScope }
+    column (Attribute: "Computation", Caption: 'Computation', WrapText: true) { dropdownfilter fComputation }
+    column (Attribute: "Amount", Caption: 'Amount', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmount }
+    column (Attribute: "IncludedInPrice", Caption: 'Included in price', WrapText: true) { dropdownfilter fIncludedInPrice }
+    column (Attribute: "Active", Caption: 'Active', WrapText: true) { dropdownfilter fActive }
   }
 };
 

@@ -58,3 +58,21 @@
 - **`mxcli run --watch` build failed with "no bundle at deployment/web/dist/index.js"** after a domain + microflow burst; `run stop`
   then `run --local --watch --detach` rebuilt it cleanly.
 - **Ledger status "built" counts stubs**: Inventory.SUB_SalesOrder_CreateDelivery reads built while it is a log-only stub (800).
+
+## 2026-10-15 — Coherence pass 1, Purchasing build
+- **Workflow outcome branches run asynchronously after the task page closes.** With the domain work in the outcome branch,
+  the approval inbox still listed an approved order (journey J-PURCH-02 FAIL "page does NOT say P00019"). Moving the work into
+  the task button's SUB (synchronous, with refresh) was not enough either: a Data grid 2 on the page underneath does not
+  re-query after `close page`. Fix: the decision ACT ends in `show page <inbox>` (fresh instance). Verified 9/9 + 8/8.
+- **Task page takes $WorkflowUserTask AND $WorkflowContext** (toolkit workflow-structure-rules §11) — no data-source microflow
+  is needed, which also removes the workflow→page→DS→workflow cycle. `mxcli check` refuses a user task without a page
+  (MDL-WF01), so the page must exist first.
+- **XPath `[ID = '[%CurrentUser%]']` on System.User is rejected** (CE0161 "ID is neither attribute nor association"); check a
+  role with `retrieve $Roles from $currentUser/System.UserRoles` + `find ... where $currentObject/Name = 'X'`.
+- **Mendix hides a microflow button the user may not execute** — the cleanest way to hide New from read-only roles is to grant
+  its microflow only to roles that can open the form (generator, coherence C1-01). A regenerated grant does not remove an old
+  one: emit an explicit `revoke`.
+- **`mxcli run --watch` restart failed with EOFException** after "Could not find a part of the path …/deployment/web/pages/
+  Purchasing.PurchaseApproval_Task.js" during a burst of execs; `run stop` + `run --local --ensure-db --watch --detach` fixed it.
+  A new container also needs `--ensure-db` (Postgres not running → boot failed).
+- **journey-runner has no row click**: added `clickRow` (row of a grid by visible text) to tests/e2e/journey-runner.js.

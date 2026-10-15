@@ -1,0 +1,73 @@
+
+=== PREFLIGHT ===
+  SETUP  admin: OK at localhost:8090 (credential from .mxcli/run-local.json (the run --local handshake for :8080))
+  SETUP  sessions: 1 live — on a trial licence leaked sessions fill the cap; set JOURNEY_SESSION_CAP to refuse at it
+  [32mPASS[0m [ui] login  — purchaser
+
+=== JOURNEY J-PURCH-01 — Purchaser asks Gemini Furniture for 12 desks; confirming above the 5 000 threshold sends the order to approval
+    persona: purchaser   requirements: F005-UC001, F005-UC003
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/6: Open Purchase > RFQs & orders
+  [32mPASS[0m [ui] Open Purchase > RFQs & orders: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Open Purchase > RFQs & orders: page says "Requests for quotation & purchase orders"
+
+  --- step 2/6: New RFQ: numbered, status Request for quotation
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] New RFQ: numbered, status Request for quotation: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] New RFQ: numbered, status Request for quotation: page says "Request for quotation"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] New RFQ: numbered, status Request for quotation: Purchasing.PurchaseOrder +1  — before=5 after=6 delta=1
+
+  --- step 3/6: Choose Gemini Furniture as vendor
+  [32mPASS[0m [ui] Choose Gemini Furniture as vendor: combobox cmbPurchaseOrderVendor committed the seeded value  — Gemini Furniture
+  [32mPASS[0m [ui] Choose Gemini Furniture as vendor: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Choose Gemini Furniture as vendor: page says "Purchase order"
+
+  --- step 4/6: Add a line: Desk Combination x 12 at Gemini's price
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] Add a line: Desk Combination x 12 at Gemini's price: combobox lncmbPurchaseOrderLineProduct committed the seeded value  — Desk Combination
+  [32mPASS[0m [ui] Add a line: Desk Combination x 12 at Gemini's price: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Add a line: Desk Combination x 12 at Gemini's price: page says "Desk Combination"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine +1  — before=5 after=6 delta=1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product set on every row  — 1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 33214047251870685)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product points at the seeded Name  — 1 row(s) link to Products.Product where Name = 'Desk Combination' (scoped to rows with id > 33214047251870685)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Desk Combination x 12 at Gemini's price: the vendor price filled the line: 12 x 420.00 = 5 040.00 untaxed  — got 2, need >= 1
+
+  --- step 5/6: Confirm order: above the threshold, it goes to a purchase manager
+  [32mPASS[0m [ui] Confirm order: above the threshold, it goes to a purchase manager: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Confirm order: above the threshold, it goes to a purchase manager: page says "To approve"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Confirm order: above the threshold, it goes to a purchase manager: an approval task is open for purchase managers  — got 2, need >= 1
+
+  --- step 6/6: Save: back on the list, the order reads To approve
+  [32mPASS[0m [ui] Save: back on the list, the order reads To approve: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Save: back on the list, the order reads To approve: page says "To approve"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [outcome] J-PURCH-01 end state  — got 2, need >= 1
+
+=== SUMMARY ===
+  PASS 22   FAIL 0   INVALID 0
+  findings → ../tests/e2e/artifacts/journey-findings.json

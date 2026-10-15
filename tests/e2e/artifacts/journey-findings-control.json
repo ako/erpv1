@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-15T07:44:56.216Z",
-  "configuredUser": "sales.user",
-  "actualUser": "sales.user",
+  "capturedAt": "2026-10-15T10:40:26.731Z",
+  "configuredUser": "purchaser",
+  "actualUser": "purchaser",
   "usedFallback": false,
   "baseUrl": "http://localhost:8080",
   "positiveControl": true,
@@ -12,12 +12,12 @@
     "proven": 5,
     "unsupported": [
       {
-        "journey": "J-SALES-01",
+        "journey": "J-PURCH-01",
         "rung": "trace-order",
         "why": "this journey declares nothing this mutant can break"
       },
       {
-        "journey": "J-SALES-01",
+        "journey": "J-PURCH-01",
         "rung": "trace-negative",
         "why": "this journey declares nothing this mutant can break"
       }
@@ -28,725 +28,749 @@
       "rung": "ui",
       "name": "login",
       "verdict": "PASS",
-      "detail": "sales.user",
+      "detail": "purchaser",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Sales > Quotations & orders: reached",
+      "name": "Open Purchase > RFQs & orders: reached",
       "verdict": "FAIL",
-      "detail": "\".mx-name-__this_widget_does_not_exist__\" never appeared — screenshot J-SALES-01-CTL-ui-landing-step1-NOT-REACHED.png",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "detail": "\".mx-name-__this_widget_does_not_exist__\" never appeared — screenshot J-PURCH-01-CTL-ui-landing-step1-NOT-REACHED.png",
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Open Sales > Quotations & orders: downstream rungs",
+      "name": "Open Purchase > RFQs & orders: downstream rungs",
       "verdict": "INVALID",
       "detail": "not reached; nothing measured",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "control",
-      "name": "J-SALES-01 · ui-landing: first step lands on a widget that does not exist",
+      "name": "J-PURCH-01 · ui-landing: first step lands on a widget that does not exist",
       "verdict": "PASS",
-      "detail": "caught by \"Open Sales > Quotations & orders: reached\"",
+      "detail": "caught by \"Open Purchase > RFQs & orders: reached\"",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Sales > Quotations & orders: reached",
+      "name": "Open Purchase > RFQs & orders: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Open Sales > Quotations & orders: page says \"__text_this_page_will_never_render__\"",
+      "name": "Open Purchase > RFQs & orders: page says \"__text_this_page_will_never_render__\"",
       "verdict": "FAIL",
       "detail": "not found in rendered text",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "New quotation: numbered, status Quotation: reached",
+      "name": "New RFQ: numbered, status Request for quotation: reached",
       "verdict": "PASS",
       "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "New quotation: numbered, status Quotation: page says \"Quotation\"",
+      "name": "New RFQ: numbered, status Request for quotation: page says \"Request for quotation\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "data",
-      "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
+      "name": "New RFQ: numbered, status Request for quotation: Purchasing.PurchaseOrder +1",
+      "verdict": "PASS",
+      "detail": "before=6 after=7 delta=1",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Choose Gemini Furniture as vendor: combobox cmbPurchaseOrderVendor committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Gemini Furniture",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Choose Gemini Furniture as vendor: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Choose Gemini Furniture as vendor: page says \"Purchase order\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: combobox lncmbPurchaseOrderLineProduct committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Desk Combination",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: page says \"Desk Combination\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine +1",
+      "verdict": "PASS",
+      "detail": "before=6 after=7 delta=1",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 33214047251870828)",
+      "requirement": "F005-UC001, F005-UC003",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product points at the seeded Name",
+      "verdict": "PASS",
+      "detail": "1 row(s) link to Products.Product where Name = 'Desk Combination' (scoped to rows with id > 33214047251870828)",
+      "requirement": "F005-UC001, F005-UC003",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: the vendor price filled the line: 12 x 420.00 = 5 040.00 untaxed",
+      "verdict": "PASS",
+      "detail": "got 2, need >= 1",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm order: above the threshold, it goes to a purchase manager: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm order: above the threshold, it goes to a purchase manager: page says \"To approve\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm order: above the threshold, it goes to a purchase manager: an approval task is open for purchase managers",
+      "verdict": "PASS",
+      "detail": "got 3, need >= 1",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Save: back on the list, the order reads To approve: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Save: back on the list, the order reads To approve: page says \"To approve\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "outcome",
+      "name": "J-PURCH-01-CTL-ui-text end state",
+      "verdict": "PASS",
+      "detail": "got 3, need >= 1",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "control",
+      "name": "J-PURCH-01 · ui-text: expect text the page never renders",
+      "verdict": "PASS",
+      "detail": "caught by \"Open Purchase > RFQs & orders: page says \"__text_this_page_will_never_render__\"\"",
+      "requirement": ""
+    },
+    {
+      "rung": "control",
+      "name": "J-PURCH-01 · trace-order: expect a microflow that never fires",
+      "verdict": "INVALID",
+      "detail": "this journey declares nothing this mutant can break — this rung is UNPROVEN for J-PURCH-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)",
+      "requirement": ""
+    },
+    {
+      "rung": "control",
+      "name": "J-PURCH-01 · trace-negative: assert a microflow that DID run must not have run",
+      "verdict": "INVALID",
+      "detail": "this journey declares nothing this mutant can break — this rung is UNPROVEN for J-PURCH-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)",
+      "requirement": ""
+    },
+    {
+      "rung": "ui",
+      "name": "Open Purchase > RFQs & orders: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Open Purchase > RFQs & orders: page says \"Requests for quotation & purchase orders\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "New RFQ: numbered, status Request for quotation: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "New RFQ: numbered, status Request for quotation: page says \"Request for quotation\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "New RFQ: numbered, status Request for quotation: Purchasing.PurchaseOrder +2",
+      "verdict": "FAIL",
+      "detail": "before=7 after=8 delta=1",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Choose Gemini Furniture as vendor: combobox cmbPurchaseOrderVendor committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Gemini Furniture",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Choose Gemini Furniture as vendor: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Choose Gemini Furniture as vendor: page says \"Purchase order\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: combobox lncmbPurchaseOrderLineProduct committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Desk Combination",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: page says \"Desk Combination\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine +1",
+      "verdict": "PASS",
+      "detail": "before=7 after=8 delta=1",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 33214047251870889)",
+      "requirement": "F005-UC001, F005-UC003",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product points at the seeded Name",
+      "verdict": "PASS",
+      "detail": "1 row(s) link to Products.Product where Name = 'Desk Combination' (scoped to rows with id > 33214047251870889)",
+      "requirement": "F005-UC001, F005-UC003",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: the vendor price filled the line: 12 x 420.00 = 5 040.00 untaxed",
+      "verdict": "PASS",
+      "detail": "got 2, need >= 1",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm order: above the threshold, it goes to a purchase manager: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm order: above the threshold, it goes to a purchase manager: page says \"To approve\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm order: above the threshold, it goes to a purchase manager: an approval task is open for purchase managers",
+      "verdict": "PASS",
+      "detail": "got 4, need >= 1",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Save: back on the list, the order reads To approve: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Save: back on the list, the order reads To approve: page says \"To approve\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "outcome",
+      "name": "J-PURCH-01-CTL-data-delta end state",
+      "verdict": "PASS",
+      "detail": "got 4, need >= 1",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "control",
+      "name": "J-PURCH-01 · data-delta: expect +2 rows from a +1 action",
+      "verdict": "PASS",
+      "detail": "caught by \"New RFQ: numbered, status Request for quotation: Purchasing.PurchaseOrder +2\"",
+      "requirement": ""
+    },
+    {
+      "rung": "ui",
+      "name": "Open Purchase > RFQs & orders: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Open Purchase > RFQs & orders: page says \"Requests for quotation & purchase orders\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "New RFQ: numbered, status Request for quotation: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "New RFQ: numbered, status Request for quotation: page says \"Request for quotation\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "New RFQ: numbered, status Request for quotation: Purchasing.PurchaseOrder +1",
       "verdict": "PASS",
       "detail": "before=8 after=9 delta=1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value",
+      "name": "Choose Gemini Furniture as vendor: combobox cmbPurchaseOrderVendor committed the seeded value",
       "verdict": "PASS",
-      "detail": "Azure Interior",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "detail": "Gemini Furniture",
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Choose Azure Interior: invoice address and payment term follow the customer: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Choose Azure Interior: invoice address and payment term follow the customer: page says \"Azure Interior, Accounts\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value",
-      "verdict": "PASS",
-      "detail": "Office Chair",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Add a line: Office Chair x 5, price and totals computed: reached",
+      "name": "Choose Gemini Furniture as vendor: reached",
       "verdict": "PASS",
       "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Add a line: Office Chair x 5, price and totals computed: page says \"Office Chair\"",
+      "name": "Choose Gemini Furniture as vendor: page says \"Purchase order\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: combobox lncmbPurchaseOrderLineProduct committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Desk Combination",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: page says \"Desk Combination\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine +1",
       "verdict": "PASS",
       "detail": "before=8 after=9 delta=1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product set on every row",
       "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134337)",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 33214047251871094)",
+      "requirement": "F005-UC001, F005-UC003",
       "evidenceStrength": "strong"
     },
     {
       "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
-      "verdict": "PASS",
-      "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134337)",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product points at the seeded Name",
+      "verdict": "FAIL",
+      "detail": "0 row(s) link to Products.Product where Name = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 33214047251871094)",
+      "requirement": "F005-UC001, F005-UC003",
       "evidenceStrength": "strong"
     },
     {
       "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: the vendor price filled the line: 12 x 420.00 = 5 040.00 untaxed",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "detail": "got 2, need >= 1",
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Mark as sent, then confirm: a sales order: reached",
+      "name": "Confirm order: above the threshold, it goes to a purchase manager: reached",
       "verdict": "PASS",
       "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Mark as sent, then confirm: a sales order: page says \"Sales order\"",
+      "name": "Confirm order: above the threshold, it goes to a purchase manager: page says \"To approve\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm order: above the threshold, it goes to a purchase manager: an approval task is open for purchase managers",
+      "verdict": "PASS",
+      "detail": "got 5, need >= 1",
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Save: back on the list with the order shown: reached",
+      "name": "Save: back on the list, the order reads To approve: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Save: back on the list with the order shown: page says \"Azure Interior\"",
+      "name": "Save: back on the list, the order reads To approve: page says \"To approve\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "outcome",
-      "name": "J-SALES-01-CTL-ui-text end state",
+      "name": "J-PURCH-01-CTL-data-target end state",
       "verdict": "PASS",
-      "detail": "got 8, need >= 1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "detail": "got 5, need >= 1",
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "control",
-      "name": "J-SALES-01 · ui-text: expect text the page never renders",
+      "name": "J-PURCH-01 · data-target: association must point at a value the journey never picked",
       "verdict": "PASS",
-      "detail": "caught by \"Open Sales > Quotations & orders: page says \"__text_this_page_will_never_render__\"\"",
-      "requirement": ""
-    },
-    {
-      "rung": "control",
-      "name": "J-SALES-01 · trace-order: expect a microflow that never fires",
-      "verdict": "INVALID",
-      "detail": "this journey declares nothing this mutant can break — this rung is UNPROVEN for J-SALES-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)",
-      "requirement": ""
-    },
-    {
-      "rung": "control",
-      "name": "J-SALES-01 · trace-negative: assert a microflow that DID run must not have run",
-      "verdict": "INVALID",
-      "detail": "this journey declares nothing this mutant can break — this rung is UNPROVEN for J-SALES-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)",
+      "detail": "caught by \"Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product points at the seeded Name\"",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Sales > Quotations & orders: reached",
+      "name": "Open Purchase > RFQs & orders: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Open Sales > Quotations & orders: page says \"Quotations & sales orders\"",
+      "name": "Open Purchase > RFQs & orders: page says \"Requests for quotation & purchase orders\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "New quotation: numbered, status Quotation: reached",
+      "name": "New RFQ: numbered, status Request for quotation: reached",
       "verdict": "PASS",
       "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "New quotation: numbered, status Quotation: page says \"Quotation\"",
+      "name": "New RFQ: numbered, status Request for quotation: page says \"Request for quotation\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "data",
-      "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +2",
-      "verdict": "FAIL",
-      "detail": "before=9 after=10 delta=1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value",
-      "verdict": "PASS",
-      "detail": "Azure Interior",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Choose Azure Interior: invoice address and payment term follow the customer: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Choose Azure Interior: invoice address and payment term follow the customer: page says \"Azure Interior, Accounts\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value",
-      "verdict": "PASS",
-      "detail": "Office Chair",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Add a line: Office Chair x 5, price and totals computed: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Add a line: Office Chair x 5, price and totals computed: page says \"Office Chair\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
+      "name": "New RFQ: numbered, status Request for quotation: Purchasing.PurchaseOrder +1",
       "verdict": "PASS",
       "detail": "before=9 after=10 delta=1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
-      "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134476)",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
-      "verdict": "PASS",
-      "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134476)",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00",
-      "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Mark as sent, then confirm: a sales order: reached",
+      "name": "Choose Gemini Furniture as vendor: combobox cmbPurchaseOrderVendor committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Gemini Furniture",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Choose Gemini Furniture as vendor: reached",
       "verdict": "PASS",
       "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Mark as sent, then confirm: a sales order: page says \"Sales order\"",
+      "name": "Choose Gemini Furniture as vendor: page says \"Purchase order\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Save: back on the list with the order shown: reached",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: combobox lncmbPurchaseOrderLineProduct committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Desk Combination",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: page says \"Desk Combination\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine +1",
+      "verdict": "PASS",
+      "detail": "before=9 after=10 delta=1",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 33214047251871173)",
+      "requirement": "F005-UC001, F005-UC003",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product points at the seeded Name",
+      "verdict": "PASS",
+      "detail": "1 row(s) link to Products.Product where Name = 'Desk Combination' (scoped to rows with id > 33214047251871173)",
+      "requirement": "F005-UC001, F005-UC003",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Desk Combination x 12 at Gemini's price: the vendor price filled the line: 12 x 420.00 = 5 040.00 untaxed",
+      "verdict": "PASS",
+      "detail": "got 2, need >= 1",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm order: above the threshold, it goes to a purchase manager: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm order: above the threshold, it goes to a purchase manager: page says \"To approve\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm order: above the threshold, it goes to a purchase manager: an approval task is open for purchase managers",
+      "verdict": "PASS",
+      "detail": "got 6, need >= 1",
+      "requirement": "F005-UC001, F005-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Save: back on the list, the order reads To approve: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "ui",
-      "name": "Save: back on the list with the order shown: page says \"Azure Interior\"",
+      "name": "Save: back on the list, the order reads To approve: page says \"To approve\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "outcome",
-      "name": "J-SALES-01-CTL-data-delta end state",
-      "verdict": "PASS",
-      "detail": "got 9, need >= 1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "control",
-      "name": "J-SALES-01 · data-delta: expect +2 rows from a +1 action",
-      "verdict": "PASS",
-      "detail": "caught by \"New quotation: numbered, status Quotation: Sales.SalesOrder +2\"",
-      "requirement": ""
-    },
-    {
-      "rung": "ui",
-      "name": "Open Sales > Quotations & orders: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-gridMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Open Sales > Quotations & orders: page says \"Quotations & sales orders\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "New quotation: numbered, status Quotation: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "New quotation: numbered, status Quotation: page says \"Quotation\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "data",
-      "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
-      "verdict": "PASS",
-      "detail": "before=10 after=11 delta=1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value",
-      "verdict": "PASS",
-      "detail": "Azure Interior",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Choose Azure Interior: invoice address and payment term follow the customer: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Choose Azure Interior: invoice address and payment term follow the customer: page says \"Azure Interior, Accounts\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value",
-      "verdict": "PASS",
-      "detail": "Office Chair",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Add a line: Office Chair x 5, price and totals computed: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Add a line: Office Chair x 5, price and totals computed: page says \"Office Chair\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
-      "verdict": "PASS",
-      "detail": "before=10 after=11 delta=1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
-      "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134614)",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
+      "name": "J-PURCH-01-CTL-outcome end state",
       "verdict": "FAIL",
-      "detail": "0 row(s) link to Products.Product where Name = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 34902897112134614)",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00",
-      "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Mark as sent, then confirm: a sales order: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Mark as sent, then confirm: a sales order: page says \"Sales order\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Save: back on the list with the order shown: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-gridMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Save: back on the list with the order shown: page says \"Azure Interior\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "outcome",
-      "name": "J-SALES-01-CTL-data-target end state",
-      "verdict": "PASS",
-      "detail": "got 10, need >= 1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+      "detail": "got 6, need >= 999999",
+      "requirement": "F005-UC001, F005-UC003"
     },
     {
       "rung": "control",
-      "name": "J-SALES-01 · data-target: association must point at a value the journey never picked",
+      "name": "J-PURCH-01 · outcome: outcome query with an unreachable floor or exact value",
       "verdict": "PASS",
-      "detail": "caught by \"Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name\"",
-      "requirement": ""
-    },
-    {
-      "rung": "ui",
-      "name": "Open Sales > Quotations & orders: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-gridMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Open Sales > Quotations & orders: page says \"Quotations & sales orders\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "New quotation: numbered, status Quotation: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "New quotation: numbered, status Quotation: page says \"Quotation\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "data",
-      "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
-      "verdict": "PASS",
-      "detail": "before=11 after=12 delta=1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value",
-      "verdict": "PASS",
-      "detail": "Azure Interior",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Choose Azure Interior: invoice address and payment term follow the customer: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Choose Azure Interior: invoice address and payment term follow the customer: page says \"Azure Interior, Accounts\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value",
-      "verdict": "PASS",
-      "detail": "Office Chair",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Add a line: Office Chair x 5, price and totals computed: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Add a line: Office Chair x 5, price and totals computed: page says \"Office Chair\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
-      "verdict": "PASS",
-      "detail": "before=11 after=12 delta=1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
-      "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134660)",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
-      "verdict": "PASS",
-      "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134660)",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00",
-      "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Mark as sent, then confirm: a sales order: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-dvMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Mark as sent, then confirm: a sales order: page says \"Sales order\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Save: back on the list with the order shown: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-gridMain",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "ui",
-      "name": "Save: back on the list with the order shown: page says \"Azure Interior\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "outcome",
-      "name": "J-SALES-01-CTL-outcome end state",
-      "verdict": "FAIL",
-      "detail": "got 11, need >= 999999",
-      "requirement": "F004-UC001, F004-UC002, F004-UC003"
-    },
-    {
-      "rung": "control",
-      "name": "J-SALES-01 · outcome: outcome query with an unreachable floor or exact value",
-      "verdict": "PASS",
-      "detail": "caught by \"J-SALES-01-CTL-outcome end state\"",
+      "detail": "caught by \"J-PURCH-01-CTL-outcome end state\"",
       "requirement": ""
     }
   ],
   "walks": [
     {
-      "journey": "J-SALES-01-CTL-ui-landing",
+      "journey": "J-PURCH-01-CTL-ui-landing",
       "title": "(positive control · ui-landing — first step lands on a widget that does not exist; MUST fail)",
-      "persona": "sales.user",
+      "persona": "purchaser",
       "requirement": [
-        "F004-UC001",
-        "F004-UC002",
-        "F004-UC003"
+        "F005-UC001",
+        "F005-UC003"
       ],
       "seeds": {},
       "steps": [
         {
           "n": 1,
-          "name": "Open Sales > Quotations & orders",
+          "name": "Open Purchase > RFQs & orders",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Sales › Quotations & orders",
+              "target": "Purchase › RFQs & orders",
               "selector": null
             }
           ],
           "expects": {
             "landsOn": ".mx-name-__this_widget_does_not_exist__",
             "pageSays": [
-              "Quotations & sales orders"
+              "Requests for quotation & purchase orders"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-landing-step1-NOT-REACHED.png",
-            "title": "Mendix - Quotations & sales orders",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:43:49.898Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-ui-landing-step1-NOT-REACHED.png",
+            "title": "Mendix - Requests for quotation & purchase orders",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:26.878Z"
           },
           "reached": false,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Sales > Quotations & orders: reached",
+              "name": "Open Purchase > RFQs & orders: reached",
               "verdict": "FAIL",
-              "detail": "\".mx-name-__this_widget_does_not_exist__\" never appeared — screenshot J-SALES-01-CTL-ui-landing-step1-NOT-REACHED.png"
+              "detail": "\".mx-name-__this_widget_does_not_exist__\" never appeared — screenshot J-PURCH-01-CTL-ui-landing-step1-NOT-REACHED.png"
             },
             {
               "rung": "ui",
-              "name": "Open Sales > Quotations & orders: downstream rungs",
+              "name": "Open Purchase > RFQs & orders: downstream rungs",
               "verdict": "INVALID",
               "detail": "not reached; nothing measured"
             }
           ],
-          "ms": 1099
+          "ms": 1165
         }
       ]
     },
     {
-      "journey": "J-SALES-01-CTL-ui-text",
+      "journey": "J-PURCH-01-CTL-ui-text",
       "title": "(positive control · ui-text — expect text the page never renders; MUST fail)",
-      "persona": "sales.user",
+      "persona": "purchaser",
       "requirement": [
-        "F004-UC001",
-        "F004-UC002",
-        "F004-UC003"
+        "F005-UC001",
+        "F005-UC003"
       ],
       "seeds": {},
       "steps": [
         {
           "n": 1,
-          "name": "Open Sales > Quotations & orders",
+          "name": "Open Purchase > RFQs & orders",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Sales › Quotations & orders",
+              "target": "Purchase › RFQs & orders",
               "selector": null
             }
           ],
@@ -760,35 +784,34 @@
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-text-step1.png",
-            "title": "Mendix - Quotations & sales orders",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:43:52.631Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-ui-text-step1.png",
+            "title": "Mendix - Requests for quotation & purchase orders",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:29.489Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Sales > Quotations & orders: reached",
+              "name": "Open Purchase > RFQs & orders: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Open Sales > Quotations & orders: page says \"__text_this_page_will_never_render__\"",
+              "name": "Open Purchase > RFQs & orders: page says \"__text_this_page_will_never_render__\"",
               "verdict": "FAIL",
               "detail": "not found in rendered text"
             }
           ],
-          "ms": 1080
+          "ms": 1072
         },
         {
           "n": 2,
-          "name": "New quotation: numbered, status Quotation",
+          "name": "New RFQ: numbered, status Request for quotation",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
@@ -800,105 +823,103 @@
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Quotation"
+              "Request for quotation"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Sales.SalesOrder",
+              "entity": "Purchasing.PurchaseOrder",
               "delta": 1,
               "associations": []
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-text-step2.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:43:54.524Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-ui-text-step2.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:30.650Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "New quotation: numbered, status Quotation: reached",
+              "name": "New RFQ: numbered, status Request for quotation: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "New quotation: numbered, status Quotation: page says \"Quotation\"",
+              "name": "New RFQ: numbered, status Request for quotation: page says \"Request for quotation\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
+              "name": "New RFQ: numbered, status Request for quotation: Purchasing.PurchaseOrder +1",
               "verdict": "PASS",
-              "detail": "before=8 after=9 delta=1"
+              "detail": "before=6 after=7 delta=1"
             }
           ],
-          "ms": 1943
+          "ms": 1201
         },
         {
           "n": 3,
-          "name": "Choose Azure Interior: invoice address and payment term follow the customer",
+          "name": "Choose Gemini Furniture as vendor",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
               "verb": "Select",
-              "target": "\"Azure Interior\" in cmbSalesOrderCustomer",
-              "selector": ".mx-name-cmbSalesOrderCustomer"
+              "target": "\"Gemini Furniture\" in cmbPurchaseOrderVendor",
+              "selector": ".mx-name-cmbPurchaseOrderVendor"
             }
           ],
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Azure Interior, Accounts"
+              "Purchase order"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-text-step3.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:43:57.422Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-ui-text-step3.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:33.400Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value",
+              "name": "Choose Gemini Furniture as vendor: combobox cmbPurchaseOrderVendor committed the seeded value",
               "verdict": "PASS",
-              "detail": "Azure Interior"
+              "detail": "Gemini Furniture"
             },
             {
               "rung": "ui",
-              "name": "Choose Azure Interior: invoice address and payment term follow the customer: reached",
+              "name": "Choose Gemini Furniture as vendor: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Choose Azure Interior: invoice address and payment term follow the customer: page says \"Azure Interior, Accounts\"",
+              "name": "Choose Gemini Furniture as vendor: page says \"Purchase order\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 2845
+          "ms": 2707
         },
         {
           "n": 4,
-          "name": "Add a line: Office Chair x 5, price and totals computed",
+          "name": "Add a line: Desk Combination x 12 at Gemini's price",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
@@ -908,147 +929,151 @@
             },
             {
               "verb": "Select",
-              "target": "\"Office Chair\" in lncmbSalesOrderLineProduct",
-              "selector": ".mx-name-lncmbSalesOrderLineProduct"
+              "target": "\"Desk Combination\" in lncmbPurchaseOrderLineProduct",
+              "selector": ".mx-name-lncmbPurchaseOrderLineProduct"
             },
             {
               "verb": "Type",
-              "target": "\"5\" into lntxtQuantity",
+              "target": "\"12\" into lntxtQuantity",
               "selector": ".mx-name-lntxtQuantity"
             },
             {
               "verb": "Click",
               "target": "leave the quantity field",
-              "selector": ".mx-name-txtCustomerReference"
+              "selector": ".mx-name-txtVendorReference"
             }
           ],
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Office Chair"
+              "Desk Combination"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Sales.SalesOrderLine",
+              "entity": "Purchasing.PurchaseOrderLine",
               "delta": 1,
               "associations": [
-                "Sales.SalesOrderLine_Product"
+                "Purchasing.PurchaseOrderLine_Product"
               ]
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-text-step4.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:02.842Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-ui-text-step4.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:38.374Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: combobox lncmbPurchaseOrderLineProduct committed the seeded value",
               "verdict": "PASS",
-              "detail": "Office Chair"
+              "detail": "Desk Combination"
             },
             {
               "rung": "ui",
-              "name": "Add a line: Office Chair x 5, price and totals computed: reached",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Add a line: Office Chair x 5, price and totals computed: page says \"Office Chair\"",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: page says \"Desk Combination\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine +1",
               "verdict": "PASS",
-              "detail": "before=8 after=9 delta=1"
+              "detail": "before=6 after=7 delta=1"
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product set on every row",
               "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134337)"
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 33214047251870828)"
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product points at the seeded Name",
               "verdict": "PASS",
-              "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134337)"
+              "detail": "1 row(s) link to Products.Product where Name = 'Desk Combination' (scoped to rows with id > 33214047251870828)"
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: the vendor price filled the line: 12 x 420.00 = 5 040.00 untaxed",
               "verdict": "PASS",
-              "detail": "got 1, need >= 1"
+              "detail": "got 2, need >= 1"
             }
           ],
-          "ms": 5643
+          "ms": 5193
         },
         {
           "n": 5,
-          "name": "Mark as sent, then confirm: a sales order",
+          "name": "Confirm order: above the threshold, it goes to a purchase manager",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
               "verb": "Click",
-              "target": "Send (mark as sent)",
-              "selector": ".mx-name-btnSendmarkassent1"
+              "target": "Confirm order",
+              "selector": ".mx-name-btnConfirmorder1"
             },
             {
-              "verb": "Click",
-              "target": "Confirm",
-              "selector": ".mx-name-btnConfirm2"
+              "verb": "dismissModal",
+              "target": "",
+              "selector": null
             }
           ],
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Sales order"
+              "To approve"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-text-step5.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:05.885Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-ui-text-step5.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:40.498Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Mark as sent, then confirm: a sales order: reached",
+              "name": "Confirm order: above the threshold, it goes to a purchase manager: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Mark as sent, then confirm: a sales order: page says \"Sales order\"",
+              "name": "Confirm order: above the threshold, it goes to a purchase manager: page says \"To approve\"",
               "verdict": "PASS",
               "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Confirm order: above the threshold, it goes to a purchase manager: an approval task is open for purchase managers",
+              "verdict": "PASS",
+              "detail": "got 3, need >= 1"
             }
           ],
-          "ms": 2826
+          "ms": 1960
         },
         {
           "n": 6,
-          "name": "Save: back on the list with the order shown",
+          "name": "Save: back on the list, the order reads To approve",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
@@ -1060,102 +1085,99 @@
           "expects": {
             "landsOn": ".mx-name-gridMain",
             "pageSays": [
-              "Azure Interior"
+              "To approve"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-text-step6.png",
-            "title": "Mendix - Quotations & sales orders",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:06.678Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-ui-text-step6.png",
+            "title": "Mendix - Requests for quotation & purchase orders",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:41.353Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Save: back on the list with the order shown: reached",
+              "name": "Save: back on the list, the order reads To approve: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Save: back on the list with the order shown: page says \"Azure Interior\"",
+              "name": "Save: back on the list, the order reads To approve: page says \"To approve\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 788
+          "ms": 800
         }
       ]
     },
     {
-      "journey": "J-SALES-01-CTL-data-delta",
+      "journey": "J-PURCH-01-CTL-data-delta",
       "title": "(positive control · data-delta — expect +2 rows from a +1 action; MUST fail)",
-      "persona": "sales.user",
+      "persona": "purchaser",
       "requirement": [
-        "F004-UC001",
-        "F004-UC002",
-        "F004-UC003"
+        "F005-UC001",
+        "F005-UC003"
       ],
       "seeds": {},
       "steps": [
         {
           "n": 1,
-          "name": "Open Sales > Quotations & orders",
+          "name": "Open Purchase > RFQs & orders",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Sales › Quotations & orders",
+              "target": "Purchase › RFQs & orders",
               "selector": null
             }
           ],
           "expects": {
             "landsOn": ".mx-name-gridMain",
             "pageSays": [
-              "Quotations & sales orders"
+              "Requests for quotation & purchase orders"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-delta-step1.png",
-            "title": "Mendix - Quotations & sales orders",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:09.402Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-data-delta-step1.png",
+            "title": "Mendix - Requests for quotation & purchase orders",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:44.105Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Sales > Quotations & orders: reached",
+              "name": "Open Purchase > RFQs & orders: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Open Sales > Quotations & orders: page says \"Quotations & sales orders\"",
+              "name": "Open Purchase > RFQs & orders: page says \"Requests for quotation & purchase orders\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1077
+          "ms": 1082
         },
         {
           "n": 2,
-          "name": "New quotation: numbered, status Quotation",
+          "name": "New RFQ: numbered, status Request for quotation",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
@@ -1167,105 +1189,103 @@
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Quotation"
+              "Request for quotation"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Sales.SalesOrder",
+              "entity": "Purchasing.PurchaseOrder",
               "delta": 2,
               "associations": []
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-delta-step2.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:10.588Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-data-delta-step2.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:45.720Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "New quotation: numbered, status Quotation: reached",
+              "name": "New RFQ: numbered, status Request for quotation: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "New quotation: numbered, status Quotation: page says \"Quotation\"",
+              "name": "New RFQ: numbered, status Request for quotation: page says \"Request for quotation\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +2",
+              "name": "New RFQ: numbered, status Request for quotation: Purchasing.PurchaseOrder +2",
               "verdict": "FAIL",
-              "detail": "before=9 after=10 delta=1"
+              "detail": "before=7 after=8 delta=1"
             }
           ],
-          "ms": 1239
+          "ms": 1665
         },
         {
           "n": 3,
-          "name": "Choose Azure Interior: invoice address and payment term follow the customer",
+          "name": "Choose Gemini Furniture as vendor",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
               "verb": "Select",
-              "target": "\"Azure Interior\" in cmbSalesOrderCustomer",
-              "selector": ".mx-name-cmbSalesOrderCustomer"
+              "target": "\"Gemini Furniture\" in cmbPurchaseOrderVendor",
+              "selector": ".mx-name-cmbPurchaseOrderVendor"
             }
           ],
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Azure Interior, Accounts"
+              "Purchase order"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-delta-step3.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:13.501Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-data-delta-step3.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:48.431Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value",
+              "name": "Choose Gemini Furniture as vendor: combobox cmbPurchaseOrderVendor committed the seeded value",
               "verdict": "PASS",
-              "detail": "Azure Interior"
+              "detail": "Gemini Furniture"
             },
             {
               "rung": "ui",
-              "name": "Choose Azure Interior: invoice address and payment term follow the customer: reached",
+              "name": "Choose Gemini Furniture as vendor: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Choose Azure Interior: invoice address and payment term follow the customer: page says \"Azure Interior, Accounts\"",
+              "name": "Choose Gemini Furniture as vendor: page says \"Purchase order\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 2861
+          "ms": 2661
         },
         {
           "n": 4,
-          "name": "Add a line: Office Chair x 5, price and totals computed",
+          "name": "Add a line: Desk Combination x 12 at Gemini's price",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
@@ -1275,147 +1295,151 @@
             },
             {
               "verb": "Select",
-              "target": "\"Office Chair\" in lncmbSalesOrderLineProduct",
-              "selector": ".mx-name-lncmbSalesOrderLineProduct"
+              "target": "\"Desk Combination\" in lncmbPurchaseOrderLineProduct",
+              "selector": ".mx-name-lncmbPurchaseOrderLineProduct"
             },
             {
               "verb": "Type",
-              "target": "\"5\" into lntxtQuantity",
+              "target": "\"12\" into lntxtQuantity",
               "selector": ".mx-name-lntxtQuantity"
             },
             {
               "verb": "Click",
               "target": "leave the quantity field",
-              "selector": ".mx-name-txtCustomerReference"
+              "selector": ".mx-name-txtVendorReference"
             }
           ],
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Office Chair"
+              "Desk Combination"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Sales.SalesOrderLine",
+              "entity": "Purchasing.PurchaseOrderLine",
               "delta": 1,
               "associations": [
-                "Sales.SalesOrderLine_Product"
+                "Purchasing.PurchaseOrderLine_Product"
               ]
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-delta-step4.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:18.921Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-data-delta-step4.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:53.395Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: combobox lncmbPurchaseOrderLineProduct committed the seeded value",
               "verdict": "PASS",
-              "detail": "Office Chair"
+              "detail": "Desk Combination"
             },
             {
               "rung": "ui",
-              "name": "Add a line: Office Chair x 5, price and totals computed: reached",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Add a line: Office Chair x 5, price and totals computed: page says \"Office Chair\"",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: page says \"Desk Combination\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine +1",
               "verdict": "PASS",
-              "detail": "before=9 after=10 delta=1"
+              "detail": "before=7 after=8 delta=1"
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product set on every row",
               "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134476)"
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 33214047251870889)"
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product points at the seeded Name",
               "verdict": "PASS",
-              "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134476)"
+              "detail": "1 row(s) link to Products.Product where Name = 'Desk Combination' (scoped to rows with id > 33214047251870889)"
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: the vendor price filled the line: 12 x 420.00 = 5 040.00 untaxed",
               "verdict": "PASS",
-              "detail": "got 1, need >= 1"
+              "detail": "got 2, need >= 1"
             }
           ],
-          "ms": 5760
+          "ms": 5186
         },
         {
           "n": 5,
-          "name": "Mark as sent, then confirm: a sales order",
+          "name": "Confirm order: above the threshold, it goes to a purchase manager",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
               "verb": "Click",
-              "target": "Send (mark as sent)",
-              "selector": ".mx-name-btnSendmarkassent1"
+              "target": "Confirm order",
+              "selector": ".mx-name-btnConfirmorder1"
             },
             {
-              "verb": "Click",
-              "target": "Confirm",
-              "selector": ".mx-name-btnConfirm2"
+              "verb": "dismissModal",
+              "target": "",
+              "selector": null
             }
           ],
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Sales order"
+              "To approve"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-delta-step5.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:22.208Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-data-delta-step5.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:56.142Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Mark as sent, then confirm: a sales order: reached",
+              "name": "Confirm order: above the threshold, it goes to a purchase manager: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Mark as sent, then confirm: a sales order: page says \"Sales order\"",
+              "name": "Confirm order: above the threshold, it goes to a purchase manager: page says \"To approve\"",
               "verdict": "PASS",
               "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Confirm order: above the threshold, it goes to a purchase manager: an approval task is open for purchase managers",
+              "verdict": "PASS",
+              "detail": "got 4, need >= 1"
             }
           ],
-          "ms": 2948
+          "ms": 2570
         },
         {
           "n": 6,
-          "name": "Save: back on the list with the order shown",
+          "name": "Save: back on the list, the order reads To approve",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
@@ -1427,102 +1451,99 @@
           "expects": {
             "landsOn": ".mx-name-gridMain",
             "pageSays": [
-              "Azure Interior"
+              "To approve"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-delta-step6.png",
-            "title": "Mendix - Quotations & sales orders",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:23.130Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-data-delta-step6.png",
+            "title": "Mendix - Requests for quotation & purchase orders",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:56.946Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Save: back on the list with the order shown: reached",
+              "name": "Save: back on the list, the order reads To approve: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Save: back on the list with the order shown: page says \"Azure Interior\"",
+              "name": "Save: back on the list, the order reads To approve: page says \"To approve\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 921
+          "ms": 758
         }
       ]
     },
     {
-      "journey": "J-SALES-01-CTL-data-target",
+      "journey": "J-PURCH-01-CTL-data-target",
       "title": "(positive control · data-target — association must point at a value the journey never picked; MUST fail)",
-      "persona": "sales.user",
+      "persona": "purchaser",
       "requirement": [
-        "F004-UC001",
-        "F004-UC002",
-        "F004-UC003"
+        "F005-UC001",
+        "F005-UC003"
       ],
       "seeds": {},
       "steps": [
         {
           "n": 1,
-          "name": "Open Sales > Quotations & orders",
+          "name": "Open Purchase > RFQs & orders",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Sales › Quotations & orders",
+              "target": "Purchase › RFQs & orders",
               "selector": null
             }
           ],
           "expects": {
             "landsOn": ".mx-name-gridMain",
             "pageSays": [
-              "Quotations & sales orders"
+              "Requests for quotation & purchase orders"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-target-step1.png",
-            "title": "Mendix - Quotations & sales orders",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:26.014Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-data-target-step1.png",
+            "title": "Mendix - Requests for quotation & purchase orders",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:39:59.631Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Sales > Quotations & orders: reached",
+              "name": "Open Purchase > RFQs & orders: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Open Sales > Quotations & orders: page says \"Quotations & sales orders\"",
+              "name": "Open Purchase > RFQs & orders: page says \"Requests for quotation & purchase orders\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1093
+          "ms": 1072
         },
         {
           "n": 2,
-          "name": "New quotation: numbered, status Quotation",
+          "name": "New RFQ: numbered, status Request for quotation",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
@@ -1534,105 +1555,103 @@
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Quotation"
+              "Request for quotation"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Sales.SalesOrder",
+              "entity": "Purchasing.PurchaseOrder",
               "delta": 1,
               "associations": []
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-target-step2.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:27.209Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-data-target-step2.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:40:01.235Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "New quotation: numbered, status Quotation: reached",
+              "name": "New RFQ: numbered, status Request for quotation: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "New quotation: numbered, status Quotation: page says \"Quotation\"",
+              "name": "New RFQ: numbered, status Request for quotation: page says \"Request for quotation\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
+              "name": "New RFQ: numbered, status Request for quotation: Purchasing.PurchaseOrder +1",
               "verdict": "PASS",
-              "detail": "before=10 after=11 delta=1"
+              "detail": "before=8 after=9 delta=1"
             }
           ],
-          "ms": 1242
+          "ms": 1656
         },
         {
           "n": 3,
-          "name": "Choose Azure Interior: invoice address and payment term follow the customer",
+          "name": "Choose Gemini Furniture as vendor",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
               "verb": "Select",
-              "target": "\"Azure Interior\" in cmbSalesOrderCustomer",
-              "selector": ".mx-name-cmbSalesOrderCustomer"
+              "target": "\"Gemini Furniture\" in cmbPurchaseOrderVendor",
+              "selector": ".mx-name-cmbPurchaseOrderVendor"
             }
           ],
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Azure Interior, Accounts"
+              "Purchase order"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-target-step3.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:30.124Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-data-target-step3.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:40:03.948Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value",
+              "name": "Choose Gemini Furniture as vendor: combobox cmbPurchaseOrderVendor committed the seeded value",
               "verdict": "PASS",
-              "detail": "Azure Interior"
+              "detail": "Gemini Furniture"
             },
             {
               "rung": "ui",
-              "name": "Choose Azure Interior: invoice address and payment term follow the customer: reached",
+              "name": "Choose Gemini Furniture as vendor: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Choose Azure Interior: invoice address and payment term follow the customer: page says \"Azure Interior, Accounts\"",
+              "name": "Choose Gemini Furniture as vendor: page says \"Purchase order\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 2868
+          "ms": 2662
         },
         {
           "n": 4,
-          "name": "Add a line: Office Chair x 5, price and totals computed",
+          "name": "Add a line: Desk Combination x 12 at Gemini's price",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
@@ -1642,147 +1661,151 @@
             },
             {
               "verb": "Select",
-              "target": "\"Office Chair\" in lncmbSalesOrderLineProduct",
-              "selector": ".mx-name-lncmbSalesOrderLineProduct"
+              "target": "\"Desk Combination\" in lncmbPurchaseOrderLineProduct",
+              "selector": ".mx-name-lncmbPurchaseOrderLineProduct"
             },
             {
               "verb": "Type",
-              "target": "\"5\" into lntxtQuantity",
+              "target": "\"12\" into lntxtQuantity",
               "selector": ".mx-name-lntxtQuantity"
             },
             {
               "verb": "Click",
               "target": "leave the quantity field",
-              "selector": ".mx-name-txtCustomerReference"
+              "selector": ".mx-name-txtVendorReference"
             }
           ],
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Office Chair"
+              "Desk Combination"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Sales.SalesOrderLine",
+              "entity": "Purchasing.PurchaseOrderLine",
               "delta": 1,
               "associations": [
-                "Sales.SalesOrderLine_Product"
+                "Purchasing.PurchaseOrderLine_Product"
               ]
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-target-step4.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:36.083Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-data-target-step4.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:40:08.924Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: combobox lncmbPurchaseOrderLineProduct committed the seeded value",
               "verdict": "PASS",
-              "detail": "Office Chair"
+              "detail": "Desk Combination"
             },
             {
               "rung": "ui",
-              "name": "Add a line: Office Chair x 5, price and totals computed: reached",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Add a line: Office Chair x 5, price and totals computed: page says \"Office Chair\"",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: page says \"Desk Combination\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine +1",
               "verdict": "PASS",
-              "detail": "before=10 after=11 delta=1"
+              "detail": "before=8 after=9 delta=1"
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product set on every row",
               "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134614)"
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 33214047251871094)"
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product points at the seeded Name",
               "verdict": "FAIL",
-              "detail": "0 row(s) link to Products.Product where Name = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 34902897112134614)"
+              "detail": "0 row(s) link to Products.Product where Name = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 33214047251871094)"
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: the vendor price filled the line: 12 x 420.00 = 5 040.00 untaxed",
               "verdict": "PASS",
-              "detail": "got 1, need >= 1"
+              "detail": "got 2, need >= 1"
             }
           ],
-          "ms": 6228
+          "ms": 5172
         },
         {
           "n": 5,
-          "name": "Mark as sent, then confirm: a sales order",
+          "name": "Confirm order: above the threshold, it goes to a purchase manager",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
               "verb": "Click",
-              "target": "Send (mark as sent)",
-              "selector": ".mx-name-btnSendmarkassent1"
+              "target": "Confirm order",
+              "selector": ".mx-name-btnConfirmorder1"
             },
             {
-              "verb": "Click",
-              "target": "Confirm",
-              "selector": ".mx-name-btnConfirm2"
+              "verb": "dismissModal",
+              "target": "",
+              "selector": null
             }
           ],
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Sales order"
+              "To approve"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-target-step5.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:38.571Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-data-target-step5.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:40:11.025Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Mark as sent, then confirm: a sales order: reached",
+              "name": "Confirm order: above the threshold, it goes to a purchase manager: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Mark as sent, then confirm: a sales order: page says \"Sales order\"",
+              "name": "Confirm order: above the threshold, it goes to a purchase manager: page says \"To approve\"",
               "verdict": "PASS",
               "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Confirm order: above the threshold, it goes to a purchase manager: an approval task is open for purchase managers",
+              "verdict": "PASS",
+              "detail": "got 5, need >= 1"
             }
           ],
-          "ms": 2218
+          "ms": 1956
         },
         {
           "n": 6,
-          "name": "Save: back on the list with the order shown",
+          "name": "Save: back on the list, the order reads To approve",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
@@ -1794,102 +1817,99 @@
           "expects": {
             "landsOn": ".mx-name-gridMain",
             "pageSays": [
-              "Azure Interior"
+              "To approve"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-target-step6.png",
-            "title": "Mendix - Quotations & sales orders",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:39.361Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-data-target-step6.png",
+            "title": "Mendix - Requests for quotation & purchase orders",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:40:11.832Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Save: back on the list with the order shown: reached",
+              "name": "Save: back on the list, the order reads To approve: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Save: back on the list with the order shown: page says \"Azure Interior\"",
+              "name": "Save: back on the list, the order reads To approve: page says \"To approve\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 789
+          "ms": 755
         }
       ]
     },
     {
-      "journey": "J-SALES-01-CTL-outcome",
+      "journey": "J-PURCH-01-CTL-outcome",
       "title": "(positive control · outcome — outcome query with an unreachable floor or exact value; MUST fail)",
-      "persona": "sales.user",
+      "persona": "purchaser",
       "requirement": [
-        "F004-UC001",
-        "F004-UC002",
-        "F004-UC003"
+        "F005-UC001",
+        "F005-UC003"
       ],
       "seeds": {},
       "steps": [
         {
           "n": 1,
-          "name": "Open Sales > Quotations & orders",
+          "name": "Open Purchase > RFQs & orders",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Sales › Quotations & orders",
+              "target": "Purchase › RFQs & orders",
               "selector": null
             }
           ],
           "expects": {
             "landsOn": ".mx-name-gridMain",
             "pageSays": [
-              "Quotations & sales orders"
+              "Requests for quotation & purchase orders"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-outcome-step1.png",
-            "title": "Mendix - Quotations & sales orders",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:42.120Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-outcome-step1.png",
+            "title": "Mendix - Requests for quotation & purchase orders",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:40:14.461Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Sales > Quotations & orders: reached",
+              "name": "Open Purchase > RFQs & orders: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Open Sales > Quotations & orders: page says \"Quotations & sales orders\"",
+              "name": "Open Purchase > RFQs & orders: page says \"Requests for quotation & purchase orders\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1085
+          "ms": 1060
         },
         {
           "n": 2,
-          "name": "New quotation: numbered, status Quotation",
+          "name": "New RFQ: numbered, status Request for quotation",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
@@ -1901,105 +1921,103 @@
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Quotation"
+              "Request for quotation"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Sales.SalesOrder",
+              "entity": "Purchasing.PurchaseOrder",
               "delta": 1,
               "associations": []
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-outcome-step2.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:43.329Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-outcome-step2.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:40:16.089Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "New quotation: numbered, status Quotation: reached",
+              "name": "New RFQ: numbered, status Request for quotation: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "New quotation: numbered, status Quotation: page says \"Quotation\"",
+              "name": "New RFQ: numbered, status Request for quotation: page says \"Request for quotation\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
+              "name": "New RFQ: numbered, status Request for quotation: Purchasing.PurchaseOrder +1",
               "verdict": "PASS",
-              "detail": "before=11 after=12 delta=1"
+              "detail": "before=9 after=10 delta=1"
             }
           ],
-          "ms": 1262
+          "ms": 1673
         },
         {
           "n": 3,
-          "name": "Choose Azure Interior: invoice address and payment term follow the customer",
+          "name": "Choose Gemini Furniture as vendor",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
               "verb": "Select",
-              "target": "\"Azure Interior\" in cmbSalesOrderCustomer",
-              "selector": ".mx-name-cmbSalesOrderCustomer"
+              "target": "\"Gemini Furniture\" in cmbPurchaseOrderVendor",
+              "selector": ".mx-name-cmbPurchaseOrderVendor"
             }
           ],
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Azure Interior, Accounts"
+              "Purchase order"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-outcome-step3.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:46.204Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-outcome-step3.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:40:18.770Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value",
+              "name": "Choose Gemini Furniture as vendor: combobox cmbPurchaseOrderVendor committed the seeded value",
               "verdict": "PASS",
-              "detail": "Azure Interior"
+              "detail": "Gemini Furniture"
             },
             {
               "rung": "ui",
-              "name": "Choose Azure Interior: invoice address and payment term follow the customer: reached",
+              "name": "Choose Gemini Furniture as vendor: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Choose Azure Interior: invoice address and payment term follow the customer: page says \"Azure Interior, Accounts\"",
+              "name": "Choose Gemini Furniture as vendor: page says \"Purchase order\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 2819
+          "ms": 2634
         },
         {
           "n": 4,
-          "name": "Add a line: Office Chair x 5, price and totals computed",
+          "name": "Add a line: Desk Combination x 12 at Gemini's price",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
@@ -2009,147 +2027,151 @@
             },
             {
               "verb": "Select",
-              "target": "\"Office Chair\" in lncmbSalesOrderLineProduct",
-              "selector": ".mx-name-lncmbSalesOrderLineProduct"
+              "target": "\"Desk Combination\" in lncmbPurchaseOrderLineProduct",
+              "selector": ".mx-name-lncmbPurchaseOrderLineProduct"
             },
             {
               "verb": "Type",
-              "target": "\"5\" into lntxtQuantity",
+              "target": "\"12\" into lntxtQuantity",
               "selector": ".mx-name-lntxtQuantity"
             },
             {
               "verb": "Click",
               "target": "leave the quantity field",
-              "selector": ".mx-name-txtCustomerReference"
+              "selector": ".mx-name-txtVendorReference"
             }
           ],
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Office Chair"
+              "Desk Combination"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Sales.SalesOrderLine",
+              "entity": "Purchasing.PurchaseOrderLine",
               "delta": 1,
               "associations": [
-                "Sales.SalesOrderLine_Product"
+                "Purchasing.PurchaseOrderLine_Product"
               ]
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-outcome-step4.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:52.118Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-outcome-step4.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:40:23.723Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: combobox lncmbPurchaseOrderLineProduct committed the seeded value",
               "verdict": "PASS",
-              "detail": "Office Chair"
+              "detail": "Desk Combination"
             },
             {
               "rung": "ui",
-              "name": "Add a line: Office Chair x 5, price and totals computed: reached",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Add a line: Office Chair x 5, price and totals computed: page says \"Office Chair\"",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: page says \"Desk Combination\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine +1",
               "verdict": "PASS",
-              "detail": "before=11 after=12 delta=1"
+              "detail": "before=9 after=10 delta=1"
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product set on every row",
               "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134660)"
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 33214047251871173)"
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: Purchasing.PurchaseOrderLine_Product points at the seeded Name",
               "verdict": "PASS",
-              "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134660)"
+              "detail": "1 row(s) link to Products.Product where Name = 'Desk Combination' (scoped to rows with id > 33214047251871173)"
             },
             {
               "rung": "data",
-              "name": "Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00",
+              "name": "Add a line: Desk Combination x 12 at Gemini's price: the vendor price filled the line: 12 x 420.00 = 5 040.00 untaxed",
               "verdict": "PASS",
-              "detail": "got 1, need >= 1"
+              "detail": "got 2, need >= 1"
             }
           ],
-          "ms": 6154
+          "ms": 5150
         },
         {
           "n": 5,
-          "name": "Mark as sent, then confirm: a sales order",
+          "name": "Confirm order: above the threshold, it goes to a purchase manager",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
               "verb": "Click",
-              "target": "Send (mark as sent)",
-              "selector": ".mx-name-btnSendmarkassent1"
+              "target": "Confirm order",
+              "selector": ".mx-name-btnConfirmorder1"
             },
             {
-              "verb": "Click",
-              "target": "Confirm",
-              "selector": ".mx-name-btnConfirm2"
+              "verb": "dismissModal",
+              "target": "",
+              "selector": null
             }
           ],
           "expects": {
             "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Sales order"
+              "To approve"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-outcome-step5.png",
-            "title": "Mendix - Sales order",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:55.182Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-outcome-step5.png",
+            "title": "Mendix - Purchase order",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:40:25.821Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Mark as sent, then confirm: a sales order: reached",
+              "name": "Confirm order: above the threshold, it goes to a purchase manager: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Mark as sent, then confirm: a sales order: page says \"Sales order\"",
+              "name": "Confirm order: above the threshold, it goes to a purchase manager: page says \"To approve\"",
               "verdict": "PASS",
               "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Confirm order: above the threshold, it goes to a purchase manager: an approval task is open for purchase managers",
+              "verdict": "PASS",
+              "detail": "got 6, need >= 1"
             }
           ],
-          "ms": 2826
+          "ms": 1949
         },
         {
           "n": 6,
-          "name": "Save: back on the list with the order shown",
+          "name": "Save: back on the list, the order reads To approve",
           "requirement": [
-            "F004-UC001",
-            "F004-UC002",
-            "F004-UC003"
+            "F005-UC001",
+            "F005-UC003"
           ],
           "actions": [
             {
@@ -2161,34 +2183,34 @@
           "expects": {
             "landsOn": ".mx-name-gridMain",
             "pageSays": [
-              "Azure Interior"
+              "To approve"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-SALES-01-CTL-outcome-step6.png",
-            "title": "Mendix - Quotations & sales orders",
-            "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T07:44:56.109Z"
+            "file": "../tests/e2e/artifacts/J-PURCH-01-CTL-outcome-step6.png",
+            "title": "Mendix - Requests for quotation & purchase orders",
+            "url": "http://localhost:8080/p/purchase-order-overview",
+            "at": "2026-10-15T10:40:26.620Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Save: back on the list with the order shown: reached",
+              "name": "Save: back on the list, the order reads To approve: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Save: back on the list with the order shown: page says \"Azure Interior\"",
+              "name": "Save: back on the list, the order reads To approve: page says \"To approve\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 927
+          "ms": 750
         }
       ]
     }

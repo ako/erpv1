@@ -201,7 +201,8 @@ def column(e, f, filters=False):
         cls = ", DynamicCellClass: 'num-right'" if t in ('Decimal', 'Integer', 'Long') else ''
         # no autoFit: it starved the text and association columns to ~15px (ui-review 2026-10-15 Sales P1)
         fit = ''
-        head = "column (Attribute: %s, Caption: '%s'%s%s%s)" % (D.q(f), esc(label_of(e, f)), align, cls, fit)
+        # wrap rather than truncate: statuses like "Purchase order" were cut to "Purchase or…" (ui-review 2026-10-15 Purchasing P2)
+        head = "column (Attribute: %s, Caption: '%s'%s%s%s, WrapText: true)" % (D.q(f), esc(label_of(e, f)), align, cls, fit)
         if filters:
             flt = {'String': 'textfilter', 'Decimal': 'numberfilter', 'Integer': 'numberfilter', 'Long': 'numberfilter',
                    'DateTime': 'datefilter', 'Enumeration': 'dropdownfilter', 'Boolean': 'dropdownfilter'}[t]
@@ -210,7 +211,7 @@ def column(e, f, filters=False):
     s = assoc(e, f)
     if s and s['type'] == 'Reference':
         cap = caption_attr(s['target'])
-        head = "column (Attribute: %s/%s, Caption: '%s')" % (f, cap, esc(label_of(e, f)))
+        head = "column (Attribute: %s/%s, Caption: '%s', WrapText: true)" % (f, cap, esc(label_of(e, f)))
         return head
     raise SystemExit('column %s not usable on %s' % (f, e['name']))
 
@@ -301,6 +302,8 @@ def editable_listview(e, cols, source, ind, add_mf, delete=True, row_save=False)
     labels; Core main.scss shows them only on phones, where the caption row is hidden (ui-review 2026-10-14 P2-1)."""
     def weight(c):
         a = attr(e, c)
+        if c == cols[0] and assoc(e, c):
+            return 5   # the line's product: its name must read (ui-review 2026-10-15 Sales/Purchasing P2)
         return 3 if (a and a['type'] == 'String') or assoc(e, c) else 2
     avail = 12 - (1 if delete else 0)
     ws = [weight(c) for c in cols]

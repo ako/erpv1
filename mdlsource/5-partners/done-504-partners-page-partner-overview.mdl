@@ -19,14 +19,14 @@ create or modify page Partners.Partner_Overview folder 'Contacts/Pages'
     }
   }
   datagrid gridMain (DataSource: database Partners."Partner" sort by "Name" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Partners.Partner_NewEdit(Partner = $currentObject)) {
-    column (Attribute: "Name", Caption: 'Name') { textfilter fName }
-    column (Attribute: "Email", Caption: 'Email') { textfilter fEmail }
-    column (Attribute: "Phone", Caption: 'Phone') { textfilter fPhone }
-    column (Attribute: "City", Caption: 'City') { textfilter fCity }
-    column (Attribute: Partner_Country/Name, Caption: 'Country')
-    column (Attribute: "IsCustomer", Caption: 'Is customer') { dropdownfilter fIsCustomer }
-    column (Attribute: "IsVendor", Caption: 'Is vendor') { dropdownfilter fIsVendor }
-    column (Attribute: Partner_Salesperson/FullName, Caption: 'Salesperson')
+    column (Attribute: "Name", Caption: 'Name', WrapText: true) { textfilter fName }
+    column (Attribute: "Email", Caption: 'Email', WrapText: true) { textfilter fEmail }
+    column (Attribute: "Phone", Caption: 'Phone', WrapText: true) { textfilter fPhone }
+    column (Attribute: "City", Caption: 'City', WrapText: true) { textfilter fCity }
+    column (Attribute: Partner_Country/Name, Caption: 'Country', WrapText: true)
+    column (Attribute: "IsCustomer", Caption: 'Is customer', WrapText: true) { dropdownfilter fIsCustomer }
+    column (Attribute: "IsVendor", Caption: 'Is vendor', WrapText: true) { dropdownfilter fIsVendor }
+    column (Attribute: Partner_Salesperson/FullName, Caption: 'Salesperson', WrapText: true)
   }
 };
 

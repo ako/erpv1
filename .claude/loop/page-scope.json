@@ -1,19 +1,19 @@
 {
   "counts": {
     "modules": 7,
-    "pagesTotal": 26,
+    "pagesTotal": 32,
     "perModule": {
       "Core": 7,
       "Inventory": 0,
       "Invoicing": 0,
       "Partners": 4,
       "Products": 8,
-      "Purchasing": 0,
+      "Purchasing": 6,
       "Sales": 7
     }
   },
-  "distinctRolePageSets": 10,
-  "generatedAt": "2026-10-15T07:47:57Z",
+  "distinctRolePageSets": 13,
+  "generatedAt": "2026-10-15T10:43:28Z",
   "inScope": [
     "Core.Company_Edit",
     "Core.Home_Web",
@@ -34,6 +34,12 @@
     "Products.Product_Overview",
     "Products.UoMCategory_NewEdit",
     "Products.UoMCategory_Overview",
+    "Purchasing.PurchaseAnalysis_Report",
+    "Purchasing.PurchaseApproval_Inbox",
+    "Purchasing.PurchaseApproval_Task",
+    "Purchasing.PurchaseOrder_NewEdit",
+    "Purchasing.PurchaseOrder_Overview",
+    "Purchasing.VendorPrice_Overview",
     "Sales.QuotationTemplate_NewEdit",
     "Sales.QuotationTemplate_Overview",
     "Sales.SalesAnalysis_Report",
@@ -131,6 +137,34 @@
         "Products.Product_Overview"
       ],
       "role": "Products.Reader"
+    },
+    {
+      "inScopePages": 6,
+      "pages": [
+        "Purchasing.PurchaseAnalysis_Report",
+        "Purchasing.PurchaseApproval_Inbox",
+        "Purchasing.PurchaseApproval_Task",
+        "Purchasing.PurchaseOrder_NewEdit",
+        "Purchasing.PurchaseOrder_Overview",
+        "Purchasing.VendorPrice_Overview"
+      ],
+      "role": "Purchasing.Manager"
+    },
+    {
+      "inScopePages": 1,
+      "pages": [
+        "Purchasing.PurchaseOrder_Overview"
+      ],
+      "role": "Purchasing.Reader"
+    },
+    {
+      "inScopePages": 3,
+      "pages": [
+        "Purchasing.PurchaseOrder_NewEdit",
+        "Purchasing.PurchaseOrder_Overview",
+        "Purchasing.VendorPrice_Overview"
+      ],
+      "role": "Purchasing.User"
     },
     {
       "inScopePages": 7,

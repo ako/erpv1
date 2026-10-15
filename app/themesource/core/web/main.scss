@@ -65,7 +65,7 @@
 // Data grids on phones (P2-2): keep columns readable and scroll the grid sideways instead of squashing them.
 @media (max-width: 767px) {
   .widget-datagrid .widget-datagrid-content { overflow-x: auto; }
-  .widget-datagrid .widget-datagrid-grid { min-width: 640px; }
+  .widget-datagrid .widget-datagrid-grid { min-width: 960px; }   // 8-column lists need it; 640 squeezed them (ui-review 2026-10-15 Purchasing)
 }
 
 // Demo-user switcher (Mendix, demo users on): bottom-right corner, clear of page actions; content keeps room for it (P2-4).
