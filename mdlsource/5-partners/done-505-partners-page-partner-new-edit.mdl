@@ -34,7 +34,7 @@ create or modify page Partners.Partner_NewEdit folder 'Contacts/Pages'
     container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
       container ctnPageHeadTitle (Class: 'page-head-title') {
         dynamictext txtCrumb (Content: 'Contact', RenderMode: Text, Class: 'crumb')
-        dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = "Name"), RenderMode: H1)
+        dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = if $currentObject/Name = empty or trim($currentObject/Name) = '' then 'New' else $currentObject/Name), RenderMode: H1)
       }
       container ctnPageHeadActions (Class: 'page-head-actions') {
         actionbutton btnSave0 (Caption: 'Save', Action: call microflow Partners.ACT_Partner_Save(Partner = $currentObject), ButtonStyle: Primary)
@@ -81,7 +81,7 @@ create or modify page Partners.Partner_NewEdit folder 'Contacts/Pages'
     }
     dynamictext hContactsaddresses (Content: 'Contacts & addresses', RenderMode: H2)
     datagrid gridContactsaddresses (DataSource: database Partners."Partner" where [Partners.Partner_ParentCompany = '[%CurrentObject%]'], Class: 'density-compact', OnClick: show page Partners.PartnerChild_NewEdit(Partner = $currentObject)) {
-      column (Attribute: "AddressType", Caption: 'Address type')
+      column (Attribute: "AddressType", Caption: 'Address type', ColumnWidth: autoFit)
       column (Attribute: "Name", Caption: 'Name')
       column (Attribute: "Email", Caption: 'Email')
       column (Attribute: "Phone", Caption: 'Phone')

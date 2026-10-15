@@ -1,0 +1,9 @@
+[
+ {"module": "Sales", "page": "SalesOrder_Overview", "user": "sales.user", "menu": ["Sales", "Quotations & orders"]},
+ {"module": "Sales", "page": "SalesOrder_NewEdit", "user": "sales.user", "menu": ["Sales", "Quotations & orders"], "openRow": 1},
+ {"module": "Sales", "page": "QuotationTemplate_Overview", "user": "sales.manager", "menu": ["Sales", "Quotation templates"]},
+ {"module": "Sales", "page": "QuotationTemplate_NewEdit", "user": "sales.manager", "menu": ["Sales", "Quotation templates"], "click": "btnNew"},
+ {"module": "Sales", "page": "SalesTeam_Overview", "user": "sales.manager", "menu": ["Sales", "Sales teams"]},
+ {"module": "Sales", "page": "SalesTeam_NewEdit", "user": "sales.manager", "menu": ["Sales", "Sales teams"], "click": "btnNew"},
+ {"module": "Sales", "page": "SalesAnalysis_Report", "user": "sales.manager", "menu": ["Reporting", "Sales analysis"]}
+]

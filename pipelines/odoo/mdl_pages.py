@@ -370,7 +370,9 @@ def gen_form(s, popup=False):
     L = []
     if not popup:
         title_attr = s.get('header') or ('Name' if attr(e, 'Name') else None)
-        title = ("dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = %s), RenderMode: H1)" % D.q(title_attr)) if title_attr \
+        # a new record has no name yet: the heading says 'New' until it does (blank H1, ui-review 2026-10-15 Sales)
+        expr = "if $currentObject/%s = empty or trim($currentObject/%s) = '' then 'New' else $currentObject/%s" % ((title_attr,) * 3)
+        title = ("dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = %s), RenderMode: H1)" % expr) if title_attr \
             else "dynamictext txtTitle (Content: '%s', RenderMode: H1)" % esc(s['title'])
         L += page_head(s['title'], title, acts, ind='    ')
         if s.get('statusbar'):

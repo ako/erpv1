@@ -34,7 +34,7 @@ create or modify page Sales.SalesOrder_NewEdit folder 'Quotations/Pages'
     container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
       container ctnPageHeadTitle (Class: 'page-head-title') {
         dynamictext txtCrumb (Content: 'Sales order', RenderMode: Text, Class: 'crumb')
-        dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = "Number"), RenderMode: H1)
+        dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = if $currentObject/Number = empty or trim($currentObject/Number) = '' then 'New' else $currentObject/Number), RenderMode: H1)
       }
       container ctnPageHeadActions (Class: 'page-head-actions') {
         actionbutton btnSendmarkassent1 (Caption: 'Send (mark as sent)', Action: call microflow Sales.ACT_SalesOrder_MarkSent(SalesOrder = $currentObject), ButtonStyle: Primary, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation)

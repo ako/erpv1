@@ -1,12 +1,12 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-15 06:45:47",
-  "overallScore": 49.9,
+  "date": "2026-10-15 07:39:03",
+  "overallScore": 49.6,
   "summary": {
-    "total": 385,
+    "total": 388,
     "errors": 0,
     "warnings": 123,
-    "infos": 262
+    "infos": 265
   },
   "categories": [
     {
@@ -26,11 +26,11 @@
     },
     {
       "name": "Quality",
-      "score": 94,
-      "total": 6,
+      "score": 93,
+      "total": 7,
       "errors": 0,
       "warnings": 0,
-      "infos": 6,
+      "infos": 7,
       "topActions": [
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
         "Extract logical sections into SUB_ microflows to keep each under 15 activities",
@@ -46,8 +46,8 @@
       "infos": 0,
       "topActions": [
         "Add an attribute like 'CompanyCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE",
-        "Create microflows (e.g., ACT_SaveLocation, VAL_Location) to handle create/update operations with proper validation.",
-        "Create a view entity in 'Partners' that exposes the needed data from 'Core', or use a microflow to retrieve the data."
+        "Create a view entity in 'Partners' that exposes the needed data from 'Core', or use a microflow to retrieve the data.",
+        "Create microflows (e.g., ACT_SaveLocation, VAL_Location) to handle create/update operations with proper validation."
       ]
     },
     {
@@ -61,11 +61,11 @@
     },
     {
       "name": "Naming",
-      "score": 37,
-      "total": 63,
+      "score": 36,
+      "total": 64,
       "errors": 0,
       "warnings": 0,
-      "infos": 63,
+      "infos": 64,
       "topActions": [
         "Remove the default value and set it in a Before Create (BCR_) microflow for 'Company'",
         "Rename to 'IsPOApprovalEnabled' or another appropriate prefix (Has, Can, Should, Was, Will)",
@@ -85,11 +85,11 @@
     },
     {
       "name": "Other",
-      "score": 96,
-      "total": 4,
+      "score": 95,
+      "total": 5,
       "errors": 0,
       "warnings": 0,
-      "infos": 4,
+      "infos": 5,
       "topActions": [
         "Describing this microflow does not round-trip. Edit it in Studio Pro, or restructure so each branch reaches the decision's merge without passing through another branch's path. The condition can usually be folded into one decision instead (e.g. `not(a) or b`)."
       ]

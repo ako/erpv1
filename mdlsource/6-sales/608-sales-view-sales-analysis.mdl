@@ -1,0 +1,64 @@
+mdl 1;
+-- Build-plan row 50, F004-UC007 "Analyse sales" (Odoo sale.report).
+-- Two read-only view entities over confirmed sales order lines, the KPI data-source microflow,
+-- and their grants (Sales.Manager only; brief access table: SalesAnalysis_Report -> Manager view).
+
+/**
+ * Sales analysis: one row per confirmed order line, grouped by month, customer, product and salesperson. (Odoo sale.report; F004-UC007)
+ */
+create or modify view entity Sales."SalesAnalysis" (
+  "OrderYear": Integer,
+  "OrderMonthNo": Integer,
+  "Period": String(200),
+  "CustomerName": String(200),
+  "ProductName": String(200),
+  "SalespersonName": String(200),
+  "Quantity": Decimal,
+  "Untaxed": Decimal
+) as (
+  from Sales.SalesOrderLine as l
+  join l/Sales.SalesOrderLine_SalesOrder/Sales.SalesOrder as o
+  join o/Sales.SalesOrder_Customer/Partners.Partner as c
+  join l/Sales.SalesOrderLine_Product/Products.Product as p
+  left join o/Sales.SalesOrder_Salesperson/Administration.Account as s
+  where o.Status = 'SalesOrder'
+  group by datepart(year, o.OrderDate), datepart(month, o.OrderDate), cast(datepart(year, o.OrderDate) as string) + (case when datepart(month, o.OrderDate) < 10 then '-0' else '-' end) + cast(datepart(month, o.OrderDate) as string), c.Name, p.Name, s.FullName, s.Name
+  select
+    datepart(year, o.OrderDate) as OrderYear,
+    datepart(month, o.OrderDate) as OrderMonthNo,
+    cast(datepart(year, o.OrderDate) as string) + (case when datepart(month, o.OrderDate) < 10 then '-0' else '-' end) + cast(datepart(month, o.OrderDate) as string) as Period,
+    c.Name as CustomerName,
+    p.Name as ProductName,
+    coalesce(s.FullName, s.Name) as SalespersonName,
+    sum(l.Quantity) as Quantity,
+    sum(l.Subtotal) as Untaxed
+);
+
+/**
+ * Sales KPIs: a single row over all confirmed sales orders (revenue, order count, average order). (F004-UC007)
+ */
+create or modify view entity Sales."SalesKpi" (
+  "Revenue": Decimal,
+  "Orders": Integer,
+  "AverageOrder": Decimal
+) as (
+  from Sales.SalesOrder as o
+  where o.Status = 'SalesOrder'
+  select
+    coalesce(sum(o.AmountUntaxed), 0) as Revenue,
+    count(o.ID) as Orders,
+    case when count(o.ID) = 0 then cast(0 as decimal) else coalesce(sum(o.AmountUntaxed), 0) : count(o.ID) end as AverageOrder
+);
+
+/** Data source of SalesAnalysis_Report KPI tiles: the single Sales.SalesKpi row. */
+create or modify microflow Sales.DS_SalesKpi_Get ()
+returns Sales.SalesKpi as $SalesKpi
+folder 'Reporting/Microflows'
+begin
+  retrieve $SalesKpi from Sales.SalesKpi first;
+  return $SalesKpi;
+end;
+
+grant read * on entity Sales.SalesAnalysis to Sales.Manager;
+grant read * on entity Sales.SalesKpi to Sales.Manager;
+grant execute on microflow Sales.DS_SalesKpi_Get to Sales.Manager;

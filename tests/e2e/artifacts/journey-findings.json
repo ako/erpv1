@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-15T06:26:18.847Z",
+  "capturedAt": "2026-10-15T06:50:43.300Z",
   "configuredUser": "sales.user",
   "actualUser": "sales.user",
   "usedFallback": false,
@@ -22,93 +22,479 @@
     },
     {
       "rung": "ui",
-      "name": "Open Contacts > Contacts: reached",
+      "name": "Open Sales > Quotations & orders: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F001-UC001, F001-UC002"
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
       "rung": "ui",
-      "name": "Open Contacts > Contacts: page says \"Azure Interior\"",
+      "name": "Open Sales > Quotations & orders: page says \"Quotations & sales orders\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F001-UC001, F001-UC002"
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
       "rung": "ui",
-      "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: combobox cmbPartnerCountry committed the seeded value",
+      "name": "New quotation: numbered, status Quotation: reached",
       "verdict": "PASS",
-      "detail": "Netherlands",
-      "requirement": "F001-UC001, F001-UC002"
+      "detail": ".mx-name-dvMain",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
       "rung": "ui",
-      "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-gridMain",
-      "requirement": "F001-UC001, F001-UC002"
-    },
-    {
-      "rung": "ui",
-      "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: page says \"Journey Office Supplies\"",
+      "name": "New quotation: numbered, status Quotation: page says \"Quotation\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F001-UC001, F001-UC002"
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
       "rung": "data",
-      "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: Partners.Partner +1",
+      "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
       "verdict": "PASS",
-      "detail": "before=27 after=28 delta=1",
-      "requirement": "F001-UC001, F001-UC002"
+      "detail": "before=2 after=3 delta=1",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Azure Interior",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Choose Azure Interior: invoice address and payment term follow the customer: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Choose Azure Interior: invoice address and payment term follow the customer: page says \"Azure Interior, Accounts\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Office Chair",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Office Chair x 5, price and totals computed: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: Office Chair x 5, price and totals computed: page says \"Office Chair\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
       "rung": "data",
-      "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: Partners.Partner_Country set on every row",
+      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
       "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 27303072740973299)",
-      "requirement": "F001-UC001, F001-UC002",
+      "detail": "before=2 after=3 delta=1",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112121693)",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003",
       "evidenceStrength": "strong"
     },
     {
       "rung": "data",
-      "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: Partners.Partner_Country points at the seeded Name",
+      "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
       "verdict": "PASS",
-      "detail": "1 row(s) link to Core.Country where Name = 'Netherlands' (scoped to rows with id > 27303072740973299)",
-      "requirement": "F001-UC001, F001-UC002",
+      "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112121693)",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003",
       "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Mark as sent, then confirm: a sales order: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Mark as sent, then confirm: a sales order: page says \"Sales order\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Save: back on the list with the order shown: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Save: back on the list with the order shown: page says \"Azure Interior\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
       "rung": "outcome",
-      "name": "J-PARTNERS-01 end state",
+      "name": "J-SALES-01 end state",
       "verdict": "PASS",
-      "detail": "got 6, need >= 1",
-      "requirement": "F001-UC001, F001-UC002"
+      "detail": "got 2, need >= 1",
+      "requirement": "F004-UC001, F004-UC002, F004-UC003"
     }
   ],
   "walks": [
     {
-      "journey": "J-PARTNERS-01",
-      "title": "Sales user creates a company and adds a contact person to it",
+      "journey": "J-SALES-01",
+      "title": "Sales user quotes five office chairs to Azure Interior, marks the quotation sent and confirms it",
       "persona": "sales.user",
       "requirement": [
-        "F001-UC001",
-        "F001-UC002"
+        "F004-UC001",
+        "F004-UC002",
+        "F004-UC003"
       ],
       "seeds": {},
       "steps": [
         {
           "n": 1,
-          "name": "Open Contacts > Contacts",
+          "name": "Open Sales > Quotations & orders",
           "requirement": [
-            "F001-UC001",
-            "F001-UC002"
+            "F004-UC001",
+            "F004-UC002",
+            "F004-UC003"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Contacts › Contacts",
+              "target": "Sales › Quotations & orders",
               "selector": null
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-gridMain",
+            "pageSays": [
+              "Quotations & sales orders"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-SALES-01-step1.png",
+            "title": "Mendix - Quotations & sales orders",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-15T06:50:29.066Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open Sales > Quotations & orders: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Open Sales > Quotations & orders: page says \"Quotations & sales orders\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1080
+        },
+        {
+          "n": 2,
+          "name": "New quotation: numbered, status Quotation",
+          "requirement": [
+            "F004-UC001",
+            "F004-UC002",
+            "F004-UC003"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "New",
+              "selector": ".mx-name-btnNew"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [
+              "Quotation"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Sales.SalesOrder",
+              "delta": 1,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-SALES-01-step2.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-15T06:50:30.926Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "New quotation: numbered, status Quotation: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-dvMain"
+            },
+            {
+              "rung": "ui",
+              "name": "New quotation: numbered, status Quotation: page says \"Quotation\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
+              "verdict": "PASS",
+              "detail": "before=2 after=3 delta=1"
+            }
+          ],
+          "ms": 1904
+        },
+        {
+          "n": 3,
+          "name": "Choose Azure Interior: invoice address and payment term follow the customer",
+          "requirement": [
+            "F004-UC001",
+            "F004-UC002",
+            "F004-UC003"
+          ],
+          "actions": [
+            {
+              "verb": "Select",
+              "target": "\"Azure Interior\" in cmbSalesOrderCustomer",
+              "selector": ".mx-name-cmbSalesOrderCustomer"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [
+              "Azure Interior, Accounts"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-SALES-01-step3.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-15T06:50:33.817Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value",
+              "verdict": "PASS",
+              "detail": "Azure Interior"
+            },
+            {
+              "rung": "ui",
+              "name": "Choose Azure Interior: invoice address and payment term follow the customer: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-dvMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Choose Azure Interior: invoice address and payment term follow the customer: page says \"Azure Interior, Accounts\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 2844
+        },
+        {
+          "n": 4,
+          "name": "Add a line: Office Chair x 5, price and totals computed",
+          "requirement": [
+            "F004-UC001",
+            "F004-UC002",
+            "F004-UC003"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "+ Add a line",
+              "selector": ".mx-name-btnAddLine"
+            },
+            {
+              "verb": "Select",
+              "target": "\"Office Chair\" in lncmbSalesOrderLineProduct",
+              "selector": ".mx-name-lncmbSalesOrderLineProduct"
+            },
+            {
+              "verb": "Type",
+              "target": "\"5\" into lntxtQuantity",
+              "selector": ".mx-name-lntxtQuantity"
+            },
+            {
+              "verb": "Click",
+              "target": "leave the quantity field",
+              "selector": ".mx-name-txtCustomerReference"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [
+              "Office Chair"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Sales.SalesOrderLine",
+              "delta": 1,
+              "associations": [
+                "Sales.SalesOrderLine_Product"
+              ]
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-SALES-01-step4.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-15T06:50:39.739Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value",
+              "verdict": "PASS",
+              "detail": "Office Chair"
+            },
+            {
+              "rung": "ui",
+              "name": "Add a line: Office Chair x 5, price and totals computed: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-dvMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Add a line: Office Chair x 5, price and totals computed: page says \"Office Chair\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
+              "verdict": "PASS",
+              "detail": "before=2 after=3 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
+              "verdict": "PASS",
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112121693)"
+            },
+            {
+              "rung": "data",
+              "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
+              "verdict": "PASS",
+              "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112121693)"
+            },
+            {
+              "rung": "data",
+              "name": "Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            }
+          ],
+          "ms": 6179
+        },
+        {
+          "n": 5,
+          "name": "Mark as sent, then confirm: a sales order",
+          "requirement": [
+            "F004-UC001",
+            "F004-UC002",
+            "F004-UC003"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Send (mark as sent)",
+              "selector": ".mx-name-btnSendmarkassent1"
+            },
+            {
+              "verb": "Click",
+              "target": "Confirm",
+              "selector": ".mx-name-btnConfirm2"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [
+              "Sales order"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-SALES-01-step5.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-15T06:50:42.236Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Mark as sent, then confirm: a sales order: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-dvMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Mark as sent, then confirm: a sales order: page says \"Sales order\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 2240
+        },
+        {
+          "n": 6,
+          "name": "Save: back on the list with the order shown",
+          "requirement": [
+            "F004-UC001",
+            "F004-UC002",
+            "F004-UC003"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Save",
+              "selector": ".mx-name-btnSave6"
             }
           ],
           "expects": {
@@ -121,143 +507,27 @@
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-PARTNERS-01-step1.png",
-            "title": "Mendix - Contacts",
-            "url": "http://localhost:8080/p/partner-overview",
-            "at": "2026-10-15T06:26:10.066Z"
+            "file": "../tests/e2e/artifacts/J-SALES-01-step6.png",
+            "title": "Mendix - Quotations & sales orders",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-15T06:50:43.153Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Contacts > Contacts: reached",
+              "name": "Save: back on the list with the order shown: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Open Contacts > Contacts: page says \"Azure Interior\"",
+              "name": "Save: back on the list with the order shown: page says \"Azure Interior\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1088
-        },
-        {
-          "n": 2,
-          "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save",
-          "requirement": [
-            "F001-UC001",
-            "F001-UC002"
-          ],
-          "actions": [
-            {
-              "verb": "Click",
-              "target": "New",
-              "selector": ".mx-name-btnNew"
-            },
-            {
-              "verb": "Wait",
-              "target": "800ms",
-              "selector": null
-            },
-            {
-              "verb": "Type",
-              "target": "\"Journey Office Supplies\" into txtName",
-              "selector": ".mx-name-txtName"
-            },
-            {
-              "verb": "Click",
-              "target": "Is company",
-              "selector": ".mx-name-cbIsCompany"
-            },
-            {
-              "verb": "Type",
-              "target": "\"orders@journey-office.example.com\" into txtEmail",
-              "selector": ".mx-name-txtEmail"
-            },
-            {
-              "verb": "Type",
-              "target": "\"Utrecht\" into txtCity",
-              "selector": ".mx-name-txtCity"
-            },
-            {
-              "verb": "Select",
-              "target": "\"Netherlands\" in cmbPartnerCountry",
-              "selector": ".mx-name-cmbPartnerCountry"
-            },
-            {
-              "verb": "Click",
-              "target": "Is customer",
-              "selector": ".mx-name-cbIsCustomer"
-            },
-            {
-              "verb": "Click",
-              "target": "Save",
-              "selector": ".mx-name-btnSave0"
-            }
-          ],
-          "expects": {
-            "landsOn": ".mx-name-gridMain",
-            "pageSays": [
-              "Journey Office Supplies"
-            ],
-            "pageDoesNotSay": [],
-            "microflows": [],
-            "writes": {
-              "entity": "Partners.Partner",
-              "delta": 1,
-              "associations": [
-                "Partners.Partner_Country"
-              ]
-            }
-          },
-          "shot": {
-            "file": "../tests/e2e/artifacts/J-PARTNERS-01-step2.png",
-            "title": "Mendix - Contacts",
-            "url": "http://localhost:8080/p/partner-overview",
-            "at": "2026-10-15T06:26:18.527Z"
-          },
-          "reached": true,
-          "checks": [
-            {
-              "rung": "ui",
-              "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: combobox cmbPartnerCountry committed the seeded value",
-              "verdict": "PASS",
-              "detail": "Netherlands"
-            },
-            {
-              "rung": "ui",
-              "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: reached",
-              "verdict": "PASS",
-              "detail": ".mx-name-gridMain"
-            },
-            {
-              "rung": "ui",
-              "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: page says \"Journey Office Supplies\"",
-              "verdict": "PASS",
-              "detail": ""
-            },
-            {
-              "rung": "data",
-              "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: Partners.Partner +1",
-              "verdict": "PASS",
-              "detail": "before=27 after=28 delta=1"
-            },
-            {
-              "rung": "data",
-              "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: Partners.Partner_Country set on every row",
-              "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 27303072740973299)"
-            },
-            {
-              "rung": "data",
-              "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: Partners.Partner_Country points at the seeded Name",
-              "verdict": "PASS",
-              "detail": "1 row(s) link to Core.Country where Name = 'Netherlands' (scoped to rows with id > 27303072740973299)"
-            }
-          ],
-          "ms": 8668
+          "ms": 923
         }
       ]
     }

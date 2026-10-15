@@ -1,0 +1,81 @@
+mdl 1;
+-- Build-plan row 50, F004-UC007 "Analyse sales". Wireframe design/wireframes/SalesAnalysis_Report.html.
+-- Reached from: menu Reporting > Sales analysis. Drawn as role SalesManager. Depends on 608 (view entities, DS_SalesKpi_Get).
+
+/** Sales analysis — SalesAnalysis_Report. */
+create or modify page Sales.SalesAnalysis_Report folder 'Reporting/Pages'
+(
+  Title: 'Sales analysis',
+  Layout: Core.App_Default,
+  Url: 'sales-analysis-report'
+)
+{
+  container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+    container ctnPageHeadTitle (Class: 'page-head-title') {
+      dynamictext txtTitle (Content: 'Sales analysis', RenderMode: H1)
+    }
+  }
+  layoutgrid gridKpiOuter (Class: 'spacing-outer-bottom-large') {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvKpi (DataSource: microflow Sales.DS_SalesKpi_Get) {
+    layoutgrid gridKpi {
+      row {
+        column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) {
+          container ctnKpiRevenue (Class: 'card spacing-inner-medium') {
+            dynamictext txtKpiRevenueLabel (Content: 'Revenue (confirmed)', RenderMode: Text, Class: 'text-small spacing-outer-bottom-small')
+
+            textbox txtKpiRevenue (Attribute: "Revenue", DecimalPrecision: 2, GroupDigits: true, Editable: Never)
+          }
+        }
+        column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) {
+          container ctnKpiOrders (Class: 'card spacing-inner-medium') {
+            dynamictext txtKpiOrdersLabel (Content: 'Orders', RenderMode: Text, Class: 'text-small spacing-outer-bottom-small')
+
+            textbox txtKpiOrders (Attribute: "Orders", GroupDigits: true, Editable: Never)
+          }
+        }
+        column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) {
+          container ctnKpiAverage (Class: 'card spacing-inner-medium') {
+            dynamictext txtKpiAverageLabel (Content: 'Average order', RenderMode: Text, Class: 'text-small spacing-outer-bottom-small')
+
+            textbox txtKpiAverage (Attribute: "AverageOrder", DecimalPrecision: 2, GroupDigits: true, Editable: Never)
+          }
+        }
+      }
+    }
+  }
+      }
+    }
+  }
+  layoutgrid gridCharts (Class: 'spacing-outer-bottom-large') {
+    row {
+      column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+        container ctnChartMonth (Class: 'card spacing-inner-medium') {
+          dynamictext hChartMonth (Content: 'Revenue per month', RenderMode: H3)
+          columnchart chartMonth (showLegend: false, gridLines: 'horizontal', customLayout: '{"xaxis": {"type": "category"}}') {
+            series serMonth (dataSet: 'static', staticDataSource: database Sales.SalesAnalysis sort by "Period" asc, staticName: 'Revenue', staticXAttribute: "Period", staticYAttribute: "Untaxed", aggregationType: 'sum')
+          }
+        }
+      }
+      column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+        container ctnChartSalesperson (Class: 'card spacing-inner-medium') {
+          dynamictext hChartSalesperson (Content: 'Revenue per salesperson', RenderMode: H3)
+          columnchart chartSalesperson (showLegend: false, gridLines: 'horizontal') {
+            series serSalesperson (dataSet: 'static', staticDataSource: database Sales.SalesAnalysis, staticName: 'Revenue', staticXAttribute: "SalespersonName", staticYAttribute: "Untaxed", aggregationType: 'sum')
+          }
+        }
+      }
+    }
+  }
+  datagrid gridMain (DataSource: database Sales."SalesAnalysis" sort by "Period" desc, PagingPosition: bottom, Class: 'density-compact') {
+    column (Attribute: "Period", Caption: 'Month') { textfilter fPeriod }
+    column (Attribute: "CustomerName", Caption: 'Customer') { textfilter fCustomerName }
+    column (Attribute: "ProductName", Caption: 'Product') { textfilter fProductName }
+    column (Attribute: "SalespersonName", Caption: 'Salesperson') { textfilter fSalespersonName }
+    column (Attribute: "Quantity", Caption: 'Quantity', Alignment: right, DynamicCellClass: 'num-right', ColumnWidth: autoFit) { numberfilter fQuantity }
+    column (Attribute: "Untaxed", Caption: 'Untaxed', Alignment: right, DynamicCellClass: 'num-right', ColumnWidth: autoFit) { numberfilter fUntaxed }
+  }
+};
+
+grant view on page Sales.SalesAnalysis_Report to Sales.Manager;

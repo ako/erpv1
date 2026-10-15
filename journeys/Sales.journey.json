@@ -1,0 +1,168 @@
+{
+  "id": "J-SALES-01",
+  "title": "Sales user quotes five office chairs to Azure Interior, marks the quotation sent and confirms it",
+  "requirement": [
+    "F004-UC001",
+    "F004-UC002",
+    "F004-UC003"
+  ],
+  "persona": "sales.user",
+  "seeds": [],
+  "_seedNote": "uses the demo seed (Azure Interior, Office Chair 120.00 with 21% sales tax); creates its own order",
+  "steps": [
+    {
+      "name": "Open Sales > Quotations & orders",
+      "actions": [
+        {
+          "do": "nav",
+          "group": "Sales",
+          "item": "Quotations & orders"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-gridMain",
+        "textPresent": [
+          "Quotations & sales orders"
+        ]
+      }
+    },
+    {
+      "name": "New quotation: numbered, status Quotation",
+      "actions": [
+        {
+          "do": "click",
+          "widget": "btnNew",
+          "label": "New"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-dvMain",
+        "textPresent": [
+          "Quotation"
+        ]
+      },
+      "data": {
+        "creates": "Sales.SalesOrder",
+        "delta": 1,
+        "scope": {
+          "newRowsBy": "id"
+        }
+      }
+    },
+    {
+      "name": "Choose Azure Interior: invoice address and payment term follow the customer",
+      "actions": [
+        {
+          "do": "combobox",
+          "widget": "cmbSalesOrderCustomer",
+          "match": "Azure Interior"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-dvMain",
+        "textPresent": [
+          "Azure Interior, Accounts"
+        ]
+      }
+    },
+    {
+      "name": "Add a line: Office Chair x 5, price and totals computed",
+      "actions": [
+        {
+          "do": "click",
+          "widget": "btnAddLine",
+          "label": "+ Add a line"
+        },
+        {
+          "do": "combobox",
+          "widget": "lncmbSalesOrderLineProduct",
+          "match": "Office Chair"
+        },
+        {
+          "do": "fill",
+          "widget": "lntxtQuantity",
+          "value": "5"
+        },
+        {
+          "do": "click",
+          "widget": "txtCustomerReference",
+          "label": "leave the quantity field"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-dvMain",
+        "textPresent": [
+          "Office Chair"
+        ]
+      },
+      "data": {
+        "creates": "Sales.SalesOrderLine",
+        "delta": 1,
+        "scope": {
+          "newRowsBy": "id"
+        },
+        "assocMustBeSet": [
+          {
+            "entity": "Sales.SalesOrderLine",
+            "assoc": "Sales.SalesOrderLine_Product",
+            "target": "Products.Product",
+            "mustPointAt": {
+              "attr": "Name",
+              "value": "Office Chair"
+            }
+          }
+        ],
+        "oql": [
+          {
+            "label": "the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00",
+            "sql": "SELECT COUNT(o.ID) AS n FROM Sales.SalesOrder AS o WHERE o/Sales.SalesOrder_Customer/Partners.Partner/Name = 'Azure Interior' AND o.Status = 'Quotation' AND o.AmountUntaxed = 600 AND o.AmountTotal = 726",
+            "atLeast": 1
+          }
+        ]
+      },
+      "_note": "read-only totals render as input values, which ui.textPresent does not read; the oql row proves them"
+    },
+    {
+      "name": "Mark as sent, then confirm: a sales order",
+      "actions": [
+        {
+          "do": "click",
+          "widget": "btnSendmarkassent1",
+          "label": "Send (mark as sent)"
+        },
+        {
+          "do": "click",
+          "widget": "btnConfirm2",
+          "label": "Confirm"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-dvMain",
+        "textPresent": [
+          "Sales order"
+        ]
+      }
+    },
+    {
+      "name": "Save: back on the list with the order shown",
+      "actions": [
+        {
+          "do": "click",
+          "widget": "btnSave6",
+          "label": "Save"
+        }
+      ],
+      "ui": {
+        "ready": ".mx-name-gridMain",
+        "textPresent": [
+          "Azure Interior"
+        ]
+      }
+    }
+  ],
+  "outcome": {
+    "label": "a confirmed order for Azure Interior totalling 726.00, to invoice once delivered",
+    "sql": "SELECT COUNT(o.ID) AS n FROM Sales.SalesOrder AS o WHERE o/Sales.SalesOrder_Customer/Partners.Partner/Name = 'Azure Interior' AND o.Status = 'SalesOrder' AND o.AmountTotal = 726",
+    "atLeast": 1
+  }
+}
