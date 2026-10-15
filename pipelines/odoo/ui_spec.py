@@ -146,11 +146,13 @@ screen('Pricelist_NewEdit', 'form', 'Pricelist', 'Products.Pricelist', ['SalesMa
 
 # ── F004 Sales ──────────────────────────────────────────────────────────────────────────────
 SO_LINES = dict(entity='Sales.SalesOrderLine', via='SalesOrderLine_SalesOrder', title='Order lines', editable=True,
-                columns=['SalesOrderLine_Product', 'Description', 'Quantity', 'QuantityDelivered', 'QuantityInvoiced', 'SalesOrderLine_UoM',
+                # Description and Invoiced left out of the line editor: ten columns clipped every cell at 1280 (ui-review 2026-10-15
+                # Sales P2); the description defaults from the product, invoiced quantities show as the order's invoice status
+                columns=['SalesOrderLine_Product', 'Quantity', 'QuantityDelivered', 'SalesOrderLine_UoM',
                          'UnitPrice', 'SalesOrderLine_Taxes', 'DiscountPercent', 'Subtotal'],
-                rows=[['[FURN_7800] Desk Combination', 'Desk combination, black-brown', '2.00', '0.00', '0.00', 'Units', '450.00', 'VAT 21%', '', '900.00'],
-                      ['(section)', 'Lighting', '', '', '', '', '', '', '', ''],
-                      ['[FURN_8888] Office Lamp', 'Office lamp, LED', '4.00', '0.00', '0.00', 'Units', '40.00', 'VAT 21%', '10.00', '144.00']],
+                rows=[['[FURN_7800] Desk Combination', '2.00', '0.00', 'Units', '450.00', 'VAT 21%', '', '900.00'],
+                      ['(section)', '', '', '', '', '', '', ''],
+                      ['[FURN_8888] Office Lamp', '4.00', '0.00', 'Units', '40.00', 'VAT 21%', '10.00', '144.00']],
                 onchange='ACT_SalesOrderLine_ChangeProduct', recompute='SUB_SalesOrder_RecomputeTotals')
 screen('SalesOrder_Overview', 'list', 'Quotations & sales orders', 'Sales.SalesOrder', ['SalesManager', 'SalesUser', 'Billing'],
        ['menu Sales › Quotations & orders', 'home of SalesUser / SalesManager'],
@@ -166,7 +168,7 @@ screen('SalesOrder_NewEdit', 'form', 'Sales order', 'Sales.SalesOrder', SALES,
        buttons=[('Create invoice', 'ACT_SalesOrder_CreateInvoice', ['Sales order']),
                 ('Send (mark as sent)', 'ACT_SalesOrder_MarkSent', ['Quotation']),
                 ('Confirm', 'ACT_SalesOrder_Confirm', ['Quotation', 'Quotation sent']),
-                ('Cancel', 'ACT_SalesOrder_Cancel', ['Quotation', 'Quotation sent', 'Sales order']),
+                ('Cancel order', 'ACT_SalesOrder_Cancel', ['Quotation', 'Quotation sent', 'Sales order']),
                 ('Set to quotation', 'ACT_SalesOrder_SetToQuotation', ['Cancelled']),
                 ('Lock', 'ACT_SalesOrder_ToggleLock', ['Sales order']),
                 ('Save', 'ACT_SalesOrder_Save')],

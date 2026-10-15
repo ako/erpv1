@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-15T06:51:52.777Z",
+  "capturedAt": "2026-10-15T07:44:56.216Z",
   "configuredUser": "sales.user",
   "actualUser": "sales.user",
   "usedFallback": false,
@@ -84,7 +84,7 @@
       "rung": "data",
       "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
       "verdict": "PASS",
-      "detail": "before=3 after=4 delta=1",
+      "detail": "before=8 after=9 delta=1",
       "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
@@ -133,14 +133,14 @@
       "rung": "data",
       "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
       "verdict": "PASS",
-      "detail": "before=3 after=4 delta=1",
+      "detail": "before=8 after=9 delta=1",
       "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
       "rung": "data",
       "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
       "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112121782)",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134337)",
       "requirement": "F004-UC001, F004-UC002, F004-UC003",
       "evidenceStrength": "strong"
     },
@@ -148,7 +148,7 @@
       "rung": "data",
       "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
       "verdict": "PASS",
-      "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112121782)",
+      "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134337)",
       "requirement": "F004-UC001, F004-UC002, F004-UC003",
       "evidenceStrength": "strong"
     },
@@ -191,7 +191,7 @@
       "rung": "outcome",
       "name": "J-SALES-01-CTL-ui-text end state",
       "verdict": "PASS",
-      "detail": "got 3, need >= 1",
+      "detail": "got 8, need >= 1",
       "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
@@ -247,7 +247,7 @@
       "rung": "data",
       "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +2",
       "verdict": "FAIL",
-      "detail": "before=4 after=5 delta=1",
+      "detail": "before=9 after=10 delta=1",
       "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
@@ -296,14 +296,14 @@
       "rung": "data",
       "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
       "verdict": "PASS",
-      "detail": "before=4 after=5 delta=1",
+      "detail": "before=9 after=10 delta=1",
       "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
       "rung": "data",
       "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
       "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112121982)",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134476)",
       "requirement": "F004-UC001, F004-UC002, F004-UC003",
       "evidenceStrength": "strong"
     },
@@ -311,7 +311,7 @@
       "rung": "data",
       "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
       "verdict": "PASS",
-      "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112121982)",
+      "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134476)",
       "requirement": "F004-UC001, F004-UC002, F004-UC003",
       "evidenceStrength": "strong"
     },
@@ -354,7 +354,7 @@
       "rung": "outcome",
       "name": "J-SALES-01-CTL-data-delta end state",
       "verdict": "PASS",
-      "detail": "got 4, need >= 1",
+      "detail": "got 9, need >= 1",
       "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
@@ -396,7 +396,7 @@
       "rung": "data",
       "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
       "verdict": "PASS",
-      "detail": "before=5 after=6 delta=1",
+      "detail": "before=10 after=11 delta=1",
       "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
@@ -445,14 +445,14 @@
       "rung": "data",
       "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
       "verdict": "PASS",
-      "detail": "before=5 after=6 delta=1",
+      "detail": "before=10 after=11 delta=1",
       "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
       "rung": "data",
       "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
       "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112122000)",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134614)",
       "requirement": "F004-UC001, F004-UC002, F004-UC003",
       "evidenceStrength": "strong"
     },
@@ -460,7 +460,7 @@
       "rung": "data",
       "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
       "verdict": "FAIL",
-      "detail": "0 row(s) link to Products.Product where Name = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 34902897112122000)",
+      "detail": "0 row(s) link to Products.Product where Name = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 34902897112134614)",
       "requirement": "F004-UC001, F004-UC002, F004-UC003",
       "evidenceStrength": "strong"
     },
@@ -503,7 +503,7 @@
       "rung": "outcome",
       "name": "J-SALES-01-CTL-data-target end state",
       "verdict": "PASS",
-      "detail": "got 5, need >= 1",
+      "detail": "got 10, need >= 1",
       "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
@@ -545,7 +545,7 @@
       "rung": "data",
       "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
       "verdict": "PASS",
-      "detail": "before=6 after=7 delta=1",
+      "detail": "before=11 after=12 delta=1",
       "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
@@ -594,14 +594,14 @@
       "rung": "data",
       "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
       "verdict": "PASS",
-      "detail": "before=6 after=7 delta=1",
+      "detail": "before=11 after=12 delta=1",
       "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
       "rung": "data",
       "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
       "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112122222)",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134660)",
       "requirement": "F004-UC001, F004-UC002, F004-UC003",
       "evidenceStrength": "strong"
     },
@@ -609,7 +609,7 @@
       "rung": "data",
       "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
       "verdict": "PASS",
-      "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112122222)",
+      "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134660)",
       "requirement": "F004-UC001, F004-UC002, F004-UC003",
       "evidenceStrength": "strong"
     },
@@ -652,7 +652,7 @@
       "rung": "outcome",
       "name": "J-SALES-01-CTL-outcome end state",
       "verdict": "FAIL",
-      "detail": "got 6, need >= 999999",
+      "detail": "got 11, need >= 999999",
       "requirement": "F004-UC001, F004-UC002, F004-UC003"
     },
     {
@@ -703,7 +703,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-landing-step1-NOT-REACHED.png",
             "title": "Mendix - Quotations & sales orders",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:50:48.740Z"
+            "at": "2026-10-15T07:43:49.898Z"
           },
           "reached": false,
           "checks": [
@@ -763,7 +763,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-text-step1.png",
             "title": "Mendix - Quotations & sales orders",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:50:51.462Z"
+            "at": "2026-10-15T07:43:52.631Z"
           },
           "reached": true,
           "checks": [
@@ -780,7 +780,7 @@
               "detail": "not found in rendered text"
             }
           ],
-          "ms": 1117
+          "ms": 1080
         },
         {
           "n": 2,
@@ -814,7 +814,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-text-step2.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:50:52.765Z"
+            "at": "2026-10-15T07:43:54.524Z"
           },
           "reached": true,
           "checks": [
@@ -834,10 +834,10 @@
               "rung": "data",
               "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
               "verdict": "PASS",
-              "detail": "before=3 after=4 delta=1"
+              "detail": "before=8 after=9 delta=1"
             }
           ],
-          "ms": 1349
+          "ms": 1943
         },
         {
           "n": 3,
@@ -867,7 +867,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-text-step3.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:50:55.705Z"
+            "at": "2026-10-15T07:43:57.422Z"
           },
           "reached": true,
           "checks": [
@@ -890,7 +890,7 @@
               "detail": ""
             }
           ],
-          "ms": 2890
+          "ms": 2845
         },
         {
           "n": 4,
@@ -941,7 +941,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-text-step4.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:01.611Z"
+            "at": "2026-10-15T07:44:02.842Z"
           },
           "reached": true,
           "checks": [
@@ -967,19 +967,19 @@
               "rung": "data",
               "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
               "verdict": "PASS",
-              "detail": "before=3 after=4 delta=1"
+              "detail": "before=8 after=9 delta=1"
             },
             {
               "rung": "data",
               "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
               "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112121782)"
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134337)"
             },
             {
               "rung": "data",
               "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
               "verdict": "PASS",
-              "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112121782)"
+              "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134337)"
             },
             {
               "rung": "data",
@@ -988,7 +988,7 @@
               "detail": "got 1, need >= 1"
             }
           ],
-          "ms": 6123
+          "ms": 5643
         },
         {
           "n": 5,
@@ -1023,7 +1023,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-text-step5.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:04.065Z"
+            "at": "2026-10-15T07:44:05.885Z"
           },
           "reached": true,
           "checks": [
@@ -1040,7 +1040,7 @@
               "detail": ""
             }
           ],
-          "ms": 2237
+          "ms": 2826
         },
         {
           "n": 6,
@@ -1070,7 +1070,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-ui-text-step6.png",
             "title": "Mendix - Quotations & sales orders",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:05.001Z"
+            "at": "2026-10-15T07:44:06.678Z"
           },
           "reached": true,
           "checks": [
@@ -1087,7 +1087,7 @@
               "detail": ""
             }
           ],
-          "ms": 936
+          "ms": 788
         }
       ]
     },
@@ -1130,7 +1130,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-delta-step1.png",
             "title": "Mendix - Quotations & sales orders",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:07.706Z"
+            "at": "2026-10-15T07:44:09.402Z"
           },
           "reached": true,
           "checks": [
@@ -1147,7 +1147,7 @@
               "detail": ""
             }
           ],
-          "ms": 1074
+          "ms": 1077
         },
         {
           "n": 2,
@@ -1181,7 +1181,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-delta-step2.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:08.880Z"
+            "at": "2026-10-15T07:44:10.588Z"
           },
           "reached": true,
           "checks": [
@@ -1201,10 +1201,10 @@
               "rung": "data",
               "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +2",
               "verdict": "FAIL",
-              "detail": "before=4 after=5 delta=1"
+              "detail": "before=9 after=10 delta=1"
             }
           ],
-          "ms": 1220
+          "ms": 1239
         },
         {
           "n": 3,
@@ -1234,7 +1234,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-delta-step3.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:11.755Z"
+            "at": "2026-10-15T07:44:13.501Z"
           },
           "reached": true,
           "checks": [
@@ -1257,7 +1257,7 @@
               "detail": ""
             }
           ],
-          "ms": 2827
+          "ms": 2861
         },
         {
           "n": 4,
@@ -1308,7 +1308,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-delta-step4.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:17.089Z"
+            "at": "2026-10-15T07:44:18.921Z"
           },
           "reached": true,
           "checks": [
@@ -1334,19 +1334,19 @@
               "rung": "data",
               "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
               "verdict": "PASS",
-              "detail": "before=4 after=5 delta=1"
+              "detail": "before=9 after=10 delta=1"
             },
             {
               "rung": "data",
               "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
               "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112121982)"
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134476)"
             },
             {
               "rung": "data",
               "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
               "verdict": "PASS",
-              "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112121982)"
+              "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134476)"
             },
             {
               "rung": "data",
@@ -1355,7 +1355,7 @@
               "detail": "got 1, need >= 1"
             }
           ],
-          "ms": 5554
+          "ms": 5760
         },
         {
           "n": 5,
@@ -1390,7 +1390,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-delta-step5.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:19.516Z"
+            "at": "2026-10-15T07:44:22.208Z"
           },
           "reached": true,
           "checks": [
@@ -1407,7 +1407,7 @@
               "detail": ""
             }
           ],
-          "ms": 2208
+          "ms": 2948
         },
         {
           "n": 6,
@@ -1437,7 +1437,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-delta-step6.png",
             "title": "Mendix - Quotations & sales orders",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:20.471Z"
+            "at": "2026-10-15T07:44:23.130Z"
           },
           "reached": true,
           "checks": [
@@ -1454,7 +1454,7 @@
               "detail": ""
             }
           ],
-          "ms": 955
+          "ms": 921
         }
       ]
     },
@@ -1497,7 +1497,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-target-step1.png",
             "title": "Mendix - Quotations & sales orders",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:23.276Z"
+            "at": "2026-10-15T07:44:26.014Z"
           },
           "reached": true,
           "checks": [
@@ -1514,7 +1514,7 @@
               "detail": ""
             }
           ],
-          "ms": 1065
+          "ms": 1093
         },
         {
           "n": 2,
@@ -1548,7 +1548,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-target-step2.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:24.466Z"
+            "at": "2026-10-15T07:44:27.209Z"
           },
           "reached": true,
           "checks": [
@@ -1568,10 +1568,10 @@
               "rung": "data",
               "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
               "verdict": "PASS",
-              "detail": "before=5 after=6 delta=1"
+              "detail": "before=10 after=11 delta=1"
             }
           ],
-          "ms": 1248
+          "ms": 1242
         },
         {
           "n": 3,
@@ -1601,7 +1601,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-target-step3.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:27.372Z"
+            "at": "2026-10-15T07:44:30.124Z"
           },
           "reached": true,
           "checks": [
@@ -1624,7 +1624,7 @@
               "detail": ""
             }
           ],
-          "ms": 2849
+          "ms": 2868
         },
         {
           "n": 4,
@@ -1675,7 +1675,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-target-step4.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:32.736Z"
+            "at": "2026-10-15T07:44:36.083Z"
           },
           "reached": true,
           "checks": [
@@ -1701,19 +1701,19 @@
               "rung": "data",
               "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
               "verdict": "PASS",
-              "detail": "before=5 after=6 delta=1"
+              "detail": "before=10 after=11 delta=1"
             },
             {
               "rung": "data",
               "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
               "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112122000)"
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134614)"
             },
             {
               "rung": "data",
               "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
               "verdict": "FAIL",
-              "detail": "0 row(s) link to Products.Product where Name = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 34902897112122000)"
+              "detail": "0 row(s) link to Products.Product where Name = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 34902897112134614)"
             },
             {
               "rung": "data",
@@ -1722,7 +1722,7 @@
               "detail": "got 1, need >= 1"
             }
           ],
-          "ms": 5589
+          "ms": 6228
         },
         {
           "n": 5,
@@ -1757,7 +1757,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-target-step5.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:35.204Z"
+            "at": "2026-10-15T07:44:38.571Z"
           },
           "reached": true,
           "checks": [
@@ -1774,7 +1774,7 @@
               "detail": ""
             }
           ],
-          "ms": 2242
+          "ms": 2218
         },
         {
           "n": 6,
@@ -1804,7 +1804,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-data-target-step6.png",
             "title": "Mendix - Quotations & sales orders",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:35.991Z"
+            "at": "2026-10-15T07:44:39.361Z"
           },
           "reached": true,
           "checks": [
@@ -1821,7 +1821,7 @@
               "detail": ""
             }
           ],
-          "ms": 787
+          "ms": 789
         }
       ]
     },
@@ -1864,7 +1864,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-outcome-step1.png",
             "title": "Mendix - Quotations & sales orders",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:38.694Z"
+            "at": "2026-10-15T07:44:42.120Z"
           },
           "reached": true,
           "checks": [
@@ -1881,7 +1881,7 @@
               "detail": ""
             }
           ],
-          "ms": 1063
+          "ms": 1085
         },
         {
           "n": 2,
@@ -1915,7 +1915,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-outcome-step2.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:39.869Z"
+            "at": "2026-10-15T07:44:43.329Z"
           },
           "reached": true,
           "checks": [
@@ -1935,10 +1935,10 @@
               "rung": "data",
               "name": "New quotation: numbered, status Quotation: Sales.SalesOrder +1",
               "verdict": "PASS",
-              "detail": "before=6 after=7 delta=1"
+              "detail": "before=11 after=12 delta=1"
             }
           ],
-          "ms": 1219
+          "ms": 1262
         },
         {
           "n": 3,
@@ -1968,7 +1968,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-outcome-step3.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:42.732Z"
+            "at": "2026-10-15T07:44:46.204Z"
           },
           "reached": true,
           "checks": [
@@ -1991,7 +1991,7 @@
               "detail": ""
             }
           ],
-          "ms": 2818
+          "ms": 2819
         },
         {
           "n": 4,
@@ -2042,7 +2042,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-outcome-step4.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:48.647Z"
+            "at": "2026-10-15T07:44:52.118Z"
           },
           "reached": true,
           "checks": [
@@ -2068,19 +2068,19 @@
               "rung": "data",
               "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1",
               "verdict": "PASS",
-              "detail": "before=6 after=7 delta=1"
+              "detail": "before=11 after=12 delta=1"
             },
             {
               "rung": "data",
               "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row",
               "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112122222)"
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134660)"
             },
             {
               "rung": "data",
               "name": "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name",
               "verdict": "PASS",
-              "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112122222)"
+              "detail": "1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134660)"
             },
             {
               "rung": "data",
@@ -2089,7 +2089,7 @@
               "detail": "got 1, need >= 1"
             }
           ],
-          "ms": 6178
+          "ms": 6154
         },
         {
           "n": 5,
@@ -2124,7 +2124,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-outcome-step5.png",
             "title": "Mendix - Sales order",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:51.691Z"
+            "at": "2026-10-15T07:44:55.182Z"
           },
           "reached": true,
           "checks": [
@@ -2141,7 +2141,7 @@
               "detail": ""
             }
           ],
-          "ms": 2781
+          "ms": 2826
         },
         {
           "n": 6,
@@ -2171,7 +2171,7 @@
             "file": "../tests/e2e/artifacts/J-SALES-01-CTL-outcome-step6.png",
             "title": "Mendix - Quotations & sales orders",
             "url": "http://localhost:8080/p/sales-order-overview",
-            "at": "2026-10-15T06:51:52.616Z"
+            "at": "2026-10-15T07:44:56.109Z"
           },
           "reached": true,
           "checks": [
@@ -2188,7 +2188,7 @@
               "detail": ""
             }
           ],
-          "ms": 926
+          "ms": 927
         }
       ]
     }

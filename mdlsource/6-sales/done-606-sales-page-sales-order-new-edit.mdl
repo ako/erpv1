@@ -37,12 +37,12 @@ create or modify page Sales.SalesOrder_NewEdit folder 'Quotations/Pages'
         dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = if $currentObject/Number = empty or trim($currentObject/Number) = '' then 'New' else $currentObject/Number), RenderMode: H1)
       }
       container ctnPageHeadActions (Class: 'page-head-actions') {
-        actionbutton btnSendmarkassent1 (Caption: 'Send (mark as sent)', Action: call microflow Sales.ACT_SalesOrder_MarkSent(SalesOrder = $currentObject), ButtonStyle: Primary, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation)
+        actionbutton btnSendmarkassent1 (Caption: 'Send (mark as sent)', Action: call microflow Sales.ACT_SalesOrder_MarkSent(SalesOrder = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation)
         actionbutton btnConfirm2 (Caption: 'Confirm', Action: call microflow Sales.ACT_SalesOrder_Confirm(SalesOrder = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation or $currentObject/Status = Sales.ENUM_SalesOrderStatus.QuotationSent)
-        actionbutton btnCancel3 (Caption: 'Cancel', Action: call microflow Sales.ACT_SalesOrder_Cancel(SalesOrder = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation or $currentObject/Status = Sales.ENUM_SalesOrderStatus.QuotationSent or $currentObject/Status = Sales.ENUM_SalesOrderStatus.SalesOrder)
+        actionbutton btnCancelorder3 (Caption: 'Cancel order', Action: call microflow Sales.ACT_SalesOrder_Cancel(SalesOrder = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation or $currentObject/Status = Sales.ENUM_SalesOrderStatus.QuotationSent or $currentObject/Status = Sales.ENUM_SalesOrderStatus.SalesOrder)
         actionbutton btnSettoquotation4 (Caption: 'Set to quotation', Action: call microflow Sales.ACT_SalesOrder_SetToQuotation(SalesOrder = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.Cancelled)
         actionbutton btnLock5 (Caption: 'Lock', Action: call microflow Sales.ACT_SalesOrder_ToggleLock(SalesOrder = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.SalesOrder)
-        actionbutton btnSave6 (Caption: 'Save', Action: call microflow Sales.ACT_SalesOrder_Save(SalesOrder = $currentObject), ButtonStyle: Default)
+        actionbutton btnSave6 (Caption: 'Save', Action: call microflow Sales.ACT_SalesOrder_Save(SalesOrder = $currentObject), ButtonStyle: Primary)
       }
     }
     dynamictext txtStatus (Content: '{1}', ContentParams: ({1} = "Status"), Class: 'pill pill-info spacing-outer-bottom-medium')
@@ -79,10 +79,8 @@ create or modify page Sales.SalesOrder_NewEdit folder 'Quotations/Pages'
     layoutgrid gridLinesHead (Class: 'th lines-head hide-phone') {
       row {
         column (DesktopWidth: 2) { dynamictext hdSalesOrderLineProduct (Content: 'Product', RenderMode: Text) }
-        column (DesktopWidth: 1) { dynamictext hdDescription (Content: 'Description', RenderMode: Text) }
-        column (DesktopWidth: 1) { dynamictext hdQuantity (Content: 'Quantity', RenderMode: Text) }
-        column (DesktopWidth: 1) { dynamictext hdQuantityDelivered (Content: 'Quantity delivered', RenderMode: Text) }
-        column (DesktopWidth: 1) { dynamictext hdQuantityInvoiced (Content: 'Quantity invoiced', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdQuantity (Content: 'Quantity', RenderMode: Text) }
+        column (DesktopWidth: 2) { dynamictext hdQuantityDelivered (Content: 'Quantity delivered', RenderMode: Text) }
         column (DesktopWidth: 1) { dynamictext hdSalesOrderLineUoM (Content: 'Unit', RenderMode: Text) }
         column (DesktopWidth: 1) { dynamictext hdUnitPrice (Content: 'Unit price', RenderMode: Text) }
         column (DesktopWidth: 1) { dynamictext hdSalesOrderLineTaxes (Content: 'Taxes', RenderMode: Text) }
@@ -94,10 +92,8 @@ create or modify page Sales.SalesOrder_NewEdit folder 'Quotations/Pages'
       layoutgrid gridLine {
         row {
           column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { combobox lncmbSalesOrderLineProduct (Label: 'Product', Attribute: SalesOrderLine_Product, DataSource: database Products."Product" sort by "Name" asc, CaptionAttribute: "Name", OnChange: call microflow Sales.ACT_SalesOrderLine_ChangeProduct(SalesOrderLine = $currentObject)) }
-          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textarea lntaDescription (Label: 'Description', Attribute: "Description") }
-          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtQuantity (Label: 'Quantity', Attribute: "Quantity", DecimalPrecision: 2, GroupDigits: true, OnChange: call microflow Sales.ACT_SalesOrderLine_Recompute(SalesOrderLine = $currentObject)) }
-          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtQuantityDelivered (Label: 'Quantity delivered', Attribute: "QuantityDelivered", DecimalPrecision: 2, GroupDigits: true, Editable: Never) }
-          column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtQuantityInvoiced (Label: 'Quantity invoiced', Attribute: "QuantityInvoiced", DecimalPrecision: 2, GroupDigits: true, Editable: Never) }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtQuantity (Label: 'Quantity', Attribute: "Quantity", DecimalPrecision: 2, GroupDigits: true, OnChange: call microflow Sales.ACT_SalesOrderLine_Recompute(SalesOrderLine = $currentObject)) }
+          column (DesktopWidth: 2, TabletWidth: 2, PhoneWidth: 12) { textbox lntxtQuantityDelivered (Label: 'Quantity delivered', Attribute: "QuantityDelivered", DecimalPrecision: 2, GroupDigits: true, Editable: Never) }
           column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox lncmbSalesOrderLineUoM (Label: 'Unit', Attribute: SalesOrderLine_UoM, DataSource: database Products."UoM" sort by "Name" asc, CaptionAttribute: "Name") }
           column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { textbox lntxtUnitPrice (Label: 'Unit price', Attribute: "UnitPrice", DecimalPrecision: 2, GroupDigits: true, OnChange: call microflow Sales.ACT_SalesOrderLine_Recompute(SalesOrderLine = $currentObject)) }
           column (DesktopWidth: 1, TabletWidth: 1, PhoneWidth: 12) { combobox lncmbSalesOrderLineTaxes (Label: 'Taxes', Attribute: SalesOrderLine_Taxes, DataSource: database Core."Tax" sort by "Name" asc, CaptionAttribute: "Name", OnChange: call microflow Sales.ACT_SalesOrderLine_Recompute(SalesOrderLine = $currentObject)) }

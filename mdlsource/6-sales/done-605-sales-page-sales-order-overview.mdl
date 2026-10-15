@@ -20,13 +20,13 @@ create or modify page Sales.SalesOrder_Overview folder 'Quotations/Pages'
   }
   datagrid gridMain (DataSource: database Sales."SalesOrder" sort by "Number" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Sales.SalesOrder_NewEdit(SalesOrder = $currentObject)) {
     column (Attribute: "Number", Caption: 'Number') { textfilter fNumber }
-    column (Attribute: "OrderDate", Caption: 'Order date', ColumnWidth: autoFit) { datefilter fOrderDate }
+    column (Attribute: "OrderDate", Caption: 'Order date') { datefilter fOrderDate }
     column (Attribute: SalesOrder_Customer/Name, Caption: 'Customer')
     column (Attribute: SalesOrder_Salesperson/FullName, Caption: 'Salesperson')
-    column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', ColumnWidth: autoFit) { numberfilter fAmountTotal }
-    column (Attribute: "Status", Caption: 'Status', ColumnWidth: autoFit) { dropdownfilter fStatus }
-    column (Attribute: "InvoiceStatus", Caption: 'Invoice status', ColumnWidth: autoFit) { dropdownfilter fInvoiceStatus }
-    column (Attribute: "DeliveryStatus", Caption: 'Delivery status', ColumnWidth: autoFit) { dropdownfilter fDeliveryStatus }
+    column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fAmountTotal }
+    column (Attribute: "Status", Caption: 'Status') { dropdownfilter fStatus }
+    column (Attribute: "InvoiceStatus", Caption: 'Invoice status') { dropdownfilter fInvoiceStatus }
+    column (Attribute: "DeliveryStatus", Caption: 'Delivery status') { dropdownfilter fDeliveryStatus }
   }
 };
 

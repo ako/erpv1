@@ -21,7 +21,7 @@ create or modify page Sales.SalesTeam_Overview folder 'Teams/Pages'
   datagrid gridMain (DataSource: database Sales."SalesTeam" sort by "Name" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Sales.SalesTeam_NewEdit(SalesTeam = $currentObject)) {
     column (Attribute: "Name", Caption: 'Name') { textfilter fName }
     column (Attribute: SalesTeam_Leader/FullName, Caption: 'Leader')
-    column (Attribute: "InvoicingTarget", Caption: 'Invoicing target', Alignment: right, DynamicCellClass: 'num-right', ColumnWidth: autoFit) { numberfilter fInvoicingTarget }
+    column (Attribute: "InvoicingTarget", Caption: 'Invoicing target', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fInvoicingTarget }
   }
 };
 

@@ -1,0 +1,59 @@
+mdl 1;
+-- One-off: ASU_Sales_SeedData gains the demo users' names call (Partners 511). create or modify refuses the reshape
+-- (MDL-V1-REBUILD), so drop it and replay its owning script 616 in the same script.
+drop microflow Sales.ASU_Sales_SeedData;
+-- ── replay: mdlsource/6-sales/616-sales-mf-seed-data.mdl
+-- 616-sales-mf-seed-data.mdl — PROJECT.md 5 (build) "Demo data" + startup chain. Owns Sales.SUB_Sales_SeedDemo and
+-- Sales.ASU_Sales_SeedData = Partners' chain, then the demo users' names and the Sales demo fixtures when Core.SeedDemoData
+-- (docs/demo-script.md).
+
+/**
+ * Sales demo fixtures: quotation numbers continue from S00042 (demo-script "Sequences"), the "Office starter pack"
+ * quotation template and the "Direct sales" team. Idempotent by business key (sequence code, template and team name).
+ */
+create or modify microflow Sales.SUB_Sales_SeedDemo ()
+folder 'Setup/Microflows'
+begin
+  retrieve $Sequence from Core.Sequence where [Code = 'sale.order'] first;
+  if $Sequence != empty and $Sequence/NextNumber < 42 then
+    change $Sequence (NextNumber = 42);
+    commit $Sequence without events;
+  end if;
+  retrieve $Template from Sales.QuotationTemplate where [Name = 'Office starter pack'] first;
+  if $Template = empty then
+    retrieve $Desk from Products.Product where [InternalReference = 'FURN_7800'] first;
+    retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+    $NewTemplate = create Sales.QuotationTemplate (Name = 'Office starter pack', ValidityDays = 30, Active = true);
+    $DeskLine = create Sales.QuotationTemplateLine (Sequence = 10, LineType = Core.ENUM_LineType.Product, Description = 'Desk Combination',
+      Quantity = 1, Sales.QuotationTemplateLine_Template = $NewTemplate, Sales.QuotationTemplateLine_Product = $Desk,
+      Sales.QuotationTemplateLine_UoM = $Desk/Products.Product_UoM);
+    $ChairLine = create Sales.QuotationTemplateLine (Sequence = 20, LineType = Core.ENUM_LineType.Product, Description = 'Office Chair',
+      Quantity = 4, Sales.QuotationTemplateLine_Template = $NewTemplate, Sales.QuotationTemplateLine_Product = $Chair,
+      Sales.QuotationTemplateLine_UoM = $Chair/Products.Product_UoM);
+    commit $NewTemplate without events;
+    commit $DeskLine without events;
+    commit $ChairLine without events;
+  end if;
+  retrieve $Team from Sales.SalesTeam where [Name = 'Direct sales'] first;
+  if $Team = empty then
+    $NewTeam = create Sales.SalesTeam (Name = 'Direct sales', InvoicingTarget = 50000, Active = true);
+    commit $NewTeam without events;
+  end if;
+end;
+
+/**
+ * After-startup microflow (top of the chain): Partners' chain, then the Sales demo fixtures when Core.SeedDemoData.
+ *
+ * @returns true
+ */
+create or modify microflow Sales.ASU_Sales_SeedData ()
+returns Boolean as $Done
+folder 'Setup/Microflows'
+begin
+  $PartnersDone = call microflow Partners.ASU_Partners_SeedData();
+  if @Core.SeedDemoData then
+    call microflow Partners.SUB_DemoUsers_SetNames();
+    call microflow Sales.SUB_Sales_SeedDemo();
+  end if;
+  return true;
+end;

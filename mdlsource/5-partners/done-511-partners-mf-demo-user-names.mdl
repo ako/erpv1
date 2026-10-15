@@ -1,0 +1,49 @@
+mdl 1;
+-- 511-partners-mf-demo-user-names.mdl — PROJECT.md 5 (build) "Demo data": the demo accounts get people's names, so
+-- salesperson / responsible pickers and the contacts list show a name instead of a login (ui-review 2026-10-15 Sales).
+-- Owns Partners.SUB_DemoUser_SetName and Partners.SUB_DemoUsers_SetNames; called from Sales.ASU_Sales_SeedData.
+
+/**
+ * Give a demo account a full name, and its user profile and partner the same name while they still carry the login.
+ * Idempotent: a name someone already changed is left alone.
+ *
+ * @param $Login the account name (login)
+ * @param $FullName the person's name to show
+ */
+create or modify microflow Partners.SUB_DemoUser_SetName ($Login: String, $FullName: String)
+folder 'Users/Microflows'
+begin
+  retrieve $Account from Administration.Account where [Name = $Login] first;
+  if $Account = empty then
+    return;
+  end if;
+  if $Account/FullName = empty or $Account/FullName = '' or $Account/FullName = $Login then
+    change $Account (FullName = $FullName);
+    commit $Account without events;
+  end if;
+  retrieve $Profile from Partners.UserProfile where [Partners.UserProfile_Account = $Account] first;
+  if $Profile != empty and $Profile/DisplayName = $Login then
+    change $Profile (DisplayName = $FullName);
+    commit $Profile without events;
+  end if;
+  retrieve $Partner from Partners.Partner where [Partners.UserProfile_Partner/Partners.UserProfile/Partners.UserProfile_Account = $Account] first;
+  if $Partner != empty and $Partner/Name = $Login then
+    change $Partner (Name = $FullName);
+    commit $Partner without events;
+  end if;
+end;
+
+/** People's names for the nine demo accounts (build-plan row 14). */
+create or modify microflow Partners.SUB_DemoUsers_SetNames ()
+folder 'Users/Microflows'
+begin
+  call microflow Partners.SUB_DemoUser_SetName(Login = 'sales.user', FullName = 'Marc Demo');
+  call microflow Partners.SUB_DemoUser_SetName(Login = 'sales.manager', FullName = 'Mitchell Admin');
+  call microflow Partners.SUB_DemoUser_SetName(Login = 'purchaser', FullName = 'Paula Buyer');
+  call microflow Partners.SUB_DemoUser_SetName(Login = 'purchase.manager', FullName = 'Peter Approver');
+  call microflow Partners.SUB_DemoUser_SetName(Login = 'warehouse.user', FullName = 'Walter Stock');
+  call microflow Partners.SUB_DemoUser_SetName(Login = 'inventory.manager', FullName = 'Ingrid Warehouse');
+  call microflow Partners.SUB_DemoUser_SetName(Login = 'billing', FullName = 'Bea Billing');
+  call microflow Partners.SUB_DemoUser_SetName(Login = 'invoicing.manager', FullName = 'Ivan Ledger');
+  call microflow Partners.SUB_DemoUser_SetName(Login = 'admin.user', FullName = 'Ada Admin');
+end;

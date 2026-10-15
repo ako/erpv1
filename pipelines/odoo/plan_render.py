@@ -607,7 +607,10 @@ def main():
             if not e['persistent']:
                 continue
             for mr in MODULE_ROLES[mod]:
-                lvl = 'read *' if mr == 'Reader' else ('create, delete, read *, write *' if mr in ('Manager', 'Admin', 'Config', 'Editor', 'Billing') else 'create, read *, write *')
+                # document lines: whoever edits the document may remove its lines (Odoo ir.model.access on *.line grants unlink
+                # to the user group; state rules live in ACT_/SUB_) — ui-review 2026-10-15 Sales P2, Remove hidden without it
+                full = mr in ('Manager', 'Admin', 'Config', 'Editor', 'Billing') or e['name'].endswith('Line')
+                lvl = 'read *' if mr == 'Reader' else ('create, delete, read *, write *' if full else 'create, read *, write *')
                 xp = ' — XPath `[Sales.SalesOrder_Salesperson = \'[%CurrentUser%]\']`' if (e['name'] in ('Sales.SalesOrder', 'Sales.SalesOrderLine') and mr == 'User') else ''
                 B.append('| %s | entity | %s.%s | %s%s |' % (e['name'], mod, mr, lvl, xp))
         for sc in screens:

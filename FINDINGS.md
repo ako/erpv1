@@ -48,3 +48,13 @@
   under `.claude/loop/verify/<M>/` or don't pipe.
 - **Journey positive control**: trace-order / trace-negative rungs cannot be proven in this container (no Jaeger at :16686, app not
   run with --trace). Partners now proves 5/7 (country association claim added), same as Products.
+- **DataGrid 2 `ColumnWidth: autoFit` starves the remaining columns** (Sales list Number/Customer/Salesperson collapsed to ~15px,
+  analysis grid unusable at 390). Reverted; default autoFill for every column. Seen in shots 2026-10-15d, fixed in -15e.
+- **A delete button disappears when the role lacks entity delete** — no build or lint signal. Line Remove links need delete on the line entity.
+- **OQL in a view entity**: no `concat()` (use `+`), and an enum is compared to its value name as a string (`o.Status = 'SalesOrder'`);
+  `Sales.ENUM_X.Value` is CE0174 "Cannot resolve object name". `mxcli check` passes both; only mxbuild catches them.
+- **Charts columnchart with a 'YYYY-MM' string x-axis is plotted as dates** (timestamps on the axis); `customLayout:
+  '{"xaxis": {"type": "category"}}'` fixes it.
+- **`mxcli run --watch` build failed with "no bundle at deployment/web/dist/index.js"** after a domain + microflow burst; `run stop`
+  then `run --local --watch --detach` rebuilt it cleanly.
+- **Ledger status "built" counts stubs**: Inventory.SUB_SalesOrder_CreateDelivery reads built while it is a log-only stub (800).

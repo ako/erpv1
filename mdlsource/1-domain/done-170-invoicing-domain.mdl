@@ -233,7 +233,7 @@ grant create, delete, read *, write * on entity Invoicing."Invoice" to Invoicing
 grant create, read *, write * on entity Invoicing."Invoice" to Invoicing.Creator;
 grant create, delete, read *, write * on entity Invoicing."InvoiceLine" to Invoicing.Billing;
 grant create, delete, read *, write * on entity Invoicing."InvoiceLine" to Invoicing.Manager;
-grant create, read *, write * on entity Invoicing."InvoiceLine" to Invoicing.Creator;
+grant create, delete, read *, write * on entity Invoicing."InvoiceLine" to Invoicing.Creator;
 grant create, delete, read *, write * on entity Invoicing."Payment" to Invoicing.Billing;
 grant create, delete, read *, write * on entity Invoicing."Payment" to Invoicing.Manager;
 grant create, read *, write * on entity Invoicing."Payment" to Invoicing.Creator;

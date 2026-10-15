@@ -73,8 +73,8 @@ create or modify page Sales.SalesAnalysis_Report folder 'Reporting/Pages'
     column (Attribute: "CustomerName", Caption: 'Customer') { textfilter fCustomerName }
     column (Attribute: "ProductName", Caption: 'Product') { textfilter fProductName }
     column (Attribute: "SalespersonName", Caption: 'Salesperson') { textfilter fSalespersonName }
-    column (Attribute: "Quantity", Caption: 'Quantity', Alignment: right, DynamicCellClass: 'num-right', ColumnWidth: autoFit) { numberfilter fQuantity }
-    column (Attribute: "Untaxed", Caption: 'Untaxed', Alignment: right, DynamicCellClass: 'num-right', ColumnWidth: autoFit) { numberfilter fUntaxed }
+    column (Attribute: "Quantity", Caption: 'Quantity', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fQuantity }
+    column (Attribute: "Untaxed", Caption: 'Untaxed', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fUntaxed }
   }
 };
 

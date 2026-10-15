@@ -4,11 +4,12 @@
 
 ## Where we are
 
-Stage 5 (Build), 2026-10-15. Done: Phase 0 (app/erpv1.mpr, ledger theme, Workflow Commons), walking skeleton (docs/skeleton-proof.md),
-demo script (docs/demo-script.md), Phase 1 (43 entities / 27 enums / 109 assocs / 9 roles / 9 demo users), Phase 3 Core and
-Phase 4 Products closed (unit tests 10 + 16 pass with fail control; journeys/Core + Products pass + positive control; verify-module:
-conformance, graph, coverage, journeys PASS; LOOK reports design/ui-reviews/ui-review-2026-10-14-core.html, -2026-10-15-products.html).
-Waiting on the user: lint security-tier acceptance (CONV006, SEC008), SEC014 external roles, demo-data seeding approval.
+Stage 5 (Build), 2026-10-15. Done: Phase 0, walking skeleton, demo script, Phase 1 domain, Phases 3 Core / 4 Products /
+5 Partners closed (unit tests 10/16/11 with fail control; journeys + positive control 5/7 — trace rungs need Jaeger, absent here;
+verify-module conformance/graph/coverage/journeys PASS; LOOK reports in design/ui-reviews/). Phase 6 Sales built: order logic
+(600-604, 615), pages (605-612), analysis view entities + report (607/608), seed + startup chain top Sales.ASU_Sales_SeedData (616);
+12 unit tests pass + fail control; journey J-SALES-01 21/21. Sales LOOK + verify-module were running at last commit.
+Waiting on the user: lint baseline raise for Partners/Sales debt (ARCH001 Account pickers, CONV003 *_Edit, CUSTOM002 ASU_).
 
 - Generators (never hand-edit their output): pipelines/odoo/mdl_domain.py (1-domain), mdl_pages.py <Page...> | --nav (list/form/popup
   pages + VAL/SUB/ACT save + line Add), plan_render.py (plan, ledgers with model-derived status, briefs). Microflows are hand-written.
@@ -20,9 +21,10 @@ Waiting on the user: lint security-tier acceptance (CONV006, SEC008), SEC014 ext
 
 ## Next actions, in order
 
-1. Apply the user's answers (lint baseline, SEC014, demo seed).
-2. Phase 5 Partners (F001): ACT_Partner_Save/VAL_Partner (replaces skeleton), contact pages, UserProfile; then coherence pass 1.
-3. Phases 6–9: Sales, Purchasing (+ WF_PurchaseOrderApproval), Inventory, Invoicing; coherence 2 + close; gate-check . 5.
+1. Read the Sales LOOK report + verify log; fix P1/P2; rename verified 6-sales scripts to done-.
+2. Coherence pass 1 (process-coherence-pass.md) over Core, Products, Partners, Sales; UserProfile_Edit entry point (P2).
+3. Phases 7-9: Purchasing (+ WF_PurchaseOrderApproval), Inventory (replace 800 stubs), Invoicing (+ Sales row 52 create
+   invoice); coherence 2 + close; pre-demo cleanup of journey fixtures; gate-check . 5.
 
 ## Do not lose
 

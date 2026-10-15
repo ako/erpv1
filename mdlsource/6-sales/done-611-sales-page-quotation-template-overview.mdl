@@ -20,8 +20,8 @@ create or modify page Sales.QuotationTemplate_Overview folder 'Templates/Pages'
   }
   datagrid gridMain (DataSource: database Sales."QuotationTemplate" sort by "Name" asc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Sales.QuotationTemplate_NewEdit(QuotationTemplate = $currentObject)) {
     column (Attribute: "Name", Caption: 'Name') { textfilter fName }
-    column (Attribute: "ValidityDays", Caption: 'Validity days', Alignment: right, DynamicCellClass: 'num-right', ColumnWidth: autoFit) { numberfilter fValidityDays }
-    column (Attribute: "Active", Caption: 'Active', ColumnWidth: autoFit) { dropdownfilter fActive }
+    column (Attribute: "ValidityDays", Caption: 'Validity days', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fValidityDays }
+    column (Attribute: "Active", Caption: 'Active') { dropdownfilter fActive }
   }
 };
 

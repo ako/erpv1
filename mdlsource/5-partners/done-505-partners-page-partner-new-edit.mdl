@@ -81,7 +81,7 @@ create or modify page Partners.Partner_NewEdit folder 'Contacts/Pages'
     }
     dynamictext hContactsaddresses (Content: 'Contacts & addresses', RenderMode: H2)
     datagrid gridContactsaddresses (DataSource: database Partners."Partner" where [Partners.Partner_ParentCompany = '[%CurrentObject%]'], Class: 'density-compact', OnClick: show page Partners.PartnerChild_NewEdit(Partner = $currentObject)) {
-      column (Attribute: "AddressType", Caption: 'Address type', ColumnWidth: autoFit)
+      column (Attribute: "AddressType", Caption: 'Address type')
       column (Attribute: "Name", Caption: 'Name')
       column (Attribute: "Email", Caption: 'Email')
       column (Attribute: "Phone", Caption: 'Phone')

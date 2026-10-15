@@ -171,8 +171,8 @@ def column(e, f, filters=False):
         t = a['type'] if a else SYS_ATTR[f]
         align = ', Alignment: right' if t in ('Decimal', 'Integer', 'Long') else ''
         cls = ", DynamicCellClass: 'num-right'" if t in ('Decimal', 'Integer', 'Long') else ''
-        # short values (flags, states, numbers, dates) fit their content; text columns share the rest (ui-review 2026-10-15 Partners P2)
-        fit = ', ColumnWidth: autoFit' if t in ('Boolean', 'Enumeration', 'Decimal', 'Integer', 'Long', 'DateTime') else ''
+        # no autoFit: it starved the text and association columns to ~15px (ui-review 2026-10-15 Sales P1)
+        fit = ''
         head = "column (Attribute: %s, Caption: '%s'%s%s%s)" % (D.q(f), esc(label_of(e, f)), align, cls, fit)
         if filters:
             flt = {'String': 'textfilter', 'Decimal': 'numberfilter', 'Integer': 'numberfilter', 'Long': 'numberfilter',
@@ -332,7 +332,8 @@ def buttons(s, e, pname, popup=False):
             en = attr(e, stat_attr)['enumeration']
             conds = ' or '.join('$currentObject/%s = %s.%s' % (stat_attr, en, enum_value_for_caption(en, st)) for st in states)
             vis = ', Visible: %s' % conds
-        style = 'Primary' if not out else 'Default'
+        has_save = any(x[0] == 'Save' for x in s.get('buttons', []))
+        style = 'Primary' if (cap == 'Save' if has_save else not out) else 'Default'
         out.append("actionbutton %s (Caption: '%s', Action: %s, ButtonStyle: %s%s)" % (wid('btn', cap + str(i)), esc(cap), a, style, vis))
     if popup:
         out.append("actionbutton %sbtnCancel (Caption: 'Cancel', Action: cancel changes close page)" % WID_PREFIX)

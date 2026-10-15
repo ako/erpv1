@@ -1,0 +1,11 @@
+graph-sweep · catalog 2026-10-15T07:38:19 (build_mode full) · 1131 objects · 4421 typed edges (member=1294 parameter=429 associate=428 xpath=389 call=305 action=194 retrieve=192 value=187)
+
+  module wiring (>= 20 elements)
+    MODULE                   ELEMENTS   INBOUND   OUTBOUND
+    Sales                          73        13        111
+
+  orphaned microflows (no call / action / nav inbound, entry-point prefixes excluded): 1
+    Sales.ASU_Sales_SeedData                                 3 activities
+
+  0 module(s) with no inbound references.
+  Whether that is a defect is an intent question — check the module brief.

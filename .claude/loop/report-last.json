@@ -1,12 +1,12 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-15 07:39:03",
-  "overallScore": 49.6,
+  "date": "2026-10-15 08:23:07",
+  "overallScore": 49.8,
   "summary": {
-    "total": 388,
+    "total": 387,
     "errors": 0,
     "warnings": 123,
-    "infos": 265
+    "infos": 264
   },
   "categories": [
     {
@@ -26,11 +26,11 @@
     },
     {
       "name": "Quality",
-      "score": 93,
-      "total": 7,
+      "score": 94,
+      "total": 6,
       "errors": 0,
       "warnings": 0,
-      "infos": 7,
+      "infos": 6,
       "topActions": [
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
         "Extract logical sections into SUB_ microflows to keep each under 15 activities",
@@ -46,8 +46,8 @@
       "infos": 0,
       "topActions": [
         "Add an attribute like 'CompanyCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE",
-        "Create a view entity in 'Partners' that exposes the needed data from 'Core', or use a microflow to retrieve the data.",
-        "Create microflows (e.g., ACT_SaveLocation, VAL_Location) to handle create/update operations with proper validation."
+        "Create microflows (e.g., ACT_SaveLocation, VAL_Location) to handle create/update operations with proper validation.",
+        "Create a view entity in 'Partners' that exposes the needed data from 'Core', or use a microflow to retrieve the data."
       ]
     },
     {

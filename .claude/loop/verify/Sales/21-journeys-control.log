@@ -1,0 +1,280 @@
+
+=== PREFLIGHT ===
+  SETUP  admin: OK at localhost:8090 (credential from .mxcli/run-local.json (the run --local handshake for :8080))
+  SETUP  sessions: 0 live
+  [32mPASS[0m [ui] login  — sales.user
+
+=== JOURNEY J-SALES-01-CTL-ui-landing — (positive control · ui-landing — first step lands on a widget that does not exist; MUST fail)
+    persona: sales.user   requirements: F004-UC001, F004-UC002, F004-UC003
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/6: Open Sales > Quotations & orders
+  [31mFAIL[0m [ui] Open Sales > Quotations & orders: reached  — ".mx-name-__this_widget_does_not_exist__" never appeared — screenshot J-SALES-01-CTL-ui-landing-step1-NOT-REACHED.png
+  [33mINVL[0m [ui] Open Sales > Quotations & orders: downstream rungs  — not reached; nothing measured
+  [32mPASS[0m [control] J-SALES-01 · ui-landing: first step lands on a widget that does not exist  — caught by "Open Sales > Quotations & orders: reached"
+
+=== JOURNEY J-SALES-01-CTL-ui-text — (positive control · ui-text — expect text the page never renders; MUST fail)
+    persona: sales.user   requirements: F004-UC001, F004-UC002, F004-UC003
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/6: Open Sales > Quotations & orders
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: reached  — .mx-name-gridMain
+  [31mFAIL[0m [ui] Open Sales > Quotations & orders: page says "__text_this_page_will_never_render__"  — not found in rendered text
+
+  --- step 2/6: New quotation: numbered, status Quotation
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] New quotation: numbered, status Quotation: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] New quotation: numbered, status Quotation: page says "Quotation"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] New quotation: numbered, status Quotation: Sales.SalesOrder +1  — before=8 after=9 delta=1
+
+  --- step 3/6: Choose Azure Interior: invoice address and payment term follow the customer
+  [32mPASS[0m [ui] Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value  — Azure Interior
+  [32mPASS[0m [ui] Choose Azure Interior: invoice address and payment term follow the customer: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Choose Azure Interior: invoice address and payment term follow the customer: page says "Azure Interior, Accounts"
+
+  --- step 4/6: Add a line: Office Chair x 5, price and totals computed
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value  — Office Chair
+  [32mPASS[0m [ui] Add a line: Office Chair x 5, price and totals computed: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Add a line: Office Chair x 5, price and totals computed: page says "Office Chair"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1  — before=8 after=9 delta=1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row  — 1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134337)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name  — 1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134337)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00  — got 1, need >= 1
+
+  --- step 5/6: Mark as sent, then confirm: a sales order
+  [32mPASS[0m [ui] Mark as sent, then confirm: a sales order: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Mark as sent, then confirm: a sales order: page says "Sales order"
+
+  --- step 6/6: Save: back on the list with the order shown
+  [32mPASS[0m [ui] Save: back on the list with the order shown: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Save: back on the list with the order shown: page says "Azure Interior"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [outcome] J-SALES-01-CTL-ui-text end state  — got 8, need >= 1
+  [32mPASS[0m [control] J-SALES-01 · ui-text: expect text the page never renders  — caught by "Open Sales > Quotations & orders: page says "__text_this_page_will_never_render__""
+  [33mINVL[0m [control] J-SALES-01 · trace-order: expect a microflow that never fires  — this journey declares nothing this mutant can break — this rung is UNPROVEN for J-SALES-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)
+  [33mINVL[0m [control] J-SALES-01 · trace-negative: assert a microflow that DID run must not have run  — this journey declares nothing this mutant can break — this rung is UNPROVEN for J-SALES-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)
+
+=== JOURNEY J-SALES-01-CTL-data-delta — (positive control · data-delta — expect +2 rows from a +1 action; MUST fail)
+    persona: sales.user   requirements: F004-UC001, F004-UC002, F004-UC003
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/6: Open Sales > Quotations & orders
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: page says "Quotations & sales orders"
+
+  --- step 2/6: New quotation: numbered, status Quotation
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] New quotation: numbered, status Quotation: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] New quotation: numbered, status Quotation: page says "Quotation"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [31mFAIL[0m [data] New quotation: numbered, status Quotation: Sales.SalesOrder +2  — before=9 after=10 delta=1
+
+  --- step 3/6: Choose Azure Interior: invoice address and payment term follow the customer
+  [32mPASS[0m [ui] Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value  — Azure Interior
+  [32mPASS[0m [ui] Choose Azure Interior: invoice address and payment term follow the customer: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Choose Azure Interior: invoice address and payment term follow the customer: page says "Azure Interior, Accounts"
+
+  --- step 4/6: Add a line: Office Chair x 5, price and totals computed
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value  — Office Chair
+  [32mPASS[0m [ui] Add a line: Office Chair x 5, price and totals computed: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Add a line: Office Chair x 5, price and totals computed: page says "Office Chair"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1  — before=9 after=10 delta=1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row  — 1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134476)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name  — 1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134476)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00  — got 1, need >= 1
+
+  --- step 5/6: Mark as sent, then confirm: a sales order
+  [32mPASS[0m [ui] Mark as sent, then confirm: a sales order: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Mark as sent, then confirm: a sales order: page says "Sales order"
+
+  --- step 6/6: Save: back on the list with the order shown
+  [32mPASS[0m [ui] Save: back on the list with the order shown: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Save: back on the list with the order shown: page says "Azure Interior"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [outcome] J-SALES-01-CTL-data-delta end state  — got 9, need >= 1
+  [32mPASS[0m [control] J-SALES-01 · data-delta: expect +2 rows from a +1 action  — caught by "New quotation: numbered, status Quotation: Sales.SalesOrder +2"
+
+=== JOURNEY J-SALES-01-CTL-data-target — (positive control · data-target — association must point at a value the journey never picked; MUST fail)
+    persona: sales.user   requirements: F004-UC001, F004-UC002, F004-UC003
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/6: Open Sales > Quotations & orders
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: page says "Quotations & sales orders"
+
+  --- step 2/6: New quotation: numbered, status Quotation
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] New quotation: numbered, status Quotation: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] New quotation: numbered, status Quotation: page says "Quotation"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] New quotation: numbered, status Quotation: Sales.SalesOrder +1  — before=10 after=11 delta=1
+
+  --- step 3/6: Choose Azure Interior: invoice address and payment term follow the customer
+  [32mPASS[0m [ui] Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value  — Azure Interior
+  [32mPASS[0m [ui] Choose Azure Interior: invoice address and payment term follow the customer: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Choose Azure Interior: invoice address and payment term follow the customer: page says "Azure Interior, Accounts"
+
+  --- step 4/6: Add a line: Office Chair x 5, price and totals computed
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value  — Office Chair
+  [32mPASS[0m [ui] Add a line: Office Chair x 5, price and totals computed: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Add a line: Office Chair x 5, price and totals computed: page says "Office Chair"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1  — before=10 after=11 delta=1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row  — 1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134614)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [31mFAIL[0m [data] Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name  — 0 row(s) link to Products.Product where Name = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 34902897112134614)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00  — got 1, need >= 1
+
+  --- step 5/6: Mark as sent, then confirm: a sales order
+  [32mPASS[0m [ui] Mark as sent, then confirm: a sales order: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Mark as sent, then confirm: a sales order: page says "Sales order"
+
+  --- step 6/6: Save: back on the list with the order shown
+  [32mPASS[0m [ui] Save: back on the list with the order shown: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Save: back on the list with the order shown: page says "Azure Interior"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [outcome] J-SALES-01-CTL-data-target end state  — got 10, need >= 1
+  [32mPASS[0m [control] J-SALES-01 · data-target: association must point at a value the journey never picked  — caught by "Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name"
+
+=== JOURNEY J-SALES-01-CTL-outcome — (positive control · outcome — outcome query with an unreachable floor or exact value; MUST fail)
+    persona: sales.user   requirements: F004-UC001, F004-UC002, F004-UC003
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/6: Open Sales > Quotations & orders
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: page says "Quotations & sales orders"
+
+  --- step 2/6: New quotation: numbered, status Quotation
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] New quotation: numbered, status Quotation: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] New quotation: numbered, status Quotation: page says "Quotation"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] New quotation: numbered, status Quotation: Sales.SalesOrder +1  — before=11 after=12 delta=1
+
+  --- step 3/6: Choose Azure Interior: invoice address and payment term follow the customer
+  [32mPASS[0m [ui] Choose Azure Interior: invoice address and payment term follow the customer: combobox cmbSalesOrderCustomer committed the seeded value  — Azure Interior
+  [32mPASS[0m [ui] Choose Azure Interior: invoice address and payment term follow the customer: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Choose Azure Interior: invoice address and payment term follow the customer: page says "Azure Interior, Accounts"
+
+  --- step 4/6: Add a line: Office Chair x 5, price and totals computed
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] Add a line: Office Chair x 5, price and totals computed: combobox lncmbSalesOrderLineProduct committed the seeded value  — Office Chair
+  [32mPASS[0m [ui] Add a line: Office Chair x 5, price and totals computed: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Add a line: Office Chair x 5, price and totals computed: page says "Office Chair"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine +1  — before=11 after=12 delta=1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product set on every row  — 1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 34902897112134660)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: Sales.SalesOrderLine_Product points at the seeded Name  — 1 row(s) link to Products.Product where Name = 'Office Chair' (scoped to rows with id > 34902897112134660)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Add a line: Office Chair x 5, price and totals computed: the order totals were recomputed on the quantity change: 5 x 120.00 + 21% = 726.00  — got 1, need >= 1
+
+  --- step 5/6: Mark as sent, then confirm: a sales order
+  [32mPASS[0m [ui] Mark as sent, then confirm: a sales order: reached  — .mx-name-dvMain
+  [32mPASS[0m [ui] Mark as sent, then confirm: a sales order: page says "Sales order"
+
+  --- step 6/6: Save: back on the list with the order shown
+  [32mPASS[0m [ui] Save: back on the list with the order shown: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Save: back on the list with the order shown: page says "Azure Interior"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [31mFAIL[0m [outcome] J-SALES-01-CTL-outcome end state  — got 11, need >= 999999
+  [32mPASS[0m [control] J-SALES-01 · outcome: outcome query with an unreachable floor or exact value  — caught by "J-SALES-01-CTL-outcome end state"
+
+=== SUMMARY ===
+  PASS 82   FAIL 5   INVALID 3
+  ⚠ INVALID means an instrument did not run. Those checks are NOT green —
+    they are absent. Fix the instrument before reading this report as coverage.
+  control rungs: 5 of 7 proven (7 rungs × 1 journeys)
+  ⚠ 2 rung(s) UNPROVEN — no mutant the journey could express:
+      J-SALES-01 · trace-order — this journey declares nothing this mutant can break
+      J-SALES-01 · trace-negative — this journey declares nothing this mutant can break
+    Unproven is fault, not pass. Declare the missing claim on the journey,
+    or accept that this rung has never been shown able to go red.
+  control verdict: FAIL — at least one rung is unproven; read the [control] rows above
+  findings → ../tests/e2e/artifacts/journey-findings-control.json

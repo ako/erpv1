@@ -1,0 +1,70 @@
+
+design-audit → ../tests/e2e/artifacts/design-audit.json
+mode=full pages=26 checks=262
+fail=28  fault=74  skipped=1  pass=159
+partially-read pages: 6/26
+invented classes (1): spacing-outer-bottom-small
+never-promoted (0): —
+wireframe chrome (0): —
+raw-class-over-designProperty hits: 8 on 1 pages
+wireframe matched 25, unmatched 1
+
+findings:
+  [fail] design-audit/rung6/invented-class/Sales.SalesAnalysis_Report
+         1 invented-class: spacing-outer-bottom-small (of 8 classes referenced) [LOWER BOUND — page is partially-read, see the #891 guard row]
+  [fail] design-audit/rung7/unmatched-class/Sales.SalesAnalysis_Report
+         1 unmatched-class: spacing-outer-bottom-small (of 8 classes referenced) [LOWER BOUND — page is partially-read, see the #891 guard row]
+  [fail] design-audit/rung6/wireframe-conformance/Sales.SalesAnalysis_Report
+         wireframe SalesAnalysis_Report.html: 1 invented, 0 never-promoted, 0 wireframe-chrome; informational: 21 styled classes in the wireframe the page never uses (bind, is-active, lg-appname, lg-body, lg-chart, lg-chart-bars, lg-charts, lg-content, lg-gridwrap, lg-kpi, lg-kpi-label, lg-kpi-value, lg-kpis, lg-main, lg-navgroup, lg-pagehead, lg-rail, lg-shell, lg-table, lg-topbar, wf-contract), 8 classes the page adds beyond the wireframe [LOWER BOUND — page is partially-read, see the #891 guard row]
+  [fail] design-audit/rung7/raw-class-vs-designproperty/Sales.SalesAnalysis_Report
+         8 hand-written class(es) duplicating a design property: ctnKpiRevenue.spacing-inner-medium → "Spacing"; txtKpiRevenueLabel.spacing-outer-bottom-small → "Spacing"; ctnKpiOrders.spacing-inner-medium → "Spacing"; txtKpiOrdersLabel.spacing-outer-bottom-small → "Spacing"; ctnKpiAverage.spacing-inner-medium → "Spacing"; txtKpiAverageLabel.spacing-outer-bottom-small → "Spacing"; ctnChartMonth.spacing-inner-medium → "Spacing"; ctnChartSalesperson.spacing-inner-medium → "Spacing"; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large, gridKpiOuter.spacing-outer-bottom-large, gridCharts.spacing-outer-bottom-large
+  [fail] design-audit/rung7/structure/Core.Company_Edit
+         h1 count 1 (Quotations & sales orders); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Core.Company_Edit
+         1 serious/critical of 1 violations over 33 rules: color-contrast(serious,x3)
+  [fail] design-audit/rung7/structure/Core.Home_Web
+         h1 count 1 (Welcome); landmarks: NONE
+  [fail] design-audit/rung7/structure/Core.PaymentTerm_Overview
+         h1 count 1 (Welcome); landmarks: NONE
+  [fail] design-audit/rung7/structure/Core.Sequence_Overview
+         h1 count 1 (Welcome); landmarks: NONE
+  [fail] design-audit/rung7/structure/Core.Tax_Overview
+         h1 count 1 (Welcome); landmarks: NONE
+  [fail] design-audit/rung7/structure/Partners.Partner_Overview
+         h1 count 1 (Contacts); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Partners.Partner_Overview
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x2)
+  [fail] design-audit/rung7/structure/Products.Pricelist_Overview
+         h1 count 1 (Contacts); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Products.Pricelist_Overview
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x2)
+  [fail] design-audit/rung7/structure/Products.ProductCategory_Overview
+         h1 count 1 (Contacts); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Products.ProductCategory_Overview
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x2)
+  [fail] design-audit/rung7/structure/Products.Product_Overview
+         h1 count 1 (Products); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Products.Product_Overview
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x1)
+  [fail] design-audit/rung7/structure/Products.UoMCategory_Overview
+         h1 count 1 (Products); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Products.UoMCategory_Overview
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x1)
+  [fail] design-audit/rung7/structure/Sales.QuotationTemplate_Overview
+         h1 count 1 (Products); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Sales.QuotationTemplate_Overview
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x1)
+  [fail] design-audit/rung7/structure/Sales.SalesAnalysis_Report
+         h1 count 1 (Products); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Sales.SalesAnalysis_Report
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x1)
+  [fail] design-audit/rung7/structure/Sales.SalesOrder_Overview
+         h1 count 1 (Quotations & sales orders); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Sales.SalesOrder_Overview
+         1 serious/critical of 1 violations over 33 rules: color-contrast(serious,x3)
+  [fail] design-audit/rung7/structure/Sales.SalesTeam_Overview
+         h1 count 1 (Quotations & sales orders); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Sales.SalesTeam_Overview
+         1 serious/critical of 1 violations over 33 rules: color-contrast(serious,x3)
+
+design-audit: INSTRUMENT FAULT (75) — this run measured nothing reliable.

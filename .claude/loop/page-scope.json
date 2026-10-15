@@ -1,7 +1,7 @@
 {
   "counts": {
     "modules": 7,
-    "pagesTotal": 19,
+    "pagesTotal": 26,
     "perModule": {
       "Core": 7,
       "Inventory": 0,
@@ -9,11 +9,11 @@
       "Partners": 4,
       "Products": 8,
       "Purchasing": 0,
-      "Sales": 0
+      "Sales": 7
     }
   },
-  "distinctRolePageSets": 7,
-  "generatedAt": "2026-10-15T06:09:03Z",
+  "distinctRolePageSets": 10,
+  "generatedAt": "2026-10-15T07:47:57Z",
   "inScope": [
     "Core.Company_Edit",
     "Core.Home_Web",
@@ -33,7 +33,14 @@
     "Products.Product_NewEdit",
     "Products.Product_Overview",
     "Products.UoMCategory_NewEdit",
-    "Products.UoMCategory_Overview"
+    "Products.UoMCategory_Overview",
+    "Sales.QuotationTemplate_NewEdit",
+    "Sales.QuotationTemplate_Overview",
+    "Sales.SalesAnalysis_Report",
+    "Sales.SalesOrder_NewEdit",
+    "Sales.SalesOrder_Overview",
+    "Sales.SalesTeam_NewEdit",
+    "Sales.SalesTeam_Overview"
   ],
   "orphans": [],
   "provenance": {
@@ -124,6 +131,34 @@
         "Products.Product_Overview"
       ],
       "role": "Products.Reader"
+    },
+    {
+      "inScopePages": 7,
+      "pages": [
+        "Sales.QuotationTemplate_NewEdit",
+        "Sales.QuotationTemplate_Overview",
+        "Sales.SalesAnalysis_Report",
+        "Sales.SalesOrder_NewEdit",
+        "Sales.SalesOrder_Overview",
+        "Sales.SalesTeam_NewEdit",
+        "Sales.SalesTeam_Overview"
+      ],
+      "role": "Sales.Manager"
+    },
+    {
+      "inScopePages": 1,
+      "pages": [
+        "Sales.SalesOrder_Overview"
+      ],
+      "role": "Sales.Reader"
+    },
+    {
+      "inScopePages": 2,
+      "pages": [
+        "Sales.SalesOrder_NewEdit",
+        "Sales.SalesOrder_Overview"
+      ],
+      "role": "Sales.User"
     }
   ]
 }

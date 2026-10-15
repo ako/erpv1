@@ -1,0 +1,33 @@
+coverage · LEVEL 1 · MEASURED — ledger found for Sales
+  ledger: architecture/modules/Sales/coverage-ledger
+
+coverage-check: analysis/odoo/knowledge-base/brd/F004-sales.brd.json
+  ledger:        architecture/modules/Sales/coverage-ledger/F004-sales.md
+  leaves:        932
+  CLAIMED:       851
+  LEDGERED:      81
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:0
+coverage-check: analysis/odoo/knowledge-base/brd/F007-order-fulfilment.brd.json
+  ledger:        architecture/modules/Sales/coverage-ledger/F007-order-fulfilment.md
+  leaves:        294
+  CLAIMED:       264
+  LEDGERED:      30
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:0
+coverage-check: analysis/odoo/knowledge-base/brd/F008-invoicing-payments.brd.json
+  ledger:        architecture/modules/Sales/coverage-ledger/F008-invoicing-payments.md
+  leaves:        1192
+  CLAIMED:       1100
+  LEDGERED:      92
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:0
+
+  per-BRD ledgers: 3 of 8 BRD(s) measured against architecture/modules/Sales/coverage-ledger/<BRDID>.md;
+  5 BRD(s) have no ledger here (another module's, not measured): F001-contacts-company-users F002-units-of-measure F003-product-catalogue-pricing F005-purchasing F006-inventory
