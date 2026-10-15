@@ -34,3 +34,17 @@
 - Data grid 2 has no phone column priority: horizontal scroll on phones via Core main.scss.
 - Decimal factor 1/12 stored at scale 8 → 120/dozen = 9.9999996/unit; price conversion rounds to 4 decimals (unit test).
 - The floating button at the right edge is Mendix's demo-user switcher (demo users enabled), not Feedback.
+
+## 2026-10-15 — Sales build, Partners close
+- **Cyclic page/microflow reference blocks one-script exec.** ACT_SalesOrder_New opens SalesOrder_NewEdit, whose buttons call
+  603/604 microflows: exec resolves in statement order, so no single ordering works. Split ACT_SalesOrder_New into 615, exec order
+  603, 604, 606 (page), 615, 605. Verified with a combined `check --references` over all Sales scripts.
+- **Demo-user switcher overlap**: the switcher is a full-height fixed panel off the right edge (`.mx-demouserswitcher`, top -16px,
+  844px tall); only `.mx-demouserswitcher-toggle` shows, absolutely positioned at ~25% height. Moving the panel did nothing visible;
+  move the toggle. Measured with getComputedStyle in Playwright at 390px.
+- **Lint rules re-seeded to stock by the session-start hook after compaction**: exec.sh reported BLIND; sync-project.sh restored
+  them. A `git add -A` commit in between had committed the stock copies — check `.claude/lint-rules` diff after any compaction.
+- **verify-module leaves a `sleep 1800` holding stdout**: a pipeline `verify-module.sh … | tail` never ends; read the log files
+  under `.claude/loop/verify/<M>/` or don't pipe.
+- **Journey positive control**: trace-order / trace-negative rungs cannot be proven in this container (no Jaeger at :16686, app not
+  run with --trace). Partners now proves 5/7 (country association claim added), same as Products.

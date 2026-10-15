@@ -1,0 +1,85 @@
+MONKEY_SEED=44361055   rounds=24   (re-run exactly: --seed 44361055)
+
+=== salesOrderOverview
+  [32mok   [0m salesOrderOverview · abuse: backAfterSubmit (Back left the app: the click pushed no history entry; returned with Forward)  — no spans — OTel arm of the oracle did NOT run
+
+=== quotationTemplateOverview
+  [32mok   [0m quotationTemplateOverview · abuse: rapidTab  — no spans — OTel arm of the oracle did NOT run
+
+=== salesTeamOverview
+  [32mok   [0m salesTeamOverview · abuse: rapidTab  — no spans — OTel arm of the oracle did NOT run
+
+=== purchaseOrderOverview
+  [32mok   [0m purchaseOrderOverview · abuse: backAfterSubmit (Back left the app: the click pushed no history entry; returned with Forward)  — no spans — OTel arm of the oracle did NOT run
+
+=== purchaseApprovalInbox
+  [32mok   [0m purchaseApprovalInbox · abuse: rapidTab  — no spans — OTel arm of the oracle did NOT run
+
+=== vendorPriceOverview
+  [32mok   [0m vendorPriceOverview · abuse: rapidTab  — no spans — OTel arm of the oracle did NOT run
+
+=== inventoryDashboard
+  [32mok   [0m inventoryDashboard · abuse: backAfterSubmit (Back left the app: the click pushed no history entry; returned with Forward)  — no spans — OTel arm of the oracle did NOT run
+
+=== transferOverview
+  [32mok   [0m transferOverview · abuse: doubleClick  — no spans — OTel arm of the oracle did NOT run
+
+=== stockLevelOverview
+  [32mok   [0m stockLevelOverview · abuse: doubleClick  — no spans — OTel arm of the oracle did NOT run
+
+=== reorderRuleOverview
+  [32mok   [0m reorderRuleOverview · abuse: rapidTab  — no spans — OTel arm of the oracle did NOT run
+
+=== invoiceOverview
+  [32mok   [0m invoiceOverview · abuse: doubleClick  — no spans — OTel arm of the oracle did NOT run
+
+=== paymentOverview
+  [32mok   [0m paymentOverview · abuse: doubleClick  — no spans — OTel arm of the oracle did NOT run
+
+=== partnerOverview
+  [32mok   [0m partnerOverview · field ← whitespace-wrapped  — no spans — OTel arm of the oracle did NOT run
+
+=== productOverview
+  [32mok   [0m productOverview · field ← empty  — no spans — OTel arm of the oracle did NOT run
+
+=== pricelistOverview
+  [32mok   [0m pricelistOverview · field ← OQL-shaped  — no spans — OTel arm of the oracle did NOT run
+
+=== salesAnalysisReport
+  [32mok   [0m salesAnalysisReport · field ← newlines  — no spans — OTel arm of the oracle did NOT run
+
+=== purchaseAnalysisReport
+  [32mok   [0m purchaseAnalysisReport · abuse: rapidTab  — no spans — OTel arm of the oracle did NOT run
+
+=== invoiceAnalysisReport
+  [32mok   [0m invoiceAnalysisReport · abuse: reloadMidFlow  — no spans — OTel arm of the oracle did NOT run
+
+=== companyEdit
+  [32mok   [0m companyEdit · abuse: rapidTab  — no spans — OTel arm of the oracle did NOT run
+
+=== warehouseEdit
+  [32mok   [0m warehouseEdit · field ← empty  — no spans — OTel arm of the oracle did NOT run
+
+=== sequenceOverview
+  [32mok   [0m sequenceOverview · field ← empty  — no spans — OTel arm of the oracle did NOT run
+
+=== taxOverview
+  [32mok   [0m taxOverview · field ← RTL override  — no spans — OTel arm of the oracle did NOT run
+
+=== paymentTermOverview
+  [32mok   [0m paymentTermOverview · abuse: backAfterSubmit  — no spans — OTel arm of the oracle did NOT run
+
+=== uoMCategoryOverview
+  [32mok   [0m uoMCategoryOverview · field ← newlines  — no spans — OTel arm of the oracle did NOT run
+
+=== productCategoryOverview
+  [32mok   [0m productCategoryOverview · field ← negative  — no spans — OTel arm of the oracle did NOT run
+
+=== MONKEY SUMMARY ===
+  seed 44361055 · 25 observations · 0 crash-class
+  ⚠ No spans were captured in ANY round. The OTel arm of the crash oracle
+    never ran, so swallowed-error crashes could not have been detected.
+    This run is a partial net, not a clean bill of health.
+  Read a clean run as "no unhandled crash on these inputs" and nothing more:
+  scripted journeys, not fuzzing, are what find defects in this stack.
+  findings → ../tests/e2e/artifacts/monkey-findings.json

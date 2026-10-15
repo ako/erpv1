@@ -1,0 +1,5 @@
+conformance	pass	0		docs/conformance/report-2026-10-15-F001-contacts-company-users.tsv, docs/conformance/report-2026-10-15-F002-units-of-measure.tsv, docs/conformance/report-2026-10-15-F003-product-catalogue-pricing.tsv	
+graph-sweep	pass	0	0	.claude/loop/review/Partners/graph.tsv	
+coverage	pass	0	1	.claude/loop/review/Partners/coverage.txt	
+journey-runner	fault	2			no journey run in this invocation
+ui-review	fault	2			no visual review in this invocation - module-review.md stage 4

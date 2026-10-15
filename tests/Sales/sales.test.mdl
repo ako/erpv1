@@ -1,0 +1,131 @@
+-- Sales unit tests (build-plan rows 43-48). Every test rolls back unless it says otherwise.
+-- Fixtures: the demo seed (Azure Interior, Brandon Freeman, Office Chair 120.00 with 21% sales tax, Cable Pack 12.50).
+
+/**
+ * @test A new quotation is numbered from the S sequence and starts as a quotation with nothing to invoice
+ * @expect $Ok = true
+ */
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+declare $Ok Boolean = startsWith($SO/Number, 'S') and $SO/Status = Sales.ENUM_SalesOrderStatus.Quotation
+  and $SO/InvoiceStatus = Core.ENUM_InvoiceStatus.NothingToInvoice;
+/
+
+/**
+ * @test Choosing a contact person as customer takes the company's invoice address
+ * @expect $Address/Name = 'Azure Interior, Accounts'
+ */
+retrieve $Brandon from Partners.Partner where [Name = 'Brandon Freeman'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Brandon);
+call microflow Sales.SUB_SalesOrder_ApplyCustomer(SalesOrder = $SO);
+retrieve $Address from $SO/Sales.SalesOrder_InvoiceAddress;
+/
+
+/**
+ * @test Choosing a product on a line takes its sales price
+ * @expect $Line/UnitPrice = 120
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+$Line = create Sales.SalesOrderLine (Quantity = 5, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Chair);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+/
+
+/**
+ * @test Five chairs at 120.00 with 21% tax total 726.00
+ * @expect $SO/AmountTotal = 726
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+$Line = create Sales.SalesOrderLine (Quantity = 5, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Chair);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+$Done = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $SO);
+/
+
+/**
+ * @test A 10% discount lowers the untaxed amount
+ * @expect $SO/AmountUntaxed = 540
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+$Line = create Sales.SalesOrderLine (Quantity = 5, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Chair);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+change $Line (DiscountPercent = 10);
+$Done = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $SO);
+/
+
+/**
+ * @test A section line carries no amount
+ * @expect $SO/AmountUntaxed = 0
+ */
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+$Line = create Sales.SalesOrderLine (LineType = Core.ENUM_LineType.Section, Description = 'Lighting', Quantity = 3, UnitPrice = 10,
+  Sales.SalesOrderLine_SalesOrder = $SO);
+$Done = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $SO);
+/
+
+/**
+ * @test Confirming a quotation with a product line makes it a sales order
+ * @expect $SO/Status = Sales.ENUM_SalesOrderStatus.SalesOrder
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+$Done = call microflow Sales.ACT_SalesOrder_Confirm(SalesOrder = $SO);
+/
+
+/**
+ * @test A confirmed order on ordered quantities is to invoice
+ * @expect $SO/InvoiceStatus = Core.ENUM_InvoiceStatus.ToInvoice
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+/
+
+/**
+ * @test A quotation without product lines is not confirmed
+ * @expect $Done = false
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Done = call microflow Sales.ACT_SalesOrder_Confirm(SalesOrder = $SO);
+/
+
+/**
+ * @test An order with invoiced quantities cannot be cancelled
+ * @expect $Done = false
+ */
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+$Line = create Sales.SalesOrderLine (Quantity = 2, QuantityInvoiced = 1, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+commit $Line;
+$Done = call microflow Sales.ACT_SalesOrder_Cancel(SalesOrder = $SO);
+/
+
+/**
+ * @test Mark as sent turns a quotation into a sent quotation
+ * @expect $SO/Status = Sales.ENUM_SalesOrderStatus.QuotationSent
+ */
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+$Done = call microflow Sales.ACT_SalesOrder_MarkSent(SalesOrder = $SO);
+/
+
+/**
+ * @test A cancelled order can be set back to quotation
+ * @expect $SO/Status = Sales.ENUM_SalesOrderStatus.Quotation
+ */
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+call microflow Sales.SUB_SalesOrder_Cancel(SalesOrder = $SO);
+$Done = call microflow Sales.ACT_SalesOrder_SetToQuotation(SalesOrder = $SO);
+/

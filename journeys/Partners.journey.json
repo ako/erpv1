@@ -26,7 +26,7 @@
       }
     },
     {
-      "name": "New company: tick Is company, fill name, email and city, mark as customer, save",
+      "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save",
       "actions": [
         {
           "do": "click",
@@ -58,6 +58,11 @@
           "value": "Utrecht"
         },
         {
+          "do": "combobox",
+          "widget": "cmbPartnerCountry",
+          "match": "Netherlands"
+        },
+        {
           "do": "click",
           "widget": "cbIsCustomer",
           "label": "Is customer"
@@ -79,7 +84,18 @@
         "delta": 1,
         "scope": {
           "newRowsBy": "id"
-        }
+        },
+        "assocMustBeSet": [
+          {
+            "entity": "Partners.Partner",
+            "assoc": "Partners.Partner_Country",
+            "target": "Core.Country",
+            "mustPointAt": {
+              "attr": "Name",
+              "value": "Netherlands"
+            }
+          }
+        ]
       }
     }
   ],

@@ -1,0 +1,15 @@
+coverage · LEVEL 1 · MEASURED — ledger found for Partners
+  ledger: architecture/modules/Partners/coverage-ledger
+
+coverage-check: analysis/odoo/knowledge-base/brd/F001-contacts-company-users.brd.json
+  ledger:        architecture/modules/Partners/coverage-ledger/F001-contacts-company-users.md
+  leaves:        1126
+  CLAIMED:       1028
+  LEDGERED:      98
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:0
+
+  per-BRD ledgers: 1 of 8 BRD(s) measured against architecture/modules/Partners/coverage-ledger/<BRDID>.md;
+  7 BRD(s) have no ledger here (another module's, not measured): F002-units-of-measure F003-product-catalogue-pricing F004-sales F005-purchasing F006-inventory F007-order-fulfilment F008-invoicing-payments

@@ -1,5 +1,5 @@
 mdl 1;
--- 603-sales-mf-sales-order-new.mdl — build-plan row 44 (F004-UC001). Owns Sales.SUB_SalesOrder_Create and the
+-- 603-sales-mf-sales-order-new.mdl — build-plan row 44 (F004-UC001). Owns Sales.SUB_SalesOrder_Create, SUB_SalesOrderLine_RecomputeOrder and the
 -- order form's on-change actions ACT_SalesOrder_ChangeCustomer, ACT_SalesOrderLine_ChangeProduct, ACT_SalesOrderLine_Recompute. ACT_SalesOrder_New is in 615 (it opens the form that calls these).
 
 /**
@@ -27,6 +27,21 @@ begin
   return $SalesOrder;
 end;
 
+/**
+ * The totals of the order a line belongs to.
+ *
+ * @param $SalesOrderLine the changed line
+ * @returns true
+ */
+create or modify microflow Sales.SUB_SalesOrderLine_RecomputeOrder ($SalesOrderLine: Sales.SalesOrderLine)
+returns Boolean as $Done
+folder 'Quotations/Microflows'
+begin
+  retrieve $Order from $SalesOrderLine/Sales.SalesOrderLine_SalesOrder;
+  $Recomputed = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $Order);
+  return true;
+end;
+
 /** On change of the customer: addresses, pricelist and payment term from the customer. */
 create or modify microflow Sales.ACT_SalesOrder_ChangeCustomer ($SalesOrder: Sales.SalesOrder)
 folder 'Quotations/Microflows'
@@ -45,8 +60,7 @@ returns Boolean as $Done
 folder 'Quotations/Microflows'
 begin
   call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $SalesOrderLine);
-  retrieve $Order from $SalesOrderLine/Sales.SalesOrderLine_SalesOrder;
-  $Recomputed = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $Order);
+  $Recomputed = call microflow Sales.SUB_SalesOrderLine_RecomputeOrder(SalesOrderLine = $SalesOrderLine);
   return true;
 end;
 
@@ -54,6 +68,5 @@ end;
 create or modify microflow Sales.ACT_SalesOrderLine_Recompute ($SalesOrderLine: Sales.SalesOrderLine)
 folder 'Quotations/Microflows'
 begin
-  retrieve $Order from $SalesOrderLine/Sales.SalesOrderLine_SalesOrder;
-  $Recomputed = call microflow Sales.SUB_SalesOrder_RecomputeTotals(SalesOrder = $Order);
+  $Recomputed = call microflow Sales.SUB_SalesOrderLine_RecomputeOrder(SalesOrderLine = $SalesOrderLine);
 end;

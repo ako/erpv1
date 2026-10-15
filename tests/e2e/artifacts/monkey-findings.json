@@ -1,193 +1,186 @@
 {
-  "capturedAt": "2026-10-15T01:19:58.987Z",
-  "seed": 27124933,
+  "capturedAt": "2026-10-15T06:08:59.446Z",
+  "seed": 44361055,
   "rounds": 24,
-  "configuredUser": "sales.manager",
-  "actualUser": "sales.manager",
+  "configuredUser": "sales.user",
+  "actualUser": "sales.user",
   "usedFallback": false,
   "otelOracleRan": false,
   "findings": [
     {
-      "severity": "crash",
+      "severity": "ok",
       "target": "salesOrderOverview",
-      "what": "abuse: rapidTab",
-      "detail": "blank page — no .mx-page or nav tree",
-      "seed": 27124933
+      "what": "abuse: backAfterSubmit (Back left the app: the click pushed no history entry; returned with Forward)",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
-      "target": "salesOrderOverview",
-      "what": "lost",
-      "detail": "no page after round 1 (at http://localhost:8080/login.html) and re-landing failed — the remaining 0 round(s) NOT fuzzed",
-      "seed": 27124933
-    },
-    {
-      "severity": "info",
+      "severity": "ok",
       "target": "quotationTemplateOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: rapidTab",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "salesTeamOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: rapidTab",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "purchaseOrderOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: backAfterSubmit (Back left the app: the click pushed no history entry; returned with Forward)",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "purchaseApprovalInbox",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: rapidTab",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "vendorPriceOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: rapidTab",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "inventoryDashboard",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: backAfterSubmit (Back left the app: the click pushed no history entry; returned with Forward)",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "transferOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: doubleClick",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "stockLevelOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: doubleClick",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "reorderRuleOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: rapidTab",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "invoiceOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: doubleClick",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "paymentOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: doubleClick",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "partnerOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "field ← whitespace-wrapped",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "productOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "field ← empty",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "pricelistOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "field ← OQL-shaped",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "salesAnalysisReport",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "field ← newlines",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "purchaseAnalysisReport",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: rapidTab",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "invoiceAnalysisReport",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: reloadMidFlow",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "companyEdit",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: rapidTab",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "warehouseEdit",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "field ← empty",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "sequenceOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "field ← empty",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "taxOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "field ← RTL override",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "paymentTermOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "abuse: backAfterSubmit",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "uoMCategoryOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "field ← newlines",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     },
     {
-      "severity": "info",
+      "severity": "ok",
       "target": "productCategoryOverview",
-      "what": "not reached",
-      "detail": "nav did not land — target skipped, NOT fuzzed",
-      "seed": 27124933
+      "what": "field ← negative",
+      "detail": "no spans — OTel arm of the oracle did NOT run",
+      "seed": 44361055
     }
   ]
 }

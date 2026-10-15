@@ -1,0 +1,44 @@
+
+design-audit → ../tests/e2e/artifacts/design-audit.json
+mode=full pages=19 checks=192
+fail=15  fault=41  skipped=1  pass=135
+partially-read pages: 2/19
+invented classes (0): —
+never-promoted (0): —
+wireframe chrome (0): —
+raw-class-over-designProperty hits: 0 on 0 pages
+wireframe matched 18, unmatched 1
+
+findings:
+  [fail] design-audit/rung7/structure/Core.Company_Edit
+         h1 count 1 (Welcome); landmarks: NONE
+  [fail] design-audit/rung7/structure/Core.Home_Web
+         h1 count 1 (Welcome); landmarks: NONE
+  [fail] design-audit/rung7/structure/Core.PaymentTerm_Overview
+         h1 count 1 (Welcome); landmarks: NONE
+  [fail] design-audit/rung7/structure/Core.Sequence_Overview
+         h1 count 1 (Welcome); landmarks: NONE
+  [fail] design-audit/rung7/structure/Core.Tax_Overview
+         h1 count 1 (Welcome); landmarks: NONE
+  [fail] design-audit/rung7/structure/Partners.Partner_Overview
+         h1 count 1 (Contacts); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Partners.Partner_Overview
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x2)
+  [fail] design-audit/rung7/structure/Products.Pricelist_Overview
+         h1 count 1 (Contacts); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Products.Pricelist_Overview
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x2)
+  [fail] design-audit/rung7/structure/Products.ProductCategory_Overview
+         h1 count 1 (Contacts); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Products.ProductCategory_Overview
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x2)
+  [fail] design-audit/rung7/structure/Products.Product_Overview
+         h1 count 1 (Products); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Products.Product_Overview
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x1)
+  [fail] design-audit/rung7/structure/Products.UoMCategory_Overview
+         h1 count 1 (Products); landmarks: NONE
+  [fail] design-audit/rung7/a11y/Products.UoMCategory_Overview
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x1)
+
+design-audit: INSTRUMENT FAULT (42) — this run measured nothing reliable.

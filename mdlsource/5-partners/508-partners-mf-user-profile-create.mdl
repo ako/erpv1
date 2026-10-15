@@ -1,5 +1,5 @@
 mdl 1;
--- 508-partners-mf-user-profile-create.mdl — build-plan row 38 (F001-UC005). Owns Partners.ACT_UserProfile_Create and
+-- 508-partners-mf-user-profile-create.mdl — build-plan row 38 (F001-UC005). Owns Partners.SUB_UserProfile_Create, ACT_UserProfile_Create and
 -- Partners.SUB_UserProfiles_Ensure (startup: every account gets its profile and partner, Odoo res.users -> res.partner).
 
 /**
@@ -9,7 +9,7 @@ mdl 1;
  * @param $Account the user account
  * @returns the profile
  */
-create or modify microflow Partners.ACT_UserProfile_Create ($Account: Administration.Account)
+create or modify microflow Partners.SUB_UserProfile_Create ($Account: Administration.Account)
 returns Partners.UserProfile as $Profile
 folder 'Users/Microflows'
 begin
@@ -23,4 +23,18 @@ begin
   commit $Partner without events;
   commit $NewProfile without events;
   return $NewProfile;
+end;
+
+/**
+ * Create user profile (F001-UC005): the profile and partner of an account (SUB_UserProfile_Create).
+ *
+ * @param $Account the user account
+ * @returns the profile
+ */
+create or modify microflow Partners.ACT_UserProfile_Create ($Account: Administration.Account)
+returns Partners.UserProfile as $Profile
+folder 'Users/Microflows'
+begin
+  $Profile = call microflow Partners.SUB_UserProfile_Create(Account = $Account);
+  return $Profile;
 end;

@@ -171,7 +171,9 @@ def column(e, f, filters=False):
         t = a['type'] if a else SYS_ATTR[f]
         align = ', Alignment: right' if t in ('Decimal', 'Integer', 'Long') else ''
         cls = ", DynamicCellClass: 'num-right'" if t in ('Decimal', 'Integer', 'Long') else ''
-        head = "column (Attribute: %s, Caption: '%s'%s%s)" % (D.q(f), esc(label_of(e, f)), align, cls)
+        # short values (flags, states, numbers, dates) fit their content; text columns share the rest (ui-review 2026-10-15 Partners P2)
+        fit = ', ColumnWidth: autoFit' if t in ('Boolean', 'Enumeration', 'Decimal', 'Integer', 'Long', 'DateTime') else ''
+        head = "column (Attribute: %s, Caption: '%s'%s%s%s)" % (D.q(f), esc(label_of(e, f)), align, cls, fit)
         if filters:
             flt = {'String': 'textfilter', 'Decimal': 'numberfilter', 'Integer': 'numberfilter', 'Long': 'numberfilter',
                    'DateTime': 'datefilter', 'Enumeration': 'dropdownfilter', 'Boolean': 'dropdownfilter'}[t]

@@ -27,4 +27,32 @@ PROOF-OF-LOOK: Core.PaymentTerm_NewEdit = shots/2026-10-15/Core.PaymentTerm_NewE
 <li>Open P3 carried: 13 "Journey tax 5%" fixture rows from journey runs (journey leaves its row; demo DB to be reset before the demo).</li>
 </ul>
 </section>
+<section id="addendum-2"><h2>Addendum 2 &mdash; re-look 2026-10-15c</h2>
+<p>Core &middot; 7 of 7 pages re-shot at 1280 and 390 (shots/2026-10-15c, sales/admin menu navigation, current model) &middot; stage 3 not re-run in this look</p>
+<pre>VALID AT: c37358d
+PROOF-OF-LOOK: Core.Home_Web = shots/2026-10-15c/Core.Home_Web.png
+PROOF-OF-LOOK: Core.Company_Edit = shots/2026-10-15c/Core.Company_Edit.png
+PROOF-OF-LOOK: Core.Sequence_Overview = shots/2026-10-15c/Core.Sequence_Overview.png
+PROOF-OF-LOOK: Core.Tax_Overview = shots/2026-10-15c/Core.Tax_Overview.png
+PROOF-OF-LOOK: Core.Tax_NewEdit = shots/2026-10-15c/Core.Tax_NewEdit.png
+PROOF-OF-LOOK: Core.PaymentTerm_Overview = shots/2026-10-15c/Core.PaymentTerm_Overview.png
+PROOF-OF-LOOK: Core.PaymentTerm_NewEdit = shots/2026-10-15c/Core.PaymentTerm_NewEdit.png
+PROOF-OF-LOOK files opened (Read): Core.Home_Web-1280, Core.Home_Web-390, Core.Company_Edit-1280, Core.Company_Edit-390, Core.Sequence_Overview-1280, Core.Sequence_Overview-390, Core.Tax_Overview-1280, Core.Tax_Overview-390, Core.Tax_NewEdit-1280, Core.Tax_NewEdit-390, Core.PaymentTerm_Overview-1280, Core.PaymentTerm_Overview-390, Core.PaymentTerm_NewEdit-1280, Core.PaymentTerm_NewEdit-390  (14 of 14 shots, all in shots/2026-10-15c/)
+</pre>
+<p>Each earlier finding, as seen in the new shots (Judged, pixels):</p><ul>
+<li>P2-1 line editors at 390: <b>fixed, still fixed</b> &mdash; every Sequence input and PaymentTerm instalment input carries its label (Core.Sequence_Overview-390, Core.PaymentTerm_NewEdit-390).</li>
+<li>P2-2 Tax grid at 390: <b>fixed, still fixed</b> &mdash; columns keep readable widths and the grid scrolls sideways; names still read &lsquo;Journey &hellip;&rsquo; (P3 open) (Core.Tax_Overview-390).</li>
+<li>P2-3 Sequence code clipping: <b>fixed</b> &mdash; full keys such as account.move.in_invoice are visible and read-only (Core.Sequence_Overview-1280).</li>
+<li>P2-4 demo-user switcher / floating button at 390: <b>still open, now worse</b> &mdash; on Tax_Overview and PaymentTerm_Overview at 390 the switcher (right edge, y about 160-192) sits on top of the primary action: the New button reads &lsquo;Nev&rsquo; (Core.Tax_Overview-390, Core.PaymentTerm_Overview-390). On Company_Edit and PaymentTerm_NewEdit it touches Save (Core.Company_Edit-390, Core.PaymentTerm_NewEdit-390). At 1280 it sits in the gutter and is harmless. Now <b>P2 (new evidence)</b>: the same overlap hits the primary action on every overview page of Core and Products at 390. Likely cause, not verified: the stacked phone menu grew to 4 rows (top bar about 138px) so the page-head row, and New, lands at the switcher&rsquo;s fixed y.</li>
+<li>P2-5 Users link: <b>fixed</b> &mdash; under a &lsquo;Related&rsquo; heading, &lsquo;User accounts (Administration)&rsquo; (Core.Company_Edit-1280). Related known open P2: UserProfile_Edit still has no menu entry (Partners).</li>
+<li>P2-6 one-click Remove on sequences: <b>fixed</b> &mdash; no Remove on the Sequence rows (Core.Sequence_Overview-1280). Remove on the PaymentTerm instalment line still has no confirmation (P3, new; Core.PaymentTerm_NewEdit-1280).</li>
+<li>P3 Home focus ring on Sign out: <b>still open</b> (Core.Home_Web-1280, ring around &lsquo;Sign out&rsquo;). Home page sparseness: unchanged. At 390 &lsquo;Home&rsquo; shows a focus box.</li>
+<li>P3 phone menu: <b>still open</b> &mdash; &lsquo;Home&rsquo; is highlighted on every non-Home page at 390 and the top bar is 103px (3 items) to 138px (4 items, with Configuration).</li>
+<li>P3 Tax filters clipped: <b>still open</b> (Select placeholders cut, Core.Tax_Overview-1280). PaymentTerm Note column blank: <b>still open</b> (data).</li>
+<li>P3 Tax fixtures: <b>still open and growing</b> &mdash; 14 &lsquo;Journey tax 5%&rsquo; rows of 17 (was 13 of 15) (Core.Tax_Overview-1280).</li>
+<li>P3 label column widths and required markers: <b>still open</b> (&lsquo;Quotation validity days&rsquo;, &lsquo;PO approval threshold&rsquo; wrap; no required markers) (Core.Company_Edit-1280).</li>
+<li>P3 lines header offset: <b>still open, smaller</b> &mdash; PaymentTerm instalment headers start 8 to 16px left of their inputs; &lsquo;Delay type&rsquo; is now truncated at 1280 (&lsquo;Day&hellip;&rsquo;) instead of 390 (full text at 390) (Core.PaymentTerm_NewEdit-1280/-390).</li>
+<li>P3 Tax_NewEdit popup: unchanged &mdash; dialog fine, dialog header overlaps the top bar at 390, dim layer ends at y=900 in the 1280 full-page capture (artefact).</li>
+<li>New P3: Sequence_Overview shows 9 rows with no pager and no way to add a sequence (unchanged from first look, restated); Company_Edit now has the Configuration menu group (Company, Numbering, Taxes, Payment terms, Units of measure, Product categories) with all entries reachable (Core.Company_Edit-1280).</li>
+</ul><p><b>New P1:</b> none. <b>Not measured:</b> design-audit.js not run; empty states and validation not exercised.</p></section>
 </body></html>

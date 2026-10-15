@@ -1,0 +1,4 @@
+page-scope → .claude/loop/page-scope.json
+  modules  7  (SHOW MODULES)
+  inScope  19 page(s)  Core=7 Inventory=0 Invoicing=0 Partners=4 Products=8 Purchasing=0 Sales=0
+  roles    7 role(s) → 7 distinct page set(s)

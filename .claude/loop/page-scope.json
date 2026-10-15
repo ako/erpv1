@@ -1,19 +1,19 @@
 {
   "counts": {
     "modules": 7,
-    "pagesTotal": 17,
+    "pagesTotal": 19,
     "perModule": {
       "Core": 7,
       "Inventory": 0,
       "Invoicing": 0,
-      "Partners": 2,
+      "Partners": 4,
       "Products": 8,
       "Purchasing": 0,
       "Sales": 0
     }
   },
-  "distinctRolePageSets": 6,
-  "generatedAt": "2026-10-15T01:20:04Z",
+  "distinctRolePageSets": 7,
+  "generatedAt": "2026-10-15T06:09:03Z",
   "inScope": [
     "Core.Company_Edit",
     "Core.Home_Web",
@@ -22,8 +22,10 @@
     "Core.Sequence_Overview",
     "Core.Tax_NewEdit",
     "Core.Tax_Overview",
+    "Partners.PartnerChild_NewEdit",
     "Partners.Partner_NewEdit",
     "Partners.Partner_Overview",
+    "Partners.UserProfile_Edit",
     "Products.Pricelist_NewEdit",
     "Products.Pricelist_Overview",
     "Products.ProductCategory_NewEdit",
@@ -85,8 +87,18 @@
       "role": "Core.User"
     },
     {
-      "inScopePages": 2,
+      "inScopePages": 3,
       "pages": [
+        "Partners.Partner_NewEdit",
+        "Partners.Partner_Overview",
+        "Partners.UserProfile_Edit"
+      ],
+      "role": "Partners.Admin"
+    },
+    {
+      "inScopePages": 3,
+      "pages": [
+        "Partners.PartnerChild_NewEdit",
         "Partners.Partner_NewEdit",
         "Partners.Partner_Overview"
       ],

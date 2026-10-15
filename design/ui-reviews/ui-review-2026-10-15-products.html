@@ -50,4 +50,31 @@ PROOF-OF-LOOK: Products.ProductCategory_NewEdit = shots/2026-10-15b/Products.Pro
 <li>P2-4 factor precision: fixed — 0.08333333 shown (UoMCategory_NewEdit-1280).</li>
 <li>New P3: line-editor checkboxes repeat their caption ("Active") beside the box on desktop.</li>
 </ul></section>
+<section id="addendum-2"><h2>Addendum 2 &mdash; re-look 2026-10-15c</h2>
+<p>Products &middot; 8 of 8 pages re-shot at 1280 and 390 (shots/2026-10-15c, current model) &middot; stage 3 not re-run in this look</p>
+<pre>VALID AT: c37358d
+PROOF-OF-LOOK: Products.Product_Overview = shots/2026-10-15c/Products.Product_Overview.png
+PROOF-OF-LOOK: Products.Product_NewEdit = shots/2026-10-15c/Products.Product_NewEdit.png
+PROOF-OF-LOOK: Products.Pricelist_Overview = shots/2026-10-15c/Products.Pricelist_Overview.png
+PROOF-OF-LOOK: Products.Pricelist_NewEdit = shots/2026-10-15c/Products.Pricelist_NewEdit.png
+PROOF-OF-LOOK: Products.UoMCategory_Overview = shots/2026-10-15c/Products.UoMCategory_Overview.png
+PROOF-OF-LOOK: Products.UoMCategory_NewEdit = shots/2026-10-15c/Products.UoMCategory_NewEdit.png
+PROOF-OF-LOOK: Products.ProductCategory_Overview = shots/2026-10-15c/Products.ProductCategory_Overview.png
+PROOF-OF-LOOK: Products.ProductCategory_NewEdit = shots/2026-10-15c/Products.ProductCategory_NewEdit.png
+PROOF-OF-LOOK files opened (Read): Products.Product_Overview-1280, Products.Product_Overview-390, Products.Product_NewEdit-1280, Products.Product_NewEdit-390, Products.Pricelist_Overview-1280, Products.Pricelist_Overview-390, Products.Pricelist_NewEdit-1280, Products.Pricelist_NewEdit-390, Products.UoMCategory_Overview-1280, Products.UoMCategory_Overview-390, Products.UoMCategory_NewEdit-1280, Products.UoMCategory_NewEdit-390, Products.ProductCategory_Overview-1280, Products.ProductCategory_Overview-390, Products.ProductCategory_NewEdit-1280, Products.ProductCategory_NewEdit-390  (16 of 16 shots, all in shots/2026-10-15c/)
+</pre>
+<p>Each earlier finding, as seen in the new shots (Judged, pixels). Data changed since the first look: Product_Overview now holds 11 rows (four real products plus seven &lsquo;Journey Chair&rsquo; fixtures) and Product_NewEdit was captured on &lsquo;Cable Pack&rsquo;, a fully populated record.</p><ul>
+<li>P2-1 Category required: <b>fixed</b> (as Addendum 1) &mdash; the newest Journey Chair row shows Category &lsquo;All&rsquo;; the older fixtures stay blank (data). No required marker is drawn on the form (P3 open) (Products.Product_Overview-1280, Products.Product_NewEdit-1280).</li>
+<li>P2-2 image uploader / Vendor prices link: <b>still open, deferred</b> &mdash; neither is on Products.Product_NewEdit-1280.</li>
+<li>P2-3 Product_Overview filters: <b>fixed for attribute columns, category/unit still absent</b> &mdash; filters on Internal reference, Name, Product type, Sales price, Cost; none on Category or Unit; the drawn can-be-sold / can-be-purchased filters are absent (Products.Product_Overview-1280).</li>
+<li>P2-4 factor precision: <b>fixed</b> &mdash; Dozens shows 0.08333333 (Products.UoMCategory_NewEdit-1280).</li>
+<li>P3 filter row clipping: <b>still open</b> (Product type and Pricelist Active &lsquo;Select&rsquo; clipped, Products.Product_Overview-1280, Products.Pricelist_Overview-1280). Product_Overview @390 truncation (&lsquo;Int&hellip;&rsquo;, &lsquo;Cable &hellip;&rsquo;): still open. Pricelist_Overview @390 Active column off-screen: still open (only Name and Currency fit).</li>
+<li>P3 Product_NewEdit numbers left-aligned, label wrap (&lsquo;Customer lead days&rsquo;, &lsquo;Purchase description&rsquo;), wider Internal notes label column: <b>still open</b> (Products.Product_NewEdit-1280). The 26 bindings otherwise all populated on Cable Pack, Weight and Volume blank (data). At 390 Save/Archive sit beside the H1 against the switcher (Products.Product_NewEdit-390).</li>
+<li>P3 Archive without confirmation: not exercised, still open. Price rules header crammed at 1280 (&lsquo;Computation&rsquo; touches &lsquo;Fixed price&rsquo;): <b>still open</b>; the pricelist still has no rules, so only &lsquo;No items found&rsquo; was seen (Products.Pricelist_NewEdit-1280). Re-look needs a rule.</li>
+<li>P3 Unit type clipped (&lsquo;Refe&hellip;&rsquo;, &lsquo;Bigg&hellip;&rsquo;) at 1280, Remove without confirmation, Active label under the box at 390, and the line-editor checkbox repeating its caption &lsquo;Active&rsquo; under the &lsquo;Active&rsquo; header: <b>still open</b> (Products.UoMCategory_NewEdit-1280/-390).</li>
+<li>P3 ProductCategory popup: <b>still open</b> &mdash; Cancel vs Discard, dialog header overlaps the top bar at 390 with the page title showing behind it (Products.ProductCategory_NewEdit-390).</li>
+<li>Reuse gaps (Active/Product type plain text, hand-copied page-head): <b>unchanged</b>.</li>
+<li><b>New P2 (seen on every overview page of the module at 390):</b> the demo-user switcher at the right edge sits on the primary action: the New button reads &lsquo;Nev&rsquo; on Product_Overview, Pricelist_Overview, UoMCategory_Overview and ProductCategory_Overview (Products.*_Overview-390.png) and the Save button touches it on every NewEdit page. At 1280 it is in the gutter. Same cause and same finding as Core Addendum 2 P2-4; the Products first look recorded the switcher as known and not re-reported, but it now hides part of the primary action. Cause not verified (stacked 4-row phone menu pushes the page head onto the switcher).</li>
+<li>New P3: Products.Product_Overview-1280 shows seven &lsquo;Journey Chair&rsquo; fixtures with blank reference, category and cost among four real products; same journey-teardown leak as Core Tax.</li>
+</ul><p><b>New P1:</b> none. <b>Not measured:</b> design-audit.js not run; empty states, validation and Archive outcome not exercised.</p></section>
 </body></html>

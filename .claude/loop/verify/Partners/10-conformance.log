@@ -1,0 +1,18 @@
+  measuring 1/31   measuring 2/31   measuring 3/31   measuring 4/31   measuring 5/31   measuring 6/31   measuring 7/31   measuring 8/31   measuring 9/31   measuring 10/31   measuring 11/31   measuring 12/31   measuring 13/31   measuring 14/31   measuring 15/31   measuring 16/31   measuring 17/31   measuring 18/31   measuring 19/31   measuring 20/31   measuring 21/31   measuring 22/31   measuring 23/31   measuring 24/31   measuring 25/31   measuring 26/31   measuring 27/31   measuring 28/31   measuring 29/31   measuring 30/31   measuring 31/31                               conformance-check · 2026-10-15
+  ledger rows            37   (measured 31 · prose-only 6)
+  OK                     24
+  STALE                  0   (claims built/partial, model says absent)
+  UNDERSTATED            7
+  report                 docs/conformance/report-2026-10-15-F001-contacts-company-users.tsv
+  newly baselined        31   (no baseline row yet — regressions measured from the next run)
+
+  mismatches:
+    Partners                 F001-contacts-company-users:`/actorRoleMapping/*` (6) not-built   -> PRESENT UNDERSTATED
+    Partners                 F001-contacts-company-users:`/actors/*` (5) not-built   -> PRESENT UNDERSTATED
+    Partners                 F001-contacts-company-users:`/microflows/2/*` (9) not-built   -> PRESENT UNDERSTATED
+    Partners                 F001-contacts-company-users:`/microflows/3/*` (11) not-built   -> PRESENT UNDERSTATED
+    Partners                 F001-contacts-company-users:`/microflows/6/*` (9) not-built   -> PRESENT UNDERSTATED
+    Partners                 F001-contacts-company-users:`/pages/2/*` (12) not-built   -> PRESENT UNDERSTATED
+    Partners                 F001-contacts-company-users:`/pages/4/*` (9) not-built   -> PRESENT UNDERSTATED
+
+  no regressions against baseline.

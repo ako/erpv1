@@ -69,5 +69,7 @@
 }
 
 // Demo-user switcher (Mendix, demo users on): bottom-right corner, clear of page actions; content keeps room for it (P2-4).
-.mx-demouserswitcher { top: auto !important; bottom: 16px; }
+// The switcher is a full-height slide-out panel off the right edge; only its toggle tab shows. Move the tab, not the
+// panel (moving the panel left the tab over the page-head actions at 390px: ui-review 2026-10-15c).
+.mx-demouserswitcher-toggle { top: auto !important; bottom: 32px !important; }
 .region-content .spacing-inner-layout { padding-bottom: 72px !important; }

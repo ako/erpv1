@@ -1,0 +1,12 @@
+graph-sweep · catalog 2026-10-15T05:40:26 (build_mode full) · 1082 objects · 3993 typed edges (member=1126 associate=428 parameter=391 xpath=377 call=269 show_page=179 action=178 retrieve=169)
+
+  module wiring (>= 20 elements)
+    MODULE                   ELEMENTS   INBOUND   OUTBOUND
+    Partners                       36        15         41
+
+  orphaned microflows (no call / action / nav inbound, entry-point prefixes excluded): 2
+    Partners.ASU_Partners_SeedData                           5 activities
+    Partners.SUB_Partner_GetAddress                          4 activities
+
+  0 module(s) with no inbound references.
+  Whether that is a defect is an intent question — check the module brief.

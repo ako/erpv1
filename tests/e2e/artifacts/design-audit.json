@@ -3,24 +3,24 @@
   "instrument": "design-audit",
   "positiveControl": false,
   "run": {
-    "startedAt": "2026-10-15T01:20:04.492Z",
-    "finishedAt": "2026-10-15T01:20:36.654Z",
+    "startedAt": "2026-10-15T06:09:03.749Z",
+    "finishedAt": "2026-10-15T06:09:35.708Z",
     "mode": "full",
-    "pages": 17,
+    "pages": 19,
     "reproduce": {
       "command": "node tests/e2e/design-audit.js"
     }
   },
   "tally": {
-    "pass": 131,
+    "pass": 135,
     "skipped": 1,
-    "fault": 28,
-    "fail": 12
+    "fault": 41,
+    "fail": 15
   },
   "summary": {
-    "pagesRead": 17,
+    "pagesRead": 19,
     "pagesFault": 0,
-    "partiallyRead": 1,
+    "partiallyRead": 2,
     "inventedClassPages": 0,
     "inventedClasses": [],
     "neverPromotedPages": 0,
@@ -29,7 +29,7 @@
     "wireframeChromeClasses": [],
     "rawClassPages": 0,
     "rawClassHits": 0,
-    "wireframeMatched": 16,
+    "wireframeMatched": 18,
     "wireframeUnmatched": 1
   },
   "perPage": [
@@ -111,10 +111,21 @@
       "rawClassHits": 0
     },
     {
+      "page": "Partners.PartnerChild_NewEdit",
+      "read": true,
+      "partiallyRead": false,
+      "classes": 1,
+      "invented": [],
+      "neverPromoted": [],
+      "chrome": [],
+      "wireframe": "PartnerChild_NewEdit.html",
+      "rawClassHits": 0
+    },
+    {
       "page": "Partners.Partner_NewEdit",
       "read": true,
       "partiallyRead": false,
-      "classes": 5,
+      "classes": 6,
       "invented": [],
       "neverPromoted": [],
       "chrome": [],
@@ -125,11 +136,22 @@
       "page": "Partners.Partner_Overview",
       "read": true,
       "partiallyRead": false,
-      "classes": 4,
+      "classes": 5,
       "invented": [],
       "neverPromoted": [],
       "chrome": [],
       "wireframe": "Partner_Overview.html",
+      "rawClassHits": 0
+    },
+    {
+      "page": "Partners.UserProfile_Edit",
+      "read": true,
+      "partiallyRead": false,
+      "classes": 1,
+      "invented": [],
+      "neverPromoted": [],
+      "chrome": [],
+      "wireframe": "UserProfile_Edit.html",
       "rawClassHits": 0
     },
     {
@@ -190,7 +212,7 @@
     {
       "page": "Products.Product_Overview",
       "read": true,
-      "partiallyRead": false,
+      "partiallyRead": true,
       "classes": 5,
       "invented": [],
       "neverPromoted": [],
@@ -258,7 +280,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "ds.css 68 classes; deployed theme 3239 classes from deployment/web/theme.compiled.css, deployment/web/dist/widgets.css; wireframe-inline 0 classes across 47 files. 66 ds.css classes are absent from the deployed theme overall — the never-promoted check is therefore capable of firing; whether it does depends on which of them a page references.",
-      "measuredAt": "2026-10-15T01:20:04.560Z",
+      "measuredAt": "2026-10-15T06:09:03.794Z",
       "evidence": [
         {
           "type": "log",
@@ -276,8 +298,8 @@
       "title": "in-scope page set resolved",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "17 pages from ../.claude/loop/page-scope.json",
-      "measuredAt": "2026-10-15T01:20:04.560Z",
+      "detail": "19 pages from ../.claude/loop/page-scope.json",
+      "measuredAt": "2026-10-15T06:09:03.794Z",
       "evidence": []
     },
     {
@@ -291,7 +313,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 34 tree nodes for 34 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:05.069Z",
+      "measuredAt": "2026-10-15T06:09:04.100Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -314,7 +336,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no invented-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.070Z",
+      "measuredAt": "2026-10-15T06:09:04.101Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -337,7 +359,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no never-promoted among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.070Z",
+      "measuredAt": "2026-10-15T06:09:04.101Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -360,7 +382,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no wireframe-chrome among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.070Z",
+      "measuredAt": "2026-10-15T06:09:04.101Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -383,7 +405,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no unmatched-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.070Z",
+      "measuredAt": "2026-10-15T06:09:04.101Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -406,7 +428,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "wireframe Company_Edit.html: every class this page references resolves to the deployed theme or ds.css; informational: 28 styled classes in the wireframe the page never uses (bind, is-active, is-num, is-primary, is-required, lg-actions, lg-appname, lg-body, lg-btn, lg-check, lg-content, lg-docno, lg-eyebrow, lg-field, lg-grid2, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-rail, lg-section, lg-select, lg-sheet, lg-shell, lg-textarea, …), 5 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:05.071Z",
+      "measuredAt": "2026-10-15T06:09:04.101Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -429,7 +451,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large, gridSections.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:05.073Z",
+      "measuredAt": "2026-10-15T06:09:04.102Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -447,7 +469,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 6 tree nodes for 6 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:05.242Z",
+      "measuredAt": "2026-10-15T06:09:04.221Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -470,7 +492,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no invented-class among 4 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.242Z",
+      "measuredAt": "2026-10-15T06:09:04.221Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -493,7 +515,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no never-promoted among 4 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.242Z",
+      "measuredAt": "2026-10-15T06:09:04.221Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -516,7 +538,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no wireframe-chrome among 4 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.242Z",
+      "measuredAt": "2026-10-15T06:09:04.221Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -539,7 +561,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no unmatched-class among 4 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.242Z",
+      "measuredAt": "2026-10-15T06:09:04.221Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -562,7 +584,7 @@
       "verdict": "skipped",
       "provenance": "measured",
       "detail": "rung 6 does not apply to this page; rung 7 measures it anyway — that is the point of rung 7",
-      "measuredAt": "2026-10-15T01:20:05.242Z",
+      "measuredAt": "2026-10-15T06:09:04.221Z",
       "reason": "no wireframe was drawn for this page (not in the hand-verified map)",
       "evidence": []
     },
@@ -577,7 +599,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large, ctnIntro.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:05.242Z",
+      "measuredAt": "2026-10-15T06:09:04.222Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -595,7 +617,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 26 tree nodes for 26 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:05.419Z",
+      "measuredAt": "2026-10-15T06:09:04.375Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -618,7 +640,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no invented-class among 9 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.419Z",
+      "measuredAt": "2026-10-15T06:09:04.375Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -641,7 +663,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no never-promoted among 9 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.419Z",
+      "measuredAt": "2026-10-15T06:09:04.375Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -664,7 +686,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no wireframe-chrome among 9 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.419Z",
+      "measuredAt": "2026-10-15T06:09:04.375Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -687,7 +709,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no unmatched-class among 9 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.419Z",
+      "measuredAt": "2026-10-15T06:09:04.375Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -710,7 +732,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "wireframe PaymentTerm_NewEdit.html: every class this page references resolves to the deployed theme or ds.css; informational: 29 styled classes in the wireframe the page never uses (bind, is-link, is-num, is-primary, is-required, lg-actions, lg-addline, lg-appname, lg-body, lg-btn, lg-content, lg-docno, lg-eyebrow, lg-field, lg-grid2, lg-gridwrap, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-rail, lg-section, lg-sheet, lg-shell, lg-table, …), 9 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:05.419Z",
+      "measuredAt": "2026-10-15T06:09:04.375Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -733,7 +755,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large, gridSections.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:05.419Z",
+      "measuredAt": "2026-10-15T06:09:04.375Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -751,7 +773,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 6 tree nodes for 6 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:05.652Z",
+      "measuredAt": "2026-10-15T06:09:04.543Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -774,7 +796,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no invented-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.652Z",
+      "measuredAt": "2026-10-15T06:09:04.543Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -797,7 +819,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no never-promoted among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.652Z",
+      "measuredAt": "2026-10-15T06:09:04.543Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -820,7 +842,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no wireframe-chrome among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.652Z",
+      "measuredAt": "2026-10-15T06:09:04.543Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -843,7 +865,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no unmatched-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.652Z",
+      "measuredAt": "2026-10-15T06:09:04.543Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -866,7 +888,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "wireframe PaymentTerm_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 19 styled classes in the wireframe the page never uses (bind, is-active, is-primary, lg-actions, lg-appname, lg-body, lg-btn, lg-content, lg-gridwrap, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-rowlink, lg-shell, lg-table, lg-topbar, wf-contract), 5 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:05.652Z",
+      "measuredAt": "2026-10-15T06:09:04.544Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -889,7 +911,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:05.652Z",
+      "measuredAt": "2026-10-15T06:09:04.544Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -907,7 +929,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 14 tree nodes for 14 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:05.802Z",
+      "measuredAt": "2026-10-15T06:09:04.671Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -930,7 +952,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no invented-class among 7 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.802Z",
+      "measuredAt": "2026-10-15T06:09:04.671Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -953,7 +975,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no never-promoted among 7 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.802Z",
+      "measuredAt": "2026-10-15T06:09:04.671Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -976,7 +998,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no wireframe-chrome among 7 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.802Z",
+      "measuredAt": "2026-10-15T06:09:04.671Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -999,7 +1021,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no unmatched-class among 7 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.802Z",
+      "measuredAt": "2026-10-15T06:09:04.671Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1022,7 +1044,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "wireframe Sequence_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 17 styled classes in the wireframe the page never uses (bind, is-active, is-num, lg-actions, lg-appname, lg-body, lg-content, lg-gridwrap, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-shell, lg-table, lg-topbar, wf-contract), 7 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:05.803Z",
+      "measuredAt": "2026-10-15T06:09:04.671Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1045,7 +1067,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:05.803Z",
+      "measuredAt": "2026-10-15T06:09:04.671Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1063,7 +1085,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 12 tree nodes for 12 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:05.995Z",
+      "measuredAt": "2026-10-15T06:09:04.808Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1086,7 +1108,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no invented-class among 1 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.996Z",
+      "measuredAt": "2026-10-15T06:09:04.808Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1109,7 +1131,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no never-promoted among 1 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.996Z",
+      "measuredAt": "2026-10-15T06:09:04.808Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1132,7 +1154,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no wireframe-chrome among 1 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.996Z",
+      "measuredAt": "2026-10-15T06:09:04.808Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1155,7 +1177,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no unmatched-class among 1 referenced classes",
-      "measuredAt": "2026-10-15T01:20:05.996Z",
+      "measuredAt": "2026-10-15T06:09:04.808Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1178,7 +1200,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "wireframe Tax_NewEdit.html: every class this page references resolves to the deployed theme or ds.css; informational: 15 styled classes in the wireframe the page never uses (bind, is-num, is-primary, is-required, lg-backdrop, lg-body, lg-btn, lg-check, lg-dialog, lg-dialog-body, lg-field, lg-input, lg-section, lg-select, wf-contract), 1 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:05.996Z",
+      "measuredAt": "2026-10-15T06:09:04.808Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1201,7 +1223,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "none; exempt (prescribed by design-spacing.md): gridSections.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:05.996Z",
+      "measuredAt": "2026-10-15T06:09:04.808Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1219,7 +1241,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "partially-read: describe returned 6 tree nodes for 7 widgets declared in the page's own mdlSource. Unread widgets: numberfilter fAmount. customContent columns: none. controlbars: none. empty groups: none. Every class finding below is therefore a LOWER BOUND, not a clean bill of health.",
-      "measuredAt": "2026-10-15T01:20:06.239Z",
+      "measuredAt": "2026-10-15T06:09:05.001Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1245,7 +1267,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no invented-class among the 5 classes we could see, but the page is partially-read — this is not a pass",
-      "measuredAt": "2026-10-15T01:20:06.239Z",
+      "measuredAt": "2026-10-15T06:09:05.001Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1269,7 +1291,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no never-promoted among the 5 classes we could see, but the page is partially-read — this is not a pass",
-      "measuredAt": "2026-10-15T01:20:06.239Z",
+      "measuredAt": "2026-10-15T06:09:05.001Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1293,7 +1315,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no wireframe-chrome among the 5 classes we could see, but the page is partially-read — this is not a pass",
-      "measuredAt": "2026-10-15T01:20:06.239Z",
+      "measuredAt": "2026-10-15T06:09:05.001Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1317,7 +1339,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no unmatched-class among the 5 classes we could see, but the page is partially-read — this is not a pass",
-      "measuredAt": "2026-10-15T01:20:06.239Z",
+      "measuredAt": "2026-10-15T06:09:05.001Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1341,7 +1363,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "wireframe Tax_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 20 styled classes in the wireframe the page never uses (bind, is-active, is-num, is-primary, lg-actions, lg-appname, lg-body, lg-btn, lg-content, lg-gridwrap, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-rowlink, lg-shell, lg-table, lg-topbar, wf-contract), 5 classes the page adds beyond the wireframe [LOWER BOUND — page is partially-read, see the #891 guard row]",
-      "measuredAt": "2026-10-15T01:20:06.239Z",
+      "measuredAt": "2026-10-15T06:09:05.001Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1365,12 +1387,168 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "none seen, but the page is partially-read — not a pass; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:06.239Z",
+      "measuredAt": "2026-10-15T06:09:05.001Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
       },
       "blockedBy": "design-audit/read/Core.Tax_Overview/complete",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/read/Partners.PartnerChild_NewEdit/complete",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.PartnerChild_NewEdit",
+      "requirement": null,
+      "title": "ELK tree carries the whole page (mxcli #891 content-slot guard)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "describe returned 17 tree nodes for 17 declared widgets; no unread slot detected",
+      "measuredAt": "2026-10-15T06:09:05.158Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "command",
+          "command": "./mxcli -p erpv1.mpr describe --format elk page Partners.PartnerChild_NewEdit"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/invented-class/Partners.PartnerChild_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.PartnerChild_NewEdit",
+      "requirement": null,
+      "title": "no invented classes (referenced, defined nowhere)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no invented-class among 1 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.158Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3239, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/never-promoted/Partners.PartnerChild_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.PartnerChild_NewEdit",
+      "requirement": null,
+      "title": "ds.css classes promoted to the deployed theme",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no never-promoted among 1 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.158Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3239, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-chrome/Partners.PartnerChild_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.PartnerChild_NewEdit",
+      "requirement": null,
+      "title": "no wireframe-only annotation chrome in a real page",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no wireframe-chrome among 1 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.158Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3239, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/unmatched-class/Partners.PartnerChild_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.PartnerChild_NewEdit",
+      "requirement": null,
+      "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no unmatched-class among 1 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.158Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3239, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-conformance/Partners.PartnerChild_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.PartnerChild_NewEdit",
+      "requirement": null,
+      "title": "wireframe conformance (class-promotion diff)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "wireframe PartnerChild_NewEdit.html: every class this page references resolves to the deployed theme or ds.css; informational: 12 styled classes in the wireframe the page never uses (bind, is-primary, lg-backdrop, lg-body, lg-btn, lg-dialog, lg-dialog-body, lg-field, lg-input, lg-section, lg-select, wf-contract), 1 classes the page adds beyond the wireframe",
+      "measuredAt": "2026-10-15T06:09:05.158Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "log",
+          "path": "../design/wireframes/PartnerChild_NewEdit.html"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/raw-class-vs-designproperty/Partners.PartnerChild_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.PartnerChild_NewEdit",
+      "requirement": null,
+      "title": "no raw class where a sanctioned design property exists",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "none; exempt (prescribed by design-spacing.md): gridSections.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-15T06:09:05.158Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
       "evidence": []
     },
     {
@@ -1383,8 +1561,8 @@
       "title": "ELK tree carries the whole page (mxcli #891 content-slot guard)",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "describe returned 13 tree nodes for 13 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:06.401Z",
+      "detail": "describe returned 40 tree nodes for 40 declared widgets; no unread slot detected",
+      "measuredAt": "2026-10-15T06:09:05.369Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1406,8 +1584,8 @@
       "title": "no invented classes (referenced, defined nowhere)",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "no invented-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:06.401Z",
+      "detail": "no invented-class among 6 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.369Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1429,8 +1607,8 @@
       "title": "ds.css classes promoted to the deployed theme",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "no never-promoted among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:06.401Z",
+      "detail": "no never-promoted among 6 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.369Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1452,8 +1630,8 @@
       "title": "no wireframe-only annotation chrome in a real page",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "no wireframe-chrome among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:06.401Z",
+      "detail": "no wireframe-chrome among 6 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.369Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1475,8 +1653,8 @@
       "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "no unmatched-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:06.401Z",
+      "detail": "no unmatched-class among 6 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.369Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1498,8 +1676,8 @@
       "title": "wireframe conformance (class-promotion diff)",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "wireframe Partner_NewEdit.html: every class this page references resolves to the deployed theme or ds.css; informational: 32 styled classes in the wireframe the page never uses (bind, is-link, is-primary, lg-actions, lg-addline, lg-appname, lg-body, lg-btn, lg-check, lg-content, lg-docno, lg-eyebrow, lg-field, lg-grid2, lg-gridwrap, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-pill, lg-rail, lg-rowlink, lg-section, lg-select, lg-sheet, …), 5 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:06.402Z",
+      "detail": "wireframe Partner_NewEdit.html: every class this page references resolves to the deployed theme or ds.css; informational: 32 styled classes in the wireframe the page never uses (bind, is-link, is-primary, lg-actions, lg-addline, lg-appname, lg-body, lg-btn, lg-check, lg-content, lg-docno, lg-eyebrow, lg-field, lg-grid2, lg-gridwrap, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-pill, lg-rail, lg-rowlink, lg-section, lg-select, lg-sheet, …), 6 classes the page adds beyond the wireframe",
+      "measuredAt": "2026-10-15T06:09:05.369Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1521,8 +1699,8 @@
       "title": "no raw class where a sanctioned design property exists",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "none; exempt (prescribed by design-spacing.md): pageHead.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:06.402Z",
+      "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large, gridSections.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-15T06:09:05.369Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1540,7 +1718,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 6 tree nodes for 6 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:06.649Z",
+      "measuredAt": "2026-10-15T06:09:05.537Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1562,8 +1740,8 @@
       "title": "no invented classes (referenced, defined nowhere)",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "no invented-class among 4 referenced classes",
-      "measuredAt": "2026-10-15T01:20:06.649Z",
+      "detail": "no invented-class among 5 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.537Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1585,8 +1763,8 @@
       "title": "ds.css classes promoted to the deployed theme",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "no never-promoted among 4 referenced classes",
-      "measuredAt": "2026-10-15T01:20:06.649Z",
+      "detail": "no never-promoted among 5 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.537Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1608,8 +1786,8 @@
       "title": "no wireframe-only annotation chrome in a real page",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "no wireframe-chrome among 4 referenced classes",
-      "measuredAt": "2026-10-15T01:20:06.649Z",
+      "detail": "no wireframe-chrome among 5 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.537Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1631,8 +1809,8 @@
       "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "no unmatched-class among 4 referenced classes",
-      "measuredAt": "2026-10-15T01:20:06.649Z",
+      "detail": "no unmatched-class among 5 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.537Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1654,8 +1832,8 @@
       "title": "wireframe conformance (class-promotion diff)",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "wireframe Partner_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 22 styled classes in the wireframe the page never uses (bind, is-active, is-primary, lg-actions, lg-appname, lg-body, lg-btn, lg-content, lg-filters, lg-gridwrap, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-rowlink, lg-select, lg-shell, lg-table, lg-topbar, wf-contract), 4 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:06.649Z",
+      "detail": "wireframe Partner_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 22 styled classes in the wireframe the page never uses (bind, is-active, is-primary, lg-actions, lg-appname, lg-body, lg-btn, lg-content, lg-filters, lg-gridwrap, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-rowlink, lg-select, lg-shell, lg-table, lg-topbar, wf-contract), 5 classes the page adds beyond the wireframe",
+      "measuredAt": "2026-10-15T06:09:05.537Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1677,8 +1855,164 @@
       "title": "no raw class where a sanctioned design property exists",
       "verdict": "pass",
       "provenance": "measured",
-      "detail": "none; exempt (prescribed by design-spacing.md): pageHead.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:06.650Z",
+      "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-15T06:09:05.537Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/read/Partners.UserProfile_Edit/complete",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.UserProfile_Edit",
+      "requirement": null,
+      "title": "ELK tree carries the whole page (mxcli #891 content-slot guard)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "describe returned 8 tree nodes for 8 declared widgets; no unread slot detected",
+      "measuredAt": "2026-10-15T06:09:05.664Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "command",
+          "command": "./mxcli -p erpv1.mpr describe --format elk page Partners.UserProfile_Edit"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/invented-class/Partners.UserProfile_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.UserProfile_Edit",
+      "requirement": null,
+      "title": "no invented classes (referenced, defined nowhere)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no invented-class among 1 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.664Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3239, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/never-promoted/Partners.UserProfile_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.UserProfile_Edit",
+      "requirement": null,
+      "title": "ds.css classes promoted to the deployed theme",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no never-promoted among 1 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.664Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3239, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-chrome/Partners.UserProfile_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.UserProfile_Edit",
+      "requirement": null,
+      "title": "no wireframe-only annotation chrome in a real page",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no wireframe-chrome among 1 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.664Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3239, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/unmatched-class/Partners.UserProfile_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.UserProfile_Edit",
+      "requirement": null,
+      "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "no unmatched-class among 1 referenced classes",
+      "measuredAt": "2026-10-15T06:09:05.664Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "contract",
+          "note": "defined-class corpus: ds.css 68, deployed theme 3239, wireframe-inline 0"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung6/wireframe-conformance/Partners.UserProfile_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.UserProfile_Edit",
+      "requirement": null,
+      "title": "wireframe conformance (class-promotion diff)",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "wireframe UserProfile_Edit.html: every class this page references resolves to the deployed theme or ds.css; informational: 13 styled classes in the wireframe the page never uses (bind, is-primary, is-required, lg-backdrop, lg-body, lg-btn, lg-dialog, lg-dialog-body, lg-field, lg-input, lg-section, lg-select, wf-contract), 1 classes the page adds beyond the wireframe",
+      "measuredAt": "2026-10-15T06:09:05.664Z",
+      "nonVacuity": {
+        "controlRan": false,
+        "note": "positive control not run for this build (--positive-control absent)"
+      },
+      "evidence": [
+        {
+          "type": "log",
+          "path": "../design/wireframes/UserProfile_Edit.html"
+        }
+      ]
+    },
+    {
+      "id": "design-audit/rung7/raw-class-vs-designproperty/Partners.UserProfile_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.UserProfile_Edit",
+      "requirement": null,
+      "title": "no raw class where a sanctioned design property exists",
+      "verdict": "pass",
+      "provenance": "measured",
+      "detail": "none; exempt (prescribed by design-spacing.md): gridSections.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-15T06:09:05.664Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1696,7 +2030,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 37 tree nodes for 37 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:06.911Z",
+      "measuredAt": "2026-10-15T06:09:05.836Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1719,7 +2053,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no invented-class among 9 referenced classes",
-      "measuredAt": "2026-10-15T01:20:06.912Z",
+      "measuredAt": "2026-10-15T06:09:05.836Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1742,7 +2076,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no never-promoted among 9 referenced classes",
-      "measuredAt": "2026-10-15T01:20:06.912Z",
+      "measuredAt": "2026-10-15T06:09:05.836Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1765,7 +2099,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no wireframe-chrome among 9 referenced classes",
-      "measuredAt": "2026-10-15T01:20:06.912Z",
+      "measuredAt": "2026-10-15T06:09:05.836Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1788,7 +2122,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no unmatched-class among 9 referenced classes",
-      "measuredAt": "2026-10-15T01:20:06.912Z",
+      "measuredAt": "2026-10-15T06:09:05.836Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1811,7 +2145,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "wireframe Pricelist_NewEdit.html: every class this page references resolves to the deployed theme or ds.css; informational: 29 styled classes in the wireframe the page never uses (bind, is-link, is-num, is-primary, is-required, lg-actions, lg-addline, lg-appname, lg-body, lg-btn, lg-content, lg-docno, lg-eyebrow, lg-field, lg-grid2, lg-gridwrap, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-rail, lg-section, lg-select, lg-sheet, lg-shell, …), 9 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:06.912Z",
+      "measuredAt": "2026-10-15T06:09:05.836Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1834,7 +2168,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large, gridSections.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:06.912Z",
+      "measuredAt": "2026-10-15T06:09:05.836Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1852,7 +2186,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 6 tree nodes for 6 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:07.160Z",
+      "measuredAt": "2026-10-15T06:09:05.998Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1875,7 +2209,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no invented-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.160Z",
+      "measuredAt": "2026-10-15T06:09:05.998Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1898,7 +2232,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no never-promoted among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.160Z",
+      "measuredAt": "2026-10-15T06:09:05.998Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1921,7 +2255,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no wireframe-chrome among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.160Z",
+      "measuredAt": "2026-10-15T06:09:05.998Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1944,7 +2278,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no unmatched-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.160Z",
+      "measuredAt": "2026-10-15T06:09:05.998Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1967,7 +2301,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "wireframe Pricelist_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 19 styled classes in the wireframe the page never uses (bind, is-active, is-primary, lg-actions, lg-appname, lg-body, lg-btn, lg-content, lg-gridwrap, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-rowlink, lg-shell, lg-table, lg-topbar, wf-contract), 5 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:07.160Z",
+      "measuredAt": "2026-10-15T06:09:05.998Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -1990,7 +2324,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:07.160Z",
+      "measuredAt": "2026-10-15T06:09:05.998Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2008,7 +2342,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 7 tree nodes for 7 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:07.361Z",
+      "measuredAt": "2026-10-15T06:09:06.132Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2031,7 +2365,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no invented-class among 1 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.361Z",
+      "measuredAt": "2026-10-15T06:09:06.132Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2054,7 +2388,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no never-promoted among 1 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.361Z",
+      "measuredAt": "2026-10-15T06:09:06.132Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2077,7 +2411,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no wireframe-chrome among 1 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.361Z",
+      "measuredAt": "2026-10-15T06:09:06.132Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2100,7 +2434,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no unmatched-class among 1 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.361Z",
+      "measuredAt": "2026-10-15T06:09:06.132Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2123,7 +2457,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "wireframe ProductCategory_NewEdit.html: every class this page references resolves to the deployed theme or ds.css; informational: 13 styled classes in the wireframe the page never uses (bind, is-primary, is-required, lg-backdrop, lg-body, lg-btn, lg-dialog, lg-dialog-body, lg-field, lg-input, lg-section, lg-select, wf-contract), 1 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:07.361Z",
+      "measuredAt": "2026-10-15T06:09:06.132Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2146,7 +2480,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "none; exempt (prescribed by design-spacing.md): gridSections.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:07.362Z",
+      "measuredAt": "2026-10-15T06:09:06.132Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2164,7 +2498,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 6 tree nodes for 6 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:07.563Z",
+      "measuredAt": "2026-10-15T06:09:06.275Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2187,7 +2521,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no invented-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.563Z",
+      "measuredAt": "2026-10-15T06:09:06.275Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2210,7 +2544,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no never-promoted among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.563Z",
+      "measuredAt": "2026-10-15T06:09:06.275Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2233,7 +2567,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no wireframe-chrome among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.563Z",
+      "measuredAt": "2026-10-15T06:09:06.275Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2256,7 +2590,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no unmatched-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.563Z",
+      "measuredAt": "2026-10-15T06:09:06.275Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2279,7 +2613,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "wireframe ProductCategory_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 19 styled classes in the wireframe the page never uses (bind, is-active, is-primary, lg-actions, lg-appname, lg-body, lg-btn, lg-content, lg-gridwrap, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-rowlink, lg-shell, lg-table, lg-topbar, wf-contract), 5 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:07.564Z",
+      "measuredAt": "2026-10-15T06:09:06.276Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2302,7 +2636,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:07.564Z",
+      "measuredAt": "2026-10-15T06:09:06.276Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2320,7 +2654,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 37 tree nodes for 37 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:07.851Z",
+      "measuredAt": "2026-10-15T06:09:06.511Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2343,7 +2677,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no invented-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.851Z",
+      "measuredAt": "2026-10-15T06:09:06.511Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2366,7 +2700,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no never-promoted among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.851Z",
+      "measuredAt": "2026-10-15T06:09:06.511Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2389,7 +2723,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no wireframe-chrome among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.851Z",
+      "measuredAt": "2026-10-15T06:09:06.511Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2412,7 +2746,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no unmatched-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:07.851Z",
+      "measuredAt": "2026-10-15T06:09:06.511Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2435,7 +2769,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "wireframe Product_NewEdit.html: every class this page references resolves to the deployed theme or ds.css; informational: 30 styled classes in the wireframe the page never uses (bind, is-num, is-primary, is-required, lg-actions, lg-appname, lg-body, lg-btn, lg-check, lg-content, lg-docno, lg-eyebrow, lg-field, lg-grid2, lg-image, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-pill, lg-rail, lg-section, lg-select, lg-sheet, lg-shell, …), 5 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:07.851Z",
+      "measuredAt": "2026-10-15T06:09:06.512Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2458,7 +2792,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large, gridSections.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:07.851Z",
+      "measuredAt": "2026-10-15T06:09:06.512Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2473,14 +2807,17 @@
       "page": "Products.Product_Overview",
       "requirement": null,
       "title": "ELK tree carries the whole page (mxcli #891 content-slot guard)",
-      "verdict": "pass",
+      "verdict": "fault",
       "provenance": "measured",
-      "detail": "describe returned 6 tree nodes for 6 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:08.064Z",
+      "detail": "partially-read: describe returned 6 tree nodes for 8 widgets declared in the page's own mdlSource. Unread widgets: numberfilter fSalesPrice, numberfilter fCost. customContent columns: none. controlbars: none. empty groups: none. Every class finding below is therefore a LOWER BOUND, not a clean bill of health.",
+      "measuredAt": "2026-10-15T06:09:06.670Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
       },
+      "tags": [
+        "partially-read"
+      ],
       "evidence": [
         {
           "type": "command",
@@ -2496,14 +2833,15 @@
       "page": "Products.Product_Overview",
       "requirement": null,
       "title": "no invented classes (referenced, defined nowhere)",
-      "verdict": "pass",
+      "verdict": "fault",
       "provenance": "measured",
-      "detail": "no invented-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:08.064Z",
+      "detail": "no invented-class among the 5 classes we could see, but the page is partially-read — this is not a pass",
+      "measuredAt": "2026-10-15T06:09:06.670Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
       },
+      "blockedBy": "design-audit/read/Products.Product_Overview/complete",
       "evidence": [
         {
           "type": "contract",
@@ -2519,14 +2857,15 @@
       "page": "Products.Product_Overview",
       "requirement": null,
       "title": "ds.css classes promoted to the deployed theme",
-      "verdict": "pass",
+      "verdict": "fault",
       "provenance": "measured",
-      "detail": "no never-promoted among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:08.064Z",
+      "detail": "no never-promoted among the 5 classes we could see, but the page is partially-read — this is not a pass",
+      "measuredAt": "2026-10-15T06:09:06.670Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
       },
+      "blockedBy": "design-audit/read/Products.Product_Overview/complete",
       "evidence": [
         {
           "type": "contract",
@@ -2542,14 +2881,15 @@
       "page": "Products.Product_Overview",
       "requirement": null,
       "title": "no wireframe-only annotation chrome in a real page",
-      "verdict": "pass",
+      "verdict": "fault",
       "provenance": "measured",
-      "detail": "no wireframe-chrome among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:08.064Z",
+      "detail": "no wireframe-chrome among the 5 classes we could see, but the page is partially-read — this is not a pass",
+      "measuredAt": "2026-10-15T06:09:06.670Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
       },
+      "blockedBy": "design-audit/read/Products.Product_Overview/complete",
       "evidence": [
         {
           "type": "contract",
@@ -2565,14 +2905,15 @@
       "page": "Products.Product_Overview",
       "requirement": null,
       "title": "rung 7 — unmatched class sweep (runs without a wireframe)",
-      "verdict": "pass",
+      "verdict": "fault",
       "provenance": "measured",
-      "detail": "no unmatched-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:08.064Z",
+      "detail": "no unmatched-class among the 5 classes we could see, but the page is partially-read — this is not a pass",
+      "measuredAt": "2026-10-15T06:09:06.670Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
       },
+      "blockedBy": "design-audit/read/Products.Product_Overview/complete",
       "evidence": [
         {
           "type": "contract",
@@ -2588,14 +2929,15 @@
       "page": "Products.Product_Overview",
       "requirement": null,
       "title": "wireframe conformance (class-promotion diff)",
-      "verdict": "pass",
+      "verdict": "fault",
       "provenance": "measured",
-      "detail": "wireframe Product_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 23 styled classes in the wireframe the page never uses (bind, is-active, is-num, is-primary, lg-actions, lg-appname, lg-body, lg-btn, lg-content, lg-filters, lg-gridwrap, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-rowlink, lg-select, lg-shell, lg-table, lg-topbar, wf-contract), 5 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:08.065Z",
+      "detail": "wireframe Product_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 23 styled classes in the wireframe the page never uses (bind, is-active, is-num, is-primary, lg-actions, lg-appname, lg-body, lg-btn, lg-content, lg-filters, lg-gridwrap, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-rowlink, lg-select, lg-shell, lg-table, lg-topbar, wf-contract), 5 classes the page adds beyond the wireframe [LOWER BOUND — page is partially-read, see the #891 guard row]",
+      "measuredAt": "2026-10-15T06:09:06.671Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
       },
+      "blockedBy": "design-audit/read/Products.Product_Overview/complete",
       "evidence": [
         {
           "type": "log",
@@ -2611,14 +2953,15 @@
       "page": "Products.Product_Overview",
       "requirement": null,
       "title": "no raw class where a sanctioned design property exists",
-      "verdict": "pass",
+      "verdict": "fault",
       "provenance": "measured",
-      "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:08.065Z",
+      "detail": "none seen, but the page is partially-read — not a pass; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large",
+      "measuredAt": "2026-10-15T06:09:06.671Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
       },
+      "blockedBy": "design-audit/read/Products.Product_Overview/complete",
       "evidence": []
     },
     {
@@ -2632,7 +2975,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 27 tree nodes for 27 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:08.278Z",
+      "measuredAt": "2026-10-15T06:09:06.813Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2655,7 +2998,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no invented-class among 9 referenced classes",
-      "measuredAt": "2026-10-15T01:20:08.278Z",
+      "measuredAt": "2026-10-15T06:09:06.813Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2678,7 +3021,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no never-promoted among 9 referenced classes",
-      "measuredAt": "2026-10-15T01:20:08.278Z",
+      "measuredAt": "2026-10-15T06:09:06.813Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2701,7 +3044,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no wireframe-chrome among 9 referenced classes",
-      "measuredAt": "2026-10-15T01:20:08.278Z",
+      "measuredAt": "2026-10-15T06:09:06.813Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2724,7 +3067,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no unmatched-class among 9 referenced classes",
-      "measuredAt": "2026-10-15T01:20:08.278Z",
+      "measuredAt": "2026-10-15T06:09:06.813Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2747,7 +3090,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "wireframe UoMCategory_NewEdit.html: every class this page references resolves to the deployed theme or ds.css; informational: 28 styled classes in the wireframe the page never uses (bind, is-link, is-num, is-primary, is-required, lg-actions, lg-addline, lg-appname, lg-body, lg-btn, lg-content, lg-docno, lg-eyebrow, lg-field, lg-grid2, lg-gridwrap, lg-input, lg-main, lg-navgroup, lg-pagehead, lg-rail, lg-section, lg-sheet, lg-shell, lg-table, …), 9 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:08.279Z",
+      "measuredAt": "2026-10-15T06:09:06.813Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2770,7 +3113,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large, gridSections.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:08.279Z",
+      "measuredAt": "2026-10-15T06:09:06.813Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2788,7 +3131,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "describe returned 6 tree nodes for 6 declared widgets; no unread slot detected",
-      "measuredAt": "2026-10-15T01:20:08.534Z",
+      "measuredAt": "2026-10-15T06:09:06.979Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2811,7 +3154,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no invented-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:08.534Z",
+      "measuredAt": "2026-10-15T06:09:06.979Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2834,7 +3177,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no never-promoted among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:08.534Z",
+      "measuredAt": "2026-10-15T06:09:06.979Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2857,7 +3200,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no wireframe-chrome among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:08.534Z",
+      "measuredAt": "2026-10-15T06:09:06.979Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2880,7 +3223,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "no unmatched-class among 5 referenced classes",
-      "measuredAt": "2026-10-15T01:20:08.534Z",
+      "measuredAt": "2026-10-15T06:09:06.979Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2903,7 +3246,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "wireframe UoMCategory_Overview.html: every class this page references resolves to the deployed theme or ds.css; informational: 19 styled classes in the wireframe the page never uses (bind, is-active, is-primary, lg-actions, lg-appname, lg-body, lg-btn, lg-content, lg-gridwrap, lg-main, lg-navgroup, lg-pagehead, lg-pager, lg-rail, lg-rowlink, lg-shell, lg-table, lg-topbar, wf-contract), 5 classes the page adds beyond the wireframe",
-      "measuredAt": "2026-10-15T01:20:08.534Z",
+      "measuredAt": "2026-10-15T06:09:06.979Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2926,7 +3269,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "none; exempt (prescribed by design-spacing.md): ctnPageHead.spacing-outer-bottom-large",
-      "measuredAt": "2026-10-15T01:20:08.534Z",
+      "measuredAt": "2026-10-15T06:09:06.979Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2944,7 +3287,7 @@
       "verdict": "fail",
       "provenance": "measured",
       "detail": "h1 count 1 (Welcome); landmarks: NONE",
-      "measuredAt": "2026-10-15T01:20:12.826Z",
+      "measuredAt": "2026-10-15T06:09:11.156Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2967,7 +3310,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "0 serious/critical of 0 violations over 23 rules",
-      "measuredAt": "2026-10-15T01:20:13.256Z",
+      "measuredAt": "2026-10-15T06:09:11.490Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -2985,7 +3328,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
-      "measuredAt": "2026-10-15T01:20:14.060Z",
+      "measuredAt": "2026-10-15T06:09:12.288Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3003,7 +3346,7 @@
       "verdict": "fail",
       "provenance": "measured",
       "detail": "h1 count 1 (Welcome); landmarks: NONE",
-      "measuredAt": "2026-10-15T01:20:15.302Z",
+      "measuredAt": "2026-10-15T06:09:13.524Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3026,7 +3369,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "0 serious/critical of 0 violations over 23 rules",
-      "measuredAt": "2026-10-15T01:20:15.551Z",
+      "measuredAt": "2026-10-15T06:09:13.676Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3044,7 +3387,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
-      "measuredAt": "2026-10-15T01:20:16.354Z",
+      "measuredAt": "2026-10-15T06:09:14.470Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3062,7 +3405,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:16.354Z",
+      "measuredAt": "2026-10-15T06:09:14.470Z",
       "evidence": []
     },
     {
@@ -3076,7 +3419,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:16.354Z",
+      "measuredAt": "2026-10-15T06:09:14.470Z",
       "evidence": []
     },
     {
@@ -3090,7 +3433,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:16.354Z",
+      "measuredAt": "2026-10-15T06:09:14.470Z",
       "evidence": []
     },
     {
@@ -3104,7 +3447,7 @@
       "verdict": "fail",
       "provenance": "measured",
       "detail": "h1 count 1 (Welcome); landmarks: NONE",
-      "measuredAt": "2026-10-15T01:20:17.745Z",
+      "measuredAt": "2026-10-15T06:09:15.822Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3127,7 +3470,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "0 serious/critical of 0 violations over 23 rules",
-      "measuredAt": "2026-10-15T01:20:18.006Z",
+      "measuredAt": "2026-10-15T06:09:15.969Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3145,7 +3488,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
-      "measuredAt": "2026-10-15T01:20:18.809Z",
+      "measuredAt": "2026-10-15T06:09:16.760Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3163,7 +3506,7 @@
       "verdict": "fail",
       "provenance": "measured",
       "detail": "h1 count 1 (Welcome); landmarks: NONE",
-      "measuredAt": "2026-10-15T01:20:20.189Z",
+      "measuredAt": "2026-10-15T06:09:18.112Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3186,7 +3529,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "0 serious/critical of 0 violations over 23 rules",
-      "measuredAt": "2026-10-15T01:20:20.465Z",
+      "measuredAt": "2026-10-15T06:09:18.284Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3204,7 +3547,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
-      "measuredAt": "2026-10-15T01:20:21.267Z",
+      "measuredAt": "2026-10-15T06:09:19.083Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3222,7 +3565,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:21.267Z",
+      "measuredAt": "2026-10-15T06:09:19.083Z",
       "evidence": []
     },
     {
@@ -3236,7 +3579,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:21.267Z",
+      "measuredAt": "2026-10-15T06:09:19.083Z",
       "evidence": []
     },
     {
@@ -3250,7 +3593,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:21.267Z",
+      "measuredAt": "2026-10-15T06:09:19.083Z",
       "evidence": []
     },
     {
@@ -3264,7 +3607,7 @@
       "verdict": "fail",
       "provenance": "measured",
       "detail": "h1 count 1 (Welcome); landmarks: NONE",
-      "measuredAt": "2026-10-15T01:20:22.668Z",
+      "measuredAt": "2026-10-15T06:09:20.443Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3287,7 +3630,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "0 serious/critical of 0 violations over 23 rules",
-      "measuredAt": "2026-10-15T01:20:22.885Z",
+      "measuredAt": "2026-10-15T06:09:20.621Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3305,11 +3648,53 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
-      "measuredAt": "2026-10-15T01:20:23.689Z",
+      "measuredAt": "2026-10-15T06:09:21.419Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
       },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/a11y/Partners.PartnerChild_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.PartnerChild_NewEdit",
+      "requirement": null,
+      "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-15T06:09:21.419Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/overflow/Partners.PartnerChild_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.PartnerChild_NewEdit",
+      "requirement": null,
+      "title": "no horizontal overflow at 360 / 768 / 1440",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-15T06:09:21.419Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/structure/Partners.PartnerChild_NewEdit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.PartnerChild_NewEdit",
+      "requirement": null,
+      "title": "structure inventory — exactly one h1, landmarks present",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-15T06:09:21.419Z",
       "evidence": []
     },
     {
@@ -3323,7 +3708,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:23.689Z",
+      "measuredAt": "2026-10-15T06:09:21.419Z",
       "evidence": []
     },
     {
@@ -3337,7 +3722,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:23.689Z",
+      "measuredAt": "2026-10-15T06:09:21.419Z",
       "evidence": []
     },
     {
@@ -3351,7 +3736,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:23.689Z",
+      "measuredAt": "2026-10-15T06:09:21.419Z",
       "evidence": []
     },
     {
@@ -3365,7 +3750,7 @@
       "verdict": "fail",
       "provenance": "measured",
       "detail": "h1 count 1 (Contacts); landmarks: NONE",
-      "measuredAt": "2026-10-15T01:20:25.075Z",
+      "measuredAt": "2026-10-15T06:09:22.816Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3385,10 +3770,10 @@
       "page": "Partners.Partner_Overview",
       "requirement": null,
       "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
-      "verdict": "pass",
+      "verdict": "fail",
       "provenance": "measured",
-      "detail": "0 serious/critical of 0 violations over 27 rules",
-      "measuredAt": "2026-10-15T01:20:25.380Z",
+      "detail": "1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x2)",
+      "measuredAt": "2026-10-15T06:09:23.587Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3406,11 +3791,53 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
-      "measuredAt": "2026-10-15T01:20:26.188Z",
+      "measuredAt": "2026-10-15T06:09:24.433Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
       },
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/a11y/Partners.UserProfile_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.UserProfile_Edit",
+      "requirement": null,
+      "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-15T06:09:24.433Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/overflow/Partners.UserProfile_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.UserProfile_Edit",
+      "requirement": null,
+      "title": "no horizontal overflow at 360 / 768 / 1440",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-15T06:09:24.433Z",
+      "evidence": []
+    },
+    {
+      "id": "design-audit/rung7/structure/Partners.UserProfile_Edit",
+      "instrument": "design-audit",
+      "kind": "ui",
+      "module": "Partners",
+      "page": "Partners.UserProfile_Edit",
+      "requirement": null,
+      "title": "structure inventory — exactly one h1, landmarks present",
+      "verdict": "fault",
+      "provenance": "measured",
+      "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
+      "measuredAt": "2026-10-15T06:09:24.433Z",
       "evidence": []
     },
     {
@@ -3424,7 +3851,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:26.188Z",
+      "measuredAt": "2026-10-15T06:09:24.433Z",
       "evidence": []
     },
     {
@@ -3438,7 +3865,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:26.188Z",
+      "measuredAt": "2026-10-15T06:09:24.433Z",
       "evidence": []
     },
     {
@@ -3452,7 +3879,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:26.188Z",
+      "measuredAt": "2026-10-15T06:09:24.433Z",
       "evidence": []
     },
     {
@@ -3465,8 +3892,8 @@
       "title": "structure inventory — exactly one h1, landmarks present",
       "verdict": "fail",
       "provenance": "measured",
-      "detail": "h1 count 1 (Pricelists); landmarks: NONE",
-      "measuredAt": "2026-10-15T01:20:27.584Z",
+      "detail": "h1 count 1 (Contacts); landmarks: NONE",
+      "measuredAt": "2026-10-15T06:09:25.815Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3488,8 +3915,8 @@
       "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
       "verdict": "fail",
       "provenance": "measured",
-      "detail": "1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x1)",
-      "measuredAt": "2026-10-15T01:20:27.958Z",
+      "detail": "1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x2)",
+      "measuredAt": "2026-10-15T06:09:26.443Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3507,7 +3934,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
-      "measuredAt": "2026-10-15T01:20:28.775Z",
+      "measuredAt": "2026-10-15T06:09:27.271Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3525,7 +3952,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:28.775Z",
+      "measuredAt": "2026-10-15T06:09:27.271Z",
       "evidence": []
     },
     {
@@ -3539,7 +3966,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:28.775Z",
+      "measuredAt": "2026-10-15T06:09:27.271Z",
       "evidence": []
     },
     {
@@ -3553,7 +3980,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:28.775Z",
+      "measuredAt": "2026-10-15T06:09:27.271Z",
       "evidence": []
     },
     {
@@ -3566,8 +3993,8 @@
       "title": "structure inventory — exactly one h1, landmarks present",
       "verdict": "fail",
       "provenance": "measured",
-      "detail": "h1 count 1 (Product categories); landmarks: NONE",
-      "measuredAt": "2026-10-15T01:20:30.164Z",
+      "detail": "h1 count 1 (Contacts); landmarks: NONE",
+      "measuredAt": "2026-10-15T06:09:28.646Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3587,10 +4014,10 @@
       "page": "Products.ProductCategory_Overview",
       "requirement": null,
       "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
-      "verdict": "pass",
+      "verdict": "fail",
       "provenance": "measured",
-      "detail": "0 serious/critical of 0 violations over 30 rules",
-      "measuredAt": "2026-10-15T01:20:30.488Z",
+      "detail": "1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x2)",
+      "measuredAt": "2026-10-15T06:09:29.494Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3608,7 +4035,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
-      "measuredAt": "2026-10-15T01:20:31.293Z",
+      "measuredAt": "2026-10-15T06:09:30.323Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3626,7 +4053,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:31.293Z",
+      "measuredAt": "2026-10-15T06:09:30.323Z",
       "evidence": []
     },
     {
@@ -3640,7 +4067,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:31.293Z",
+      "measuredAt": "2026-10-15T06:09:30.323Z",
       "evidence": []
     },
     {
@@ -3654,7 +4081,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:31.293Z",
+      "measuredAt": "2026-10-15T06:09:30.323Z",
       "evidence": []
     },
     {
@@ -3668,7 +4095,7 @@
       "verdict": "fail",
       "provenance": "measured",
       "detail": "h1 count 1 (Products); landmarks: NONE",
-      "measuredAt": "2026-10-15T01:20:32.681Z",
+      "measuredAt": "2026-10-15T06:09:31.706Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3690,8 +4117,8 @@
       "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
       "verdict": "fail",
       "provenance": "measured",
-      "detail": "1 serious/critical of 1 violations over 30 rules: color-contrast(serious,x1)",
-      "measuredAt": "2026-10-15T01:20:33.250Z",
+      "detail": "1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x1)",
+      "measuredAt": "2026-10-15T06:09:32.142Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3709,7 +4136,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
-      "measuredAt": "2026-10-15T01:20:34.081Z",
+      "measuredAt": "2026-10-15T06:09:32.967Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3727,7 +4154,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:34.081Z",
+      "measuredAt": "2026-10-15T06:09:32.967Z",
       "evidence": []
     },
     {
@@ -3741,7 +4168,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:34.081Z",
+      "measuredAt": "2026-10-15T06:09:32.967Z",
       "evidence": []
     },
     {
@@ -3755,7 +4182,7 @@
       "verdict": "fault",
       "provenance": "measured",
       "detail": "no navigation route to this page in the Responsive profile — it is opened from another page; this check never ran",
-      "measuredAt": "2026-10-15T01:20:34.081Z",
+      "measuredAt": "2026-10-15T06:09:32.967Z",
       "evidence": []
     },
     {
@@ -3768,8 +4195,8 @@
       "title": "structure inventory — exactly one h1, landmarks present",
       "verdict": "fail",
       "provenance": "measured",
-      "detail": "h1 count 1 (Units of measure); landmarks: NONE",
-      "measuredAt": "2026-10-15T01:20:35.465Z",
+      "detail": "h1 count 1 (Products); landmarks: NONE",
+      "measuredAt": "2026-10-15T06:09:34.345Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3789,10 +4216,10 @@
       "page": "Products.UoMCategory_Overview",
       "requirement": null,
       "title": "accessibility — zero serious/critical (wcag2a, wcag2aa, wcag21aa)",
-      "verdict": "pass",
+      "verdict": "fail",
       "provenance": "measured",
-      "detail": "0 serious/critical of 0 violations over 30 rules",
-      "measuredAt": "2026-10-15T01:20:35.775Z",
+      "detail": "1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x1)",
+      "measuredAt": "2026-10-15T06:09:34.828Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"
@@ -3810,7 +4237,7 @@
       "verdict": "pass",
       "provenance": "measured",
       "detail": "360: 360/360; 768: 768/768; 1440: 1440/1440",
-      "measuredAt": "2026-10-15T01:20:36.588Z",
+      "measuredAt": "2026-10-15T06:09:35.648Z",
       "nonVacuity": {
         "controlRan": false,
         "note": "positive control not run for this build (--positive-control absent)"

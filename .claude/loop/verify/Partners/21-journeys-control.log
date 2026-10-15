@@ -1,0 +1,104 @@
+
+=== PREFLIGHT ===
+  SETUP  admin: OK at localhost:8090 (credential from .mxcli/run-local.json (the run --local handshake for :8080))
+  SETUP  sessions: 2 live — on a trial licence leaked sessions fill the cap; set JOURNEY_SESSION_CAP to refuse at it
+  [32mPASS[0m [ui] login  — sales.user
+
+=== JOURNEY J-PARTNERS-01-CTL-ui-landing — (positive control · ui-landing — first step lands on a widget that does not exist; MUST fail)
+    persona: sales.user   requirements: F001-UC001, F001-UC002
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/2: Open Contacts > Contacts
+  [31mFAIL[0m [ui] Open Contacts > Contacts: reached  — ".mx-name-__this_widget_does_not_exist__" never appeared — screenshot J-PARTNERS-01-CTL-ui-landing-step1-NOT-REACHED.png
+  [33mINVL[0m [ui] Open Contacts > Contacts: downstream rungs  — not reached; nothing measured
+  [32mPASS[0m [control] J-PARTNERS-01 · ui-landing: first step lands on a widget that does not exist  — caught by "Open Contacts > Contacts: reached"
+
+=== JOURNEY J-PARTNERS-01-CTL-ui-text — (positive control · ui-text — expect text the page never renders; MUST fail)
+    persona: sales.user   requirements: F001-UC001, F001-UC002
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/2: Open Contacts > Contacts
+  [32mPASS[0m [ui] Open Contacts > Contacts: reached  — .mx-name-gridMain
+  [31mFAIL[0m [ui] Open Contacts > Contacts: page says "__text_this_page_will_never_render__"  — not found in rendered text
+
+  --- step 2/2: New company: tick Is company, fill name, email and city, mark as customer, save
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] New company: tick Is company, fill name, email and city, mark as customer, save: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] New company: tick Is company, fill name, email and city, mark as customer, save: page says "Journey Office Supplies"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] New company: tick Is company, fill name, email and city, mark as customer, save: Partners.Partner +1  — before=24 after=25 delta=1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [outcome] J-PARTNERS-01-CTL-ui-text end state  — got 3, need >= 1
+  [32mPASS[0m [control] J-PARTNERS-01 · ui-text: expect text the page never renders  — caught by "Open Contacts > Contacts: page says "__text_this_page_will_never_render__""
+  [33mINVL[0m [control] J-PARTNERS-01 · trace-order: expect a microflow that never fires  — this journey declares nothing this mutant can break — this rung is UNPROVEN for J-PARTNERS-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)
+  [33mINVL[0m [control] J-PARTNERS-01 · trace-negative: assert a microflow that DID run must not have run  — this journey declares nothing this mutant can break — this rung is UNPROVEN for J-PARTNERS-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)
+
+=== JOURNEY J-PARTNERS-01-CTL-data-delta — (positive control · data-delta — expect +2 rows from a +1 action; MUST fail)
+    persona: sales.user   requirements: F001-UC001, F001-UC002
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/2: Open Contacts > Contacts
+  [32mPASS[0m [ui] Open Contacts > Contacts: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Open Contacts > Contacts: page says "Azure Interior"
+
+  --- step 2/2: New company: tick Is company, fill name, email and city, mark as customer, save
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] New company: tick Is company, fill name, email and city, mark as customer, save: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] New company: tick Is company, fill name, email and city, mark as customer, save: page says "Journey Office Supplies"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [31mFAIL[0m [data] New company: tick Is company, fill name, email and city, mark as customer, save: Partners.Partner +2  — before=25 after=26 delta=1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [outcome] J-PARTNERS-01-CTL-data-delta end state  — got 4, need >= 1
+  [32mPASS[0m [control] J-PARTNERS-01 · data-delta: expect +2 rows from a +1 action  — caught by "New company: tick Is company, fill name, email and city, mark as customer, save: Partners.Partner +2"
+  [33mINVL[0m [control] J-PARTNERS-01 · data-target: association must point at a value the journey never picked  — this journey declares nothing this mutant can break — this rung is UNPROVEN for J-PARTNERS-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)
+
+=== JOURNEY J-PARTNERS-01-CTL-outcome — (positive control · outcome — outcome query with an unreachable floor or exact value; MUST fail)
+    persona: sales.user   requirements: F001-UC001, F001-UC002
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/2: Open Contacts > Contacts
+  [32mPASS[0m [ui] Open Contacts > Contacts: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Open Contacts > Contacts: page says "Azure Interior"
+
+  --- step 2/2: New company: tick Is company, fill name, email and city, mark as customer, save
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] New company: tick Is company, fill name, email and city, mark as customer, save: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] New company: tick Is company, fill name, email and city, mark as customer, save: page says "Journey Office Supplies"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] New company: tick Is company, fill name, email and city, mark as customer, save: Partners.Partner +1  — before=26 after=27 delta=1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [31mFAIL[0m [outcome] J-PARTNERS-01-CTL-outcome end state  — got 5, need >= 999999
+  [32mPASS[0m [control] J-PARTNERS-01 · outcome: outcome query with an unreachable floor or exact value  — caught by "J-PARTNERS-01-CTL-outcome end state"
+
+=== SUMMARY ===
+  PASS 20   FAIL 4   INVALID 4
+  ⚠ INVALID means an instrument did not run. Those checks are NOT green —
+    they are absent. Fix the instrument before reading this report as coverage.
+  control rungs: 4 of 7 proven (7 rungs × 1 journeys)
+  ⚠ 3 rung(s) UNPROVEN — no mutant the journey could express:
+      J-PARTNERS-01 · trace-order — this journey declares nothing this mutant can break
+      J-PARTNERS-01 · trace-negative — this journey declares nothing this mutant can break
+      J-PARTNERS-01 · data-target — this journey declares nothing this mutant can break
+    Unproven is fault, not pass. Declare the missing claim on the journey,
+    or accept that this rung has never been shown able to go red.
+  control verdict: FAIL — at least one rung is unproven; read the [control] rows above
+  findings → ../tests/e2e/artifacts/journey-findings-control.json

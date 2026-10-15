@@ -4,9 +4,16 @@ mdl 1;
 -- page the user cannot open, so role filtering follows the page grants.
 create or modify navigation Responsive
   home page Core.Home_Web
+  home page Sales.SalesOrder_Overview for SalesUser
+  home page Sales.SalesOrder_Overview for SalesManager
   home page Core.Company_Edit for Administrator
 {
   menu item 'Home' ( OnClick: show page Core.Home_Web, Icon: Atlas_Core.Atlas.home )
+  menu 'Sales' ( Icon: Atlas_Core.Atlas."shopping-cart" ) {
+    menu item 'Quotations & orders' ( OnClick: show page Sales.SalesOrder_Overview, Icon: Atlas_Core.Atlas."shopping-cart" )
+    menu item 'Quotation templates' ( OnClick: show page Sales.QuotationTemplate_Overview, Icon: Atlas_Core.Atlas."shopping-cart" )
+    menu item 'Sales teams' ( OnClick: show page Sales.SalesTeam_Overview, Icon: Atlas_Core.Atlas."shopping-cart" )
+  }
   menu 'Contacts' ( Icon: Atlas_Core.Atlas.contacts ) {
     menu item 'Contacts' ( OnClick: show page Partners.Partner_Overview, Icon: Atlas_Core.Atlas.contacts )
   }

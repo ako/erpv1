@@ -1,0 +1,32 @@
+
+=== PREFLIGHT ===
+  SETUP  admin: OK at localhost:8090 (credential from .mxcli/run-local.json (the run --local handshake for :8080))
+  SETUP  sessions: 2 live — on a trial licence leaked sessions fill the cap; set JOURNEY_SESSION_CAP to refuse at it
+  [32mPASS[0m [ui] login  — sales.user
+
+=== JOURNEY J-PARTNERS-01 — Sales user creates a company and adds a contact person to it
+    persona: sales.user   requirements: F001-UC001, F001-UC002
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/2: Open Contacts > Contacts
+  [32mPASS[0m [ui] Open Contacts > Contacts: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Open Contacts > Contacts: page says "Azure Interior"
+
+  --- step 2/2: New company: tick Is company, fill name, email and city, mark as customer, save
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] New company: tick Is company, fill name, email and city, mark as customer, save: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] New company: tick Is company, fill name, email and city, mark as customer, save: page says "Journey Office Supplies"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] New company: tick Is company, fill name, email and city, mark as customer, save: Partners.Partner +1  — before=23 after=24 delta=1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [outcome] J-PARTNERS-01 end state  — got 2, need >= 1
+
+=== SUMMARY ===
+  PASS 7   FAIL 0   INVALID 0
+  findings → ../tests/e2e/artifacts/journey-findings.json

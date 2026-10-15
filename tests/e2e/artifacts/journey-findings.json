@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-15T05:41:52.664Z",
+  "capturedAt": "2026-10-15T06:26:18.847Z",
   "configuredUser": "sales.user",
   "actualUser": "sales.user",
   "usedFallback": false,
@@ -36,30 +36,53 @@
     },
     {
       "rung": "ui",
-      "name": "New company: tick Is company, fill name, email and city, mark as customer, save: reached",
+      "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: combobox cmbPartnerCountry committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Netherlands",
+      "requirement": "F001-UC001, F001-UC002"
+    },
+    {
+      "rung": "ui",
+      "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
       "requirement": "F001-UC001, F001-UC002"
     },
     {
       "rung": "ui",
-      "name": "New company: tick Is company, fill name, email and city, mark as customer, save: page says \"Journey Office Supplies\"",
+      "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: page says \"Journey Office Supplies\"",
       "verdict": "PASS",
       "detail": "",
       "requirement": "F001-UC001, F001-UC002"
     },
     {
       "rung": "data",
-      "name": "New company: tick Is company, fill name, email and city, mark as customer, save: Partners.Partner +1",
+      "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: Partners.Partner +1",
       "verdict": "PASS",
-      "detail": "before=22 after=23 delta=1",
+      "detail": "before=27 after=28 delta=1",
       "requirement": "F001-UC001, F001-UC002"
+    },
+    {
+      "rung": "data",
+      "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: Partners.Partner_Country set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 27303072740973299)",
+      "requirement": "F001-UC001, F001-UC002",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: Partners.Partner_Country points at the seeded Name",
+      "verdict": "PASS",
+      "detail": "1 row(s) link to Core.Country where Name = 'Netherlands' (scoped to rows with id > 27303072740973299)",
+      "requirement": "F001-UC001, F001-UC002",
+      "evidenceStrength": "strong"
     },
     {
       "rung": "outcome",
       "name": "J-PARTNERS-01 end state",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
+      "detail": "got 6, need >= 1",
       "requirement": "F001-UC001, F001-UC002"
     }
   ],
@@ -101,7 +124,7 @@
             "file": "../tests/e2e/artifacts/J-PARTNERS-01-step1.png",
             "title": "Mendix - Contacts",
             "url": "http://localhost:8080/p/partner-overview",
-            "at": "2026-10-15T05:41:46.605Z"
+            "at": "2026-10-15T06:26:10.066Z"
           },
           "reached": true,
           "checks": [
@@ -118,11 +141,11 @@
               "detail": ""
             }
           ],
-          "ms": 1096
+          "ms": 1088
         },
         {
           "n": 2,
-          "name": "New company: tick Is company, fill name, email and city, mark as customer, save",
+          "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save",
           "requirement": [
             "F001-UC001",
             "F001-UC002"
@@ -159,6 +182,11 @@
               "selector": ".mx-name-txtCity"
             },
             {
+              "verb": "Select",
+              "target": "\"Netherlands\" in cmbPartnerCountry",
+              "selector": ".mx-name-cmbPartnerCountry"
+            },
+            {
               "verb": "Click",
               "target": "Is customer",
               "selector": ".mx-name-cbIsCustomer"
@@ -179,37 +207,57 @@
             "writes": {
               "entity": "Partners.Partner",
               "delta": 1,
-              "associations": []
+              "associations": [
+                "Partners.Partner_Country"
+              ]
             }
           },
           "shot": {
             "file": "../tests/e2e/artifacts/J-PARTNERS-01-step2.png",
             "title": "Mendix - Contacts",
             "url": "http://localhost:8080/p/partner-overview",
-            "at": "2026-10-15T05:41:52.504Z"
+            "at": "2026-10-15T06:26:18.527Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "New company: tick Is company, fill name, email and city, mark as customer, save: reached",
+              "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: combobox cmbPartnerCountry committed the seeded value",
+              "verdict": "PASS",
+              "detail": "Netherlands"
+            },
+            {
+              "rung": "ui",
+              "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "New company: tick Is company, fill name, email and city, mark as customer, save: page says \"Journey Office Supplies\"",
+              "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: page says \"Journey Office Supplies\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "New company: tick Is company, fill name, email and city, mark as customer, save: Partners.Partner +1",
+              "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: Partners.Partner +1",
               "verdict": "PASS",
-              "detail": "before=22 after=23 delta=1"
+              "detail": "before=27 after=28 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: Partners.Partner_Country set on every row",
+              "verdict": "PASS",
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 27303072740973299)"
+            },
+            {
+              "rung": "data",
+              "name": "New company: tick Is company, fill name, email, city and country, mark as customer, save: Partners.Partner_Country points at the seeded Name",
+              "verdict": "PASS",
+              "detail": "1 row(s) link to Core.Country where Name = 'Netherlands' (scoped to rows with id > 27303072740973299)"
             }
           ],
-          "ms": 5939
+          "ms": 8668
         }
       ]
     }

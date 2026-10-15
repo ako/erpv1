@@ -1,21 +1,21 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-15 05:41:06",
-  "overallScore": 49.1,
+  "date": "2026-10-15 06:45:47",
+  "overallScore": 49.9,
   "summary": {
-    "total": 389,
+    "total": 385,
     "errors": 0,
-    "warnings": 124,
-    "infos": 265
+    "warnings": 123,
+    "infos": 262
   },
   "categories": [
     {
       "name": "Security",
       "score": 0,
-      "total": 229,
+      "total": 230,
       "errors": 0,
       "warnings": 41,
-      "infos": 188,
+      "infos": 189,
       "topActions": [
         "Add an XPath constraint to limit which rows 'Core.Admin' can READ on 'Company'",
         "Remove the CREATE and DELETE rights and implement a microflow (ACT_) with security checks",
@@ -26,11 +26,11 @@
     },
     {
       "name": "Quality",
-      "score": 90,
-      "total": 10,
+      "score": 94,
+      "total": 6,
       "errors": 0,
       "warnings": 0,
-      "infos": 10,
+      "infos": 6,
       "topActions": [
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
         "Extract logical sections into SUB_ microflows to keep each under 15 activities",
@@ -40,15 +40,14 @@
     {
       "name": "Architecture",
       "score": 0,
-      "total": 75,
+      "total": 74,
       "errors": 0,
-      "warnings": 75,
+      "warnings": 74,
       "infos": 0,
       "topActions": [
         "Add an attribute like 'CompanyCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE",
         "Create microflows (e.g., ACT_SaveLocation, VAL_Location) to handle create/update operations with proper validation.",
-        "Create a view entity in 'Partners' that exposes the needed data from 'Core', or use a microflow to retrieve the data.",
-        "Move the 'RetrieveAction' action to a SUB_ microflow and call it from 'ACT_UserProfile_Create'"
+        "Create a view entity in 'Partners' that exposes the needed data from 'Core', or use a microflow to retrieve the data."
       ]
     },
     {

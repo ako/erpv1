@@ -1,0 +1,4 @@
+kind	a	b	c
+wiring	Partners	36	15|41
+orphan	Partners.ASU_Partners_SeedData	5	
+orphan	Partners.SUB_Partner_GetAddress	4	
