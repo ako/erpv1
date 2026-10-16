@@ -174,3 +174,8 @@
 - CUSTOM002 +1: ASU_Invoicing_SeedData follows the startup-chain naming of every module's ASU_.
 - SEC010 +1 (security tier, approved by the user in chat 2026-10-16): CreateInvoice_Popup's order picker lists Sales.SalesOrder
   under Sales.User's XPath (own orders only) — the intended row-level security, read-only on that popup.
+- look.js (LOOK shots) false shots, 2026-10-16d: after login on a heavy home page (Invoice_Overview, the approvals inbox) it
+  navigated before the page settled and shot the home page under the target's name; a multi-select grid opened no row from the
+  row's centre; a collapsed sidebar group's leaf reads as visible but the click does nothing. Fixed: wait for network idle +
+  4 s, click a cell, `url` option (page route) for report pages. Verified by the h1 read off each shot. A real user's clicks
+  worked throughout (probed separately); no app defect.

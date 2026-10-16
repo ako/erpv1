@@ -5,6 +5,7 @@
 //    { "page": "Tax_NewEdit", "user": "invoicing.manager", "menu": ["Configuration", "Taxes"], "openRow": 1 }]
 // openRow: click row N of the first data grid / list view on the menu page (opens the NewEdit page).
 // click: a widget name (mx-name-*) to click after landing (e.g. a New button).
+// url: the page's route (its Url), opened directly instead of through the menu.
 // Usage: node tests/e2e/look.js <shots.json> <outDir>
 // Prints one line per shot: page, size, title read off the page, console errors, Mendix error dialog text.
 const fs = require('fs');
@@ -21,6 +22,10 @@ async function login(page, user) {
   await page.fill('#passwordInput', PASSWORD);
   await page.click('#loginButton');
   await page.waitForSelector('.mx-page', { timeout: 30000 });
+  // a heavy home page (Invoice_Overview: four grids) still renders after .mx-page appears; navigating before it settles
+  // lands back on the home page (LOOK 2026-10-16d)
+  await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+  await page.waitForTimeout(4000);   // the approvals-inbox home (purchase.manager) re-renders after the network settles
 }
 
 async function nav(page, menu) {
@@ -53,12 +58,15 @@ async function nav(page, menu) {
       try {
         await login(page, s.user);
         errors.length = 0; // the login page itself logs a 401 before a session exists: not page errors
-        if (s.menu) await nav(page, s.menu);
+        // url: open a page by its route (a page with Url) when the menu leaf is unreliable to click (collapsed groups)
+        if (s.url) await page.goto(BASE + '/p/' + s.url); else if (s.menu) await nav(page, s.menu);
         await page.waitForTimeout(1200);
         if (s.openRow) {
           const row = page.locator('.mx-name-gridMain [role="row"], .mx-name-gridMain .tr').nth(s.openRow);
           const lv = page.locator('.mx-listview-item').nth(s.openRow - 1);
-          if (await row.count()) await row.click(); else await lv.click();
+          // a cell, not the row's centre: a multi-select grid (Invoice_Overview) opens rows from their cells
+          const cell = row.locator('[role="gridcell"]').nth(2);
+          if (await row.count()) await ((await cell.count()) ? cell : row).click(); else await lv.click();
           await page.waitForTimeout(1500);
         }
         if (s.click) { await page.click('.mx-name-' + s.click); await page.waitForTimeout(1500); }

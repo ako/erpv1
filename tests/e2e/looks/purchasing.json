@@ -1,8 +1,59 @@
 [
- {"module":"Purchasing","page":"PurchaseOrder_Overview","user":"purchaser","menu":["Purchase","RFQs & orders"]},
- {"module":"Purchasing","page":"PurchaseOrder_NewEdit","user":"purchaser","menu":["Purchase","RFQs & orders"],"openRow":1},
- {"module":"Purchasing","page":"VendorPrice_Overview","user":"purchaser","menu":["Purchase","Vendor prices"]},
- {"module":"Purchasing","page":"PurchaseApproval_Inbox","user":"purchase.manager","menu":["Purchase","Approvals"]},
- {"module":"Purchasing","page":"PurchaseApproval_Task","user":"purchase.manager","menu":["Purchase","Approvals"],"openRow":1},
- {"module":"Purchasing","page":"PurchaseAnalysis_Report","user":"purchase.manager","menu":["Reporting","Purchase analysis"]}
+ {
+  "module": "Purchasing",
+  "page": "PurchaseOrder_Overview",
+  "user": "purchaser",
+  "menu": [
+   "Purchase",
+   "RFQs & orders"
+  ]
+ },
+ {
+  "module": "Purchasing",
+  "page": "PurchaseOrder_NewEdit",
+  "user": "purchaser",
+  "menu": [
+   "Purchase",
+   "RFQs & orders"
+  ],
+  "openRow": 1
+ },
+ {
+  "module": "Purchasing",
+  "page": "VendorPrice_Overview",
+  "user": "purchaser",
+  "menu": [
+   "Purchase",
+   "Vendor prices"
+  ]
+ },
+ {
+  "module": "Purchasing",
+  "page": "PurchaseApproval_Inbox",
+  "user": "purchase.manager",
+  "menu": [
+   "Purchase",
+   "Approvals"
+  ]
+ },
+ {
+  "module": "Purchasing",
+  "page": "PurchaseApproval_Task",
+  "user": "purchase.manager",
+  "menu": [
+   "Purchase",
+   "Approvals"
+  ],
+  "openRow": 1
+ },
+ {
+  "module": "Purchasing",
+  "page": "PurchaseAnalysis_Report",
+  "user": "purchase.manager",
+  "menu": [
+   "Reporting",
+   "Purchase analysis"
+  ],
+  "url": "purchase-analysis-report"
+ }
 ]
