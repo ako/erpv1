@@ -13,7 +13,7 @@
  "capability": "C3",
  "summary": "Products (goods or services) with category, units, prices, taxes and tags; customer pricelists with fixed-price or discount rules.",
  "provenance": "code-extracted",
- "generatedAt": "2026-10-14",
+ "generatedAt": "2026-10-16",
  "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
  "actorRoleMapping": {
   "SalesManager": [
@@ -171,6 +171,34 @@
    "module": "Products",
    "persistent": true,
    "purpose": "Hierarchical product grouping (used by price rules and reporting).",
+   "odooConstraints": [],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_category_recursion",
+     "fields": [
+      "parent_id"
+     ],
+     "members": [
+      "ProductCategory_Parent"
+     ],
+     "messages": [
+      "You cannot create recursive categories."
+     ],
+     "disposition": "val: Products.VAL_ProductCategory (parent is not the category or one of its children)"
+    },
+    {
+     "odooMethod": "_check_valuation_accounts",
+     "fields": [
+      "lambda self: tuple(self._get_mandatory_stock_account_property_field_names() + ['property_valuation'])"
+     ],
+     "members": [],
+     "messages": [
+      "The stock accounts should be set in order to use the automatic valuation.",
+      "The Stock Input and/or Output accounts cannot be the same as the Stock Valuation account."
+     ],
+     "disposition": "not-applicable: none of lambda self: tuple(self._get_mandatory_stock_account_property_field_names() + ['property_valuation']) carried"
+    }
+   ],
    "sourceOdoo": "product.category",
    "generalization": null,
    "systemMembers": [
@@ -220,6 +248,98 @@
    "module": "Products",
    "persistent": true,
    "purpose": "A sellable and/or purchasable product or service (variants merged in).",
+   "odooConstraints": [],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_barcode_uniqueness",
+     "fields": [
+      "company_id"
+     ],
+     "members": [],
+     "messages": [],
+     "disposition": "not-applicable: none of company_id carried"
+    },
+    {
+     "odooMethod": "_check_uom",
+     "fields": [
+      "uom_id",
+      "uom_po_id"
+     ],
+     "members": [
+      "Product_UoM",
+      "Product_PurchaseUoM"
+     ],
+     "messages": [
+      "The default Unit of Measure and the purchase Unit of Measure must be in the same category."
+     ],
+     "disposition": "val: Products.VAL_Product (purchase unit in the same category as the unit)"
+    },
+    {
+     "odooMethod": "_check_combo_ids_not_empty",
+     "fields": [
+      "type",
+      "combo_ids"
+     ],
+     "members": [
+      "ProductType"
+     ],
+     "messages": [
+      "A combo product must contain at least 1 combo choice."
+     ],
+     "disposition": "not-applicable: combo products are out of scope (ENUM_ProductType has no Combo)"
+    },
+    {
+     "odooMethod": "_check_sale_combo_ids",
+     "fields": [
+      "type",
+      "combo_ids",
+      "sale_ok"
+     ],
+     "members": [
+      "ProductType",
+      "CanBeSold"
+     ],
+     "messages": [
+      "A sellable combo product can only contain sellable products."
+     ],
+     "disposition": "not-applicable: combo products are out of scope"
+    },
+    {
+     "odooMethod": "_check_uom_not_in_invoice",
+     "fields": [
+      "uom_id"
+     ],
+     "members": [
+      "Product_UoM"
+     ],
+     "messages": [
+      "This product is already being used in posted Journal Entries.\\n"
+     ],
+     "disposition": "deferred: Invoicing phase (unit change refused once the product is on a posted invoice)"
+    },
+    {
+     "odooMethod": "_check_sale_product_company",
+     "fields": [
+      "company_id"
+     ],
+     "members": [],
+     "messages": [
+      "The following products cannot be restricted to the company"
+     ],
+     "disposition": "not-applicable: none of company_id carried"
+    },
+    {
+     "odooMethod": "_check_incompatible_types",
+     "fields": [
+      "lambda self: self._get_incompatible_types()"
+     ],
+     "members": [],
+     "messages": [
+      "The product (%(product)s) has incompatible values: %(value_list)s"
+     ],
+     "disposition": "not-applicable: none of lambda self: self._get_incompatible_types() carried"
+    }
+   ],
    "sourceOdoo": "product.template",
    "generalization": null,
    "systemMembers": [
@@ -465,6 +585,8 @@
    "module": "Products",
    "persistent": true,
    "purpose": "Product picture.",
+   "odooConstraints": [],
+   "odooChecks": [],
    "sourceOdoo": null,
    "generalization": "System.Image",
    "systemMembers": [
@@ -492,6 +614,19 @@
    "module": "Products",
    "persistent": true,
    "purpose": "Free tags on products.",
+   "odooConstraints": [
+    {
+     "odooName": "name_uniq",
+     "definition": "unique (name)",
+     "message": "Tag name already exists!",
+     "kind": "unique",
+     "members": [
+      "Name"
+     ],
+     "disposition": "implement"
+    }
+   ],
+   "odooChecks": [],
    "sourceOdoo": "product.tag",
    "generalization": null,
    "systemMembers": [
@@ -530,6 +665,8 @@
    "module": "Products",
    "persistent": true,
    "purpose": "A named set of price rules assigned to customers.",
+   "odooConstraints": [],
+   "odooChecks": [],
    "sourceOdoo": "product.pricelist",
    "generalization": null,
    "systemMembers": [
@@ -583,6 +720,81 @@
    "module": "Products",
    "persistent": true,
    "purpose": "One pricelist rule: fixed price or % discount, for all/category/product, from a minimum quantity.",
+   "odooConstraints": [],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_base_pricelist_id",
+     "fields": [
+      "base_pricelist_id",
+      "base"
+     ],
+     "members": [],
+     "messages": [
+      "A pricelist item with \"Other Pricelist\" as base must have a base_pricelist_id."
+     ],
+     "disposition": "not-applicable: none of base_pricelist_id, base carried"
+    },
+    {
+     "odooMethod": "_check_pricelist_recursion",
+     "fields": [
+      "base_pricelist_id",
+      "pricelist_id",
+      "base"
+     ],
+     "members": [
+      "PriceRule_Pricelist"
+     ],
+     "messages": [
+      "You cannot assign the Main Pricelist as Other Pricelist in PriceList Item"
+     ],
+     "disposition": "not-applicable: rules based on another pricelist are out of scope"
+    },
+    {
+     "odooMethod": "_check_date_range",
+     "fields": [
+      "date_start",
+      "date_end"
+     ],
+     "members": [
+      "ValidFrom",
+      "ValidTo"
+     ],
+     "messages": [
+      "%(item_name)s: end date (%(end_date)s) should be after start date (%(start_date)s)"
+     ],
+     "disposition": "val: Products.VAL_Pricelist (end date not before start date, per rule line)"
+    },
+    {
+     "odooMethod": "_check_margin",
+     "fields": [
+      "price_min_margin",
+      "price_max_margin"
+     ],
+     "members": [],
+     "messages": [
+      "The minimum margin should be lower than the maximum margin."
+     ],
+     "disposition": "not-applicable: none of price_min_margin, price_max_margin carried"
+    },
+    {
+     "odooMethod": "_check_product_consistency",
+     "fields": [
+      "product_id",
+      "product_tmpl_id",
+      "categ_id"
+     ],
+     "members": [
+      "PriceRule_Product",
+      "PriceRule_Category"
+     ],
+     "messages": [
+      "Please specify the category for which this rule should be applied",
+      "Please specify the product for which this rule should be applied",
+      "Please specify the product variant for which this rule should be applied"
+     ],
+     "disposition": "val: Products.VAL_Pricelist (a category rule names a category, a product rule a product)"
+    }
+   ],
    "sourceOdoo": "product.pricelist.item",
    "generalization": null,
    "systemMembers": [

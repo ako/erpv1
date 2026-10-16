@@ -1,0 +1,38 @@
+mdl 1;
+-- 175-domain-composite-keys.mdl — Odoo composite uniqueness enforced in the database (user 2026-10-16: unique validation
+-- belongs in the database, as entity rules). A Mendix unique rule covers one attribute, so a composite Odoo key is a stored
+-- UniqueKey attribute (unique rule, generated in the domain scripts) that a before-commit handler fills from the referenced
+-- entities' AutoNumber KeyNumber. An incomplete row keeps an empty key, which the database does not compare.
+
+/**
+ * Key of a reorder rule (Odoo stock.warehouse.orderpoint product_location_check): one rule per product and location.
+ *
+ * @param $ReorderRule the rule being committed
+ * @returns true (the commit proceeds; the database refuses a duplicate key)
+ */
+create or modify microflow Inventory.BCo_ReorderRule_Key ($ReorderRule: Inventory.ReorderRule)
+returns Boolean as $Proceed
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Product from $ReorderRule/Inventory.ReorderRule_Product;
+  retrieve $Location from $ReorderRule/Inventory.ReorderRule_Location;
+  if $Product = empty or $Location = empty then
+    change $ReorderRule (UniqueKey = empty);
+  else
+    change $ReorderRule (UniqueKey = toString($Product/KeyNumber) + '-' + toString($Location/KeyNumber));
+  end if;
+  return true;
+end;
+
+alter entity Inventory.ReorderRule add event handler if not exists on before commit call Inventory.BCo_ReorderRule_Key($currentObject) raise error;
+
+/**
+ * Fill the keys of reorder rules committed before the key existed (or by a path without events): committing them with
+ * events runs BCo_ReorderRule_Key. Called at every startup (Inventory.ASU_Inventory_SeedData); a no-op once all have keys.
+ */
+create or modify microflow Inventory.SUB_ReorderRule_BackfillKeys ()
+folder 'Replenishment/Microflows'
+begin
+  retrieve $Rules from Inventory.ReorderRule where [UniqueKey = empty][Inventory.ReorderRule_Product/Products.Product][Inventory.ReorderRule_Location/Inventory.Location];
+  commit $Rules with events;
+end;

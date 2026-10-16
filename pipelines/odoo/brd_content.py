@@ -790,3 +790,69 @@ BRDS['F006']['useCases'].append(uc(
     ['1. Manager opens Configuration > Warehouse', '2. Edits name, short name and address',
      '3. Edits the operation types: name, sequence code, default source/destination location, create backorder'],
     ['Warehouse_Edit'], ['stock.view_warehouse', 'stock.view_picking_type_form']))
+
+
+# ── Odoo validation triage (user 2026-10-16: uniqueness and ranges as entity rules in the database; the rest in VAL_) ──
+# (Mendix entity, Odoo constraint or @api.constrains method) -> disposition. Read by brd_generator.constraints():
+#   'entity-unique'            unique entity rule (composite: stored key attribute filled before commit)
+#   'val: <microflow>'         checked in that VAL_ microflow (form-level, may be conditional)
+#   'covered: <where>'         already guaranteed by logic that owns the field
+#   'deferred: <why>'          belongs to a later phase
+#   'not-applicable: <why>'    the feature it guards is out of scope
+CONSTRAINT_TRIAGE = {
+    ('Inventory.Location', 'barcode_company_uniq'): 'not-applicable: barcodes are not maintained (no scanning); locations share an empty barcode',
+    ('Core.Currency', '_check_company_currency_stays_active'): 'not-applicable: currencies are seeded reference data with no maintenance page',
+    ('Partners.Partner', 'check_name'): 'val: Partners.VAL_Partner (Name required)',
+    ('Partners.Partner', '_check_parent_id'): 'val: Partners.VAL_Partner (parent company is not the partner itself)',
+    ('Core.Tax', '_constrains_name'): 'entity-unique: Name + Scope (key attribute); waits on removing 13 duplicate journey taxes',
+    ('Core.Tax', '_check_children_scope'): 'not-applicable: tax groups (children) are out of scope',
+    ('Core.PaymentTermLine', '_check_percent'): 'val: Core.VAL_PaymentTerm (percent lines between 0 and 100)',
+    ('Products.UoM', 'factor_reference_is_one'): 'val: Products.VAL_UoMCategory (the reference unit has ratio 1)',
+    ('Products.ProductCategory', '_check_category_recursion'): 'val: Products.VAL_ProductCategory (parent is not the category or one of its children)',
+    ('Products.Product', '_check_uom'): 'val: Products.VAL_Product (purchase unit in the same category as the unit)',
+    ('Products.Product', '_check_combo_ids_not_empty'): 'not-applicable: combo products are out of scope (ENUM_ProductType has no Combo)',
+    ('Products.Product', '_check_sale_combo_ids'): 'not-applicable: combo products are out of scope',
+    ('Products.Product', '_check_uom_not_in_invoice'): 'deferred: Invoicing phase (unit change refused once the product is on a posted invoice)',
+    ('Products.PriceRule', '_check_pricelist_recursion'): 'not-applicable: rules based on another pricelist are out of scope',
+    ('Products.PriceRule', '_check_date_range'): 'val: Products.VAL_Pricelist (end date not before start date, per rule line)',
+    ('Products.PriceRule', '_check_product_consistency'): 'val: Products.VAL_Pricelist (a category rule names a category, a product rule a product)',
+    ('Sales.SalesOrder', 'date_order_conditional_required'): 'covered: Sales.SUB_SalesOrder_Confirm sets the order date',
+    ('Sales.SalesOrder', '_check_warehouse'): 'not-applicable: one warehouse',
+    ('Sales.SalesOrderLine', 'accountable_required_fields'): 'val: Sales.VAL_SalesOrder_Confirm (every line has a product)',
+    ('Sales.SalesOrderLine', 'non_accountable_null_fields'): 'not-applicable: section and note lines are out of scope',
+    ('Sales.QuotationTemplateLine', 'accountable_product_id_required'): 'val: Sales.VAL_QuotationTemplate (every line has a product)',
+    ('Sales.QuotationTemplateLine', 'non_accountable_fields_null'): 'not-applicable: section and note lines are out of scope',
+    ('Purchasing.PurchaseOrderLine', 'accountable_required_fields'): 'val: Purchasing.VAL_PurchaseOrder_Confirm (every line has a product)',
+    ('Purchasing.PurchaseOrderLine', 'non_accountable_null_fields'): 'not-applicable: section and note lines are out of scope',
+    ('Inventory.Location', '_check_replenish_location'): 'not-applicable: one stock location per warehouse, no replenish hierarchy',
+    ('Inventory.OperationType', '_check_default_location'): 'not-applicable: scrap and manufacturing are out of scope',
+    ('Inventory.StockMove', '_check_uom'): 'covered: Inventory.SUB_Transfer_AddMove takes the product unit',
+    ('Inventory.StockLevel', 'check_product_id'): 'covered: Inventory.SUB_StockLevel_Adjust keeps stock for tracked products only',
+    ('Inventory.StockLevel', 'check_location_id'): 'covered: Inventory.SUB_StockLevel_Adjust keeps stock at internal locations only',
+    ('Inventory.ReorderRule', '_check_product_uom'): 'not-applicable: reorder rules carry no unit',
+    ('Inventory.ReorderRule', '_check_min_max_qty'): 'val: Inventory.VAL_ReorderRule (minimum not above maximum; row save on the list)',
+    ('Invoicing.Invoice', '_require_bill_date_for_autopost'): 'not-applicable: auto-post is out of scope',
+    ('Invoicing.Invoice', '_check_journal_move_type'): 'not-applicable: journals are out of scope',
+    ('Invoicing.InvoiceLine', 'check_credit_debit'): 'not-applicable: no journal items (accounting out of scope)',
+    ('Invoicing.InvoiceLine', 'check_amount_currency_balance_sign'): 'not-applicable: no journal items',
+    ('Invoicing.InvoiceLine', 'check_accountable_required_fields'): 'deferred: Invoicing phase (an invoice line has a product or a label)',
+    ('Invoicing.InvoiceLine', 'check_non_accountable_fields_null'): 'not-applicable: section and note lines are out of scope',
+    ('Invoicing.InvoiceLine', '_check_off_balance'): 'not-applicable: off-balance accounts are out of scope',
+    ('Invoicing.InvoiceLine', '_check_payable_receivable'): 'not-applicable: accounts are out of scope',
+    ('Invoicing.InvoiceLine', '_check_product_uom_category_id'): 'deferred: Invoicing phase (line unit in the product unit category)',
+    ('Invoicing.InvoiceLine', '_check_caba_non_caba_shared_tags'): 'not-applicable: cash-basis taxes are out of scope',
+    ('Invoicing.Payment', '_check_move_id'): 'not-applicable: outstanding accounts are out of scope',
+    ('Invoicing.CreditNoteRequest', '_check_journal_type'): 'not-applicable: journals are out of scope',
+}
+# Rules this app adds on top of Odoo (design, not extracted): business keys the app's own logic depends on.
+EXTRA_CONSTRAINTS = {
+    'Core.Sequence': [dict(odooName='(design) code_uniq', kind='unique', members=['Code'],
+                           message='A numbering sequence with this code already exists.',
+                           disposition='implement', basis='every document number is drawn by Code (SUB_Sequence_NextNumber)')],
+    'Sales.SalesOrder': [dict(odooName='(design) number_uniq', kind='unique', members=['Number'],
+                              message='An order with this number already exists.', disposition='implement',
+                              basis='orders are found and linked by number (transfers carry it as source document)')],
+    'Purchasing.PurchaseOrder': [dict(odooName='(design) number_uniq', kind='unique', members=['Number'],
+                                      message='An order with this number already exists.', disposition='implement',
+                                      basis='orders are found and linked by number (receipts carry it as source document)')],
+}

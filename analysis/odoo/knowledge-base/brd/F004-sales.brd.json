@@ -11,7 +11,7 @@
  "capability": "C4",
  "summary": "Create quotations (optionally from a template), price them from the pricelist, send, confirm into sales orders, cancel or lock; sales teams; sales analysis.",
  "provenance": "code-extracted",
- "generatedAt": "2026-10-14",
+ "generatedAt": "2026-10-16",
  "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
  "actorRoleMapping": {
   "SalesUser": [
@@ -295,6 +295,20 @@
    "module": "Sales",
    "persistent": true,
    "purpose": "Sales team with a leader and members (reporting, default on orders).",
+   "odooConstraints": [],
+   "odooChecks": [
+    {
+     "odooMethod": "_constrains_company_members",
+     "fields": [
+      "company_id"
+     ],
+     "members": [],
+     "messages": [
+      "The following team members are not allowed in company '%(company)s' of the Sales Team '%(team)s': %(users)s"
+     ],
+     "disposition": "not-applicable: none of company_id carried"
+    }
+   ],
    "sourceOdoo": "crm.team",
    "generalization": null,
    "systemMembers": [
@@ -358,6 +372,80 @@
    "module": "Sales",
    "persistent": true,
    "purpose": "A quotation that becomes a confirmed sales order.",
+   "odooConstraints": [
+    {
+     "odooName": "date_order_conditional_required",
+     "definition": "CHECK((state = 'sale' AND date_order IS NOT NULL) OR state != 'sale')",
+     "message": "A confirmed sales order requires a confirmation date.",
+     "kind": "check",
+     "disposition": "covered: Sales.SUB_SalesOrder_Confirm sets the order date"
+    },
+    {
+     "odooName": "(design) number_uniq",
+     "kind": "unique",
+     "members": [
+      "Number"
+     ],
+     "message": "An order with this number already exists.",
+     "disposition": "implement",
+     "basis": "orders are found and linked by number (transfers carry it as source document)",
+     "definition": "",
+     "source": "design"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_order_line_company_id",
+     "fields": [
+      "company_id",
+      "order_line"
+     ],
+     "members": [],
+     "messages": [
+      "Your quotation contains products from company %(product_company)s whereas your quotation belongs to company %(quote_company)s. \\n Please change the company of your quotation or remove the products fro"
+     ],
+     "disposition": "not-applicable: none of company_id, order_line carried"
+    },
+    {
+     "odooMethod": "_check_prepayment_percent",
+     "fields": [
+      "prepayment_percent"
+     ],
+     "members": [],
+     "messages": [
+      "Prepayment percentage must be a valid percentage."
+     ],
+     "disposition": "not-applicable: none of prepayment_percent carried"
+    },
+    {
+     "odooMethod": "_check_optional_product_company_id",
+     "fields": [
+      "company_id",
+      "sale_order_option_ids"
+     ],
+     "members": [],
+     "messages": [
+      "Your quotation contains products from company %(product_company)s whereas your quotation belongs to company %(quote_company)s. \\n Please change the company of your quotation or remove the products fro"
+     ],
+     "disposition": "not-applicable: none of company_id, sale_order_option_ids carried"
+    },
+    {
+     "odooMethod": "_check_warehouse",
+     "fields": [
+      "warehouse_id",
+      "state",
+      "order_line"
+     ],
+     "members": [
+      "Status"
+     ],
+     "messages": [
+      "You must set a warehouse on your sale order to proceed.",
+      "You must have a warehouse for line using a delivery in different company."
+     ],
+     "disposition": "not-applicable: one warehouse"
+    }
+   ],
    "sourceOdoo": "sale.order",
    "generalization": null,
    "systemMembers": [
@@ -590,6 +678,36 @@
    "module": "Sales",
    "persistent": true,
    "purpose": "A product, section or note line of a sales order.",
+   "odooConstraints": [
+    {
+     "odooName": "accountable_required_fields",
+     "definition": "CHECK(display_type IS NOT NULL OR is_downpayment OR (product_id IS NOT NULL AND product_uom IS NOT NULL))",
+     "message": "Missing required fields on accountable sale order line.",
+     "kind": "check",
+     "disposition": "val: Sales.VAL_SalesOrder_Confirm (every line has a product)"
+    },
+    {
+     "odooName": "non_accountable_null_fields",
+     "definition": "CHECK(display_type IS NULL OR (product_id IS NULL AND price_unit = 0 AND product_uom_qty = 0 AND product_uom IS NULL AND customer_lead = 0))",
+     "message": "Forbidden values on non-accountable sale order line",
+     "kind": "check",
+     "disposition": "not-applicable: section and note lines are out of scope"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_combo_item_id",
+     "fields": [
+      "combo_item_id"
+     ],
+     "members": [],
+     "messages": [
+      "A sale order line's combo item must be among its linked line's available",
+      "A sale order line's product must match its combo item's product."
+     ],
+     "disposition": "not-applicable: none of combo_item_id carried"
+    }
+   ],
    "sourceOdoo": "sale.order.line",
    "generalization": null,
    "systemMembers": [
@@ -767,6 +885,35 @@
    "module": "Sales",
    "persistent": true,
    "purpose": "Reusable quotation: default lines, validity and terms.",
+   "odooConstraints": [],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_company_id",
+     "fields": [
+      "company_id",
+      "sale_order_template_line_ids",
+      "sale_order_template_option_ids"
+     ],
+     "members": [],
+     "messages": [
+      "Your template cannot contain products from specific companies if it's shared",
+      "Your template belongs to company %(template_company)s but contains",
+      "Your template belongs to company %(template_company)s but contains"
+     ],
+     "disposition": "not-applicable: none of company_id, sale_order_template_line_ids, sale_order_template_option_ids carried"
+    },
+    {
+     "odooMethod": "_check_prepayment_percent",
+     "fields": [
+      "prepayment_percent"
+     ],
+     "members": [],
+     "messages": [
+      "Prepayment percentage must be a valid percentage."
+     ],
+     "disposition": "not-applicable: none of prepayment_percent carried"
+    }
+   ],
    "sourceOdoo": "sale.order.template",
    "generalization": null,
    "systemMembers": [
@@ -819,6 +966,23 @@
    "module": "Sales",
    "persistent": true,
    "purpose": "A default line of a quotation template.",
+   "odooConstraints": [
+    {
+     "odooName": "accountable_product_id_required",
+     "definition": "CHECK(display_type IS NOT NULL OR (product_id IS NOT NULL AND product_uom_id IS NOT NULL))",
+     "message": "Missing required product and UoM on accountable sale quote line.",
+     "kind": "check",
+     "disposition": "val: Sales.VAL_QuotationTemplate (every line has a product)"
+    },
+    {
+     "odooName": "non_accountable_fields_null",
+     "definition": "CHECK(display_type IS NULL OR (product_id IS NULL AND product_uom_qty = 0 AND product_uom_id IS NULL))",
+     "message": "Forbidden product, quantity and UoM on non-accountable sale quote line",
+     "kind": "check",
+     "disposition": "not-applicable: section and note lines are out of scope"
+    }
+   ],
+   "odooChecks": [],
    "sourceOdoo": "sale.order.template.line",
    "generalization": null,
    "systemMembers": [

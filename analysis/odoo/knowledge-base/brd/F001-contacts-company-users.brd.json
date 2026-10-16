@@ -15,7 +15,7 @@
  "capability": "C1",
  "summary": "One address book for customers, vendors and their contact persons/addresses; the single company record with its defaults; app users with a business profile; document numbering.",
  "provenance": "code-extracted",
- "generatedAt": "2026-10-14",
+ "generatedAt": "2026-10-16",
  "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
  "actorRoleMapping": {
   "SalesUser": [
@@ -245,6 +245,98 @@
    "module": "Core",
    "persistent": true,
    "purpose": "The single company operating the app: identity, currency and document defaults.",
+   "odooConstraints": [
+    {
+     "odooName": "name_uniq",
+     "definition": "unique (name)",
+     "message": "The company name must be unique!",
+     "kind": "unique",
+     "members": [
+      "Name"
+     ],
+     "disposition": "implement"
+    },
+    {
+     "odooName": "check_quotation_validity_days",
+     "definition": "CHECK(quotation_validity_days >= 0)",
+     "message": "You cannot set a negative number for the default quotation validity. Leave empty (or 0) to disable the automatic expiration of quotations.",
+     "kind": "range",
+     "members": [
+      "QuotationValidityDays"
+     ],
+     "operator": ">=",
+     "value": "0",
+     "disposition": "implement"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_active",
+     "fields": [
+      "active"
+     ],
+     "members": [],
+     "messages": [
+      "The company %(company_name)s cannot be archived because it is still used "
+     ],
+     "disposition": "not-applicable: none of active carried"
+    },
+    {
+     "odooMethod": "_check_root_delegated_fields",
+     "fields": [
+      "lambda self: self._get_company_root_delegated_field_names() + ['parent_id']"
+     ],
+     "members": [],
+     "messages": [
+      "The %s of a subsidiary must be the same as it's root company."
+     ],
+     "disposition": "not-applicable: none of lambda self: self._get_company_root_delegated_field_names() + ['parent_id'] carried"
+    },
+    {
+     "odooMethod": "_check_set_account_price_include",
+     "fields": [
+      "account_price_include"
+     ],
+     "members": [],
+     "messages": [],
+     "disposition": "not-applicable: none of account_price_include carried"
+    },
+    {
+     "odooMethod": "_check_fiscalyear_last_day",
+     "fields": [
+      "account_opening_move_id",
+      "fiscalyear_last_day",
+      "fiscalyear_last_month"
+     ],
+     "members": [],
+     "messages": [
+      "Invalid fiscal year last day"
+     ],
+     "disposition": "not-applicable: none of account_opening_move_id, fiscalyear_last_day, fiscalyear_last_month carried"
+    },
+    {
+     "odooMethod": "_check_audit_trail_records",
+     "fields": [
+      "check_account_audit_trail"
+     ],
+     "members": [],
+     "messages": [
+      "Can't disable audit trail when there are existing records."
+     ],
+     "disposition": "not-applicable: none of check_account_audit_trail carried"
+    },
+    {
+     "odooMethod": "_check_prepayment_percent",
+     "fields": [
+      "prepayment_percent"
+     ],
+     "members": [],
+     "messages": [
+      "Prepayment percentage must be a valid percentage."
+     ],
+     "disposition": "not-applicable: none of prepayment_percent carried"
+    }
+   ],
    "sourceOdoo": "res.company",
    "generalization": null,
    "systemMembers": [
@@ -436,6 +528,41 @@
    "module": "Core",
    "persistent": true,
    "purpose": "Countries for addresses.",
+   "odooConstraints": [
+    {
+     "odooName": "name_uniq",
+     "definition": "unique (name)",
+     "message": "The name of the country must be unique!",
+     "kind": "unique",
+     "members": [
+      "Name"
+     ],
+     "disposition": "implement"
+    },
+    {
+     "odooName": "code_uniq",
+     "definition": "unique (code)",
+     "message": "The code of the country must be unique!",
+     "kind": "unique",
+     "members": [
+      "Code"
+     ],
+     "disposition": "implement"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_address_format",
+     "fields": [
+      "address_format"
+     ],
+     "members": [],
+     "messages": [
+      "The layout contains an invalid format key"
+     ],
+     "disposition": "not-applicable: none of address_format carried"
+    }
+   ],
    "sourceOdoo": "res.country",
    "generalization": null,
    "systemMembers": [
@@ -473,6 +600,45 @@
    "module": "Core",
    "persistent": true,
    "purpose": "Currency of the company and its documents.",
+   "odooConstraints": [
+    {
+     "odooName": "unique_name",
+     "definition": "unique (name)",
+     "message": "The currency code must be unique!",
+     "kind": "unique",
+     "members": [
+      "Name"
+     ],
+     "disposition": "implement"
+    },
+    {
+     "odooName": "rounding_gt_zero",
+     "definition": "CHECK (rounding>0)",
+     "message": "The rounding factor must be greater than 0!",
+     "kind": "range",
+     "members": [
+      "Rounding"
+     ],
+     "operator": ">",
+     "value": "0",
+     "disposition": "implement"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_company_currency_stays_active",
+     "fields": [
+      "active"
+     ],
+     "members": [
+      "Active"
+     ],
+     "messages": [
+      "This currency is set on a company and therefore cannot be deactivated."
+     ],
+     "disposition": "not-applicable: currencies are seeded reference data with no maintenance page"
+    }
+   ],
    "sourceOdoo": "res.currency",
    "generalization": null,
    "systemMembers": [
@@ -545,6 +711,21 @@
    "module": "Core",
    "persistent": true,
    "purpose": "Document numbering per document type (S00001, P00001, WH/IN/00001, INV/2026/00001, ...).",
+   "odooConstraints": [
+    {
+     "odooName": "(design) code_uniq",
+     "kind": "unique",
+     "members": [
+      "Code"
+     ],
+     "message": "A numbering sequence with this code already exists.",
+     "disposition": "implement",
+     "basis": "every document number is drawn by Code (SUB_Sequence_NextNumber)",
+     "definition": "",
+     "source": "design"
+    }
+   ],
+   "odooChecks": [],
    "sourceOdoo": "ir.sequence",
    "generalization": null,
    "systemMembers": [
@@ -598,6 +779,57 @@
    "module": "Partners",
    "persistent": true,
    "purpose": "Business data of an app user (Mendix account): display name and linked partner. Team membership lives on Sales.SalesTeam.",
+   "odooConstraints": [
+    {
+     "odooName": "login_key",
+     "definition": "UNIQUE (login)",
+     "message": "You can not have two users with the same login!",
+     "kind": "unique",
+     "members": [
+      "login"
+     ],
+     "disposition": "not-applicable: Odoo field(s) login not carried"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_company",
+     "fields": [
+      "company_id",
+      "company_ids",
+      "active"
+     ],
+     "members": [],
+     "messages": [
+      "Company %(company_name)s is not in the allowed companies for user %(user_name)s (%(company_allowed)s)."
+     ],
+     "disposition": "not-applicable: none of company_id, company_ids, active carried"
+    },
+    {
+     "odooMethod": "_check_action_id",
+     "fields": [
+      "action_id"
+     ],
+     "members": [],
+     "messages": [
+      "The \"App Switcher\" action cannot be selected as home action.",
+      "The \"%s\" action cannot be selected as home action.",
+      "The action \"%s\" cannot be set as the home action because it requires a record to be selected beforehand."
+     ],
+     "disposition": "not-applicable: none of action_id carried"
+    },
+    {
+     "odooMethod": "_check_one_user_type",
+     "fields": [
+      "groups_id"
+     ],
+     "members": [],
+     "messages": [
+      "The user cannot have more than one user types."
+     ],
+     "disposition": "not-applicable: none of groups_id carried"
+    }
+   ],
    "sourceOdoo": "res.users",
    "generalization": null,
    "systemMembers": [
@@ -645,6 +877,52 @@
    "module": "Partners",
    "persistent": true,
    "purpose": "Any customer, vendor or contact person — companies and their contacts/addresses.",
+   "odooConstraints": [
+    {
+     "odooName": "check_name",
+     "definition": "CHECK( (type='contact' AND name IS NOT NULL) or (type!='contact') )",
+     "message": "Contacts require a name",
+     "kind": "check",
+     "disposition": "val: Partners.VAL_Partner (Name required)"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_parent_id",
+     "fields": [
+      "parent_id"
+     ],
+     "members": [
+      "Partner_ParentCompany"
+     ],
+     "messages": [
+      "You cannot create recursive Partner hierarchies."
+     ],
+     "disposition": "val: Partners.VAL_Partner (parent company is not the partner itself)"
+    },
+    {
+     "odooMethod": "_check_partner_company",
+     "fields": [
+      "company_id"
+     ],
+     "members": [],
+     "messages": [
+      "The company assigned to this partner does not match the company this partner represents."
+     ],
+     "disposition": "not-applicable: none of company_id carried"
+    },
+    {
+     "odooMethod": "_check_barcode_unicity",
+     "fields": [
+      "barcode"
+     ],
+     "members": [],
+     "messages": [
+      "Another partner already has this barcode"
+     ],
+     "disposition": "not-applicable: none of barcode carried"
+    }
+   ],
    "sourceOdoo": "res.partner",
    "generalization": null,
    "systemMembers": [
@@ -883,6 +1161,20 @@
    "module": "Partners",
    "persistent": true,
    "purpose": "Free tags to classify partners.",
+   "odooConstraints": [],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_parent_id",
+     "fields": [
+      "parent_id"
+     ],
+     "members": [],
+     "messages": [
+      "You can not create recursive tags."
+     ],
+     "disposition": "not-applicable: none of parent_id carried"
+    }
+   ],
    "sourceOdoo": "res.partner.category",
    "generalization": null,
    "systemMembers": [
@@ -927,6 +1219,43 @@
    "module": "Partners",
    "persistent": true,
    "purpose": "Bank account of a partner (shown on vendor bills / customer payments).",
+   "odooConstraints": [
+    {
+     "odooName": "unique_number",
+     "definition": "unique(sanitized_acc_number, partner_id)",
+     "message": "The combination Account Number/Partner must be unique.",
+     "kind": "unique",
+     "members": [
+      "sanitized_acc_number",
+      "BankAccount_Partner"
+     ],
+     "disposition": "not-applicable: Odoo field(s) sanitized_acc_number not carried"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_journal_id",
+     "fields": [
+      "journal_id"
+     ],
+     "members": [],
+     "messages": [
+      "A bank account can belong to only one journal."
+     ],
+     "disposition": "not-applicable: none of journal_id carried"
+    },
+    {
+     "odooMethod": "_check_allow_out_payment",
+     "fields": [
+      "allow_out_payment"
+     ],
+     "members": [],
+     "messages": [
+      "You do not have the right to trust or un-trust a bank account."
+     ],
+     "disposition": "not-applicable: none of allow_out_payment carried"
+    }
+   ],
    "sourceOdoo": "res.partner.bank",
    "generalization": null,
    "systemMembers": [
@@ -1004,6 +1333,80 @@
    "module": "Core",
    "persistent": true,
    "purpose": "A sales or purchase tax: percentage or fixed amount, price-included or not.",
+   "odooConstraints": [],
+   "odooChecks": [
+    {
+     "odooMethod": "_constrains_name",
+     "fields": [
+      "company_id",
+      "name",
+      "type_tax_use",
+      "tax_scope",
+      "country_id"
+     ],
+     "members": [
+      "Name",
+      "Scope"
+     ],
+     "messages": [
+      "Tax names must be unique!"
+     ],
+     "disposition": "entity-unique: Name + Scope (key attribute); waits on removing 13 duplicate journey taxes"
+    },
+    {
+     "odooMethod": "validate_tax_group_id",
+     "fields": [
+      "tax_group_id"
+     ],
+     "members": [],
+     "messages": [
+      "The tax group must have the same country_id as the tax using it."
+     ],
+     "disposition": "not-applicable: none of tax_group_id carried"
+    },
+    {
+     "odooMethod": "_validate_repartition_lines",
+     "fields": [
+      "invoice_repartition_line_ids",
+      "refund_repartition_line_ids",
+      "repartition_line_ids"
+     ],
+     "members": [],
+     "messages": [
+      "Invoice and credit note distribution should have the same number of lines.",
+      "Invoice and credit note repartition should have at least one tax repartition line.",
+      "Invoice and credit note distribution should match (same percentages, in the same order)."
+     ],
+     "disposition": "not-applicable: none of invoice_repartition_line_ids, refund_repartition_line_ids, repartition_line_ids carried"
+    },
+    {
+     "odooMethod": "_check_children_scope",
+     "fields": [
+      "children_tax_ids",
+      "type_tax_use"
+     ],
+     "members": [
+      "Scope"
+     ],
+     "messages": [
+      "Recursion found for tax “%s”.",
+      "The application scope of taxes in a group must be either the same as the group or left empty.",
+      "Nested group of taxes are not allowed."
+     ],
+     "disposition": "not-applicable: tax groups (children) are out of scope"
+    },
+    {
+     "odooMethod": "_check_company_consistency",
+     "fields": [
+      "company_id"
+     ],
+     "members": [],
+     "messages": [
+      "You can't change the company of your tax since there are some journal items linked to it."
+     ],
+     "disposition": "not-applicable: none of company_id carried"
+    }
+   ],
    "sourceOdoo": "account.tax",
    "generalization": null,
    "systemMembers": [
@@ -1093,6 +1496,23 @@
    "module": "Core",
    "persistent": true,
    "purpose": "When an invoice must be paid: one or more instalments.",
+   "odooConstraints": [],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_lines",
+     "fields": [
+      "line_ids",
+      "early_discount"
+     ],
+     "members": [],
+     "messages": [
+      "The Payment Term must have at least one percent line and the sum of the percent must be 100%.",
+      "The Early Payment Discount functionality can only be used with payment terms using a single 100% line. ",
+      "The Early Payment Discount must be strictly positive."
+     ],
+     "disposition": "not-applicable: none of line_ids, early_discount carried"
+    }
+   ],
    "sourceOdoo": "account.payment.term",
    "generalization": null,
    "systemMembers": [
@@ -1145,6 +1565,36 @@
    "module": "Core",
    "persistent": true,
    "purpose": "One instalment: percent or fixed amount, due N days after a reference date.",
+   "odooConstraints": [],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_valid_char_value",
+     "fields": [
+      "days_next_month"
+     ],
+     "members": [],
+     "messages": [
+      "The days added must be between 0 and 31.",
+      "The days added must be a number and has to be between 0 and 31."
+     ],
+     "disposition": "not-applicable: none of days_next_month carried"
+    },
+    {
+     "odooMethod": "_check_percent",
+     "fields": [
+      "value",
+      "value_amount"
+     ],
+     "members": [
+      "Value",
+      "ValueAmount"
+     ],
+     "messages": [
+      "Percentages on the Payment Terms lines must be between 0 and 100."
+     ],
+     "disposition": "val: Core.VAL_PaymentTerm (percent lines between 0 and 100)"
+    }
+   ],
    "sourceOdoo": "account.payment.term.line",
    "generalization": null,
    "systemMembers": [

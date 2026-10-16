@@ -11,7 +11,7 @@
  "capability": "C6",
  "summary": "One warehouse with one-step receipts and deliveries; transfers with stock moves; check availability and reserve; validate with or without backorder; stock levels and counts; min/max reorder rules generating RFQs.",
  "provenance": "code-extracted",
- "generatedAt": "2026-10-14",
+ "generatedAt": "2026-10-16",
  "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
  "actorRoleMapping": {
   "InventoryUser": [
@@ -290,6 +290,29 @@
    "module": "Inventory",
    "persistent": true,
    "purpose": "The (single) warehouse: its stock location and operation types.",
+   "odooConstraints": [
+    {
+     "odooName": "warehouse_name_uniq",
+     "definition": "unique(name, company_id)",
+     "message": "The name of the warehouse must be unique per company!",
+     "kind": "unique",
+     "members": [
+      "Name"
+     ],
+     "disposition": "implement"
+    },
+    {
+     "odooName": "warehouse_code_uniq",
+     "definition": "unique(code, company_id)",
+     "message": "The short name of the warehouse must be unique per company!",
+     "kind": "unique",
+     "members": [
+      "ShortName"
+     ],
+     "disposition": "implement"
+    }
+   ],
+   "odooChecks": [],
    "sourceOdoo": "stock.warehouse",
    "generalization": null,
    "systemMembers": [
@@ -354,6 +377,59 @@
    "module": "Inventory",
    "persistent": true,
    "purpose": "A physical or virtual place stock moves from/to (WH/Stock, Vendors, Customers, Inventory adjustment).",
+   "odooConstraints": [
+    {
+     "odooName": "barcode_company_uniq",
+     "definition": "unique (barcode,company_id)",
+     "message": "The barcode for a location must be unique per company!",
+     "kind": "unique",
+     "members": [
+      "Barcode"
+     ],
+     "disposition": "not-applicable: barcodes are not maintained (no scanning); locations share an empty barcode"
+    },
+    {
+     "odooName": "inventory_freq_nonneg",
+     "definition": "check(cyclic_inventory_frequency >= 0)",
+     "message": "The inventory frequency (days) for a location must be non-negative",
+     "kind": "range",
+     "members": [
+      "cyclic_inventory_frequency"
+     ],
+     "operator": ">=",
+     "value": "0",
+     "disposition": "not-applicable: Odoo field cyclic_inventory_frequency not carried"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_replenish_location",
+     "fields": [
+      "replenish_location",
+      "location_id",
+      "usage"
+     ],
+     "members": [
+      "Location_Parent",
+      "LocationType"
+     ],
+     "messages": [
+      "Another parent/sub replenish location %s exists, if you wish to change it, uncheck it first"
+     ],
+     "disposition": "not-applicable: one stock location per warehouse, no replenish hierarchy"
+    },
+    {
+     "odooMethod": "_check_scrap_location",
+     "fields": [
+      "scrap_location"
+     ],
+     "members": [],
+     "messages": [
+      "You cannot set a location as a scrap location when it is assigned as a destination location for a manufacturing type operation."
+     ],
+     "disposition": "not-applicable: none of scrap_location carried"
+    }
+   ],
    "sourceOdoo": "stock.location",
    "generalization": null,
    "systemMembers": [
@@ -437,6 +513,22 @@
    "module": "Inventory",
    "persistent": true,
    "purpose": "Receipts, Delivery orders, Internal transfers: numbering and default locations.",
+   "odooConstraints": [],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_default_location",
+     "fields": [
+      "default_location_dest_id"
+     ],
+     "members": [
+      "OperationType_DefaultDestination"
+     ],
+     "messages": [
+      "You cannot set a scrap location as the destination location for a manufacturing type operation."
+     ],
+     "disposition": "not-applicable: scrap and manufacturing are out of scope"
+    }
+   ],
    "sourceOdoo": "stock.picking.type",
    "generalization": null,
    "systemMembers": [
@@ -529,6 +621,19 @@
    "module": "Inventory",
    "persistent": true,
    "purpose": "A receipt, delivery or internal transfer grouping stock moves.",
+   "odooConstraints": [
+    {
+     "odooName": "name_uniq",
+     "definition": "unique(name, company_id)",
+     "message": "Reference must be unique per company!",
+     "kind": "unique",
+     "members": [
+      "Number"
+     ],
+     "disposition": "implement"
+    }
+   ],
+   "odooChecks": [],
    "sourceOdoo": "stock.picking",
    "generalization": null,
    "systemMembers": [
@@ -690,6 +795,20 @@
    "module": "Inventory",
    "persistent": true,
    "purpose": "Movement of one product quantity between two locations (stock.move.line merged in).",
+   "odooConstraints": [],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_uom",
+     "fields": [
+      "product_uom"
+     ],
+     "members": [
+      "StockMove_UoM"
+     ],
+     "messages": [],
+     "disposition": "covered: Inventory.SUB_Transfer_AddMove takes the product unit"
+    }
+   ],
    "sourceOdoo": "stock.move",
    "generalization": null,
    "systemMembers": [
@@ -847,6 +966,46 @@
    "module": "Inventory",
    "persistent": true,
    "purpose": "Quantity of a product in an internal location (on hand, reserved, counted).",
+   "odooConstraints": [],
+   "odooChecks": [
+    {
+     "odooMethod": "check_product_id",
+     "fields": [
+      "product_id"
+     ],
+     "members": [
+      "StockLevel_Product"
+     ],
+     "messages": [
+      "Quants cannot be created for consumables or services."
+     ],
+     "disposition": "covered: Inventory.SUB_StockLevel_Adjust keeps stock for tracked products only"
+    },
+    {
+     "odooMethod": "check_location_id",
+     "fields": [
+      "location_id"
+     ],
+     "members": [
+      "StockLevel_Location"
+     ],
+     "messages": [
+      "You cannot take products from or deliver products to a location of type \"view\" (%s)."
+     ],
+     "disposition": "covered: Inventory.SUB_StockLevel_Adjust keeps stock at internal locations only"
+    },
+    {
+     "odooMethod": "check_lot_id",
+     "fields": [
+      "lot_id"
+     ],
+     "members": [],
+     "messages": [
+      "The Lot/Serial number (%s) is linked to another product."
+     ],
+     "disposition": "not-applicable: none of lot_id carried"
+    }
+   ],
    "sourceOdoo": "stock.quant",
    "generalization": null,
    "systemMembers": [
@@ -937,6 +1096,61 @@
    "module": "Inventory",
    "persistent": true,
    "purpose": "Min/max replenishment rule: below minimum, create an RFQ up to maximum.",
+   "odooConstraints": [
+    {
+     "odooName": "qty_multiple_check",
+     "definition": "CHECK( qty_multiple >= 0 )",
+     "message": "Qty Multiple must be greater than or equal to zero.",
+     "kind": "range",
+     "members": [
+      "QuantityMultiple"
+     ],
+     "operator": ">=",
+     "value": "0",
+     "disposition": "implement"
+    },
+    {
+     "odooName": "product_location_check",
+     "definition": "unique (product_id, location_id, company_id)",
+     "message": "A replenishment rule already exists for this product on this location.",
+     "kind": "unique",
+     "members": [
+      "ReorderRule_Product",
+      "ReorderRule_Location"
+     ],
+     "disposition": "implement"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_product_uom",
+     "fields": [
+      "product_id"
+     ],
+     "members": [
+      "ReorderRule_Product"
+     ],
+     "messages": [
+      "You have to select a product unit of measure that is in the same category as the default unit of measure of the product"
+     ],
+     "disposition": "not-applicable: reorder rules carry no unit"
+    },
+    {
+     "odooMethod": "_check_min_max_qty",
+     "fields": [
+      "product_min_qty",
+      "product_max_qty"
+     ],
+     "members": [
+      "MinQuantity",
+      "MaxQuantity"
+     ],
+     "messages": [
+      "The minimum quantity must be less than or equal to the maximum quantity."
+     ],
+     "disposition": "val: Inventory.VAL_ReorderRule (minimum not above maximum; row save on the list)"
+    }
+   ],
    "sourceOdoo": "stock.warehouse.orderpoint",
    "generalization": null,
    "systemMembers": [
@@ -1048,6 +1262,8 @@
    "module": "Inventory",
    "persistent": false,
    "purpose": "Wizard data: validate a transfer with less than the demand — create a backorder or not.",
+   "odooConstraints": [],
+   "odooChecks": [],
    "sourceOdoo": "stock.backorder.confirmation",
    "generalization": null,
    "systemMembers": [],

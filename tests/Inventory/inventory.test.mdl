@@ -214,9 +214,9 @@ delete $OpenRfqs;
 $Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Chair, Location = $Stock);
 change $Level (Quantity = 3);
 commit $Level;
-$Rule = create Inventory.ReorderRule (Name = 'Test chair rule', MinQuantity = 10, MaxQuantity = 30, QuantityMultiple = 1, Active = true, Automatic = true,
-  Inventory.ReorderRule_Product = $Chair, Inventory.ReorderRule_Location = $Stock, Inventory.ReorderRule_Vendor = $Gemini);
-commit $Rule;
+retrieve $Rule from Inventory.ReorderRule where [Inventory.ReorderRule_Product = $Chair][Inventory.ReorderRule_Location = $Stock] first;
+change $Rule (MinQuantity = 10, MaxQuantity = 30, QuantityMultiple = 1, Active = true, Automatic = true, Inventory.ReorderRule_Vendor = $Gemini);
+commit $Rule with events;
 $Ordered = call microflow Inventory.SUB_ReorderRule_Replenish(Rule = $Rule);
 retrieve $Line from Purchasing.PurchaseOrderLine where [Purchasing.PurchaseOrderLine_Product = $Chair][Purchasing.PurchaseOrderLine_PurchaseOrder/Purchasing.PurchaseOrder/Status = 'RFQ'][Purchasing.PurchaseOrderLine_PurchaseOrder/Purchasing.PurchaseOrder/Purchasing.PurchaseOrder_Vendor = $Gemini] first;
 /

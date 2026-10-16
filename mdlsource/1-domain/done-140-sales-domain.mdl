@@ -33,7 +33,7 @@ index ("Name");
 
 /** A quotation that becomes a confirmed sales order. (Odoo sale.order; F004, F007) */
 create or modify persistent entity Sales."SalesOrder" (
-  "Number": String(200),
+  "Number": String(200) unique error message 'An order with this number already exists.',
   "Status": Enumeration(Sales.ENUM_SalesOrderStatus) default Quotation,
   "Locked": Boolean default false,
   "OrderDate": DateTime,

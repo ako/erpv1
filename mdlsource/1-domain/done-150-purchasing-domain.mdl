@@ -38,7 +38,7 @@ create or modify persistent entity Purchasing."VendorPrice" (
 
 /** A request for quotation that becomes a (possibly approved) purchase order. (Odoo purchase.order; F005, F007) */
 create or modify persistent entity Purchasing."PurchaseOrder" (
-  "Number": String(200),
+  "Number": String(200) unique error message 'An order with this number already exists.',
   "Status": Enumeration(Purchasing.ENUM_PurchaseOrderStatus) default RFQ,
   "Locked": Boolean,
   "OrderDeadline": DateTime,

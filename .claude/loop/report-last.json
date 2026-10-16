@@ -1,12 +1,12 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-16 04:53:14",
-  "overallScore": 49.1,
+  "date": "2026-10-16 06:24:10",
+  "overallScore": 46.5,
   "summary": {
-    "total": 408,
+    "total": 422,
     "errors": 0,
     "warnings": 133,
-    "infos": 275
+    "infos": 289
   },
   "categories": [
     {
@@ -26,12 +26,13 @@
     },
     {
       "name": "Quality",
-      "score": 94,
-      "total": 6,
+      "score": 82,
+      "total": 18,
       "errors": 0,
       "warnings": 0,
-      "infos": 6,
+      "infos": 18,
       "topActions": [
+        "Replace entity validation rules with a VAL_Company microflow for explicit, testable validation",
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
         "Extract logical sections into SUB_ microflows to keep each under 15 activities",
         "Describe what the collection is for and where its images are used."
@@ -53,12 +54,14 @@
     },
     {
       "name": "Performance",
-      "score": 100,
-      "total": 0,
+      "score": 99,
+      "total": 1,
       "errors": 0,
       "warnings": 0,
-      "infos": 0,
-      "topActions": null
+      "infos": 1,
+      "topActions": [
+        "Replace event handlers with explicit microflow calls (BCO_, ACO_, BCR_, ACR_, BDE_, ADE_ prefixes)"
+      ]
     },
     {
       "name": "Naming",
@@ -86,11 +89,11 @@
     },
     {
       "name": "Other",
-      "score": 92,
-      "total": 8,
+      "score": 91,
+      "total": 9,
       "errors": 0,
       "warnings": 0,
-      "infos": 8,
+      "infos": 9,
       "topActions": [
         "Describing this microflow does not round-trip. Edit it in Studio Pro, or restructure so each branch reaches the decision's merge without passing through another branch's path. The condition can usually be folded into one decision instead (e.g. `not(a) or b`)."
       ]

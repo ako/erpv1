@@ -15,7 +15,7 @@
  "capability": "C8",
  "summary": "Customer invoices from sales orders, vendor bills from purchase orders, manual invoices/bills, posting with numbering and due dates from payment terms, taxes, credit notes, payment registration with partial payments.",
  "provenance": "code-extracted",
- "generatedAt": "2026-10-14",
+ "generatedAt": "2026-10-16",
  "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
  "actorRoleMapping": {
   "Billing": [
@@ -351,6 +351,8 @@
    "module": "Core",
    "persistent": false,
    "purpose": "Result of a line amount computation (subtotal, tax, total) passed between microflows.",
+   "odooConstraints": [],
+   "odooChecks": [],
    "sourceOdoo": null,
    "generalization": null,
    "systemMembers": [],
@@ -386,6 +388,8 @@
    "module": "Sales",
    "persistent": false,
    "purpose": "Wizard data: create the invoice(s) for selected sales orders.",
+   "odooConstraints": [],
+   "odooChecks": [],
    "sourceOdoo": "sale.advance.payment.inv",
    "generalization": null,
    "systemMembers": [],
@@ -418,6 +422,71 @@
    "module": "Invoicing",
    "persistent": true,
    "purpose": "Customer invoice / credit note or vendor bill / credit note (no journal entries).",
+   "odooConstraints": [
+    {
+     "odooName": "unique_name",
+     "definition": "",
+     "message": "Another entry with the same name already exists.",
+     "kind": "check",
+     "disposition": "not-applicable: definition not extracted"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_require_bill_date_for_autopost",
+     "fields": [
+      "auto_post",
+      "invoice_date"
+     ],
+     "members": [
+      "InvoiceDate"
+     ],
+     "messages": [
+      "For this entry to be automatically posted, it required a bill date."
+     ],
+     "disposition": "not-applicable: auto-post is out of scope"
+    },
+    {
+     "odooMethod": "_check_journal_move_type",
+     "fields": [
+      "journal_id",
+      "move_type"
+     ],
+     "members": [
+      "InvoiceType"
+     ],
+     "messages": [
+      "Cannot create a purchase document in a non purchase journal",
+      "Cannot create a sale document in a non sale journal"
+     ],
+     "disposition": "not-applicable: journals are out of scope"
+    },
+    {
+     "odooMethod": "_validate_taxes_country",
+     "fields": [
+      "line_ids",
+      "fiscal_position_id",
+      "company_id"
+     ],
+     "members": [],
+     "messages": [
+      "This entry contains taxes that are not compatible with your fiscal position. Check the country set in fiscal position and in your tax configuration.",
+      "This entry contains one or more taxes that are incompatible with your fiscal country. Check company fiscal country in the settings and tax country in taxes configuration."
+     ],
+     "disposition": "not-applicable: none of line_ids, fiscal_position_id, company_id carried"
+    },
+    {
+     "odooMethod": "_check_invoice_currency_rate",
+     "fields": [
+      "invoice_currency_rate"
+     ],
+     "members": [],
+     "messages": [
+      "The currency rate must be strictly positive."
+     ],
+     "disposition": "not-applicable: none of invoice_currency_rate carried"
+    }
+   ],
    "sourceOdoo": "account.move",
    "generalization": null,
    "systemMembers": [
@@ -653,6 +722,112 @@
    "module": "Invoicing",
    "persistent": true,
    "purpose": "A product, section or note line of an invoice (no tax/receivable/payable journal items).",
+   "odooConstraints": [
+    {
+     "odooName": "check_credit_debit",
+     "definition": "CHECK(display_type IN ('line_section', 'line_note') OR credit * debit=0)",
+     "message": "Wrong credit or debit value in accounting entry!",
+     "kind": "check",
+     "disposition": "not-applicable: no journal items (accounting out of scope)"
+    },
+    {
+     "odooName": "check_amount_currency_balance_sign",
+     "definition": "CHECK(\n                display_type IN ('line_section', 'line_note')\n                OR (\n                    (balance <= 0 AND amount_currency <= 0)\n                    OR\n                    (balance >= 0 AND amount_currency >= 0)\n                )\n            )",
+     "message": "The amount expressed in the secondary currency must be positive when account is debited and negative when account is credited. If the currency is the same as the one from the company, this amount must strictly be equal to the balance.",
+     "kind": "check",
+     "disposition": "not-applicable: no journal items"
+    },
+    {
+     "odooName": "check_accountable_required_fields",
+     "definition": "CHECK(display_type IN ('line_section', 'line_note') OR account_id IS NOT NULL)",
+     "message": "Missing required account on accountable line.",
+     "kind": "check",
+     "disposition": "deferred: Invoicing phase (an invoice line has a product or a label)"
+    },
+    {
+     "odooName": "check_non_accountable_fields_null",
+     "definition": "CHECK(display_type NOT IN ('line_section', 'line_note') OR (amount_currency = 0 AND debit = 0 AND credit = 0 AND account_id IS NULL))",
+     "message": "Forbidden balance or account on non-accountable line",
+     "kind": "check",
+     "disposition": "not-applicable: section and note lines are out of scope"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_off_balance",
+     "fields": [
+      "account_id",
+      "tax_ids",
+      "tax_line_id",
+      "reconciled"
+     ],
+     "members": [
+      "InvoiceLine_Taxes"
+     ],
+     "messages": [
+      "If you want to use \"Off-Balance Sheet\" accounts, all the accounts of the journal entry must be of this type",
+      "You cannot use taxes on lines with an Off-Balance account",
+      "Lines from \"Off-Balance Sheet\" accounts cannot be reconciled"
+     ],
+     "disposition": "not-applicable: off-balance accounts are out of scope"
+    },
+    {
+     "odooMethod": "_check_payable_receivable",
+     "fields": [
+      "account_id",
+      "display_type"
+     ],
+     "members": [
+      "LineType"
+     ],
+     "messages": [
+      "Account %s is of payable type, but is used in a sale operation.",
+      "Any journal item on a receivable account must have a due date and vice versa.",
+      "Account %s is of receivable type, but is used in a purchase operation."
+     ],
+     "disposition": "not-applicable: accounts are out of scope"
+    },
+    {
+     "odooMethod": "_check_product_uom_category_id",
+     "fields": [
+      "product_uom_id"
+     ],
+     "members": [
+      "InvoiceLine_UoM"
+     ],
+     "messages": [
+      "The Unit of Measure (UoM) '%(uom)s' you have selected for product '%(product)s', "
+     ],
+     "disposition": "deferred: Invoicing phase (line unit in the product unit category)"
+    },
+    {
+     "odooMethod": "_check_caba_non_caba_shared_tags",
+     "fields": [
+      "tax_ids",
+      "tax_repartition_line_id"
+     ],
+     "members": [
+      "InvoiceLine_Taxes"
+     ],
+     "messages": [
+      "Taxes exigible on payment and on invoice cannot be mixed on the same journal item if they share some tag."
+     ],
+     "disposition": "not-applicable: cash-basis taxes are out of scope"
+    },
+    {
+     "odooMethod": "_constrains_matching_number",
+     "fields": [
+      "matching_number",
+      "matched_debit_ids",
+      "matched_credit_ids"
+     ],
+     "members": [],
+     "messages": [
+      "A temporary number can not be used in a real matching"
+     ],
+     "disposition": "not-applicable: none of matching_number, matched_debit_ids, matched_credit_ids carried"
+    }
+   ],
    "sourceOdoo": "account.move.line",
    "generalization": null,
    "systemMembers": [
@@ -801,6 +976,48 @@
    "module": "Invoicing",
    "persistent": true,
    "purpose": "Money received from a customer or paid to a vendor, allocated to invoices.",
+   "odooConstraints": [
+    {
+     "odooName": "check_amount_not_negative",
+     "definition": "CHECK(amount >= 0.0)",
+     "message": "The payment amount cannot be negative.",
+     "kind": "range",
+     "members": [
+      "Amount"
+     ],
+     "operator": ">=",
+     "value": "0.0",
+     "disposition": "implement"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_payment_method_line_id",
+     "fields": [
+      "payment_method_line_id"
+     ],
+     "members": [],
+     "messages": [
+      "Please define a payment method line on your payment.",
+      "The selected payment method is not available for this payment, please select the payment method again."
+     ],
+     "disposition": "not-applicable: none of payment_method_line_id carried"
+    },
+    {
+     "odooMethod": "_check_move_id",
+     "fields": [
+      "state",
+      "move_id"
+     ],
+     "members": [
+      "Status"
+     ],
+     "messages": [
+      "A payment with an outstanding account cannot be confirmed without having a journal entry."
+     ],
+     "disposition": "not-applicable: outstanding accounts are out of scope"
+    }
+   ],
    "sourceOdoo": "account.payment",
    "generalization": null,
    "systemMembers": [
@@ -931,6 +1148,8 @@
    "module": "Invoicing",
    "persistent": true,
    "purpose": "Amount of a payment applied to one invoice (makes partial payments explicit).",
+   "odooConstraints": [],
+   "odooChecks": [],
    "sourceOdoo": null,
    "generalization": null,
    "systemMembers": [
@@ -972,6 +1191,8 @@
    "module": "Invoicing",
    "persistent": false,
    "purpose": "Wizard data: register a payment for one or more posted invoices.",
+   "odooConstraints": [],
+   "odooChecks": [],
    "sourceOdoo": "account.payment.register",
    "generalization": null,
    "systemMembers": [],
@@ -1032,6 +1253,23 @@
    "module": "Invoicing",
    "persistent": false,
    "purpose": "Wizard data: reverse a posted invoice into a credit note.",
+   "odooConstraints": [],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_journal_type",
+     "fields": [
+      "journal_id",
+      "move_ids"
+     ],
+     "members": [
+      "CreditNoteRequest_Invoice"
+     ],
+     "messages": [
+      "Journal should be the same type as the reversed entry."
+     ],
+     "disposition": "not-applicable: journals are out of scope"
+    }
+   ],
    "sourceOdoo": "account.move.reversal",
    "generalization": null,
    "systemMembers": [],

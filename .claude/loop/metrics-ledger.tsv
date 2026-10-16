@@ -303,3 +303,20 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-16T04:51:12Z	done-605-sales-page-sales-order-overview.mdl	pass	applied-lint-rose	117	0	1	408	0	49.1	0	94	0	100	31	76	92	408	1a33d89
 2026-10-16T04:52:15Z	done-706-purchasing-page-purchase-order-overview.mdl	pass	applied-lint-rose	63	0	1	408	0	49.1	0	94	0	100	31	76	92	408	5f956eb
 2026-10-16T04:53:14Z	done-803-inventory-page-transfer-overview.mdl	pass	applied-lint-rose	58	0	1	408	0	49.1	0	94	0	100	31	76	92	408	07106b2
+2026-10-16T06:08:32Z	done-110-core-domain.mdl	pass	applied-lint-blind	59	0	3		0	48.3	0	90	0	100	31	76	92	412	718164f
+2026-10-16T06:08:34Z	done-120-products-domain.mdl	not-run	blocked	2	?			0										7b8b9c4
+2026-10-16T06:09:31Z	done-140-sales-domain.mdl	pass	applied-lint-blind	57	0	3		0	48.1	0	89	0	100	31	76	92	413	7b8b9c4
+2026-10-16T06:10:27Z	done-150-purchasing-domain.mdl	pass	applied-lint-blind	56	0	3		0	47.9	0	88	0	100	31	76	92	414	3a91aaa
+2026-10-16T06:10:29Z	done-160-inventory-domain.mdl	not-run	blocked	1	?			0										a3d7c0b
+2026-10-16T06:11:22Z	done-170-invoicing-domain.mdl	pass	applied-lint-blind	53	0	3		0	47.7	0	87	0	100	31	76	92	415	a3d7c0b
+2026-10-16T06:11:24Z	175-domain-composite-keys.mdl	not-run	blocked	1	?			0										8e92874
+2026-10-16T06:12:15Z	done-110-core-domain.mdl	pass	applied-lint-blind	42	0	3		0	47.7	0	87	0	100	31	76	92	415	8e92874
+2026-10-16T06:14:28Z	done-120-products-domain.mdl	pass	applied-lint-rose	65	0	1	417	0	47.3	0	85	0	100	31	76	92	417	8e92874
+2026-10-16T06:15:34Z	done-160-inventory-domain.mdl	pass	applied-lint-rose	65	0	1	420	0	46.7	0	82	0	100	31	76	92	420	fbf965a
+2026-10-16T06:16:33Z	175-domain-composite-keys.mdl	pass	applied-lint-rose	58	0	1	422	0	46.5	0	82	0	99	31	76	91	422	a62172e
+2026-10-16T06:18:58Z	175-domain-composite-keys.mdl	pass	partial	38	0			0										6a5ac25
+2026-10-16T06:19:01Z	2026-10-16-rebuild-inventory-asu-backfill.mdl	not-run	blocked	1	?			0										6a5ac25
+2026-10-16T06:20:21Z	175-domain-composite-keys.mdl	pass	partial	71	0			0										6a5ac25
+2026-10-16T06:22:00Z	175-domain-composite-keys.mdl	pass	applied-lint-rose	88	0	1	423	0	46.3	0	81	0	99	31	76	91	423	6a5ac25
+2026-10-16T06:23:10Z	2026-10-16-rebuild-inventory-asu-backfill.mdl	pass	applied-lint-rose	70	0	1	422	0	46.5	0	82	0	99	31	76	91	422	651d233
+2026-10-16T06:24:10Z	175-domain-composite-keys.mdl	pass	applied-lint-rose	59	0	1	422	0	46.5	0	82	0	99	31	76	91	422	a85ef60

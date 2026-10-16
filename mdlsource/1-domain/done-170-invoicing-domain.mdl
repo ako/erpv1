@@ -227,6 +227,9 @@ create or modify association Invoicing."CreditNoteRequest_Invoice"
   from Invoicing."CreditNoteRequest" to Invoicing."Invoice"
   type Reference;
 
+-- Odoo range constraints as entity validation rules (bounds are inclusive: "> 0" = the smallest step of the type)
+create validation rule for Invoicing."Payment"."Amount" range from 0.0 error message 'The payment amount cannot be negative.';
+
 -- Entity access (module-brief.md "Access table"; narrowing a rule = revoke first, STOP 14)
 grant create, delete, read *, write * on entity Invoicing."Invoice" to Invoicing.Billing;
 grant create, delete, read *, write * on entity Invoicing."Invoice" to Invoicing.Manager;

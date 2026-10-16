@@ -1,0 +1,31 @@
+-- PARKED, not run by `mxcli test tests/` (file extension): the range rules WORK — each commit below is refused with the Odoo
+-- message (run 2026-10-16: "validation errors: (member: Rounding, message: The rounding factor must be greater than 0!)",
+-- same for Factor and QuantityMultiple) — but mxcli test reports them ERROR: the entity validation error passes both a
+-- microflow `on error` handler and `@throws` (docs/mxcli-findings.md X12). Rename to .test.mdl once @throws matches it.
+
+/**
+ * @test A currency rounding of 0 is refused (Odoo res.currency rounding_gt_zero)
+ * @throws 'The rounding factor must be greater than 0'
+ */
+retrieve $Currency from Core.Currency first;
+change $Currency (Rounding = 0);
+commit $Currency;
+/
+
+/**
+ * @test A unit conversion ratio of 0 is refused (Odoo uom.uom factor_gt_zero)
+ * @throws 'The conversion ratio for a unit of measure cannot be 0'
+ */
+retrieve $Unit from Products.UoM first;
+change $Unit (Factor = 0);
+commit $Unit;
+/
+
+/**
+ * @test A negative reorder multiple is refused (Odoo stock.warehouse.orderpoint qty_multiple_check)
+ * @throws 'Qty Multiple must be greater than or equal to zero'
+ */
+retrieve $Rule from Inventory.ReorderRule where [Name = 'Office Chair WH/Stock'] first;
+change $Rule (QuantityMultiple = -1);
+commit $Rule with events;
+/

@@ -1,0 +1,138 @@
+mdl 1;
+-- One-off: Inventory.ASU_Inventory_SeedData calls SUB_ReorderRule_BackfillKeys (175) so reorder rules committed before the
+-- composite key existed get theirs. Reshape (MDL-V1-REBUILD): drop and replay done-821.
+drop microflow Inventory.ASU_Inventory_SeedData;
+-- ── replay: mdlsource/8-inventory/done-821-inventory-mf-seed-data.mdl
+-- 821-inventory-mf-seed-data.mdl — reference data + PROJECT.md 5 (build) "Demo data" + startup chain head. Owns
+-- SUB_Location_Ensure, SUB_OperationType_Ensure, SUB_Inventory_SeedReference (always: warehouse WH, its locations and operation
+-- types — the app cannot deliver or receive without them), SUB_Inventory_SeedDemo (docs/demo-script.md: Office Chair 8 and
+-- Desk Combination 2 on hand, chair reorder rule 10/30 from Gemini, WH/IN and WH/OUT numbers not starting at 1) and
+-- ASU_Inventory_SeedData = Purchasing's chain (which runs Sales'), then these. Inventory sits above Sales and Purchasing.
+
+/** Ensure a location (business key: name). */
+create or modify microflow Inventory.SUB_Location_Ensure ($Name: String, $FullName: String, $LocationType: Enumeration(Inventory.ENUM_LocationType), $Warehouse: Inventory.Warehouse)
+returns Inventory.Location as $Location
+folder 'Setup/Microflows'
+begin
+  retrieve $Existing from Inventory.Location where [Name = $Name] first;
+  if $Existing != empty then
+    return $Existing;
+  end if;
+  $New = create Inventory.Location (Name = $Name, FullName = $FullName, LocationType = $LocationType, Active = true, Inventory.Location_Warehouse = $Warehouse);
+  commit $New without events;
+  return $New;
+end;
+
+/** Ensure an operation type (business key: kind). */
+create or modify microflow Inventory.SUB_OperationType_Ensure ($Name: String, $Kind: Enumeration(Inventory.ENUM_OperationKind), $SequenceCode: String,
+  $Source: Inventory.Location, $Destination: Inventory.Location, $Warehouse: Inventory.Warehouse)
+folder 'Setup/Microflows'
+begin
+  retrieve $Existing from Inventory.OperationType where [Kind = $Kind] first;
+  if $Existing != empty then
+    return;
+  end if;
+  $New = create Inventory.OperationType (Name = $Name, Kind = $Kind, SequenceCode = $SequenceCode, CreateBackorder = true, Active = true,
+    Inventory.OperationType_Warehouse = $Warehouse, Inventory.OperationType_DefaultSource = $Source, Inventory.OperationType_DefaultDestination = $Destination);
+  commit $New without events;
+end;
+
+/** Ensure the main warehouse WH (business key: one warehouse), addressed at the company's partner. */
+create or modify microflow Inventory.SUB_Warehouse_Ensure ()
+returns Inventory.Warehouse as $Warehouse
+folder 'Setup/Microflows'
+begin
+  retrieve $Existing from Inventory.Warehouse first;
+  if $Existing != empty then
+    return $Existing;
+  end if;
+  retrieve $Company from Core.Company first;
+  retrieve $Address from Partners.Partner where [Name = $Company/Name] first;
+  $New = create Inventory.Warehouse (Name = 'Main warehouse', ShortName = 'WH', Active = true, Inventory.Warehouse_Address = $Address);
+  commit $New without events;
+  return $New;
+end;
+
+/** Demo stock: set a product's on-hand quantity at a location. */
+create or modify microflow Inventory.SUB_StockLevel_Seed ($Product: Products.Product, $Location: Inventory.Location, $Quantity: Decimal)
+folder 'Setup/Microflows'
+begin
+  $Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Product, Location = $Location);
+  change $Level (Quantity = $Quantity);
+  commit $Level without events;
+end;
+
+/** Demo numbering: raise a sequence's next number to at least a value (transfer numbers continue Odoo's demo). */
+create or modify microflow Inventory.SUB_Sequence_RaiseTo ($Code: String, $NextNumber: Integer)
+folder 'Setup/Microflows'
+begin
+  retrieve $Sequence from Core.Sequence where [Code = $Code] first;
+  if $Sequence != empty and $Sequence/NextNumber < $NextNumber then
+    change $Sequence (NextNumber = $NextNumber);
+    commit $Sequence without events;
+  end if;
+end;
+
+/** Reference data, always: warehouse WH with its stock, vendor, customer and adjustment locations and the three operation types. */
+create or modify microflow Inventory.SUB_Inventory_SeedReference ()
+folder 'Setup/Microflows'
+begin
+  call microflow Core.SUB_Sequence_Ensure(Code = 'stock.picking.internal', Prefix = 'WH/INT/', Padding = 5);
+  $Warehouse = call microflow Inventory.SUB_Warehouse_Ensure();
+  $Stock = call microflow Inventory.SUB_Location_Ensure(Name = 'WH/Stock', FullName = 'WH/Stock', LocationType = Inventory.ENUM_LocationType.Internal, Warehouse = $Warehouse);
+  $Vendors = call microflow Inventory.SUB_Location_Ensure(Name = 'Vendors', FullName = 'Partners/Vendors', LocationType = Inventory.ENUM_LocationType.Vendor, Warehouse = empty);
+  $Customers = call microflow Inventory.SUB_Location_Ensure(Name = 'Customers', FullName = 'Partners/Customers', LocationType = Inventory.ENUM_LocationType.Customer, Warehouse = empty);
+  $Adjustment = call microflow Inventory.SUB_Location_Ensure(Name = 'Inventory adjustment', FullName = 'Virtual Locations/Inventory adjustment', LocationType = Inventory.ENUM_LocationType.InventoryLoss, Warehouse = empty);
+  if $Warehouse/Inventory.Warehouse_StockLocation = empty then
+    change $Warehouse (Inventory.Warehouse_StockLocation = $Stock);
+    commit $Warehouse without events;
+  end if;
+  call microflow Inventory.SUB_OperationType_Ensure(Name = 'Receipts', Kind = Inventory.ENUM_OperationKind.Receipt, SequenceCode = 'stock.picking.in',
+    Source = $Vendors, Destination = $Stock, Warehouse = $Warehouse);
+  call microflow Inventory.SUB_OperationType_Ensure(Name = 'Delivery orders', Kind = Inventory.ENUM_OperationKind.Delivery, SequenceCode = 'stock.picking.out',
+    Source = $Stock, Destination = $Customers, Warehouse = $Warehouse);
+  call microflow Inventory.SUB_OperationType_Ensure(Name = 'Internal transfers', Kind = Inventory.ENUM_OperationKind.Internal, SequenceCode = 'stock.picking.internal',
+    Source = $Stock, Destination = $Stock, Warehouse = $Warehouse);
+end;
+
+/** Demo fixtures: chairs 8 and desks 2 on hand (only when no stock was recorded yet), the chair reorder rule, transfer numbers. */
+create or modify microflow Inventory.SUB_Inventory_SeedDemo ()
+folder 'Setup/Microflows'
+begin
+  retrieve $Stock from Inventory.Location where [Name = 'WH/Stock'] first;
+  retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+  retrieve $Desk from Products.Product where [InternalReference = 'FURN_7800'] first;
+  retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+  retrieve $AnyStock from Inventory.StockLevel first;
+  if $AnyStock = empty and $Stock != empty and $Chair != empty and $Desk != empty then
+    call microflow Inventory.SUB_StockLevel_Seed(Product = $Chair, Location = $Stock, Quantity = 8);
+    call microflow Inventory.SUB_StockLevel_Seed(Product = $Desk, Location = $Stock, Quantity = 2);
+  end if;
+  retrieve $Rule from Inventory.ReorderRule where [Name = 'Office Chair WH/Stock'] first;
+  if $Rule = empty and $Chair != empty then
+    $NewRule = create Inventory.ReorderRule (Name = 'Office Chair WH/Stock', MinQuantity = 10, MaxQuantity = 30, QuantityMultiple = 1, Automatic = true, Active = true,
+      Inventory.ReorderRule_Product = $Chair, Inventory.ReorderRule_Location = $Stock, Inventory.ReorderRule_Vendor = $Gemini);
+    commit $NewRule without events;
+  end if;
+  call microflow Inventory.SUB_Sequence_RaiseTo(Code = 'stock.picking.in', NextNumber = 12);
+  call microflow Inventory.SUB_Sequence_RaiseTo(Code = 'stock.picking.out', NextNumber = 31);
+end;
+
+/**
+ * After-startup microflow (top of the chain): Purchasing's chain (which runs Sales'), the warehouse reference data, then the
+ * Inventory demo fixtures when Core.SeedDemoData.
+ *
+ * @returns true
+ */
+create or modify microflow Inventory.ASU_Inventory_SeedData ()
+returns Boolean as $Done
+folder 'Setup/Microflows'
+begin
+  $PurchasingDone = call microflow Purchasing.ASU_Purchasing_SeedData();
+  call microflow Inventory.SUB_Inventory_SeedReference();
+  call microflow Inventory.SUB_ReorderRule_BackfillKeys();
+  if @Core.SeedDemoData then
+    call microflow Inventory.SUB_Inventory_SeedDemo();
+  end if;
+  return true;
+end;

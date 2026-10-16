@@ -21,7 +21,7 @@ code{font-size:.85em}
 details{margin:.5rem 0} summary{cursor:pointer;color:var(--muted);font-size:.85rem}
 .claims{font-size:.82rem} .warn summary{color:var(--warn)}
 </style></head><body><main>
-<h1>Build Plan</h1><p class=note id=stamp>Generated 2026-10-16T04:45:57Z by project-bin/build-plan-status.sh from architecture/build-plan.md, mdlsource/ and the module review files. exec.sh and gate-check.sh regenerate it; never hand-edit.</p>
+<h1>Build Plan</h1><p class=note id=stamp>Generated 2026-10-16T06:22:00Z by project-bin/build-plan-status.sh from architecture/build-plan.md, mdlsource/ and the module review files. exec.sh and gate-check.sh regenerate it; never hand-edit.</p>
 <h2>The plan</h2>
 <p class=lede>From <code>architecture/build-plan.md</code>: 10 phases, 95 rows: <b class=st-built>0 built</b>, <b class=st-todo>95 not built</b>, <b class=st-person>0 pending a person</b>.</p>
 <p class=note>Scripts named in the plan: 120, of which 90 are renamed <code>done-</code> under <code>mdlsource/</code>. <span class=drift>&#9888; 44 rows where the plan and the disk disagree.</span></p>
@@ -448,14 +448,14 @@ details{margin:.5rem 0} summary{cursor:pointer;color:var(--muted);font-size:.85r
 <h2>A. Script folders: how much is built</h2>
 <div class=scroll><table><tr><th>Phase folder</th><th>Done / Total</th><th>%</th><th>Status</th></tr>
 <tr><td>0-scaffold</td><td>3/3</td><td>100%</td><td class="done">done</td></tr>
-<tr><td>1-domain</td><td>9/9</td><td>100%</td><td class="done">done</td></tr>
+<tr><td>1-domain</td><td>9/10</td><td>90%</td><td class="in-progress">in-progress</td></tr>
 <tr><td>3-core</td><td>12/12</td><td>100%</td><td class="done">done</td></tr>
 <tr><td>4-products</td><td>14/14</td><td>100%</td><td class="done">done</td></tr>
 <tr><td>5-partners</td><td>11/11</td><td>100%</td><td class="done">done</td></tr>
 <tr><td>6-sales</td><td>16/16</td><td>100%</td><td class="done">done</td></tr>
 <tr><td>7-purchasing</td><td>19/19</td><td>100%</td><td class="done">done</td></tr>
 <tr><td>8-inventory</td><td>21/21</td><td>100%</td><td class="done">done</td></tr>
-<tr><td>_oneoff</td><td>0/24</td><td>0%</td><td class="pending">pending</td></tr>
+<tr><td>_oneoff</td><td>0/25</td><td>0%</td><td class="pending">pending</td></tr>
 </table></div>
 <h2>B. Modules: how much is proven</h2>
 <p class=note>Briefs are written one module at a time, as that module's build starts (module-brief.md), so "no" before then is expected.</p>
@@ -463,7 +463,7 @@ details{margin:.5rem 0} summary{cursor:pointer;color:var(--muted);font-size:.85r
 <tr><td>Core</td><td>yes</td><td class="INCOMPLETE">INCOMPLETE (instrument fault) (1d ago)</td><td>1</td></tr>
 <tr><td>Inventory</td><td>yes</td><td class="INCOMPLETE">INCOMPLETE (instrument fault) (0d ago)</td><td>6</td></tr>
 <tr><td>Invoicing</td><td>yes</td><td class="pending">not yet</td><td>0</td></tr>
-<tr><td>Partners</td><td>yes</td><td class="INCOMPLETE">INCOMPLETE (instrument fault) (0d ago)</td><td>5</td></tr>
+<tr><td>Partners</td><td>yes</td><td class="INCOMPLETE">INCOMPLETE (instrument fault) (1d ago)</td><td>5</td></tr>
 <tr><td>Products</td><td>yes</td><td class="INCOMPLETE">INCOMPLETE (instrument fault) (1d ago)</td><td>3</td></tr>
 <tr><td>Purchasing</td><td>yes</td><td class="INCOMPLETE">INCOMPLETE (instrument fault) (0d ago)</td><td>3</td></tr>
 <tr><td>Sales</td><td>yes</td><td class="INCOMPLETE">INCOMPLETE (instrument fault) (0d ago)</td><td>6</td></tr>

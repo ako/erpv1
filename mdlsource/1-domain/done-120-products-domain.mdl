@@ -96,6 +96,7 @@ create or modify persistent entity Products."Product" (
   "Volume": Decimal,
   "CustomerLeadDays": Integer default 0,
   "Active": Boolean default true,
+  "KeyNumber": AutoNumber default 1,
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
   Owner: AutoOwner,
@@ -113,7 +114,7 @@ create or modify persistent entity Products."ProductImage" extends System.Image 
 
 /** Free tags on products. (Odoo product.tag; F003) */
 create or modify persistent entity Products."ProductTag" (
-  "Name": String(200),
+  "Name": String(200) unique error message 'Tag name already exists!',
   "Color": String(200) default '#3C3C3C',
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
@@ -204,6 +205,10 @@ create or modify association Products."PriceRule_Product"
 create or modify association Products."PriceRule_Category"
   from Products."PriceRule" to Products."ProductCategory"
   type Reference;
+
+-- Odoo range constraints as entity validation rules (bounds are inclusive: "> 0" = the smallest step of the type)
+create validation rule for Products."UoM"."Factor" range from 0.00000001 error message 'The conversion ratio for a unit of measure cannot be 0!';
+create validation rule for Products."UoM"."Rounding" range from 0.00000001 error message 'The rounding precision must be strictly positive.';
 
 -- Entity access (module-brief.md "Access table"; narrowing a rule = revoke first, STOP 14)
 grant create, delete, read *, write * on entity Products."UoMCategory" to Products.Manager;

@@ -12,7 +12,7 @@
  "capability": "C2",
  "summary": "Unit categories and units with conversion factors; quantity and price conversion between units of one category.",
  "provenance": "code-extracted",
- "generatedAt": "2026-10-14",
+ "generatedAt": "2026-10-16",
  "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
  "actorRoleMapping": {
   "InventoryManager": [
@@ -98,6 +98,8 @@
    "module": "Products",
    "persistent": true,
    "purpose": "Groups units that convert into each other (Unit, Weight, Volume, Time...).",
+   "odooConstraints": [],
+   "odooChecks": [],
    "sourceOdoo": "uom.category",
    "generalization": null,
    "systemMembers": [
@@ -126,6 +128,40 @@
    "module": "Products",
    "persistent": true,
    "purpose": "A unit of measure and its conversion factor to the category reference unit.",
+   "odooConstraints": [
+    {
+     "odooName": "factor_gt_zero",
+     "definition": "CHECK (factor!=0)",
+     "message": "The conversion ratio for a unit of measure cannot be 0!",
+     "kind": "range",
+     "members": [
+      "Factor"
+     ],
+     "operator": "!=",
+     "value": "0",
+     "disposition": "implement"
+    },
+    {
+     "odooName": "rounding_gt_zero",
+     "definition": "CHECK (rounding>0)",
+     "message": "The rounding precision must be strictly positive.",
+     "kind": "range",
+     "members": [
+      "Rounding"
+     ],
+     "operator": ">",
+     "value": "0",
+     "disposition": "implement"
+    },
+    {
+     "odooName": "factor_reference_is_one",
+     "definition": "CHECK((uom_type = 'reference' AND factor = 1.0) OR (uom_type != 'reference'))",
+     "message": "The reference unit must have a conversion factor equal to 1.",
+     "kind": "check",
+     "disposition": "val: Products.VAL_UoMCategory (the reference unit has ratio 1)"
+    }
+   ],
+   "odooChecks": [],
    "sourceOdoo": "uom.uom",
    "generalization": null,
    "systemMembers": [

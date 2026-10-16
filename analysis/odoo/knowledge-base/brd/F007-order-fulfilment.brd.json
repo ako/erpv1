@@ -14,7 +14,7 @@
  "capability": "C7",
  "summary": "The links Odoo makes in sale_stock and purchase_stock: confirming an order creates a delivery/receipt, validating it updates delivered/received quantities and order delivery/receipt status.",
  "provenance": "code-extracted",
- "generatedAt": "2026-10-14",
+ "generatedAt": "2026-10-16",
  "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
  "actorRoleMapping": {
   "SalesUser": [

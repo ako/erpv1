@@ -29,6 +29,63 @@ def main():
     action_ids = {x['id'] for x in L('actions.json')}
     role_ids = {r['uniqueId'] for r in L('roles.json')}
     errors, trace = [], []
+    logics_by_model = {}
+    for l in L('logics.json'):
+        logics_by_model.setdefault(l['model'], []).append(l)
+
+    def constraints(e, attrs, assocs):
+        """Odoo's validation on the mapped model, carried into the BRD (user 2026-10-16: uniqueness in the database as
+        entity rules; ranges as entity rules; the rest triaged into VAL_ microflows). Odoo field -> Mendix member via
+        each member's sourceOdoo; company_id is dropped (single company, PROJECT.md)."""
+        if not e['odoo'] or e['odoo'] not in models:
+            return [], []
+        member = {}
+        for x in attrs + assocs:
+            if x.get('sourceOdoo', '') and x['sourceOdoo'].startswith(e['odoo'] + '.'):
+                member[x['sourceOdoo'].split('.')[-1]] = x['name']
+        out = []
+        for c in models[e['odoo']].get('sqlConstraints') or []:
+            d = (c.get('definition') or '').strip()
+            item = {'odooName': c['name'], 'definition': d, 'message': c.get('message', '')}
+            mu = re.match(r'(?is)^unique\s*\((.*)\)$', d)
+            mc = re.match(r'(?is)^check\s*\(\s*(\w+)\s*(>=|>|!=)\s*([0-9.]+)\s*\)$', d)
+            if mu:
+                fields = [f.strip() for f in mu.group(1).split(',') if f.strip() != 'company_id']
+                miss = [f for f in fields if f not in member]
+                item.update(kind='unique', members=[member.get(f, f) for f in fields])
+                item['disposition'] = ('implement' if not miss else 'not-applicable: Odoo field(s) %s not carried' % ', '.join(miss))
+            elif mc:
+                f, op, v = mc.groups()
+                item.update(kind='range', members=[member.get(f, f), ], operator=op, value=v)
+                item['disposition'] = 'implement' if f in member else 'not-applicable: Odoo field %s not carried' % f
+            else:
+                item.update(kind='check', disposition='triage' if d else 'not-applicable: definition not extracted')
+            out.append(item)
+        checks = []
+        for l in logics_by_model.get(e['odoo'], []):
+            dec = [d for d in (l.get('decorators') or []) if d.get('name') == 'api.constrains']
+            if not dec:
+                continue
+            fields = [a for d in dec for a in (d.get('args') or [])]
+            carried = [f for f in fields if f.split('.')[0] in member]
+            msgs = [x.get('message', '') for x in (l.get('throwsExceptions') or []) if x.get('message')]
+            checks.append({'odooMethod': l['name'], 'fields': fields, 'members': [member[f.split('.')[0]] for f in carried],
+                           'messages': msgs[:3], 'disposition': 'triage' if carried else 'not-applicable: none of %s carried' % ', '.join(fields)})
+        for x in out:
+            key = (e['name'], x['odooName'])
+            if key in C.CONSTRAINT_TRIAGE:
+                x['disposition'] = C.CONSTRAINT_TRIAGE[key]
+            elif x['disposition'] == 'triage':
+                errors.append('%s %s: Odoo constraint not triaged (brd_content.CONSTRAINT_TRIAGE)' % key)
+        for x in checks:
+            key = (e['name'], x['odooMethod'])
+            if key in C.CONSTRAINT_TRIAGE:
+                x['disposition'] = C.CONSTRAINT_TRIAGE[key]
+            elif x['disposition'] == 'triage':
+                errors.append('%s %s: Odoo check not triaged (brd_content.CONSTRAINT_TRIAGE)' % key)
+        out += [dict(x, definition='', source='design') for x in C.EXTRA_CONSTRAINTS.get(e['name'], [])]
+        return out, checks
+
 
     def field(model, fname):
         m = models.get(model)
@@ -150,7 +207,9 @@ def main():
             if asc['target'].split('.')[0] not in S.MODULES + ['Administration', 'System'] or (
                     asc['target'].split('.')[0] in S.MODULES and asc['target'] not in [x['name'] for x in S.E] + [v['name'] for v in S.VIEWS]):
                 errors.append('%s -> unknown target %s' % (asc['name'], asc['target']))
+        cons, checks = constraints(e, attrs, assocs)
         ent_out[e['name']] = {'name': e['name'], 'module': e['name'].split('.')[0], 'persistent': e['persistent'], 'purpose': e['purpose'],
+                              'odooConstraints': cons, 'odooChecks': checks,
                               'sourceOdoo': e['odoo'], 'generalization': e['generalization'],
                               'systemMembers': ['createdDate', 'changedDate', 'owner', 'changedBy'] if e['persistent'] else [],
                               'attributes': attrs, 'associations': assocs, 'note': e['note'], 'brd': e['brd']}

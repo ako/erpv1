@@ -43,7 +43,7 @@ create or modify enumeration Core."ENUM_LineType" (
 
 /** The single company operating the app: identity, currency and document defaults. (Odoo res.company; F001) */
 create or modify persistent entity Core."Company" (
-  "Name": String(200),
+  "Name": String(200) unique error message 'The company name must be unique!',
   "Email": String(200),
   "Phone": String(200),
   "Street": String(200),
@@ -66,8 +66,8 @@ index ("Name");
 
 /** Countries for addresses. (Odoo res.country; F001) */
 create or modify persistent entity Core."Country" (
-  "Name": String(200),
-  "Code": String(2),
+  "Name": String(200) unique error message 'The name of the country must be unique!',
+  "Code": String(2) unique error message 'The code of the country must be unique!',
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
   Owner: AutoOwner,
@@ -77,7 +77,7 @@ index ("Name");
 
 /** Currency of the company and its documents. (Odoo res.currency; F001) */
 create or modify persistent entity Core."Currency" (
-  "Name": String(3),
+  "Name": String(3) unique error message 'The currency code must be unique!',
   "Symbol": String(200),
   "Rounding": Decimal default 0.01,
   "DecimalPlaces": Integer,
@@ -92,7 +92,7 @@ index ("Name");
 
 /** Document numbering per document type (S00001, P00001, WH/IN/00001, INV/2026/00001, ...). (Odoo ir.sequence; F001) */
 create or modify persistent entity Core."Sequence" (
-  "Code": String(50),
+  "Code": String(50) unique error message 'A numbering sequence with this code already exists.',
   "Prefix": String(30),
   "Padding": Integer default 5,
   "NextNumber": Integer default 1,
@@ -171,6 +171,10 @@ create or modify association Core."Company_DefaultPurchaseTax"
 create or modify association Core."PaymentTermLine_PaymentTerm"
   from Core."PaymentTermLine" to Core."PaymentTerm"
   type Reference;
+
+-- Odoo range constraints as entity validation rules (bounds are inclusive: "> 0" = the smallest step of the type)
+create validation rule for Core."Company"."QuotationValidityDays" range from 0 error message 'You cannot set a negative number for the default quotation validity. Leave empty (or 0) to disable the automatic expiration of quotations.';
+create validation rule for Core."Currency"."Rounding" range from 0.00000001 error message 'The rounding factor must be greater than 0!';
 
 -- Entity access (module-brief.md "Access table"; narrowing a rule = revoke first, STOP 14)
 grant create, delete, read *, write * on entity Core."Company" to Core.Admin;

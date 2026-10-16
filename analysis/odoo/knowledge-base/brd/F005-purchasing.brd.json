@@ -11,7 +11,7 @@
  "capability": "C5",
  "summary": "Create RFQs (manually or from reorder rules), price them from vendor prices, send, confirm — with a manager approval workflow above the company threshold — cancel or lock; purchase analysis.",
  "provenance": "code-extracted",
- "generatedAt": "2026-10-14",
+ "generatedAt": "2026-10-16",
  "design": "Odoo-inspired, Mendix-native (intake Q3): Odoo is the functional reference; simplifications listed and signed off at the Stage 2 gate",
  "actorRoleMapping": {
   "Purchaser": [
@@ -257,6 +257,8 @@
    "module": "Purchasing",
    "persistent": true,
    "purpose": "A vendor's price and lead time for a product (drives RFQ prices).",
+   "odooConstraints": [],
+   "odooChecks": [],
    "sourceOdoo": "product.supplierinfo",
    "generalization": null,
    "systemMembers": [
@@ -373,6 +375,34 @@
    "module": "Purchasing",
    "persistent": true,
    "purpose": "A request for quotation that becomes a (possibly approved) purchase order.",
+   "odooConstraints": [
+    {
+     "odooName": "(design) number_uniq",
+     "kind": "unique",
+     "members": [
+      "Number"
+     ],
+     "message": "An order with this number already exists.",
+     "disposition": "implement",
+     "basis": "orders are found and linked by number (receipts carry it as source document)",
+     "definition": "",
+     "source": "design"
+    }
+   ],
+   "odooChecks": [
+    {
+     "odooMethod": "_check_order_line_company_id",
+     "fields": [
+      "company_id",
+      "order_line"
+     ],
+     "members": [],
+     "messages": [
+      "Your quotation contains products from company %(product_company)s whereas your quotation belongs to company %(quote_company)s. \\n Please change the company of your quotation or remove the products fro"
+     ],
+     "disposition": "not-applicable: none of company_id, order_line carried"
+    }
+   ],
    "sourceOdoo": "purchase.order",
    "generalization": null,
    "systemMembers": [
@@ -568,6 +598,23 @@
    "module": "Purchasing",
    "persistent": true,
    "purpose": "A product, section or note line of a purchase order.",
+   "odooConstraints": [
+    {
+     "odooName": "accountable_required_fields",
+     "definition": "CHECK(display_type IS NOT NULL OR is_downpayment OR (product_id IS NOT NULL AND product_uom IS NOT NULL AND date_planned IS NOT NULL))",
+     "message": "Missing required fields on accountable purchase order line.",
+     "kind": "check",
+     "disposition": "val: Purchasing.VAL_PurchaseOrder_Confirm (every line has a product)"
+    },
+    {
+     "odooName": "non_accountable_null_fields",
+     "definition": "CHECK(display_type IS NULL OR (product_id IS NULL AND price_unit = 0 AND product_uom_qty = 0 AND product_uom IS NULL AND date_planned is NULL))",
+     "message": "Forbidden values on non-accountable purchase order line",
+     "kind": "check",
+     "disposition": "not-applicable: section and note lines are out of scope"
+    }
+   ],
+   "odooChecks": [],
    "sourceOdoo": "purchase.order.line",
    "generalization": null,
    "systemMembers": [

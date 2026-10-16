@@ -30,8 +30,8 @@ create or modify enumeration Inventory."ENUM_TransferStatus" (
 
 /** The (single) warehouse: its stock location and operation types. (Odoo stock.warehouse; F006) */
 create or modify persistent entity Inventory."Warehouse" (
-  "Name": String(200),
-  "ShortName": String(5),
+  "Name": String(200) unique error message 'The name of the warehouse must be unique!',
+  "ShortName": String(5) unique error message 'The short name of the warehouse must be unique!',
   "Active": Boolean default true,
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
@@ -47,6 +47,7 @@ create or modify persistent entity Inventory."Location" (
   "LocationType": Enumeration(Inventory.ENUM_LocationType) default Internal,
   "Barcode": String(200),
   "Active": Boolean default true,
+  "KeyNumber": AutoNumber default 1,
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
   Owner: AutoOwner,
@@ -70,7 +71,7 @@ index ("Name");
 
 /** A receipt, delivery or internal transfer grouping stock moves. (Odoo stock.picking; F006, F007) */
 create or modify persistent entity Inventory."Transfer" (
-  "Number": String(200) default '/',
+  "Number": String(200) default '/' unique error message 'Reference must be unique!',
   "Status": Enumeration(Inventory.ENUM_TransferStatus),
   "ScheduledDate": DateTime,
   "DateDone": DateTime,
@@ -123,6 +124,7 @@ create or modify persistent entity Inventory."ReorderRule" (
   "QuantityMultiple": Decimal default 1,
   "Automatic": Boolean,
   "Active": Boolean default true,
+  "UniqueKey": String(200) unique error message 'A replenishment rule already exists for this product on this location.',
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
   Owner: AutoOwner,
@@ -252,6 +254,9 @@ create or modify association Inventory."ReorderRule_PurchaseOrders"
 create or modify association Inventory."ValidateTransferRequest_Transfer"
   from Inventory."ValidateTransferRequest" to Inventory."Transfer"
   type Reference;
+
+-- Odoo range constraints as entity validation rules (bounds are inclusive: "> 0" = the smallest step of the type)
+create validation rule for Inventory."ReorderRule"."QuantityMultiple" range from 0 error message 'Qty Multiple must be greater than or equal to zero.';
 
 -- Entity access (module-brief.md "Access table"; narrowing a rule = revoke first, STOP 14)
 grant create, read *, write * on entity Inventory."Warehouse" to Inventory.User;

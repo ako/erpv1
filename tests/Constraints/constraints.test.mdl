@@ -1,0 +1,63 @@
+-- Odoo constraints as entity rules (user 2026-10-16: uniqueness enforced in the database; ranges as entity rules). A unique
+-- test commits a duplicate inside an error handler (the database refuses it); a range test expects the entity validation error
+-- (@throws: Mendix raises it past the microflow's handler); the positive tests show a
+-- valid object still commits. Fixtures: the reference seed (countries, sequences, WH/Stock) and the demo seed (Office Chair
+-- FURN_0269, Desk Combination FURN_7800, the chair reorder rule at WH/Stock). Every test rolls back.
+
+/**
+ * @test A second country with an existing country code is refused (Odoo res.country code_uniq)
+ * @expect $Refused = true
+ */
+retrieve $Existing from Core.Country first;
+declare $Refused Boolean = false;
+$Dup = create Core.Country (Name = 'Constraint test land', Code = $Existing/Code);
+commit $Dup on error begin
+  set $Refused = true;
+end error;
+/
+
+/**
+ * @test A second numbering sequence with an existing code is refused (design rule: documents draw numbers by code)
+ * @expect $Refused = true
+ */
+declare $Refused Boolean = false;
+$Dup = create Core.Sequence (Code = 'sale.order', Prefix = 'X', Padding = 5, NextNumber = 1);
+commit $Dup on error begin
+  set $Refused = true;
+end error;
+/
+
+/**
+ * @test A second reorder rule for the same product and location is refused (Odoo product_location_check, via UniqueKey)
+ * @expect $Refused = true
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+retrieve $Stock from Inventory.Location where [Name = 'WH/Stock'] first;
+declare $Refused Boolean = false;
+$Dup = create Inventory.ReorderRule (Name = 'Duplicate chair rule', MinQuantity = 1, MaxQuantity = 2, Inventory.ReorderRule_Product = $Chair, Inventory.ReorderRule_Location = $Stock);
+commit $Dup with events on error begin
+  set $Refused = true;
+end error;
+/
+
+/**
+ * @test A reorder rule for another product at the same location commits, with its own key
+ * @expect $Ok = true
+ */
+retrieve $Desk from Products.Product where [InternalReference = 'FURN_7800'] first;
+retrieve $Stock from Inventory.Location where [Name = 'WH/Stock'] first;
+$Rule = create Inventory.ReorderRule (Name = 'Desk rule', MinQuantity = 1, MaxQuantity = 2, Inventory.ReorderRule_Product = $Desk, Inventory.ReorderRule_Location = $Stock);
+commit $Rule with events;
+declare $Ok Boolean = $Rule/UniqueKey = toString($Desk/KeyNumber) + '-' + toString($Stock/KeyNumber);
+/
+
+/**
+ * @test Two incomplete reorder rules (no product yet, as "+ Add a line" creates them) both commit: an empty key is not compared
+ * @expect $Ok = true
+ */
+$First = create Inventory.ReorderRule (Name = 'New 1');
+commit $First with events;
+$Second = create Inventory.ReorderRule (Name = 'New 2');
+commit $Second with events;
+declare $Ok Boolean = $First/UniqueKey = empty and $Second/UniqueKey = empty;
+/
