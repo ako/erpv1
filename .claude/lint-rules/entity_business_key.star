@@ -1,10 +1,3 @@
-# mxtk-lint-rule: entity_business_key
-# Shipped by mxcli-project-toolkit. This file REPLACES the same-named rule that
-# `mxcli init` seeds into .claude/lint-rules/. Do not hand-edit: `mxcli init`
-# silently overwrites it (verified 2026-08-18, mxcli v0.17.0), and sync-project.sh
-# restores it only while the marker line above is present and unmodified.
-# See skills/lint-that-actually-runs.md.
-# --- end mxtk-lint-rule header ---
 # Starlark Lint Rule: Entity Business Key
 #
 # This rule checks that persistent entities have a unique, not-null attribute
