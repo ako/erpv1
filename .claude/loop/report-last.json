@@ -1,11 +1,11 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-16 11:14:20",
+  "date": "2026-10-16 11:31:21",
   "overallScore": 45.6,
   "summary": {
-    "total": 436,
+    "total": 444,
     "errors": 0,
-    "warnings": 139,
+    "warnings": 147,
     "infos": 297
   },
   "categories": [
@@ -41,9 +41,9 @@
     {
       "name": "Architecture",
       "score": 0,
-      "total": 90,
+      "total": 98,
       "errors": 0,
-      "warnings": 90,
+      "warnings": 98,
       "infos": 0,
       "topActions": [
         "Create a view entity in 'Inventory' that exposes the needed data from 'Products', or use a microflow to retrieve the data.",

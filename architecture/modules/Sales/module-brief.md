@@ -174,6 +174,7 @@ Derived at review time with `SHOW PAGES IN Sales`; intent per screen in "Screens
 |---|---|
 | SalesOrder_Overview | `Quotations/Pages` |
 | SalesOrder_NewEdit | `Quotations/Pages` |
+| SalesOrder_View | `Quotations/Pages` |
 | QuotationTemplate_Overview | `Templates/Pages` |
 | QuotationTemplate_NewEdit | `Templates/Pages` |
 | SalesTeam_Overview | `Teams/Pages` |

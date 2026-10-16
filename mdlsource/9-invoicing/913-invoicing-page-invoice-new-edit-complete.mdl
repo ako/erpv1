@@ -109,6 +109,9 @@ create or modify page Invoicing.Invoice_NewEdit folder 'Invoices/Pages'
       textbox txtAmountDue (Label: 'Amount due', Attribute: "AmountDue", DecimalPrecision: 2, GroupDigits: true, Editable: Never)
     }
     textarea taNotes (Label: 'Notes', Attribute: "Notes", Editable: $Invoice/Status = Invoicing.ENUM_InvoiceStatus.Draft)
+    dynamictext hRelated (Content: 'Related', RenderMode: H2)
+    linkbutton lnk0 (Caption: 'Open sales order', Action: call microflow Invoicing.ACT_Invoice_OpenSalesOrder(Invoice = $currentObject), Visible: $currentObject/InvoiceType = Invoicing.ENUM_InvoiceType.CustomerInvoice or $currentObject/InvoiceType = Invoicing.ENUM_InvoiceType.CustomerCreditNote)
+    linkbutton lnk1 (Caption: 'Open purchase order', Action: call microflow Invoicing.ACT_Invoice_OpenPurchaseOrder(Invoice = $currentObject), Visible: $currentObject/Invoicing.Invoice_PurchaseOrder != empty)
   }
       }
     }
@@ -122,6 +125,8 @@ grant execute on microflow Invoicing.ACT_InvoiceLine_Delete to Invoicing.Billing
 grant execute on microflow Invoicing.ACT_InvoiceLine_Recompute to Invoicing.Billing, Invoicing.Manager, Invoicing.Creator;
 grant execute on microflow Invoicing.ACT_Invoice_Cancel to Invoicing.Billing, Invoicing.Manager;
 grant execute on microflow Invoicing.ACT_Invoice_OpenCreditNote to Invoicing.Billing, Invoicing.Manager;
+grant execute on microflow Invoicing.ACT_Invoice_OpenPurchaseOrder to Invoicing.Billing, Invoicing.Manager;
 grant execute on microflow Invoicing.ACT_Invoice_OpenRegisterPayment to Invoicing.Billing, Invoicing.Manager;
+grant execute on microflow Invoicing.ACT_Invoice_OpenSalesOrder to Invoicing.Billing, Invoicing.Manager;
 grant execute on microflow Invoicing.ACT_Invoice_Post to Invoicing.Billing, Invoicing.Manager;
 grant execute on microflow Invoicing.ACT_Invoice_ResetToDraft to Invoicing.Billing, Invoicing.Manager;

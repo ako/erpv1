@@ -180,6 +180,14 @@ screen('SalesOrder_NewEdit', 'form', 'Sales order', 'Sales.SalesOrder', SALES,
                                  'InvoiceStatus', 'DeliveryStatus', 'Locked'])],
        lines=SO_LINES, totals=['AmountUntaxed', 'AmountTax', 'AmountTotal'], notes='TermsAndConditions',
        popups=['CreateInvoice_Popup'], sample={'Number': 'S00042', 'ExpirationDate': '2026-11-11', 'OrderDate': '2026-10-12', 'DeliveryDate': '2026-10-20'})
+# Read-only order views (coherence C1-01, PROJECT.md 2026-10-15): roles that read orders but may not edit them (Billing,
+# Inventory, Administrator: Sales.Reader) open these instead of the form; not BRD pages, derived from the form's spec.
+_SO = S['SalesOrder_NewEdit']
+screen('SalesOrder_View', 'form', 'Sales order', 'Sales.SalesOrder', BILL + INV + ['Administrator'],
+       ['row of SalesOrder_Overview (read-only roles)', 'Open sales order on Invoice_NewEdit / Transfer_NewEdit'],
+       param='Sales.SalesOrder', readonly=True, statusbar=_SO['statusbar'], wireframe='SalesOrder_NewEdit',
+       buttons=[('Create invoice', 'ACT_SalesOrder_CreateInvoice', ['Sales order'])], header='Number',
+       sections=_SO['sections'], lines=dict(SO_LINES, editable=False, columns=[c for c in SO_LINES['columns'] if c != 'SalesOrderLine_Taxes']), totals=_SO['totals'], notes=_SO['notes'])
 screen('QuotationTemplate_Overview', 'list', 'Quotation templates', 'Sales.QuotationTemplate', ['SalesManager'],
        ['menu Sales › Quotation templates'], columns=['Name', 'ValidityDays', 'Active'], open='QuotationTemplate_NewEdit',
        new='QuotationTemplate_NewEdit', rows=[['Office starter pack', '30', 'yes'], ['Lighting refresh', '15', 'yes']])
@@ -232,6 +240,12 @@ screen('PurchaseOrder_NewEdit', 'form', 'Purchase order', 'Purchasing.PurchaseOr
                  ('Dates', ['OrderDeadline', 'ExpectedArrival', 'ConfirmationDate']),
                  ('Other info', ['PurchaseOrder_Buyer', 'PurchaseOrder_PaymentTerm', 'Source', 'ReceiptStatus', 'BillingStatus', 'Locked'])],
        lines=PO_LINES, totals=['AmountUntaxed', 'AmountTax', 'AmountTotal'], notes='Notes')
+_PO = S['PurchaseOrder_NewEdit']   # read-only view, as SalesOrder_View (C1-01)
+screen('PurchaseOrder_View', 'form', 'Purchase order', 'Purchasing.PurchaseOrder', BILL + INV + ['Administrator'],
+       ['row of PurchaseOrder_Overview (read-only roles)', 'Open purchase order on Invoice_NewEdit / Transfer_NewEdit'],
+       param='Purchasing.PurchaseOrder', readonly=True, statusbar=_PO['statusbar'], wireframe='PurchaseOrder_NewEdit',
+       buttons=[('Create bill', 'ACT_PurchaseOrder_CreateBill', ['Purchase order'])], header='Number',
+       sections=_PO['sections'], lines=dict(PO_LINES, editable=False, columns=[c for c in PO_LINES['columns'] if c != 'PurchaseOrderLine_Taxes']), totals=_PO['totals'], notes=_PO['notes'])
 screen('PurchaseApproval_Inbox', 'inbox', 'Purchase approvals', 'Purchasing.PurchaseOrder', ['PurchaseManager'],
        ['menu Purchase › Approvals', 'home of PurchaseManager'],
        columns=['Number', 'PurchaseOrder_Vendor', 'PurchaseOrder_Buyer', 'AmountTotal', 'OrderDeadline'], open='PurchaseApproval_Task',
@@ -279,8 +293,9 @@ screen('Transfer_NewEdit', 'form', 'Transfer', 'Inventory.Transfer', INV + ['Sal
                  # order pickers left out: sales and purchase users open this page from their order (Inventory.Reader) and hold no
                  # read access to the other side's orders (CE2729); the source document and the Open order links cover it
                  ('Origin', ['SourceDocument', 'Transfer_Backorder', 'Transfer_Responsible'])],
-       # 'Open sales order' / 'Open purchase order' links wait for the read-only order views (PROJECT.md C1-01, Invoicing phase):
-       # opening the order forms from here made each side's users reach the other side's orders (CE2729)
+       # the Open order links open the order through Sales/Purchasing.SUB_*_Show (form or read-only view, C1-01), for inventory
+       # roles only: sales and purchase users would reach the other side's orders (CE2729)
+       links=[('Open sales order', 'SalesOrder_NewEdit'), ('Open purchase order', 'PurchaseOrder_NewEdit')],
        lines=dict(entity='Inventory.StockMove', via='StockMove_Transfer', title='Operations', editable=True,
                   columns=['StockMove_Product', 'DemandQuantity', 'Quantity', 'StockMove_UoM', 'Picked', 'Status'],
                   rows=[['[FURN_7800] Desk Combination', '2.00', '2.00', 'Units', 'yes', 'Ready'],

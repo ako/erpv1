@@ -1,0 +1,46 @@
+mdl 1;
+-- Open a purchase order from anywhere (its list, an invoice, a transfer): the form for the roles that edit purchase orders, the read-only
+-- PurchaseOrder_View for the rest (coherence C1-01, PROJECT.md 2026-10-15). Runs after the view page (718).
+
+/**
+ * Whether the current user edits purchase orders: holds user role Purchaser or PurchaseManager. Everyone else who reads them gets the read-only view.
+ *
+ * @returns true for Purchaser or PurchaseManager
+ */
+create or modify microflow Purchasing.SUB_CurrentUser_EditsPurchaseOrders ()
+returns Boolean as $Edits
+folder 'RFQs/Microflows'
+begin
+  retrieve $Roles from $currentUser/System.UserRoles;
+  $Editor = find $Roles where $currentObject/Name = 'Purchaser' or $currentObject/Name = 'PurchaseManager';
+  return $Editor != empty;
+end;
+
+/**
+ * Show a purchase order: PurchaseOrder_NewEdit for its editors, PurchaseOrder_View for read-only roles.
+ *
+ * @param $PurchaseOrder the order
+ */
+create or modify microflow Purchasing.SUB_PurchaseOrder_Show ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'RFQs/Microflows'
+begin
+  $Edits = call microflow Purchasing.SUB_CurrentUser_EditsPurchaseOrders();
+  if $Edits then
+    show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $PurchaseOrder);
+  else
+    show page Purchasing.PurchaseOrder_View(PurchaseOrder = $PurchaseOrder);
+  end if;
+end;
+
+/**
+ * A row of PurchaseOrder_Overview: the order in the page the user may work in.
+ *
+ * @param $PurchaseOrder the order
+ */
+create or modify microflow Purchasing.ACT_PurchaseOrder_Open ($PurchaseOrder: Purchasing.PurchaseOrder)
+folder 'RFQs/Microflows'
+begin
+  call microflow Purchasing.SUB_PurchaseOrder_Show(PurchaseOrder = $PurchaseOrder);
+end;
+
+grant execute on microflow Purchasing.ACT_PurchaseOrder_Open to Purchasing.User, Purchasing.Manager, Purchasing.Reader;

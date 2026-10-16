@@ -20,7 +20,7 @@ create or modify page Purchasing.PurchaseOrder_Overview folder 'RFQs/Pages'
   }
   tabcontainer tabsList {
     tabpage tpAll (Caption: 'All') {
-      datagrid gridMain (DataSource: database Purchasing."PurchaseOrder" sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $currentObject)) {
+      datagrid gridMain (DataSource: database Purchasing."PurchaseOrder" sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: call microflow Purchasing.ACT_PurchaseOrder_Open(PurchaseOrder = $currentObject)) {
         column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumber }
         column (Attribute: "OrderDeadline", Caption: 'Order deadline', WrapText: true) { datefilter fOrderDeadline }
         column (Attribute: PurchaseOrder_Vendor/Name, Caption: 'Vendor', WrapText: true)
@@ -32,7 +32,7 @@ create or modify page Purchasing.PurchaseOrder_Overview folder 'RFQs/Pages'
       }
     }
     tabpage tpRfqs (Caption: 'RFQs') {
-      datagrid gridRfqs (DataSource: database Purchasing."PurchaseOrder" where [Status = 'RFQ' or Status = 'RFQSent'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $currentObject)) {
+      datagrid gridRfqs (DataSource: database Purchasing."PurchaseOrder" where [Status = 'RFQ' or Status = 'RFQSent'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: call microflow Purchasing.ACT_PurchaseOrder_Open(PurchaseOrder = $currentObject)) {
         column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumberRfqs }
         column (Attribute: "OrderDeadline", Caption: 'Order deadline', WrapText: true) { datefilter fOrderDeadlineRfqs }
         column (Attribute: PurchaseOrder_Vendor/Name, Caption: 'Vendor', WrapText: true)
@@ -44,7 +44,7 @@ create or modify page Purchasing.PurchaseOrder_Overview folder 'RFQs/Pages'
       }
     }
     tabpage tpToApprove (Caption: 'To approve') {
-      datagrid gridToApprove (DataSource: database Purchasing."PurchaseOrder" where [Status = 'ToApprove'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $currentObject)) {
+      datagrid gridToApprove (DataSource: database Purchasing."PurchaseOrder" where [Status = 'ToApprove'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: call microflow Purchasing.ACT_PurchaseOrder_Open(PurchaseOrder = $currentObject)) {
         column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumberToApprove }
         column (Attribute: "OrderDeadline", Caption: 'Order deadline', WrapText: true) { datefilter fOrderDeadlineToApprove }
         column (Attribute: PurchaseOrder_Vendor/Name, Caption: 'Vendor', WrapText: true)
@@ -56,7 +56,7 @@ create or modify page Purchasing.PurchaseOrder_Overview folder 'RFQs/Pages'
       }
     }
     tabpage tpPurchaseOrders (Caption: 'Purchase orders') {
-      datagrid gridPurchaseOrders (DataSource: database Purchasing."PurchaseOrder" where [Status = 'PurchaseOrder'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $currentObject)) {
+      datagrid gridPurchaseOrders (DataSource: database Purchasing."PurchaseOrder" where [Status = 'PurchaseOrder'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: call microflow Purchasing.ACT_PurchaseOrder_Open(PurchaseOrder = $currentObject)) {
         column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumberPurchaseOrders }
         column (Attribute: "OrderDeadline", Caption: 'Order deadline', WrapText: true) { datefilter fOrderDeadlinePurchaseOrders }
         column (Attribute: PurchaseOrder_Vendor/Name, Caption: 'Vendor', WrapText: true)
@@ -73,3 +73,4 @@ create or modify page Purchasing.PurchaseOrder_Overview folder 'RFQs/Pages'
 grant view on page Purchasing.PurchaseOrder_Overview to Purchasing.User, Purchasing.Manager, Purchasing.Reader;
 grant execute on microflow Purchasing.ACT_PurchaseOrder_New to Purchasing.User, Purchasing.Manager;
 revoke execute on microflow Purchasing.ACT_PurchaseOrder_New from Purchasing.Reader;
+grant execute on microflow Purchasing.ACT_PurchaseOrder_Open to Purchasing.User, Purchasing.Manager, Purchasing.Reader;

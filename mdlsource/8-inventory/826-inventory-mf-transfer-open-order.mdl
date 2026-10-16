@@ -1,0 +1,67 @@
+mdl 1;
+-- Open sales order / Open purchase order on Transfer_NewEdit, restored now the read-only order views exist (C1-01; withdrawn by
+-- one-off 2026-10-16-drop-transfer-open-order). Granted to Inventory.User and Manager only: sales and purchase users reach a
+-- transfer from their own order, and each lacks read access to the other side's orders (CE2729).
+
+/**
+ * The sales order a transfer delivers, or empty.
+ *
+ * @param $Transfer the transfer
+ * @returns the order, or empty
+ */
+create or modify microflow Inventory.SUB_Transfer_GetSalesOrder ($Transfer: Inventory.Transfer)
+returns Sales.SalesOrder as $SalesOrder
+folder 'Transfers/Microflows'
+begin
+  retrieve $Order from $Transfer/Inventory.Transfer_SalesOrder;
+  return $Order;
+end;
+
+/**
+ * "Open sales order" on Transfer_NewEdit.
+ *
+ * @param $Transfer the transfer
+ */
+create or modify microflow Inventory.ACT_Transfer_OpenSalesOrder ($Transfer: Inventory.Transfer)
+folder 'Transfers/Microflows'
+begin
+  $SalesOrder = call microflow Inventory.SUB_Transfer_GetSalesOrder(Transfer = $Transfer);
+  if $SalesOrder = empty then
+    show message 'This transfer has no sales order.' type Information;
+    return;
+  end if;
+  call microflow Sales.SUB_SalesOrder_Show(SalesOrder = $SalesOrder);
+end;
+
+/**
+ * The purchase order a transfer receives, or empty.
+ *
+ * @param $Transfer the transfer
+ * @returns the order, or empty
+ */
+create or modify microflow Inventory.SUB_Transfer_GetPurchaseOrder ($Transfer: Inventory.Transfer)
+returns Purchasing.PurchaseOrder as $PurchaseOrder
+folder 'Transfers/Microflows'
+begin
+  retrieve $Order from $Transfer/Inventory.Transfer_PurchaseOrder;
+  return $Order;
+end;
+
+/**
+ * "Open purchase order" on Transfer_NewEdit.
+ *
+ * @param $Transfer the transfer
+ */
+create or modify microflow Inventory.ACT_Transfer_OpenPurchaseOrder ($Transfer: Inventory.Transfer)
+folder 'Transfers/Microflows'
+begin
+  $PurchaseOrder = call microflow Inventory.SUB_Transfer_GetPurchaseOrder(Transfer = $Transfer);
+  if $PurchaseOrder = empty then
+    show message 'This transfer has no purchase order.' type Information;
+    return;
+  end if;
+  call microflow Purchasing.SUB_PurchaseOrder_Show(PurchaseOrder = $PurchaseOrder);
+end;
+
+grant execute on microflow Inventory.ACT_Transfer_OpenSalesOrder to Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_Transfer_OpenPurchaseOrder to Inventory.User, Inventory.Manager;

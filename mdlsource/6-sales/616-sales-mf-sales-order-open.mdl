@@ -1,0 +1,46 @@
+mdl 1;
+-- Open a sales order from anywhere (its list, an invoice, a transfer): the form for the roles that edit sales orders, the read-only
+-- SalesOrder_View for the rest (coherence C1-01, PROJECT.md 2026-10-15). Runs after the view page (615).
+
+/**
+ * Whether the current user edits sales orders: holds user role SalesUser or SalesManager. Everyone else who reads them gets the read-only view.
+ *
+ * @returns true for SalesUser or SalesManager
+ */
+create or modify microflow Sales.SUB_CurrentUser_EditsSalesOrders ()
+returns Boolean as $Edits
+folder 'Quotations/Microflows'
+begin
+  retrieve $Roles from $currentUser/System.UserRoles;
+  $Editor = find $Roles where $currentObject/Name = 'SalesUser' or $currentObject/Name = 'SalesManager';
+  return $Editor != empty;
+end;
+
+/**
+ * Show a sales order: SalesOrder_NewEdit for its editors, SalesOrder_View for read-only roles.
+ *
+ * @param $SalesOrder the order
+ */
+create or modify microflow Sales.SUB_SalesOrder_Show ($SalesOrder: Sales.SalesOrder)
+folder 'Quotations/Microflows'
+begin
+  $Edits = call microflow Sales.SUB_CurrentUser_EditsSalesOrders();
+  if $Edits then
+    show page Sales.SalesOrder_NewEdit(SalesOrder = $SalesOrder);
+  else
+    show page Sales.SalesOrder_View(SalesOrder = $SalesOrder);
+  end if;
+end;
+
+/**
+ * A row of SalesOrder_Overview: the order in the page the user may work in.
+ *
+ * @param $SalesOrder the order
+ */
+create or modify microflow Sales.ACT_SalesOrder_Open ($SalesOrder: Sales.SalesOrder)
+folder 'Quotations/Microflows'
+begin
+  call microflow Sales.SUB_SalesOrder_Show(SalesOrder = $SalesOrder);
+end;
+
+grant execute on microflow Sales.ACT_SalesOrder_Open to Sales.User, Sales.Manager, Sales.Reader;

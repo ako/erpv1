@@ -376,3 +376,14 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-16T11:12:12Z	913-invoicing-page-invoice-new-edit-complete.mdl	pass	applied-lint-rose	64	0	1	436	0	45.6	0	80	0	98	28	76	90	436	c3bc967
 2026-10-16T11:13:16Z	done-606-sales-page-sales-order-new-edit.mdl	pass	applied-lint-rose	63	0	1	436	0	45.6	0	80	0	98	28	76	90	436	e27ca1f
 2026-10-16T11:14:20Z	done-707-purchasing-page-purchase-order-new-edit.mdl	pass	applied-lint-rose	63	0	1	436	0	45.6	0	80	0	98	28	76	90	436	f018571
+2026-10-16T11:19:07Z	615-sales-page-sales-order-view.mdl	pass	applied-lint-rose	63	0	1	441	0	45.4	0	79	0	98	28	76	90	441	5e24408
+2026-10-16T11:20:11Z	718-purchasing-page-purchase-order-view.mdl	pass	applied-lint-rose	64	0	1	446	0	45.2	0	78	0	98	28	76	90	446	7e21f71
+2026-10-16T11:21:44Z	616-sales-mf-sales-order-open.mdl	pass	applied-lint-rose	63	0	1	445	0	45.4	0	79	0	98	28	76	90	445	434f6cb
+2026-10-16T11:22:48Z	719-purchasing-mf-purchase-order-open.mdl	pass	applied-lint-rose	63	0	1	444	0	45.6	0	80	0	98	28	76	90	444	61995f1
+2026-10-16T11:24:15Z	914-invoicing-mf-invoice-open-order.mdl	pass	applied-lint-rose	64	0	1	444	0	45.6	0	80	0	98	28	76	90	444	ed39c98
+2026-10-16T11:25:22Z	826-inventory-mf-transfer-open-order.mdl	pass	applied-lint-rose	64	0	1	444	0	45.6	0	80	0	98	28	76	90	444	e06bb43
+2026-10-16T11:26:58Z	done-605-sales-page-sales-order-overview.mdl	pass	applied-lint-rose	66	0	1	444	0	45.6	0	80	0	98	28	76	90	444	8dbe36b
+2026-10-16T11:28:04Z	done-706-purchasing-page-purchase-order-overview.mdl	pass	applied-lint-rose	65	0	1	444	0	45.6	0	80	0	98	28	76	90	444	d4ea2e2
+2026-10-16T11:29:08Z	done-804-inventory-page-transfer-new-edit.mdl	pass	applied-lint-rose	63	0	1	444	0	45.6	0	80	0	98	28	76	90	444	0ff51b8
+2026-10-16T11:30:16Z	717-purchasing-page-invoice-new-edit.mdl	pass	applied-lint-rose	67	0	1	444	0	45.6	0	80	0	98	28	76	90	444	a0356fd
+2026-10-16T11:31:22Z	913-invoicing-page-invoice-new-edit-complete.mdl	pass	applied-lint-rose	64	0	1	444	0	45.6	0	80	0	98	28	76	90	444	a564195

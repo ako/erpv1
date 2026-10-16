@@ -150,3 +150,8 @@
   cross-department pickers removed), verified by a clean build of 717, 913, 606 and 707.
 - Replay order: the plan files 613 (6-sales), 716 and 717 (7-purchasing) call 9-invoicing/900's invoice core; a replay from an
   empty model must run 900 and 902 before them. Only the invoice form <-> popup pair is a true cycle (handled by 913).
+- Read-only order views (C1-01): SalesOrder_View / PurchaseOrder_View, opened by Sales/Purchasing.SUB_*_Show, which picks
+  the form or the view from the current user's user roles (System.UserRoles names; mxcli cannot write module-role widget
+  visibility). The order lists, the invoice form's Open order links and the restored transfer links all go through it.
+  mxbuild accepted Readers running an action that can show the form (their read access covers every widget on it); the
+  transfer links stay granted to inventory roles only, since sales and purchase users cannot read each other's orders.

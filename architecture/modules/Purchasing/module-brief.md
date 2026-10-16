@@ -168,6 +168,7 @@ Derived at review time with `SHOW PAGES IN Purchasing`; intent per screen in "Sc
 |---|---|
 | PurchaseOrder_Overview | `RFQs/Pages` |
 | PurchaseOrder_NewEdit | `RFQs/Pages` |
+| PurchaseOrder_View | `RFQs/Pages` |
 | PurchaseApproval_Inbox | `Approval/Pages` |
 | PurchaseApproval_Task | `Approval/Pages` |
 | VendorPrice_Overview | `VendorPrices/Pages` |

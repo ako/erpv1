@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-10-16T11:14:09Z",
+  "timestamp": "2026-10-16T11:31:10Z",
   "verdict": "FAIL",
-  "total": 436,
+  "total": 444,
   "rule_count": 21,
   "counts": {
-    "ARCH001": 47,
+    "ARCH001": 55,
     "ARCH002": 4,
     "ARCH003": 38,
     "CONV001": 26,
@@ -37,7 +37,15 @@
       "Invoicing | Invoicing.Invoice_NewEdit | Widget 'lncmbInvoiceLineTaxes' in 'Invoicing.Invoice_NewEdit' references entity 'Core.Tax' from module 'Core'. Use a vie",
       "Invoicing | Invoicing.Invoice_NewEdit | Widget 'lncmbInvoiceLineUoM' in 'Invoicing.Invoice_NewEdit' references entity 'Products.UoM' from module 'Products'. Use",
       "Invoicing | Invoicing.Payment_View | Widget 'cmbPaymentCurrency' in 'Invoicing.Payment_View' references entity 'Core.Currency' from module 'Core'. Use a view",
-      "Invoicing | Invoicing.Payment_View | Widget 'cmbPaymentPartner' in 'Invoicing.Payment_View' references entity 'Partners.Partner' from module 'Partners'. Use "
+      "Invoicing | Invoicing.Payment_View | Widget 'cmbPaymentPartner' in 'Invoicing.Payment_View' references entity 'Partners.Partner' from module 'Partners'. Use ",
+      "Purchasing | Purchasing.PurchaseOrder_View | Widget 'cmbPurchaseOrderBuyer' in 'Purchasing.PurchaseOrder_View' references entity 'Administration.Account' from module",
+      "Purchasing | Purchasing.PurchaseOrder_View | Widget 'cmbPurchaseOrderCurrency' in 'Purchasing.PurchaseOrder_View' references entity 'Core.Currency' from module 'Core",
+      "Purchasing | Purchasing.PurchaseOrder_View | Widget 'cmbPurchaseOrderPaymentTerm' in 'Purchasing.PurchaseOrder_View' references entity 'Core.PaymentTerm' from module",
+      "Purchasing | Purchasing.PurchaseOrder_View | Widget 'cmbPurchaseOrderVendor' in 'Purchasing.PurchaseOrder_View' references entity 'Partners.Partner' from module 'Par",
+      "Sales | Sales.SalesOrder_View | Widget 'cmbSalesOrderCustomer' in 'Sales.SalesOrder_View' references entity 'Partners.Partner' from module 'Partners'. U",
+      "Sales | Sales.SalesOrder_View | Widget 'cmbSalesOrderPaymentTerm' in 'Sales.SalesOrder_View' references entity 'Core.PaymentTerm' from module 'Core'. Us",
+      "Sales | Sales.SalesOrder_View | Widget 'cmbSalesOrderPricelist' in 'Sales.SalesOrder_View' references entity 'Products.Pricelist' from module 'Products'",
+      "Sales | Sales.SalesOrder_View | Widget 'cmbSalesOrderSalesperson' in 'Sales.SalesOrder_View' references entity 'Administration.Account' from module 'Adm"
     ],
     "CONV003": [
       "Invoicing | Invoicing.CreditNote_Popup | Page 'CreditNote_Popup' does not end with a recognized suffix (_NewEdit, _View, _Overview, _Select, _Details, _Dashboard",

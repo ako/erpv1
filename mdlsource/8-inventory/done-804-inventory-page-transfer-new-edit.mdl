@@ -135,6 +135,9 @@ create or modify page Inventory.Transfer_NewEdit folder 'Operations/Pages'
     }
     linkbutton btnAddLine (Caption: '+ Add a line', Action: call microflow Inventory.ACT_StockMove_Add(Transfer = $currentObject))
     textarea taNotes (Label: 'Notes', Attribute: "Notes")
+    dynamictext hRelated (Content: 'Related', RenderMode: H2)
+    linkbutton lnk0 (Caption: 'Open sales order', Action: call microflow Inventory.ACT_Transfer_OpenSalesOrder(Transfer = $currentObject), Visible: $currentObject/Inventory.Transfer_SalesOrder != empty)
+    linkbutton lnk1 (Caption: 'Open purchase order', Action: call microflow Inventory.ACT_Transfer_OpenPurchaseOrder(Transfer = $currentObject), Visible: $currentObject/Inventory.Transfer_PurchaseOrder != empty)
   }
       }
     }
@@ -146,5 +149,7 @@ grant execute on microflow Inventory.ACT_StockMove_Add to Inventory.User, Invent
 grant execute on microflow Inventory.ACT_Transfer_Cancel to Inventory.User, Inventory.Manager;
 grant execute on microflow Inventory.ACT_Transfer_CheckAvailability to Inventory.User, Inventory.Manager;
 grant execute on microflow Inventory.ACT_Transfer_Confirm to Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_Transfer_OpenPurchaseOrder to Inventory.User, Inventory.Manager;
+grant execute on microflow Inventory.ACT_Transfer_OpenSalesOrder to Inventory.User, Inventory.Manager;
 grant execute on microflow Inventory.ACT_Transfer_Save to Inventory.User, Inventory.Manager;
 grant execute on microflow Inventory.ACT_Transfer_Validate to Inventory.User, Inventory.Manager;

@@ -1,0 +1,68 @@
+mdl 1;
+-- Open sales order / Open purchase order on Invoice_NewEdit: the order behind an invoice, in the page the user may work in
+-- (Sales.SUB_SalesOrder_Show 616, Purchasing.SUB_PurchaseOrder_Show 719).
+
+/**
+ * The first sales order behind an invoice (by number), or empty.
+ *
+ * @param $Invoice the invoice
+ * @returns the order, or empty
+ */
+create or modify microflow Invoicing.SUB_Invoice_GetFirstSalesOrder ($Invoice: Invoicing.Invoice)
+returns Sales.SalesOrder as $SalesOrder
+folder 'Invoices/Microflows'
+begin
+  retrieve $Orders from $Invoice/Invoicing.Invoice_SalesOrders;
+  $Sorted = sort $Orders by Number asc;
+  $First = head $Sorted;
+  return $First;
+end;
+
+/**
+ * "Open sales order" on Invoice_NewEdit.
+ *
+ * @param $Invoice the invoice
+ */
+create or modify microflow Invoicing.ACT_Invoice_OpenSalesOrder ($Invoice: Invoicing.Invoice)
+folder 'Invoices/Microflows'
+begin
+  $SalesOrder = call microflow Invoicing.SUB_Invoice_GetFirstSalesOrder(Invoice = $Invoice);
+  if $SalesOrder = empty then
+    show message 'This document was not created from a sales order.' type Information;
+    return;
+  end if;
+  call microflow Sales.SUB_SalesOrder_Show(SalesOrder = $SalesOrder);
+end;
+
+/**
+ * The purchase order behind a bill, or empty.
+ *
+ * @param $Invoice the bill
+ * @returns the order, or empty
+ */
+create or modify microflow Invoicing.SUB_Invoice_GetPurchaseOrder ($Invoice: Invoicing.Invoice)
+returns Purchasing.PurchaseOrder as $PurchaseOrder
+folder 'Invoices/Microflows'
+begin
+  retrieve $Order from $Invoice/Invoicing.Invoice_PurchaseOrder;
+  return $Order;
+end;
+
+/**
+ * "Open purchase order" on Invoice_NewEdit.
+ *
+ * @param $Invoice the bill
+ */
+create or modify microflow Invoicing.ACT_Invoice_OpenPurchaseOrder ($Invoice: Invoicing.Invoice)
+folder 'Invoices/Microflows'
+begin
+  $PurchaseOrder = call microflow Invoicing.SUB_Invoice_GetPurchaseOrder(Invoice = $Invoice);
+  if $PurchaseOrder = empty then
+    show message 'This document was not created from a purchase order.' type Information;
+    return;
+  end if;
+  call microflow Purchasing.SUB_PurchaseOrder_Show(PurchaseOrder = $PurchaseOrder);
+end;
+
+grant execute on microflow Invoicing.ACT_Invoice_OpenSalesOrder to Invoicing.Billing, Invoicing.Manager;
+grant execute on microflow Invoicing.ACT_Invoice_OpenPurchaseOrder to Invoicing.Billing, Invoicing.Manager;
