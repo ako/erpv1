@@ -1,0 +1,102 @@
+[
+ {
+  "module": "Invoicing",
+  "page": "Invoice_Overview",
+  "user": "billing",
+  "menu": [
+   "Invoicing",
+   "Invoices & bills"
+  ]
+ },
+ {
+  "module": "Invoicing",
+  "page": "Invoice_NewEdit",
+  "user": "billing",
+  "menu": [
+   "Invoicing",
+   "Invoices & bills"
+  ],
+  "openRow": 1
+ },
+ {
+  "module": "Invoicing",
+  "page": "RegisterPayment_Popup",
+  "user": "billing",
+  "menu": [
+   "Invoicing",
+   "Invoices & bills"
+  ],
+  "openRow": 1,
+  "click": "btnRegisterpayment0"
+ },
+ {
+  "module": "Invoicing",
+  "page": "CreditNote_Popup",
+  "user": "billing",
+  "menu": [
+   "Invoicing",
+   "Invoices & bills"
+  ],
+  "openRow": 1,
+  "click": "btnCreditnote2"
+ },
+ {
+  "module": "Invoicing",
+  "page": "Payment_Overview",
+  "user": "billing",
+  "menu": [
+   "Invoicing",
+   "Payments"
+  ]
+ },
+ {
+  "module": "Invoicing",
+  "page": "Payment_View",
+  "user": "billing",
+  "menu": [
+   "Invoicing",
+   "Payments"
+  ],
+  "openRow": 1
+ },
+ {
+  "module": "Invoicing",
+  "page": "InvoiceAnalysis_Report",
+  "user": "invoicing.manager",
+  "menu": [
+   "Reporting",
+   "Invoice analysis"
+  ]
+ },
+ {
+  "module": "Sales",
+  "page": "SalesOrder_View",
+  "user": "billing",
+  "menu": [
+   "Sales",
+   "Quotations & orders"
+  ],
+  "openRow": 1
+ },
+ {
+  "module": "Sales",
+  "page": "CreateInvoice_Popup",
+  "user": "billing",
+  "menu": [
+   "Sales",
+   "Quotations & orders"
+  ],
+  "openRow": 1,
+  "click": "btnCreateinvoice0"
+ },
+ {
+  "module": "Purchasing",
+  "page": "PurchaseOrder_View",
+  "user": "billing",
+  "menu": [
+   "Purchase",
+   "RFQs & orders"
+  ],
+  "openRow": 1
+ }
+]
