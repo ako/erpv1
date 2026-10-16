@@ -129,3 +129,7 @@ Carried into the build plan (architecture-blueprint.md Step 5). Numbered OI-n on
 ## Assumptions (ASSUMED, unresolved)
 
 See the ASSUMED rows in Decisions: source committed to git, Mendix patch level 11.15.0, and the four inheritance-mapping rules (confirm at Stage 3).
+
+## Toolkit position
+
+Waived obligation look/Partners: Partners.UserProfile_Edit has no navigation entry or link (coherence C1-11, open: profile creation and entry point undecided); it cannot be reached to screenshot. Every other Partners page looked at 2026-10-16d.
