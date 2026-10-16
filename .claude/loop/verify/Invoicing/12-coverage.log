@@ -9,7 +9,7 @@ coverage-check: analysis/odoo/knowledge-base/brd/F008-invoicing-payments.brd.jso
   UNCLAIMED:     0
   PHANTOM:       0
   DOUBLE-CLAIMED:0
-  COUNT-MISMATCH:4
+  COUNT-MISMATCH:0
 
   per-BRD ledgers: 1 of 8 BRD(s) measured against architecture/modules/Invoicing/coverage-ledger/<BRDID>.md;
   7 BRD(s) have no ledger here (another module's, not measured): F001-contacts-company-users F002-units-of-measure F003-product-catalogue-pricing F004-sales F005-purchasing F006-inventory F007-order-fulfilment
