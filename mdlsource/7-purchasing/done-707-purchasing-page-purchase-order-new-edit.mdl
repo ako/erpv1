@@ -123,4 +123,5 @@ grant execute on microflow Purchasing.ACT_PurchaseOrder_Confirm to Purchasing.Us
 grant execute on microflow Purchasing.ACT_PurchaseOrder_MarkSent to Purchasing.User, Purchasing.Manager;
 grant execute on microflow Purchasing.ACT_PurchaseOrder_Save to Purchasing.User, Purchasing.Manager;
 grant execute on microflow Purchasing.ACT_PurchaseOrder_SetToDraft to Purchasing.User, Purchasing.Manager;
-grant execute on microflow Purchasing.ACT_PurchaseOrder_ToggleLock to Purchasing.User, Purchasing.Manager;
+grant execute on microflow Purchasing.ACT_PurchaseOrder_ToggleLock to Purchasing.Manager;
+revoke execute on microflow Purchasing.ACT_PurchaseOrder_ToggleLock from Purchasing.User;

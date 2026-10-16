@@ -33,7 +33,7 @@
 ### Access table  (feeds co-located grants)
 | Element | Type | Module role(s) | Access level |
 |---|---|---|---|
-| Purchasing.VendorPrice | entity | Purchasing.User | create, read *, write * |
+| Purchasing.VendorPrice | entity | Purchasing.User | read * |
 | Purchasing.VendorPrice | entity | Purchasing.Manager | create, delete, read *, write * |
 | Purchasing.VendorPrice | entity | Purchasing.Reader | read * |
 | Purchasing.PurchaseOrder | entity | Purchasing.User | create, read *, write * |

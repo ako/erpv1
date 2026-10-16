@@ -1,21 +1,21 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-16 11:42:34",
+  "date": "2026-10-16 11:55:00",
   "overallScore": 45.7,
   "summary": {
-    "total": 445,
+    "total": 444,
     "errors": 0,
     "warnings": 147,
-    "infos": 298
+    "infos": 297
   },
   "categories": [
     {
       "name": "Security",
       "score": 0,
-      "total": 234,
+      "total": 233,
       "errors": 0,
       "warnings": 41,
-      "infos": 193,
+      "infos": 192,
       "topActions": [
         "Add an XPath constraint to limit which rows 'Core.Admin' can READ on 'Company'",
         "Remove the CREATE and DELETE rights and implement a microflow (ACT_) with security checks",
@@ -34,8 +34,8 @@
       "topActions": [
         "Replace entity validation rules with a VAL_Company microflow for explicit, testable validation",
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
-        "Extract logical sections into SUB_ microflows to keep each under 15 activities",
-        "Describe what the collection is for and where its images are used."
+        "Describe what the collection is for and where its images are used.",
+        "Extract logical sections into SUB_ microflows to keep each under 15 activities"
       ]
     },
     {

@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-10-16T11:42:21Z",
+  "timestamp": "2026-10-16T11:54:49Z",
   "verdict": "FAIL",
-  "total": 445,
+  "total": 444,
   "rule_count": 21,
   "counts": {
     "ARCH001": 55,
@@ -11,7 +11,7 @@
     "CONV002": 34,
     "CONV003": 13,
     "CONV006": 38,
-    "CONV007": 174,
+    "CONV007": 173,
     "CONV008": 14,
     "CONV009": 1,
     "CONV010": 1,

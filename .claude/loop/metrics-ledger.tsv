@@ -394,3 +394,10 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-16T11:40:53Z	done-020-settings.mdl	pass	applied-lint-rose	62	0	1	446	0	45.5	0	80	0	98	27	76	89	446	164ab91
 2026-10-16T11:42:34Z	2026-10-16-rebuild-invoice-seed-history.mdl	pass	applied-lint-rose	70	0	1	445	0	45.7	0	81	0	98	27	76	89	445	0875b3f
 2026-10-16T11:42:35Z	915-invoicing-mf-seed-data.mdl	not-run	blocked	0	?			0										0875b3f
+2026-10-16T11:48:26Z	done-100-security-roles.mdl	pass	applied-lint-rose	69	0	1	445	0	45.7	0	81	0	98	27	76	89	445	5b43587
+2026-10-16T11:49:32Z	2026-10-16-narrow-vendor-price-access.mdl	pass	applied-lint-rose	65	0	1	444	0	45.7	0	81	0	98	27	76	89	444	2bc28f8
+2026-10-16T11:50:35Z	done-150-purchasing-domain.mdl	pass	applied-lint-rose	63	0	1	444	0	45.7	0	81	0	98	27	76	89	444	11a6d3e
+2026-10-16T11:51:42Z	done-505-partners-page-partner-new-edit.mdl	pass	applied-lint-rose	66	0	1	444	0	45.7	0	81	0	98	27	76	89	444	11a6d3e
+2026-10-16T11:52:50Z	done-606-sales-page-sales-order-new-edit.mdl	pass	applied-lint-rose	67	0	1	444	0	45.7	0	81	0	98	27	76	89	444	f94caac
+2026-10-16T11:53:56Z	done-707-purchasing-page-purchase-order-new-edit.mdl	pass	applied-lint-rose	65	0	1	444	0	45.7	0	81	0	98	27	76	89	444	e25f3f4
+2026-10-16T11:55:00Z	done-715-purchasing-page-vendor-price-overview.mdl	pass	applied-lint-rose	63	0	1	444	0	45.7	0	81	0	98	27	76	89	444	dd28002

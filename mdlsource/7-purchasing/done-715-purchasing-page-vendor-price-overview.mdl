@@ -99,5 +99,7 @@ create or modify page Purchasing.VendorPrice_Overview folder 'VendorPrices/Pages
 };
 
 grant view on page Purchasing.VendorPrice_Overview to Purchasing.User, Purchasing.Manager;
-grant execute on microflow Purchasing.ACT_VendorPrice_Add to Purchasing.User, Purchasing.Manager;
-grant execute on microflow Purchasing.ACT_VendorPrice_SaveRow to Purchasing.User, Purchasing.Manager;
+grant execute on microflow Purchasing.ACT_VendorPrice_Add to Purchasing.Manager;
+revoke execute on microflow Purchasing.ACT_VendorPrice_Add from Purchasing.User;
+grant execute on microflow Purchasing.ACT_VendorPrice_SaveRow to Purchasing.Manager;
+revoke execute on microflow Purchasing.ACT_VendorPrice_SaveRow from Purchasing.User;

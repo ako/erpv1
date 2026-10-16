@@ -124,7 +124,7 @@ create or modify association Purchasing."PurchaseOrderLine_Taxes"
   owner Both;
 
 -- Entity access (module-brief.md "Access table"; narrowing a rule = revoke first, STOP 14)
-grant create, read *, write * on entity Purchasing."VendorPrice" to Purchasing.User;
+grant read * on entity Purchasing."VendorPrice" to Purchasing.User;
 grant create, delete, read *, write * on entity Purchasing."VendorPrice" to Purchasing.Manager;
 grant read * on entity Purchasing."VendorPrice" to Purchasing.Reader;
 grant create, read *, write * on entity Purchasing."PurchaseOrder" to Purchasing.User;

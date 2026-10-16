@@ -83,7 +83,7 @@ create or modify page Partners.Partner_NewEdit folder 'Contacts/Pages'
     datagrid gridContactsaddresses (DataSource: database Partners."Partner" where [Partners.Partner_ParentCompany = '[%CurrentObject%]'], Class: 'density-compact', OnClick: show page Partners.PartnerChild_NewEdit(Partner = $currentObject)) {
       column (Attribute: "AddressType", Caption: 'Address type', WrapText: true)
       column (Attribute: "Name", Caption: 'Name', WrapText: true)
-      column (Attribute: "Email", Caption: 'Email', WrapText: true)
+      column (Attribute: "Email", Caption: 'Email', WrapText: false)
       column (Attribute: "Phone", Caption: 'Phone', WrapText: true)
       column (Attribute: "City", Caption: 'City', WrapText: true)
     }
@@ -97,5 +97,6 @@ create or modify page Partners.Partner_NewEdit folder 'Contacts/Pages'
 
 grant view on page Partners.Partner_NewEdit to Partners.Editor, Partners.Admin;
 grant execute on microflow Partners.ACT_Partner_AddToPartner to Partners.Editor, Partners.Admin;
-grant execute on microflow Partners.ACT_Partner_Archive to Partners.Editor, Partners.Admin;
+grant execute on microflow Partners.ACT_Partner_Archive to Partners.Manager, Partners.Admin;
+revoke execute on microflow Partners.ACT_Partner_Archive from Partners.Editor;
 grant execute on microflow Partners.ACT_Partner_Save to Partners.Editor, Partners.Admin;

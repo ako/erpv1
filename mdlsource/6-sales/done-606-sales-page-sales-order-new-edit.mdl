@@ -130,4 +130,5 @@ grant execute on microflow Sales.ACT_SalesOrder_Confirm to Sales.User, Sales.Man
 grant execute on microflow Sales.ACT_SalesOrder_MarkSent to Sales.User, Sales.Manager;
 grant execute on microflow Sales.ACT_SalesOrder_Save to Sales.User, Sales.Manager;
 grant execute on microflow Sales.ACT_SalesOrder_SetToQuotation to Sales.User, Sales.Manager;
-grant execute on microflow Sales.ACT_SalesOrder_ToggleLock to Sales.User, Sales.Manager;
+grant execute on microflow Sales.ACT_SalesOrder_ToggleLock to Sales.Manager;
+revoke execute on microflow Sales.ACT_SalesOrder_ToggleLock from Sales.User;

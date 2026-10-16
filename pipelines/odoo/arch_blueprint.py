@@ -26,7 +26,9 @@ MODULE_ROLES = {  # module role -> user roles (Q-F001-2)
     'Products': {'Manager': ['SalesManager', 'PurchaseManager', 'InventoryManager', 'Administrator'],
                  'Reader': ['SalesUser', 'Purchaser', 'InventoryUser', 'Billing', 'InvoicingManager']},
     'Partners': {'Editor': ['SalesUser', 'SalesManager', 'Purchaser', 'PurchaseManager', 'Billing', 'InvoicingManager'], 'Admin': ['Administrator'],
-                 'Reader': ['InventoryUser', 'InventoryManager']},
+                 'Reader': ['InventoryUser', 'InventoryManager'],
+                 # archive contacts: F001-UC003 actors SalesManager + Administrator (Admin); no rights of its own (C1-15, 2026-10-16)
+                 'Manager': ['SalesManager']},
     'Sales': {'User': ['SalesUser'], 'Manager': ['SalesManager'], 'Reader': ['Billing', 'InvoicingManager', 'InventoryUser', 'InventoryManager', 'Administrator']},
     'Purchasing': {'User': ['Purchaser'], 'Manager': ['PurchaseManager'], 'Reader': ['Billing', 'InvoicingManager', 'InventoryUser', 'InventoryManager', 'Administrator']},
     'Inventory': {'User': ['InventoryUser'], 'Manager': ['InventoryManager', 'Administrator'], 'Reader': ['SalesUser', 'SalesManager', 'Purchaser', 'PurchaseManager']},

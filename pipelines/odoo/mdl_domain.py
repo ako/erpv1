@@ -46,6 +46,7 @@ ROLE_DESC = {
     'Reader': 'Read-only access (lookups from other modules)', 'Manager': 'Full access incl. configuration and delete',
     'Editor': 'Create and edit records', 'User': 'Day-to-day work on own documents', 'Billing': 'Invoices, bills and payments',
     'Creator': 'Creates invoices from orders (bridge)',
+    ('Partners', 'Manager'): 'Manager-only contact actions (archive); data access comes with Editor',
 }
 SYSTEM_MEMBERS = OrderedDict([('createdDate', ('CreatedDate', 'AutoCreatedDate')),
                               ('changedDate', ('ChangedDate', 'AutoChangedDate')),
@@ -212,7 +213,7 @@ def gen_roles():
     comp = defaultdict(list)
     for m in MODULES:
         for role, users in MODULE_ROLES[m].items():
-            L.append("create or modify module role %s.%s description '%s';" % (m, role, esc(ROLE_DESC.get(role, role))))
+            L.append("create or modify module role %s.%s description '%s';" % (m, role, esc(ROLE_DESC.get((m, role), ROLE_DESC.get(role, role)))))
             for u in users:
                 comp[u].append('%s.%s' % (m, role))
     L.append('')

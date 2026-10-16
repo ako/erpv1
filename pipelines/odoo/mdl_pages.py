@@ -391,9 +391,22 @@ def column(e, f, filters=False):
 
 
 # ── page access ──────────────────────────────────────────────────────────────────────────────
+# Module roles that carry single actions only (ACTION_ROLES), never page access or a page's other actions.
+CAPABILITY_ROLES = {'Partners.Manager'}
+# Actions granted to exactly these module roles, whichever page calls them (coherence C1-15, PROJECT.md 2026-10-15);
+# the page's other roles are revoked (a narrower grant leaves the older wider one in place, X6).
+ACTION_ROLES = {'Sales.ACT_SalesOrder_ToggleLock': ['Sales.Manager'],
+                'Purchasing.ACT_PurchaseOrder_ToggleLock': ['Purchasing.Manager'],
+                'Partners.ACT_Partner_Archive': ['Partners.Manager', 'Partners.Admin'],
+                # vendor prices are maintained by purchase managers; purchasers read them
+                'Purchasing.ACT_VendorPrice_Add': ['Purchasing.Manager'], 'Purchasing.ACT_VendorPrice_SaveRow': ['Purchasing.Manager']}
+
+
 def module_roles_for(page_module, user_roles):
     roles = []
     for r, users in MODULE_ROLES[page_module].items():
+        if '%s.%s' % (page_module, r) in CAPABILITY_ROLES:
+            continue
         if set(users) & set(user_roles):
             roles.append('%s.%s' % (page_module, r))
     return roles
@@ -1005,6 +1018,12 @@ end;
         # a selection button's microflow keeps the grant of the script that defines it (Register payment: Billing and
         # Manager only, though sales and purchase managers see the invoice list; Mendix then hides the button from them)
         if mf in LIST_SELECTION_BUTTON.values():
+            continue
+        if mf in ACTION_ROLES:
+            out.append('grant execute on microflow %s to %s;' % (mf, ', '.join(ACTION_ROLES[mf])))
+            wider = [x for x in roles if x not in ACTION_ROLES[mf]]
+            if wider:
+                out.append('revoke execute on microflow %s from %s;' % (mf, ', '.join(wider)))
             continue
         if not r:
             continue

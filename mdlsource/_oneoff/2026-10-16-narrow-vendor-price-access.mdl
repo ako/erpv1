@@ -1,0 +1,4 @@
+mdl 1;
+-- One-off (STOP 14: narrowing an entity rule = revoke first): vendor prices are maintained by Purchasing.Manager only
+-- (coherence C1-15, PROJECT.md 2026-10-15). Purchasing.User keeps read; 150 re-grants read *.
+revoke create, write * on entity Purchasing.VendorPrice from Purchasing.User;
