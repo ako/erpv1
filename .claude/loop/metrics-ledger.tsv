@@ -320,3 +320,13 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-16T06:22:00Z	175-domain-composite-keys.mdl	pass	applied-lint-rose	88	0	1	423	0	46.3	0	81	0	99	31	76	91	423	6a5ac25
 2026-10-16T06:23:10Z	2026-10-16-rebuild-inventory-asu-backfill.mdl	pass	applied-lint-rose	70	0	1	422	0	46.5	0	82	0	99	31	76	91	422	651d233
 2026-10-16T06:24:10Z	175-domain-composite-keys.mdl	pass	applied-lint-rose	59	0	1	422	0	46.5	0	82	0	99	31	76	91	422	a85ef60
+2026-10-16T06:50:01Z	2026-10-16-rebuild-uom-category-val.mdl	pass	applied-lint-rose	56	0	1	422	0	46.5	0	82	0	99	31	76	91	422	833b30b
+2026-10-16T06:51:05Z	done-308-core-page-payment-term-new-edit.mdl	pass	applied-lint-rose	63	0	1	422	0	46.5	0	82	0	99	31	76	91	422	1ee4172
+2026-10-16T06:52:05Z	done-409-products-page-product-category-new-edit.mdl	pass	applied-lint-rose	59	0	1	422	0	46.5	0	82	0	99	31	76	91	422	a2edd20
+2026-10-16T06:53:08Z	done-412-products-page-pricelist-new-edit.mdl	pass	applied-lint-rose	62	0	1	423	0	46.3	0	81	0	99	31	76	91	423	7ed1d95
+2026-10-16T06:54:14Z	done-609-sales-page-quotation-template-new-edit.mdl	pass	applied-lint-rose	65	0	1	423	0	46.3	0	81	0	99	31	76	91	423	64f59b4
+2026-10-16T06:55:15Z	done-306-core-page-sequence-overview.mdl	pass	applied-lint-rose	60	0	1	423	0	46.3	0	81	0	99	31	76	91	423	f67bc28
+2026-10-16T06:56:21Z	done-715-purchasing-page-vendor-price-overview.mdl	pass	applied-lint-rose	65	0	1	423	0	46.3	0	81	0	99	31	76	91	423	b1d0004
+2026-10-16T06:57:22Z	done-810-inventory-page-reorder-rule-overview.mdl	pass	applied-lint-rose	60	0	1	423	0	46.3	0	81	0	99	31	76	91	423	4c78bd7
+2026-10-16T06:59:42Z	2026-10-16-rebuild-val-rules-split.mdl	pass	applied-lint-rose	77	0	1	422	0	46.5	0	82	0	99	31	76	91	422	22ead7c
+2026-10-16T07:02:46Z	2026-10-16-rebuild-vendor-price-row-val.mdl	pass	applied-lint-rose	66	0	1	422	0	46.5	0	82	0	99	31	76	91	422	241fd81

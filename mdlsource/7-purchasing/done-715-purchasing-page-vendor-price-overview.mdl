@@ -8,10 +8,6 @@ returns Boolean as $IsValid
 folder 'VendorPrices/Microflows'
 begin
   declare $IsValid Boolean = true;
-  if $VendorPrice/Price = empty then
-    validation feedback $VendorPrice/Price message 'Price is required.';
-    set $IsValid = false;
-  end if;
   if $VendorPrice/Price != empty and $VendorPrice/Price < 0 then
     validation feedback $VendorPrice/Price message 'The price cannot be negative.';
     set $IsValid = false;

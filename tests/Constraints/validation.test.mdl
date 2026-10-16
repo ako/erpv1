@@ -1,0 +1,89 @@
+-- Odoo checks carried into VAL_ microflows (BRD odooChecks, disposition val) and the row checks of the inline lists.
+-- Objects are built in memory (never committed); each VAL_ must refuse the bad case and accept the good one.
+
+/**
+ * @test A percent payment-term line above 100 is refused (Odoo account.payment.term.line _check_percent)
+ * @expect $Valid = false
+ */
+$Term = create Core.PaymentTerm (Name = 'Validation test term');
+$Line = create Core.PaymentTermLine (Value = Core.ENUM_PaymentTermValue.Percent, ValueAmount = 120, Core.PaymentTermLine_PaymentTerm = $Term);
+$Valid = call microflow Core.VAL_PaymentTerm_Rules(PaymentTerm = $Term);
+/
+
+/**
+ * @test A percent payment-term line of 30 is accepted
+ * @expect $Valid = true
+ */
+$Term = create Core.PaymentTerm (Name = 'Validation test term');
+$Line = create Core.PaymentTermLine (Value = Core.ENUM_PaymentTermValue.Percent, ValueAmount = 30, Core.PaymentTermLine_PaymentTerm = $Term);
+$Valid = call microflow Core.VAL_PaymentTerm_Rules(PaymentTerm = $Term);
+/
+
+/**
+ * @test A price rule ending before it starts is refused (Odoo product.pricelist.item _check_date_range)
+ * @expect $Valid = false
+ */
+$List = create Products.Pricelist (Name = 'Validation test list');
+$Rule = create Products.PriceRule (AppliesTo = Products.ENUM_PriceRuleScope.AllProducts, ValidFrom = addDays([%CurrentDateTime%], 10), ValidTo = [%CurrentDateTime%], Products.PriceRule_Pricelist = $List);
+$Valid = call microflow Products.VAL_Pricelist_Rules(Pricelist = $List);
+/
+
+/**
+ * @test A category price rule without a category is refused (Odoo product.pricelist.item _check_product_consistency)
+ * @expect $Valid = false
+ */
+$List = create Products.Pricelist (Name = 'Validation test list');
+$Rule = create Products.PriceRule (AppliesTo = Products.ENUM_PriceRuleScope.ProductCategory, Products.PriceRule_Pricelist = $List);
+$Valid = call microflow Products.VAL_Pricelist_Rules(Pricelist = $List);
+/
+
+/**
+ * @test A category cannot become its own parent (Odoo product.category _check_category_recursion)
+ * @expect $Valid = false
+ */
+retrieve $Category from Products.ProductCategory where [FullName != empty] first;
+change $Category (Products.ProductCategory_Parent = $Category);
+$Valid = call microflow Products.VAL_ProductCategory_Rules(ProductCategory = $Category);
+/
+
+/**
+ * @test A quotation template line without a product is refused (Odoo sale.order.template.line accountable_product_id_required)
+ * @expect $Valid = false
+ */
+$Template = create Sales.QuotationTemplate (Name = 'Validation test template');
+$Line = create Sales.QuotationTemplateLine (Quantity = 1, Sales.QuotationTemplateLine_Template = $Template);
+$Valid = call microflow Sales.VAL_QuotationTemplate_Rules(QuotationTemplate = $Template);
+/
+
+/**
+ * @test A reference unit with a ratio other than 1 is refused (Odoo uom.uom factor_reference_is_one)
+ * @expect $Valid = false
+ */
+$Category = create Products.UoMCategory (Name = 'Validation test category');
+$Unit = create Products.UoM (Name = 'Ref', UoMType = Products.ENUM_UoMType.Reference, Factor = 2, Rounding = 0.01, Active = true, Products.UoM_Category = $Category);
+$Valid = call microflow Products.VAL_UoMCategory(UoMCategory = $Category);
+/
+
+/**
+ * @test A reorder rule row with a minimum above its maximum is refused (Odoo stock.warehouse.orderpoint _check_min_max_qty)
+ * @expect $Valid = false
+ */
+$Rule = create Inventory.ReorderRule (Name = 'Validation test rule', MinQuantity = 30, MaxQuantity = 10);
+$Valid = call microflow Inventory.VAL_ReorderRule_Row(ReorderRule = $Rule);
+/
+
+/**
+ * @test A reorder rule row with minimum 10 and maximum 30 is accepted
+ * @expect $Valid = true
+ */
+$Rule = create Inventory.ReorderRule (Name = 'Validation test rule', MinQuantity = 10, MaxQuantity = 30);
+$Valid = call microflow Inventory.VAL_ReorderRule_Row(ReorderRule = $Rule);
+/
+
+/**
+ * @test A vendor price row with a negative price is refused (row check: inline rows bypassed every VAL_ before)
+ * @expect $Valid = false
+ */
+$Price = create Purchasing.VendorPrice (MinQuantity = 1, Price = -5);
+$Valid = call microflow Purchasing.VAL_VendorPrice_Row(VendorPrice = $Price);
+/

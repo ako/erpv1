@@ -97,3 +97,19 @@
   over associations, never by XPath.
 - **Identity pickers on editable lists (fixed).** verify-module's monkey cleared product and location on both stock rows;
   the pickers saved on change. They are now editable only while empty. Data repaired through the UI.
+
+## 2026-10-16 — Validation (user: uniqueness in the database, as entity rules)
+
+- **Odoo's constraints never reached the BRDs** (KB: 55 SQL constraints, 93 @api.constrains on in-scope models). Fixed at
+  the root: brd_generator carries them per entity with a disposition (brd_content.CONSTRAINT_TRIAGE): 18 implemented as
+  entity rules, 10 in VAL_ microflows, 6 already covered by logic, 3 deferred to Invoicing, 67 not applicable (out-of-scope
+  features), 1 waiting (tax name + scope: 13 duplicate journey taxes must go first).
+- **Uniqueness is enforced in Postgres**: 12 unique indexes (uniq_<table>_<column>) verified with pg_indexes after the
+  restart. Mendix numbers existing rows when an AutoNumber attribute is added (Product 1..14 verified). A composite key
+  (one reorder rule per product + location) is a stored UniqueKey filled before commit from the two AutoNumbers; an
+  incomplete row keeps an empty key, which the database does not compare (test: two new rules both commit).
+- **The new rule caught a real violation**: an Inventory unit test created a second chair rule at WH/Stock.
+- **Entity range rules raise past every error handler** in mxcli test (mxcli X12): the refusal and its message are
+  correct, the tests are parked with the evidence.
+- **A "Price is required" row check could never fire**: a new decimal is 0, not empty — caught by its own unit test.
+- Inline lists (Sequences, Vendor prices, Reorder rules) now save rows through ACT_<E>_SaveRow → VAL_<E>_Row.

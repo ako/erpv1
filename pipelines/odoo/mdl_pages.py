@@ -141,8 +141,7 @@ VAL_EXTRA = {
 # (user 2026-10-16; inline lists bypassed every VAL_).
 ROW_VAL = {
     'Core.Sequence': [("$E/Code = empty or trim($E/Code) = ''", 'Code', 'Code is required.')],
-    'Purchasing.VendorPrice': [("$E/Price = empty", 'Price', 'Price is required.'),
-                               ("$E/Price != empty and $E/Price < 0", 'Price', 'The price cannot be negative.'),
+    'Purchasing.VendorPrice': [("$E/Price != empty and $E/Price < 0", 'Price', 'The price cannot be negative.'),
                                ("$E/MinQuantity != empty and $E/MinQuantity < 0", 'MinQuantity', 'The minimum quantity cannot be negative.')],
     'Inventory.ReorderRule': [("$E/MinQuantity != empty and $E/MaxQuantity != empty and $E/MinQuantity > $E/MaxQuantity", 'MinQuantity',
                                'The minimum quantity must be less than or equal to the maximum quantity.'),
@@ -661,8 +660,26 @@ def save_microflows(s, folder):
     validation feedback $%s/%s message '%s is required.';
     set $IsValid = false;
   end if;''' % (c, short, f if attr(e, f) else '%s.%s' % (mod, f), esc(label_of(e, f))) for f, c in checks)
-    body += ''.join('\n' + b.replace('$E', '$' + short) for b in VAL_EXTRA.get(e['name'], []))
     mfolder = folder.replace('/Pages', '/Microflows')
+    rules_doc = ''
+    if e['name'] in VAL_EXTRA:
+        # Odoo's checks in their own sub-microflow, so the VAL_ stays small (CONV009, 2026-10-16)
+        rules_doc = '''/** Odoo's checks on a %(short)s and its lines (BRD odooConstraints / odooChecks, disposition val). */
+create or modify microflow %(mod)s.VAL_%(short)s_Rules ($%(short)s: %(q)s)
+returns Boolean as $IsValid
+folder '%(f)s'
+begin
+  declare $IsValid Boolean = true;
+%(blocks)s
+  return $IsValid;
+end;
+
+''' % dict(short=short, mod=mod, q=e['name'], f=mfolder, blocks='\n'.join(b.replace('$E', '$' + short) for b in VAL_EXTRA[e['name']]))
+        body += '''
+  $RulesValid = call microflow %s.VAL_%s_Rules(%s = $%s);
+  if not($RulesValid) then
+    set $IsValid = false;
+  end if;''' % (mod, short, short, short)
     hook = SAVE_HOOK.get(e['name'])
     hook_call = ('  call microflow %s(%s = $%s);\n' % (hook, short, short)) if hook else ''
     # Lines typed on the form travel with the Save call but are not committed by committing the header: commit them over
@@ -681,7 +698,7 @@ begin
 end;
 
 ''' % dict(short=short, mod=mod, q=e['name'], page=s['name'], f=mfolder, body=body)
-    return [val_doc + '''/** Persist a validated %(short)s. */
+    return [rules_doc + val_doc + '''/** Persist a validated %(short)s. */
 create or modify microflow %(mod)s.SUB_%(short)s_Save ($%(short)s: %(q)s)
 folder '%(f)s'
 begin
@@ -699,7 +716,7 @@ begin
   end if;
 end;
 ''' % dict(short=short, mod=mod, q=e['name'], page=s['name'], f=mfolder, hook=hook_call, val=own_val or 'VAL_%s' % short)]
-    return ['''/** Validate a %(short)s before save: every required field on %(page)s, all flagged on one submit. */
+    return [rules_doc + '''/** Validate a %(short)s before save: every required field on %(page)s, all flagged on one submit. */
 create or modify microflow %(mod)s.VAL_%(short)s ($%(short)s: %(q)s)
 returns Boolean as $IsValid
 folder '%(f)s'
