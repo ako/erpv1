@@ -159,3 +159,8 @@
   found by the new Sales re-pricing test, fixed by rounding to 2 (Odoo's Product Price precision); Sales and Products tests pass.
 - ONCHANGE in mdl_pages.py is a dict built with `**{...}` spreads: a later spread silently overrides an earlier explicit key
   (the C1-06 Quantity/UnitPrice actions were first emitted as the old Recompute). Verified by grepping the regenerated 606.
+- Regenerating the BRDs (odooConstraints added) left wildcard claim counts `(N)` stale in all 16 coverage ledgers
+  (COUNT-MISMATCH, no UNCLAIMED/PHANTOM). Fixed the counts in place from coverage-check's declared/actual output. Do NOT run
+  plan_render.py to refresh them: it also rewrites the module briefs from MODULE_ROLES, which undid today's hand-made access
+  rows (request entities, Creator's limited form access) and gave Partners.Manager full entity rights; mdl_domain.py reads
+  those briefs for grants. Reverted, verified all 16 ledgers clean.

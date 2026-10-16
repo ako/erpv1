@@ -1,186 +1,186 @@
 {
-  "capturedAt": "2026-10-15T20:09:48.301Z",
-  "seed": 94813467,
+  "capturedAt": "2026-10-16T12:42:50.122Z",
+  "seed": 154392828,
   "rounds": 24,
-  "configuredUser": "warehouse.user",
-  "actualUser": "warehouse.user",
+  "configuredUser": "billing",
+  "actualUser": "billing",
   "usedFallback": false,
   "otelOracleRan": false,
   "findings": [
     {
       "severity": "ok",
       "target": "salesOrderOverview",
-      "what": "field ← null-ish",
+      "what": "field ← single space",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "quotationTemplateOverview",
-      "what": "field ← OQL-shaped",
+      "what": "field ← XSS-shaped",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "salesTeamOverview",
       "what": "abuse: doubleClick",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "purchaseOrderOverview",
-      "what": "field ← single space",
+      "what": "abuse: rapidTab",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "purchaseApprovalInbox",
-      "what": "field ← single space",
+      "what": "field ← path traversal",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "vendorPriceOverview",
-      "what": "field ← path traversal",
+      "what": "field ← whitespace-wrapped",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "inventoryDashboard",
-      "what": "field ← CJK",
+      "what": "field ← XSS-shaped",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "transferOverview",
-      "what": "field ← leading zeros",
+      "what": "abuse: backAfterSubmit",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "stockLevelOverview",
-      "what": "field ← empty",
+      "what": "field ← single space",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "reorderRuleOverview",
-      "what": "field ← numeric overflow",
+      "what": "field ← emoji + combining",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "invoiceOverview",
-      "what": "field ← leading zeros",
+      "what": "abuse: rapidTab",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "paymentOverview",
-      "what": "field ← RTL override",
+      "what": "abuse: backAfterSubmit",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "partnerOverview",
-      "what": "abuse: doubleClick",
+      "what": "abuse: reloadMidFlow",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "productOverview",
       "what": "field ← SQL-shaped",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "pricelistOverview",
-      "what": "field ← script tag",
+      "what": "abuse: backAfterSubmit",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "salesAnalysisReport",
-      "what": "field ← XSS-shaped",
+      "what": "field ← oversized 5000ch",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "purchaseAnalysisReport",
-      "what": "abuse: doubleClick",
+      "what": "field ← script tag",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "invoiceAnalysisReport",
-      "what": "field ← script tag",
+      "what": "field ← CJK",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "companyEdit",
-      "what": "field ← whitespace-wrapped",
+      "what": "abuse: rapidTab",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "warehouseEdit",
-      "what": "abuse: backAfterSubmit",
+      "what": "field ← emoji + combining",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "sequenceOverview",
-      "what": "field ← null-ish",
+      "what": "field ← CJK",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "taxOverview",
-      "what": "abuse: reloadMidFlow",
+      "what": "field ← null-ish",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "paymentTermOverview",
-      "what": "field ← emoji + combining",
+      "what": "field ← format string",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "uoMCategoryOverview",
-      "what": "field ← single space",
+      "what": "field ← empty",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     },
     {
       "severity": "ok",
       "target": "productCategoryOverview",
-      "what": "field ← OQL-shaped",
+      "what": "field ← whitespace-wrapped",
       "detail": "no spans — OTel arm of the oracle did NOT run",
-      "seed": 94813467
+      "seed": 154392828
     }
   ]
 }

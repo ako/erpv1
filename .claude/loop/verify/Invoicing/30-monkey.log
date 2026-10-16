@@ -1,9 +1,85 @@
+MONKEY_SEED=154392828   rounds=24   (re-run exactly: --seed 154392828)
 
-  REFUSING TO RUN — app ownership is "unknown" for :8080 (from guess).
-  A Mendix may be answering there, but nothing proves it is THIS project's.
-  On 2026-08-18 this exact path pointed at another project's app on :8080.
+=== salesOrderOverview
+  [32mok   [0m salesOrderOverview · field ← single space  — no spans — OTel arm of the oracle did NOT run
 
-  Fix:  ./bin/test-stack-up.sh          (starts our stack and verifies ownership)
-  Or:   APP_PORT=<port> ...             (assert it by hand, recorded as "asserted")
-  Or:   ALLOW_UNVERIFIED_APP=1 ...      (proceed anyway; the report will say "unverified")
+=== quotationTemplateOverview
+  [32mok   [0m quotationTemplateOverview · field ← XSS-shaped  — no spans — OTel arm of the oracle did NOT run
 
+=== salesTeamOverview
+  [32mok   [0m salesTeamOverview · abuse: doubleClick  — no spans — OTel arm of the oracle did NOT run
+
+=== purchaseOrderOverview
+  [32mok   [0m purchaseOrderOverview · abuse: rapidTab  — no spans — OTel arm of the oracle did NOT run
+
+=== purchaseApprovalInbox
+  [32mok   [0m purchaseApprovalInbox · field ← path traversal  — no spans — OTel arm of the oracle did NOT run
+
+=== vendorPriceOverview
+  [32mok   [0m vendorPriceOverview · field ← whitespace-wrapped  — no spans — OTel arm of the oracle did NOT run
+
+=== inventoryDashboard
+  [32mok   [0m inventoryDashboard · field ← XSS-shaped  — no spans — OTel arm of the oracle did NOT run
+
+=== transferOverview
+  [32mok   [0m transferOverview · abuse: backAfterSubmit  — no spans — OTel arm of the oracle did NOT run
+
+=== stockLevelOverview
+  [32mok   [0m stockLevelOverview · field ← single space  — no spans — OTel arm of the oracle did NOT run
+
+=== reorderRuleOverview
+  [32mok   [0m reorderRuleOverview · field ← emoji + combining  — no spans — OTel arm of the oracle did NOT run
+
+=== invoiceOverview
+  [32mok   [0m invoiceOverview · abuse: rapidTab  — no spans — OTel arm of the oracle did NOT run
+
+=== paymentOverview
+  [32mok   [0m paymentOverview · abuse: backAfterSubmit  — no spans — OTel arm of the oracle did NOT run
+
+=== partnerOverview
+  [32mok   [0m partnerOverview · abuse: reloadMidFlow  — no spans — OTel arm of the oracle did NOT run
+
+=== productOverview
+  [32mok   [0m productOverview · field ← SQL-shaped  — no spans — OTel arm of the oracle did NOT run
+
+=== pricelistOverview
+  [32mok   [0m pricelistOverview · abuse: backAfterSubmit  — no spans — OTel arm of the oracle did NOT run
+
+=== salesAnalysisReport
+  [32mok   [0m salesAnalysisReport · field ← oversized 5000ch  — no spans — OTel arm of the oracle did NOT run
+
+=== purchaseAnalysisReport
+  [32mok   [0m purchaseAnalysisReport · field ← script tag  — no spans — OTel arm of the oracle did NOT run
+
+=== invoiceAnalysisReport
+  [32mok   [0m invoiceAnalysisReport · field ← CJK  — no spans — OTel arm of the oracle did NOT run
+
+=== companyEdit
+  [32mok   [0m companyEdit · abuse: rapidTab  — no spans — OTel arm of the oracle did NOT run
+
+=== warehouseEdit
+  [32mok   [0m warehouseEdit · field ← emoji + combining  — no spans — OTel arm of the oracle did NOT run
+
+=== sequenceOverview
+  [32mok   [0m sequenceOverview · field ← CJK  — no spans — OTel arm of the oracle did NOT run
+
+=== taxOverview
+  [32mok   [0m taxOverview · field ← null-ish  — no spans — OTel arm of the oracle did NOT run
+
+=== paymentTermOverview
+  [32mok   [0m paymentTermOverview · field ← format string  — no spans — OTel arm of the oracle did NOT run
+
+=== uoMCategoryOverview
+  [32mok   [0m uoMCategoryOverview · field ← empty  — no spans — OTel arm of the oracle did NOT run
+
+=== productCategoryOverview
+  [32mok   [0m productCategoryOverview · field ← whitespace-wrapped  — no spans — OTel arm of the oracle did NOT run
+
+=== MONKEY SUMMARY ===
+  seed 154392828 · 25 observations · 0 crash-class
+  ⚠ No spans were captured in ANY round. The OTel arm of the crash oracle
+    never ran, so swallowed-error crashes could not have been detected.
+    This run is a partial net, not a clean bill of health.
+  Read a clean run as "no unhandled crash on these inputs" and nothing more:
+  scripted journeys, not fuzzing, are what find defects in this stack.
+  findings → ../tests/e2e/artifacts/monkey-findings.json

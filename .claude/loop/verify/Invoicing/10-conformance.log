@@ -1,1 +1,32 @@
-  measuring 1/44   measuring 2/44   measuring 3/44   measuring 4/44   measuring 5/44   measuring 6/44   measuring 7/44   measuring 8/44   measuring 9/44   measuring 10/44   measuring 11/44   measuring 12/44   measuring 13/44   measuring 14/44   measuring 15/44   measuring 16/44   measuring 17/44   measuring 18/44   measuring 19/44   measuring 20/44   measuring 21/44   measuring 22/44   measuring 23/44   measuring 24/44   measuring 25/44   measuring 26/44   measuring 27/44   measuring 28/44   measuring 29/44   measuring 30/44   measuring 31/44 
+  measuring 1/44   measuring 2/44   measuring 3/44   measuring 4/44   measuring 5/44   measuring 6/44   measuring 7/44   measuring 8/44   measuring 9/44   measuring 10/44   measuring 11/44   measuring 12/44   measuring 13/44   measuring 14/44   measuring 15/44   measuring 16/44   measuring 17/44   measuring 18/44   measuring 19/44   measuring 20/44   measuring 21/44   measuring 22/44   measuring 23/44   measuring 24/44   measuring 25/44   measuring 26/44   measuring 27/44   measuring 28/44   measuring 29/44   measuring 30/44   measuring 31/44   measuring 32/44   measuring 33/44   measuring 34/44   measuring 35/44   measuring 36/44   measuring 37/44   measuring 38/44   measuring 39/44   measuring 40/44   measuring 41/44   measuring 42/44   measuring 43/44   measuring 44/44                               conformance-check · 2026-10-16
+  ledger rows            53   (measured 44 · prose-only 9)
+  OK                     22
+  STALE                  0   (claims built/partial, model says absent)
+  UNDERSTATED            22
+  report                 docs/conformance/report-2026-10-16-F008-invoicing-payments.tsv
+
+  mismatches:
+    Invoicing                F008-invoicing-payments:`/actorRoleMapping/*` (4) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/actors/*` (4) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/microflows/0/*` (9) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/microflows/1/*` (14) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/microflows/10/*` (10) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/microflows/11/*` (13) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/microflows/12/*` (9) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/microflows/2/*` (13) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/microflows/4/*` (11) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/microflows/6/*` (18) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/microflows/7/*` (10) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/microflows/8/*` (9) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/microflows/9/*` (10) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/pages/0/*` (14) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/pages/1/*` (18) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/pages/2/*` (10) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/pages/3/*` (10) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/pages/4/*` (10) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/pages/5/*` (9) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/pages/8/*` (10) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/pages/9/*` (10) not-built   -> PRESENT UNDERSTATED
+    Invoicing                F008-invoicing-payments:`/viewEntities/0/*` (4) not-built   -> PRESENT UNDERSTATED
+
+  no regressions against baseline.

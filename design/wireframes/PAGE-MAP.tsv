@@ -14,6 +14,7 @@ Pricelist_Overview	../prototype.html#/pricelist-overview
 Pricelist_NewEdit	../prototype.html#/pricelist-new-edit
 SalesOrder_Overview	../prototype.html#/sales-order-overview
 SalesOrder_NewEdit	../prototype.html#/sales-order-new-edit
+SalesOrder_View	../prototype.html#/sales-order-view
 QuotationTemplate_Overview	../prototype.html#/quotation-template-overview
 QuotationTemplate_NewEdit	../prototype.html#/quotation-template-new-edit
 SalesTeam_Overview	../prototype.html#/sales-team-overview
@@ -21,6 +22,7 @@ SalesTeam_NewEdit	../prototype.html#/sales-team-new-edit
 SalesAnalysis_Report	../prototype.html#/sales-analysis-report
 PurchaseOrder_Overview	../prototype.html#/purchase-order-overview
 PurchaseOrder_NewEdit	../prototype.html#/purchase-order-new-edit
+PurchaseOrder_View	../prototype.html#/purchase-order-view
 PurchaseApproval_Inbox	../prototype.html#/purchase-approval-inbox
 PurchaseApproval_Task	../prototype.html#/purchase-approval-task
 VendorPrice_Overview	../prototype.html#/vendor-price-overview
