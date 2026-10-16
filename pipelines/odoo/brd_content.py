@@ -804,7 +804,7 @@ CONSTRAINT_TRIAGE = {
     ('Core.Currency', '_check_company_currency_stays_active'): 'not-applicable: currencies are seeded reference data with no maintenance page',
     ('Partners.Partner', 'check_name'): 'val: Partners.VAL_Partner (Name required)',
     ('Partners.Partner', '_check_parent_id'): 'val: Partners.VAL_Partner (parent company is not the partner itself)',
-    ('Core.Tax', '_constrains_name'): 'entity-unique: Name + Scope (key attribute); waits on removing 13 duplicate journey taxes',
+    ('Core.Tax', '_constrains_name'): 'covered: entity unique rule on Name + Scope (EXTRA_CONSTRAINTS; duplicate journey taxes removed 2026-10-16)',
     ('Core.Tax', '_check_children_scope'): 'not-applicable: tax groups (children) are out of scope',
     ('Core.PaymentTermLine', '_check_percent'): 'val: Core.VAL_PaymentTerm (percent lines between 0 and 100)',
     ('Products.UoM', 'factor_reference_is_one'): 'val: Products.VAL_UoMCategory (the reference unit has ratio 1)',
@@ -846,6 +846,9 @@ CONSTRAINT_TRIAGE = {
 }
 # Rules this app adds on top of Odoo (design, not extracted): business keys the app's own logic depends on.
 EXTRA_CONSTRAINTS = {
+    'Core.Tax': [dict(odooName='(_constrains_name) name_scope_uniq', kind='unique', members=['Name', 'Scope'],
+                      message='Tax names must be unique per scope.', disposition='implement',
+                      basis='Odoo account.tax._constrains_name is a Python check; enforced here in the database (user 2026-10-16)')],
     'Core.Sequence': [dict(odooName='(design) code_uniq', kind='unique', members=['Code'],
                            message='A numbering sequence with this code already exists.',
                            disposition='implement', basis='every document number is drawn by Code (SUB_Sequence_NextNumber)')],

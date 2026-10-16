@@ -1,12 +1,12 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-16 07:02:46",
-  "overallScore": 46.5,
+  "date": "2026-10-16 09:25:12",
+  "overallScore": 46.1,
   "summary": {
-    "total": 422,
+    "total": 425,
     "errors": 0,
     "warnings": 133,
-    "infos": 289
+    "infos": 292
   },
   "categories": [
     {
@@ -26,11 +26,11 @@
     },
     {
       "name": "Quality",
-      "score": 82,
-      "total": 18,
+      "score": 81,
+      "total": 19,
       "errors": 0,
       "warnings": 0,
-      "infos": 18,
+      "infos": 19,
       "topActions": [
         "Replace entity validation rules with a VAL_Company microflow for explicit, testable validation",
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
@@ -54,11 +54,11 @@
     },
     {
       "name": "Performance",
-      "score": 99,
-      "total": 1,
+      "score": 98,
+      "total": 2,
       "errors": 0,
       "warnings": 0,
-      "infos": 1,
+      "infos": 2,
       "topActions": [
         "Replace event handlers with explicit microflow calls (BCO_, ACO_, BCR_, ACR_, BDE_, ADE_ prefixes)"
       ]
@@ -89,11 +89,11 @@
     },
     {
       "name": "Other",
-      "score": 91,
-      "total": 9,
+      "score": 90,
+      "total": 10,
       "errors": 0,
       "warnings": 0,
-      "infos": 9,
+      "infos": 10,
       "topActions": [
         "Describing this microflow does not round-trip. Edit it in Studio Pro, or restructure so each branch reaches the decision's merge without passing through another branch's path. The condition can usually be folded into one decision instead (e.g. `not(a) or b`)."
       ]

@@ -112,6 +112,7 @@ create or modify persistent entity Core."Tax" (
   "LabelOnInvoice": String(200),
   "Sequence": Integer default 1,
   "Active": Boolean default true,
+  "UniqueKey": String(200) unique error message 'Tax names must be unique per scope.',
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
   Owner: AutoOwner,

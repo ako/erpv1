@@ -113,3 +113,23 @@
   correct, the tests are parked with the evidence.
 - **A "Price is required" row check could never fire**: a new decimal is 0, not empty — caught by its own unit test.
 - Inline lists (Sequences, Vendor prices, Reorder rules) now save rows through ACT_<E>_SaveRow → VAL_<E>_Row.
+
+### Why the lint baseline accepts entity validation rules and two event handlers (2026-10-16)
+
+- **CONV015 0 -> 13** (`NoEntityValidationRules`: "use VAL_ microflows instead"). The rule's premise is UX: a VAL_
+  microflow flags fields on a form, an entity rule fails the commit. That premise does not hold for uniqueness: a VAL_
+  that retrieves "is there another row with this code?" checks one transaction's view of the data, so two users saving
+  at once both pass and both commit. Only the database can refuse the second one. The user decided (2026-10-16) that
+  uniqueness is enforced in the database, as entity rules; Mendix turns a `unique` rule into a unique index
+  (12 + 1 indexes verified in pg_indexes). Range rules are the same kind of invariant: they must hold on every commit
+  path (microflows, inline-list rows that save on change, startup seeds), not only the forms that call a VAL_.
+  Form-level checks (required, conditional, cross-field) stay in VAL_ microflows — CONV015 still holds for those.
+- **CONV016 0 -> 2** (`NoEventHandlers`). A Mendix unique rule covers one attribute; Odoo's composite keys (one reorder
+  rule per product + location; one tax per name + scope) are stored UniqueKey attributes. They must be filled on EVERY
+  commit or the database cannot compare them, and a before-commit handler is the one place every commit passes through
+  (inline rows save with "save changes", which calls no microflow). Seeds commit without events, so each startup
+  backfills keys after its seed (SUB_*_BackfillKeys).
+- **CUSTOM002 7 -> 9**: the two handlers are named BCo_ (Mendix's own before-commit prefix); the rule's prefix list does
+  not include it.
+- Evidence: tests/Constraints (17 tests: duplicates refused by the database, distinct rows and empty keys accepted,
+  Odoo VAL checks), all 12 journeys green, Core journey re-runnable twice.

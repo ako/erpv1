@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-16T07:14:44.725Z",
-  "configuredUser": "warehouse.user",
-  "actualUser": "warehouse.user",
+  "capturedAt": "2026-10-16T09:29:16.051Z",
+  "configuredUser": "invoicing.manager",
+  "actualUser": "invoicing.manager",
   "usedFallback": false,
   "baseUrl": "http://localhost:8080",
   "positiveControl": false,
@@ -17,172 +17,309 @@
       "rung": "ui",
       "name": "login",
       "verdict": "PASS",
-      "detail": "warehouse.user",
+      "detail": "invoicing.manager",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers and the receipt: reached",
+      "name": "Open Configuration > Taxes and see the seeded taxes: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-btnValidate0",
-      "requirement": "F006-UC001, F007-UC004, F007-UC005"
+      "detail": ".mx-name-gridMain",
+      "requirement": "F008-UC009"
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers and the receipt: page says \"WH/IN/00018\"",
+      "name": "Open Configuration > Taxes and see the seeded taxes: page says \"21% (sales)\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC001, F007-UC004, F007-UC005"
+      "requirement": "F008-UC009"
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers and the receipt: page says \"Ready\"",
+      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-ptxtName",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC001, F007-UC004, F007-UC005"
+      "requirement": "F008-UC009"
     },
     {
-      "rung": "ui",
-      "name": "Validate: the receipt is done: reached",
+      "rung": "data",
+      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: Core.Tax +0",
       "verdict": "PASS",
-      "detail": ".mx-name-dvMain",
-      "requirement": "F006-UC001, F007-UC004, F007-UC005"
+      "detail": "before=5 after=5 delta=0",
+      "requirement": "F008-UC009"
     },
     {
       "rung": "ui",
-      "name": "Validate: the receipt is done: page says \"Done\"",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox pcmbScope committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Sales",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox pcmbComputation committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Percentage of price",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-gridMain",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "ui",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: page says \"Journey tax 5% #6\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC001, F007-UC004, F007-UC005"
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "data",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: Core.Tax +1",
+      "verdict": "PASS",
+      "detail": "before=5 after=6 delta=1",
+      "requirement": "F008-UC009"
+    },
+    {
+      "rung": "data",
+      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: the new tax is a 5% sales tax computed as a percentage",
+      "verdict": "PASS",
+      "detail": "got 1, need >= 1",
+      "requirement": "F008-UC009"
     },
     {
       "rung": "outcome",
-      "name": "J-INV-02 end state",
+      "name": "J-CORE-01 end state",
       "verdict": "PASS",
       "detail": "got 1, need >= 1",
-      "requirement": "F006-UC001, F007-UC004, F007-UC005"
+      "requirement": "F008-UC009"
     }
   ],
   "walks": [
     {
-      "journey": "J-INV-02",
-      "title": "Warehouse user validates the receipt of an approved purchase order: the order reads fully received",
-      "persona": "warehouse.user",
+      "journey": "J-CORE-01",
+      "title": "Invoicing manager adds a tax: an empty save is refused with a message, a valid save lands in the list",
+      "persona": "invoicing.manager",
       "requirement": [
-        "F006-UC001",
-        "F007-UC004",
-        "F007-UC005"
+        "F008-UC009"
       ],
       "seeds": {
-        "receiptNo": "WH/IN/00018",
-        "orderNo": "P00040"
+        "existingTax": "21% (sales)",
+        "taxName": "Journey tax 5% #6"
       },
       "steps": [
         {
           "n": 1,
-          "name": "Open Inventory > Transfers and the receipt",
+          "name": "Open Configuration > Taxes and see the seeded taxes",
           "requirement": [
-            "F006-UC001",
-            "F007-UC004",
-            "F007-UC005"
+            "F008-UC009"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Inventory › Transfers",
+              "target": "Configuration › Taxes",
               "selector": null
-            },
-            {
-              "verb": "Open",
-              "target": "row \"WH/IN/00018\" of gridMain",
-              "selector": ".mx-name-gridMain"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-btnValidate0",
+            "landsOn": ".mx-name-gridMain",
             "pageSays": [
-              "{{receiptNo}}",
-              "Ready"
+              "{{existingTax}}"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-02-step1.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-16T07:14:43.770Z"
+            "file": "../tests/e2e/artifacts/J-CORE-01-step1.png",
+            "title": "Mendix - Taxes",
+            "url": "http://localhost:8080/p/tax-overview",
+            "at": "2026-10-16T09:29:04.752Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Inventory > Transfers and the receipt: reached",
+              "name": "Open Configuration > Taxes and see the seeded taxes: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-btnValidate0"
+              "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Open Inventory > Transfers and the receipt: page says \"WH/IN/00018\"",
-              "verdict": "PASS",
-              "detail": ""
-            },
-            {
-              "rung": "ui",
-              "name": "Open Inventory > Transfers and the receipt: page says \"Ready\"",
+              "name": "Open Configuration > Taxes and see the seeded taxes: page says \"21% (sales)\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 2306
+          "ms": 1076
         },
         {
           "n": 2,
-          "name": "Validate: the receipt is done",
+          "name": "New tax, Save with every field empty: refused, message shown, nothing stored",
           "requirement": [
-            "F006-UC001",
-            "F007-UC004",
-            "F007-UC005"
+            "F008-UC009"
           ],
           "actions": [
             {
               "verb": "Click",
-              "target": "Validate",
-              "selector": ".mx-name-btnValidate0"
+              "target": "New",
+              "selector": ".mx-name-btnNew"
+            },
+            {
+              "verb": "Wait",
+              "target": "800ms",
+              "selector": null
+            },
+            {
+              "verb": "Click",
+              "target": "Save",
+              "selector": ".mx-name-pbtnSave0"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-dvMain",
+            "landsOn": ".mx-name-ptxtName",
             "pageSays": [
-              "Done"
+              "Name is required."
             ],
             "pageDoesNotSay": [],
             "microflows": [],
-            "writes": null
+            "writes": {
+              "entity": "Core.Tax",
+              "delta": 0,
+              "associations": []
+            }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-02-step2.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-16T07:14:44.584Z"
+            "file": "../tests/e2e/artifacts/J-CORE-01-step2.png",
+            "title": "Mendix - Taxes",
+            "url": "http://localhost:8080/p/tax-overview",
+            "at": "2026-10-16T09:29:07.746Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Validate: the receipt is done: reached",
+              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-dvMain"
+              "detail": ".mx-name-ptxtName"
             },
             {
               "rung": "ui",
-              "name": "Validate: the receipt is done: page says \"Done\"",
+              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
               "verdict": "PASS",
               "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: Core.Tax +0",
+              "verdict": "PASS",
+              "detail": "before=5 after=5 delta=0"
             }
           ],
-          "ms": 811
+          "ms": 3037
+        },
+        {
+          "n": 3,
+          "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed",
+          "requirement": [
+            "F008-UC009"
+          ],
+          "actions": [
+            {
+              "verb": "Type",
+              "target": "\"Journey tax 5% #6\" into ptxtName",
+              "selector": ".mx-name-ptxtName"
+            },
+            {
+              "verb": "Select",
+              "target": "\"Sales\" in pcmbScope",
+              "selector": ".mx-name-pcmbScope"
+            },
+            {
+              "verb": "Select",
+              "target": "\"Percentage of price\" in pcmbComputation",
+              "selector": ".mx-name-pcmbComputation"
+            },
+            {
+              "verb": "Type",
+              "target": "\"5\" into ptxtAmount",
+              "selector": ".mx-name-ptxtAmount"
+            },
+            {
+              "verb": "Click",
+              "target": "Save",
+              "selector": ".mx-name-pbtnSave0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-gridMain",
+            "pageSays": [
+              "{{taxName}}"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Core.Tax",
+              "delta": 1,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-CORE-01-step3.png",
+            "title": "Mendix - Taxes",
+            "url": "http://localhost:8080/p/tax-overview",
+            "at": "2026-10-16T09:29:15.784Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox pcmbScope committed the seeded value",
+              "verdict": "PASS",
+              "detail": "Sales"
+            },
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox pcmbComputation committed the seeded value",
+              "verdict": "PASS",
+              "detail": "Percentage of price"
+            },
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: page says \"Journey tax 5% #6\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: Core.Tax +1",
+              "verdict": "PASS",
+              "detail": "before=5 after=6 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: the new tax is a 5% sales tax computed as a percentage",
+              "verdict": "PASS",
+              "detail": "got 1, need >= 1"
+            }
+          ],
+          "ms": 8112
         }
       ]
     }

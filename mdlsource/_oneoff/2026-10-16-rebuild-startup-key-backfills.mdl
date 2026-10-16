@@ -1,0 +1,276 @@
+mdl 1;
+-- One-off: the startup chain fills composite keys after the seeds that create those rows (seeds commit without events,
+-- which skips the before-commit key handlers): Core backfills tax keys after seeding taxes; Inventory backfills
+-- reorder-rule keys after the demo seed. Reshapes (MDL-V1-REBUILD): drop and replay done-302 and done-821.
+drop microflow Core.ASU_Core_SeedData;
+drop microflow Inventory.ASU_Inventory_SeedData;
+-- ── replay: mdlsource/3-core/done-302-core-mf-core-seed-data.mdl
+-- 302-core-mf-core-seed-data.mdl — build-plan row 17 (F001). Reference data for Core only (layering:
+-- Core never references Products/Inventory; those modules seed their own reference data and are chained
+-- from the app's after-startup orchestrator once they exist). Every helper is idempotent by business key.
+
+/** Ensure a currency exists (business key: ISO code). */
+create or modify microflow Core.SUB_Currency_Ensure ($Code: String, $Symbol: String)
+returns Core.Currency as $Currency
+folder 'Setup/Microflows'
+begin
+  retrieve $Currency from Core.Currency where [Name = $Code] first;
+  if $Currency = empty then
+    $New = create Core.Currency (Name = $Code, Symbol = $Symbol, Rounding = 0.01, DecimalPlaces = 2, SymbolPosition = 'after', Active = true);
+    commit $New without events;
+    return $New;
+  end if;
+  return $Currency;
+end;
+
+/** Ensure a country exists (business key: ISO 3166 alpha-2 code). */
+create or modify microflow Core.SUB_Country_Ensure ($Code: String, $Name: String)
+returns Core.Country as $Country
+folder 'Setup/Microflows'
+begin
+  retrieve $Country from Core.Country where [Code = $Code] first;
+  if $Country = empty then
+    $New = create Core.Country (Code = $Code, Name = $Name);
+    commit $New without events;
+    return $New;
+  end if;
+  return $Country;
+end;
+
+/** Ensure a tax exists (business key: name). */
+create or modify microflow Core.SUB_Tax_Ensure ($Name: String, $Scope: Enumeration(Core.ENUM_TaxScope), $Rate: Decimal, $Label: String, $Sequence: Integer)
+returns Core.Tax as $Tax
+folder 'Setup/Microflows'
+begin
+  retrieve $Tax from Core.Tax where [Name = $Name] first;
+  if $Tax = empty then
+    $New = create Core.Tax (Name = $Name, Scope = $Scope, Computation = Core.ENUM_TaxComputation.Percentage, Amount = $Rate,
+      IncludedInPrice = false, LabelOnInvoice = $Label, Sequence = $Sequence, Active = true);
+    commit $New without events;
+    return $New;
+  end if;
+  return $Tax;
+end;
+
+/** Ensure a single-instalment payment term exists (business key: name). */
+create or modify microflow Core.SUB_PaymentTerm_Ensure ($Name: String, $Days: Integer, $Sequence: Integer)
+folder 'Setup/Microflows'
+begin
+  retrieve $Existing from Core.PaymentTerm where [Name = $Name] first;
+  if $Existing = empty then
+    $Term = create Core.PaymentTerm (Name = $Name, Sequence = $Sequence, Active = true);
+    $Line = create Core.PaymentTermLine (Value = Core.ENUM_PaymentTermValue.Percent, ValueAmount = 100, Days = $Days,
+      DelayType = Core.ENUM_PaymentTermDelay.DaysAfterInvoiceDate, Core.PaymentTermLine_PaymentTerm = $Term);
+    commit $Term without events;
+    commit $Line without events;
+  end if;
+end;
+
+/** Seed the document numbering sequences used by every module (codes are the contract). */
+create or modify microflow Core.SUB_Core_SeedSequences ()
+folder 'Setup/Microflows'
+begin
+  call microflow Core.SUB_Sequence_Ensure(Code = 'sale.order', Prefix = 'S', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'purchase.order', Prefix = 'P', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'stock.picking.in', Prefix = 'WH/IN/', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'stock.picking.out', Prefix = 'WH/OUT/', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'account.move.out_invoice', Prefix = 'INV/%(year)s/', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'account.move.in_invoice', Prefix = 'BILL/%(year)s/', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'account.move.out_refund', Prefix = 'RINV/%(year)s/', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'account.move.in_refund', Prefix = 'RBILL/%(year)s/', Padding = 5);
+  call microflow Core.SUB_Sequence_Ensure(Code = 'account.payment', Prefix = 'PAY/%(year)s/', Padding = 5);
+end;
+
+/** Seed countries used by the demo addresses. */
+create or modify microflow Core.SUB_Core_SeedCountries ()
+folder 'Setup/Microflows'
+begin
+  $NL = call microflow Core.SUB_Country_Ensure(Code = 'NL', Name = 'Netherlands');
+  $BE = call microflow Core.SUB_Country_Ensure(Code = 'BE', Name = 'Belgium');
+  $DE = call microflow Core.SUB_Country_Ensure(Code = 'DE', Name = 'Germany');
+  $FR = call microflow Core.SUB_Country_Ensure(Code = 'FR', Name = 'France');
+  $GB = call microflow Core.SUB_Country_Ensure(Code = 'GB', Name = 'United Kingdom');
+  $US = call microflow Core.SUB_Country_Ensure(Code = 'US', Name = 'United States');
+end;
+
+/** Seed the taxes and payment terms of the demo company. */
+create or modify microflow Core.SUB_Core_SeedTaxesAndTerms ()
+folder 'Setup/Microflows'
+begin
+  $SalesTax = call microflow Core.SUB_Tax_Ensure(Name = '21% (sales)', Scope = Core.ENUM_TaxScope.Sales, Rate = 21, Label = '21%', Sequence = 10);
+  $PurchaseTax = call microflow Core.SUB_Tax_Ensure(Name = '21% (purchase)', Scope = Core.ENUM_TaxScope.Purchases, Rate = 21, Label = '21%', Sequence = 10);
+  $LowTax = call microflow Core.SUB_Tax_Ensure(Name = '9% (sales)', Scope = Core.ENUM_TaxScope.Sales, Rate = 9, Label = '9%', Sequence = 20);
+  call microflow Core.SUB_PaymentTerm_Ensure(Name = 'Immediate Payment', Days = 0, Sequence = 10);
+  call microflow Core.SUB_PaymentTerm_Ensure(Name = '15 Days', Days = 15, Sequence = 20);
+  call microflow Core.SUB_PaymentTerm_Ensure(Name = '30 Days', Days = 30, Sequence = 30);
+end;
+
+/** Seed the one company with its currency, country and default taxes. */
+create or modify microflow Core.SUB_Core_SeedCompany ()
+folder 'Setup/Microflows'
+begin
+  retrieve $Existing from Core.Company first;
+  if $Existing = empty then
+    $EUR = call microflow Core.SUB_Currency_Ensure(Code = 'EUR', Symbol = '€');
+    retrieve $NL from Core.Country where [Code = 'NL'] first;
+    retrieve $SalesTax from Core.Tax where [Name = '21% (sales)'] first;
+    retrieve $PurchaseTax from Core.Tax where [Name = '21% (purchase)'] first;
+    $Company = create Core.Company (Name = 'erpv1 Demo B.V.', Email = 'info@erpv1-demo.example.com', Phone = '+31 20 555 0100',
+      Street = 'Keizersgracht 1', Zip = '1015 CJ', City = 'Amsterdam', VATNumber = 'NL000099998B57', Website = 'https://erpv1-demo.example.com',
+      QuotationValidityDays = 30, POApprovalEnabled = true, POApprovalThreshold = 5000, PurchaseLeadDays = 0,
+      Core.Company_Currency = $EUR, Core.Company_Country = $NL, Core.Company_DefaultSalesTax = $SalesTax, Core.Company_DefaultPurchaseTax = $PurchaseTax);
+    commit $Company without events;
+  end if;
+end;
+
+/**
+ * After-startup seed of Core reference data (idempotent; safe on every boot).
+ *
+ * @returns true (an after-startup microflow must return a Boolean)
+ */
+create or modify microflow Core.ASU_Core_SeedData ()
+returns Boolean as $Done
+folder 'Setup/Microflows'
+begin
+  $USD = call microflow Core.SUB_Currency_Ensure(Code = 'USD', Symbol = '$');
+  call microflow Core.SUB_Core_SeedCountries();
+  call microflow Core.SUB_Core_SeedSequences();
+  call microflow Core.SUB_Core_SeedTaxesAndTerms();
+  call microflow Core.SUB_Tax_BackfillKeys();
+  call microflow Core.SUB_Core_SeedCompany();
+  return true;
+end;
+-- ── replay: mdlsource/8-inventory/done-821-inventory-mf-seed-data.mdl
+-- 821-inventory-mf-seed-data.mdl — reference data + PROJECT.md 5 (build) "Demo data" + startup chain head. Owns
+-- SUB_Location_Ensure, SUB_OperationType_Ensure, SUB_Inventory_SeedReference (always: warehouse WH, its locations and operation
+-- types — the app cannot deliver or receive without them), SUB_Inventory_SeedDemo (docs/demo-script.md: Office Chair 8 and
+-- Desk Combination 2 on hand, chair reorder rule 10/30 from Gemini, WH/IN and WH/OUT numbers not starting at 1) and
+-- ASU_Inventory_SeedData = Purchasing's chain (which runs Sales'), then these. Inventory sits above Sales and Purchasing.
+
+/** Ensure a location (business key: name). */
+create or modify microflow Inventory.SUB_Location_Ensure ($Name: String, $FullName: String, $LocationType: Enumeration(Inventory.ENUM_LocationType), $Warehouse: Inventory.Warehouse)
+returns Inventory.Location as $Location
+folder 'Setup/Microflows'
+begin
+  retrieve $Existing from Inventory.Location where [Name = $Name] first;
+  if $Existing != empty then
+    return $Existing;
+  end if;
+  $New = create Inventory.Location (Name = $Name, FullName = $FullName, LocationType = $LocationType, Active = true, Inventory.Location_Warehouse = $Warehouse);
+  commit $New without events;
+  return $New;
+end;
+
+/** Ensure an operation type (business key: kind). */
+create or modify microflow Inventory.SUB_OperationType_Ensure ($Name: String, $Kind: Enumeration(Inventory.ENUM_OperationKind), $SequenceCode: String,
+  $Source: Inventory.Location, $Destination: Inventory.Location, $Warehouse: Inventory.Warehouse)
+folder 'Setup/Microflows'
+begin
+  retrieve $Existing from Inventory.OperationType where [Kind = $Kind] first;
+  if $Existing != empty then
+    return;
+  end if;
+  $New = create Inventory.OperationType (Name = $Name, Kind = $Kind, SequenceCode = $SequenceCode, CreateBackorder = true, Active = true,
+    Inventory.OperationType_Warehouse = $Warehouse, Inventory.OperationType_DefaultSource = $Source, Inventory.OperationType_DefaultDestination = $Destination);
+  commit $New without events;
+end;
+
+/** Ensure the main warehouse WH (business key: one warehouse), addressed at the company's partner. */
+create or modify microflow Inventory.SUB_Warehouse_Ensure ()
+returns Inventory.Warehouse as $Warehouse
+folder 'Setup/Microflows'
+begin
+  retrieve $Existing from Inventory.Warehouse first;
+  if $Existing != empty then
+    return $Existing;
+  end if;
+  retrieve $Company from Core.Company first;
+  retrieve $Address from Partners.Partner where [Name = $Company/Name] first;
+  $New = create Inventory.Warehouse (Name = 'Main warehouse', ShortName = 'WH', Active = true, Inventory.Warehouse_Address = $Address);
+  commit $New without events;
+  return $New;
+end;
+
+/** Demo stock: set a product's on-hand quantity at a location. */
+create or modify microflow Inventory.SUB_StockLevel_Seed ($Product: Products.Product, $Location: Inventory.Location, $Quantity: Decimal)
+folder 'Setup/Microflows'
+begin
+  $Level = call microflow Inventory.SUB_StockLevel_Get(Product = $Product, Location = $Location);
+  change $Level (Quantity = $Quantity);
+  commit $Level without events;
+end;
+
+/** Demo numbering: raise a sequence's next number to at least a value (transfer numbers continue Odoo's demo). */
+create or modify microflow Inventory.SUB_Sequence_RaiseTo ($Code: String, $NextNumber: Integer)
+folder 'Setup/Microflows'
+begin
+  retrieve $Sequence from Core.Sequence where [Code = $Code] first;
+  if $Sequence != empty and $Sequence/NextNumber < $NextNumber then
+    change $Sequence (NextNumber = $NextNumber);
+    commit $Sequence without events;
+  end if;
+end;
+
+/** Reference data, always: warehouse WH with its stock, vendor, customer and adjustment locations and the three operation types. */
+create or modify microflow Inventory.SUB_Inventory_SeedReference ()
+folder 'Setup/Microflows'
+begin
+  call microflow Core.SUB_Sequence_Ensure(Code = 'stock.picking.internal', Prefix = 'WH/INT/', Padding = 5);
+  $Warehouse = call microflow Inventory.SUB_Warehouse_Ensure();
+  $Stock = call microflow Inventory.SUB_Location_Ensure(Name = 'WH/Stock', FullName = 'WH/Stock', LocationType = Inventory.ENUM_LocationType.Internal, Warehouse = $Warehouse);
+  $Vendors = call microflow Inventory.SUB_Location_Ensure(Name = 'Vendors', FullName = 'Partners/Vendors', LocationType = Inventory.ENUM_LocationType.Vendor, Warehouse = empty);
+  $Customers = call microflow Inventory.SUB_Location_Ensure(Name = 'Customers', FullName = 'Partners/Customers', LocationType = Inventory.ENUM_LocationType.Customer, Warehouse = empty);
+  $Adjustment = call microflow Inventory.SUB_Location_Ensure(Name = 'Inventory adjustment', FullName = 'Virtual Locations/Inventory adjustment', LocationType = Inventory.ENUM_LocationType.InventoryLoss, Warehouse = empty);
+  if $Warehouse/Inventory.Warehouse_StockLocation = empty then
+    change $Warehouse (Inventory.Warehouse_StockLocation = $Stock);
+    commit $Warehouse without events;
+  end if;
+  call microflow Inventory.SUB_OperationType_Ensure(Name = 'Receipts', Kind = Inventory.ENUM_OperationKind.Receipt, SequenceCode = 'stock.picking.in',
+    Source = $Vendors, Destination = $Stock, Warehouse = $Warehouse);
+  call microflow Inventory.SUB_OperationType_Ensure(Name = 'Delivery orders', Kind = Inventory.ENUM_OperationKind.Delivery, SequenceCode = 'stock.picking.out',
+    Source = $Stock, Destination = $Customers, Warehouse = $Warehouse);
+  call microflow Inventory.SUB_OperationType_Ensure(Name = 'Internal transfers', Kind = Inventory.ENUM_OperationKind.Internal, SequenceCode = 'stock.picking.internal',
+    Source = $Stock, Destination = $Stock, Warehouse = $Warehouse);
+end;
+
+/** Demo fixtures: chairs 8 and desks 2 on hand (only when no stock was recorded yet), the chair reorder rule, transfer numbers. */
+create or modify microflow Inventory.SUB_Inventory_SeedDemo ()
+folder 'Setup/Microflows'
+begin
+  retrieve $Stock from Inventory.Location where [Name = 'WH/Stock'] first;
+  retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+  retrieve $Desk from Products.Product where [InternalReference = 'FURN_7800'] first;
+  retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+  retrieve $AnyStock from Inventory.StockLevel first;
+  if $AnyStock = empty and $Stock != empty and $Chair != empty and $Desk != empty then
+    call microflow Inventory.SUB_StockLevel_Seed(Product = $Chair, Location = $Stock, Quantity = 8);
+    call microflow Inventory.SUB_StockLevel_Seed(Product = $Desk, Location = $Stock, Quantity = 2);
+  end if;
+  retrieve $Rule from Inventory.ReorderRule where [Name = 'Office Chair WH/Stock'] first;
+  if $Rule = empty and $Chair != empty then
+    $NewRule = create Inventory.ReorderRule (Name = 'Office Chair WH/Stock', MinQuantity = 10, MaxQuantity = 30, QuantityMultiple = 1, Automatic = true, Active = true,
+      Inventory.ReorderRule_Product = $Chair, Inventory.ReorderRule_Location = $Stock, Inventory.ReorderRule_Vendor = $Gemini);
+    commit $NewRule without events;
+  end if;
+  call microflow Inventory.SUB_Sequence_RaiseTo(Code = 'stock.picking.in', NextNumber = 12);
+  call microflow Inventory.SUB_Sequence_RaiseTo(Code = 'stock.picking.out', NextNumber = 31);
+end;
+
+/**
+ * After-startup microflow (top of the chain): Purchasing's chain (which runs Sales'), the warehouse reference data, then the
+ * Inventory demo fixtures when Core.SeedDemoData.
+ *
+ * @returns true
+ */
+create or modify microflow Inventory.ASU_Inventory_SeedData ()
+returns Boolean as $Done
+folder 'Setup/Microflows'
+begin
+  $PurchasingDone = call microflow Purchasing.ASU_Purchasing_SeedData();
+  call microflow Inventory.SUB_Inventory_SeedReference();
+  if @Core.SeedDemoData then
+    call microflow Inventory.SUB_Inventory_SeedDemo();
+  end if;
+  call microflow Inventory.SUB_ReorderRule_BackfillKeys();
+  return true;
+end;

@@ -130,6 +130,7 @@ begin
   call microflow Core.SUB_Core_SeedCountries();
   call microflow Core.SUB_Core_SeedSequences();
   call microflow Core.SUB_Core_SeedTaxesAndTerms();
+  call microflow Core.SUB_Tax_BackfillKeys();
   call microflow Core.SUB_Core_SeedCompany();
   return true;
 end;

@@ -1333,7 +1333,21 @@
    "module": "Core",
    "persistent": true,
    "purpose": "A sales or purchase tax: percentage or fixed amount, price-included or not.",
-   "odooConstraints": [],
+   "odooConstraints": [
+    {
+     "odooName": "(_constrains_name) name_scope_uniq",
+     "kind": "unique",
+     "members": [
+      "Name",
+      "Scope"
+     ],
+     "message": "Tax names must be unique per scope.",
+     "disposition": "implement",
+     "basis": "Odoo account.tax._constrains_name is a Python check; enforced here in the database (user 2026-10-16)",
+     "definition": "",
+     "source": "design"
+    }
+   ],
    "odooChecks": [
     {
      "odooMethod": "_constrains_name",
@@ -1351,7 +1365,7 @@
      "messages": [
       "Tax names must be unique!"
      ],
-     "disposition": "entity-unique: Name + Scope (key attribute); waits on removing 13 duplicate journey taxes"
+     "disposition": "covered: entity unique rule on Name + Scope (EXTRA_CONSTRAINTS; duplicate journey taxes removed 2026-10-16)"
     },
     {
      "odooMethod": "validate_tax_group_id",

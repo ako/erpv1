@@ -36,3 +36,34 @@ begin
   retrieve $Rules from Inventory.ReorderRule where [UniqueKey = empty][Inventory.ReorderRule_Product/Products.Product][Inventory.ReorderRule_Location/Inventory.Location];
   commit $Rules with events;
 end;
+
+/**
+ * Key of a tax (Odoo account.tax _constrains_name): one tax per name and scope (sales / purchases).
+ *
+ * @param $Tax the tax being committed
+ * @returns true (the commit proceeds; the database refuses a duplicate key)
+ */
+create or modify microflow Core.BCo_Tax_Key ($Tax: Core.Tax)
+returns Boolean as $Proceed
+folder 'Taxes/Microflows'
+begin
+  if $Tax/Name = empty or trim($Tax/Name) = '' or $Tax/Scope = empty then
+    change $Tax (UniqueKey = empty);
+  else
+    change $Tax (UniqueKey = trim($Tax/Name) + '|' + getKey($Tax/Scope));
+  end if;
+  return true;
+end;
+
+alter entity Core.Tax add event handler if not exists on before commit call Core.BCo_Tax_Key($currentObject) raise error;
+
+/**
+ * Fill the keys of taxes committed before the key existed. Called at every startup (Core.ASU_Core_SeedData); a no-op once
+ * all have keys.
+ */
+create or modify microflow Core.SUB_Tax_BackfillKeys ()
+folder 'Taxes/Microflows'
+begin
+  retrieve $Taxes from Core.Tax where [UniqueKey = empty][Name != empty];
+  commit $Taxes with events;
+end;

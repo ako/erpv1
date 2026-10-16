@@ -126,9 +126,9 @@ folder 'Setup/Microflows'
 begin
   $PurchasingDone = call microflow Purchasing.ASU_Purchasing_SeedData();
   call microflow Inventory.SUB_Inventory_SeedReference();
-  call microflow Inventory.SUB_ReorderRule_BackfillKeys();
   if @Core.SeedDemoData then
     call microflow Inventory.SUB_Inventory_SeedDemo();
   end if;
+  call microflow Inventory.SUB_ReorderRule_BackfillKeys();
   return true;
 end;

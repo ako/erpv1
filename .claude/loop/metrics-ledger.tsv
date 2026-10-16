@@ -330,3 +330,7 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-16T06:57:22Z	done-810-inventory-page-reorder-rule-overview.mdl	pass	applied-lint-rose	60	0	1	423	0	46.3	0	81	0	99	31	76	91	423	4c78bd7
 2026-10-16T06:59:42Z	2026-10-16-rebuild-val-rules-split.mdl	pass	applied-lint-rose	77	0	1	422	0	46.5	0	82	0	99	31	76	91	422	22ead7c
 2026-10-16T07:02:46Z	2026-10-16-rebuild-vendor-price-row-val.mdl	pass	applied-lint-rose	66	0	1	422	0	46.5	0	82	0	99	31	76	91	422	241fd81
+2026-10-16T09:22:06Z	done-110-core-domain.mdl	pass	applied-lint-blind	64	0	3		0	46.3	0	81	0	99	31	76	91	423	4d6db84
+2026-10-16T09:23:14Z	175-domain-composite-keys.mdl	pass	applied-lint-blind	64	0	3		0	45.9	0	80	0	98	31	76	90	426	7261927
+2026-10-16T09:24:30Z	2026-10-16-rebuild-startup-key-backfills.mdl	pass	applied-lint-blind	67	0	3		0	46.1	0	81	0	98	31	76	90	425	3926acd
+2026-10-16T09:25:12Z	175-domain-composite-keys.mdl	pass	applied-lint-blind	41	0	3		0	46.1	0	81	0	98	31	76	90	425	d426f4f

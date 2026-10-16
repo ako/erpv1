@@ -61,3 +61,25 @@ $Second = create Inventory.ReorderRule (Name = 'New 2');
 commit $Second with events;
 declare $Ok Boolean = $First/UniqueKey = empty and $Second/UniqueKey = empty;
 /
+
+/**
+ * @test A second tax with the same name and scope is refused (Odoo account.tax _constrains_name, enforced in the database)
+ * @expect $Refused = true
+ */
+retrieve $Existing from Core.Tax where [UniqueKey != empty] first;
+declare $Refused Boolean = false;
+$Dup = create Core.Tax (Name = $Existing/Name, Scope = $Existing/Scope, Computation = $Existing/Computation, Amount = 1);
+commit $Dup with events on error begin
+  set $Refused = true;
+end error;
+/
+
+/**
+ * @test The same tax name in the other scope commits (the key is name + scope)
+ * @expect $Ok = true
+ */
+retrieve $Existing from Core.Tax where [UniqueKey != empty][Scope = 'Sales'] first;
+$Other = create Core.Tax (Name = $Existing/Name, Scope = Core.ENUM_TaxScope.Purchases, Computation = $Existing/Computation, Amount = 1);
+commit $Other with events;
+declare $Ok Boolean = $Other/UniqueKey != empty;
+/
