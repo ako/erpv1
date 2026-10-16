@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-16T09:29:16.051Z",
-  "configuredUser": "invoicing.manager",
-  "actualUser": "invoicing.manager",
+  "capturedAt": "2026-10-16T12:26:20.609Z",
+  "configuredUser": "inventory.manager",
+  "actualUser": "inventory.manager",
   "usedFallback": false,
   "baseUrl": "http://localhost:8080",
   "positiveControl": false,
@@ -17,309 +17,149 @@
       "rung": "ui",
       "name": "login",
       "verdict": "PASS",
-      "detail": "invoicing.manager",
+      "detail": "inventory.manager",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Configuration > Taxes and see the seeded taxes: reached",
+      "name": "Open Inventory > Reorder rules: the chair rule is listed: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-gridMain",
-      "requirement": "F008-UC009"
+      "detail": ".mx-name-lvLines",
+      "requirement": "F006-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open Configuration > Taxes and see the seeded taxes: page says \"21% (sales)\"",
+      "name": "Open Inventory > Reorder rules: the chair rule is listed: page says \"Reorder rules\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F008-UC009"
+      "requirement": "F006-UC007"
     },
     {
       "rung": "ui",
-      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: reached",
+      "name": "Run scheduler: the rules ran: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-ptxtName",
-      "requirement": "F008-UC009"
+      "detail": ".mx-name-lvLines",
+      "requirement": "F006-UC007"
     },
     {
       "rung": "ui",
-      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
+      "name": "Run scheduler: the rules ran: page says \"Reorder rules\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F008-UC009"
-    },
-    {
-      "rung": "data",
-      "name": "New tax, Save with every field empty: refused, message shown, nothing stored: Core.Tax +0",
-      "verdict": "PASS",
-      "detail": "before=5 after=5 delta=0",
-      "requirement": "F008-UC009"
-    },
-    {
-      "rung": "ui",
-      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox pcmbScope committed the seeded value",
-      "verdict": "PASS",
-      "detail": "Sales",
-      "requirement": "F008-UC009"
-    },
-    {
-      "rung": "ui",
-      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox pcmbComputation committed the seeded value",
-      "verdict": "PASS",
-      "detail": "Percentage of price",
-      "requirement": "F008-UC009"
-    },
-    {
-      "rung": "ui",
-      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-gridMain",
-      "requirement": "F008-UC009"
-    },
-    {
-      "rung": "ui",
-      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: page says \"Journey tax 5% #6\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F008-UC009"
-    },
-    {
-      "rung": "data",
-      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: Core.Tax +1",
-      "verdict": "PASS",
-      "detail": "before=5 after=6 delta=1",
-      "requirement": "F008-UC009"
-    },
-    {
-      "rung": "data",
-      "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: the new tax is a 5% sales tax computed as a percentage",
-      "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F008-UC009"
+      "requirement": "F006-UC007"
     },
     {
       "rung": "outcome",
-      "name": "J-CORE-01 end state",
+      "name": "J-INV-03 end state",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F008-UC009"
+      "detail": "got 2, need >= 1",
+      "requirement": "F006-UC007"
     }
   ],
   "walks": [
     {
-      "journey": "J-CORE-01",
-      "title": "Invoicing manager adds a tax: an empty save is refused with a message, a valid save lands in the list",
-      "persona": "invoicing.manager",
+      "journey": "J-INV-03",
+      "title": "Inventory manager runs the reorder rules: the Office Chair (below its minimum of 10) is ordered from Gemini Furniture",
+      "persona": "inventory.manager",
       "requirement": [
-        "F008-UC009"
+        "F006-UC007"
       ],
-      "seeds": {
-        "existingTax": "21% (sales)",
-        "taxName": "Journey tax 5% #6"
-      },
+      "seeds": {},
       "steps": [
         {
           "n": 1,
-          "name": "Open Configuration > Taxes and see the seeded taxes",
+          "name": "Open Inventory > Reorder rules: the chair rule is listed",
           "requirement": [
-            "F008-UC009"
+            "F006-UC007"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Configuration › Taxes",
+              "target": "Inventory › Reorder rules",
               "selector": null
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-gridMain",
+            "landsOn": ".mx-name-lvLines",
             "pageSays": [
-              "{{existingTax}}"
+              "Reorder rules"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-CORE-01-step1.png",
-            "title": "Mendix - Taxes",
-            "url": "http://localhost:8080/p/tax-overview",
-            "at": "2026-10-16T09:29:04.752Z"
+            "file": "../tests/e2e/artifacts/J-INV-03-step1.png",
+            "title": "Mendix - Reorder rules",
+            "url": "http://localhost:8080/p/reorder-rule-overview",
+            "at": "2026-10-16T12:26:18.696Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Configuration > Taxes and see the seeded taxes: reached",
+              "name": "Open Inventory > Reorder rules: the chair rule is listed: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-gridMain"
+              "detail": ".mx-name-lvLines"
             },
             {
               "rung": "ui",
-              "name": "Open Configuration > Taxes and see the seeded taxes: page says \"21% (sales)\"",
+              "name": "Open Inventory > Reorder rules: the chair rule is listed: page says \"Reorder rules\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1076
+          "ms": 1697
         },
         {
           "n": 2,
-          "name": "New tax, Save with every field empty: refused, message shown, nothing stored",
+          "name": "Run scheduler: the rules ran",
           "requirement": [
-            "F008-UC009"
+            "F006-UC007"
           ],
           "actions": [
             {
               "verb": "Click",
-              "target": "New",
-              "selector": ".mx-name-btnNew"
+              "target": "Run scheduler",
+              "selector": ".mx-name-btnRunscheduler1"
             },
             {
-              "verb": "Wait",
-              "target": "800ms",
+              "verb": "dismissModal",
+              "target": "",
               "selector": null
-            },
-            {
-              "verb": "Click",
-              "target": "Save",
-              "selector": ".mx-name-pbtnSave0"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-ptxtName",
+            "landsOn": ".mx-name-lvLines",
             "pageSays": [
-              "Name is required."
+              "Reorder rules"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
-            "writes": {
-              "entity": "Core.Tax",
-              "delta": 0,
-              "associations": []
-            }
+            "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-CORE-01-step2.png",
-            "title": "Mendix - Taxes",
-            "url": "http://localhost:8080/p/tax-overview",
-            "at": "2026-10-16T09:29:07.746Z"
+            "file": "../tests/e2e/artifacts/J-INV-03-step2.png",
+            "title": "Mendix - Reorder rules",
+            "url": "http://localhost:8080/p/reorder-rule-overview",
+            "at": "2026-10-16T12:26:20.476Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: reached",
+              "name": "Run scheduler: the rules ran: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-ptxtName"
+              "detail": ".mx-name-lvLines"
             },
             {
               "rung": "ui",
-              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: page says \"Name is required.\"",
+              "name": "Run scheduler: the rules ran: page says \"Reorder rules\"",
               "verdict": "PASS",
               "detail": ""
-            },
-            {
-              "rung": "data",
-              "name": "New tax, Save with every field empty: refused, message shown, nothing stored: Core.Tax +0",
-              "verdict": "PASS",
-              "detail": "before=5 after=5 delta=0"
             }
           ],
-          "ms": 3037
-        },
-        {
-          "n": 3,
-          "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed",
-          "requirement": [
-            "F008-UC009"
-          ],
-          "actions": [
-            {
-              "verb": "Type",
-              "target": "\"Journey tax 5% #6\" into ptxtName",
-              "selector": ".mx-name-ptxtName"
-            },
-            {
-              "verb": "Select",
-              "target": "\"Sales\" in pcmbScope",
-              "selector": ".mx-name-pcmbScope"
-            },
-            {
-              "verb": "Select",
-              "target": "\"Percentage of price\" in pcmbComputation",
-              "selector": ".mx-name-pcmbComputation"
-            },
-            {
-              "verb": "Type",
-              "target": "\"5\" into ptxtAmount",
-              "selector": ".mx-name-ptxtAmount"
-            },
-            {
-              "verb": "Click",
-              "target": "Save",
-              "selector": ".mx-name-pbtnSave0"
-            }
-          ],
-          "expects": {
-            "landsOn": ".mx-name-gridMain",
-            "pageSays": [
-              "{{taxName}}"
-            ],
-            "pageDoesNotSay": [],
-            "microflows": [],
-            "writes": {
-              "entity": "Core.Tax",
-              "delta": 1,
-              "associations": []
-            }
-          },
-          "shot": {
-            "file": "../tests/e2e/artifacts/J-CORE-01-step3.png",
-            "title": "Mendix - Taxes",
-            "url": "http://localhost:8080/p/tax-overview",
-            "at": "2026-10-16T09:29:15.784Z"
-          },
-          "reached": true,
-          "checks": [
-            {
-              "rung": "ui",
-              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox pcmbScope committed the seeded value",
-              "verdict": "PASS",
-              "detail": "Sales"
-            },
-            {
-              "rung": "ui",
-              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: combobox pcmbComputation committed the seeded value",
-              "verdict": "PASS",
-              "detail": "Percentage of price"
-            },
-            {
-              "rung": "ui",
-              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: reached",
-              "verdict": "PASS",
-              "detail": ".mx-name-gridMain"
-            },
-            {
-              "rung": "ui",
-              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: page says \"Journey tax 5% #6\"",
-              "verdict": "PASS",
-              "detail": ""
-            },
-            {
-              "rung": "data",
-              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: Core.Tax +1",
-              "verdict": "PASS",
-              "detail": "before=5 after=6 delta=1"
-            },
-            {
-              "rung": "data",
-              "name": "Fill name, scope, computation, amount and save: the popup closes and the tax is listed: the new tax is a 5% sales tax computed as a percentage",
-              "verdict": "PASS",
-              "detail": "got 1, need >= 1"
-            }
-          ],
-          "ms": 8112
+          "ms": 1777
         }
       ]
     }

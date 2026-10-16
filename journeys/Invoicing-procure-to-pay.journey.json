@@ -1,0 +1,126 @@
+{
+ "id": "J-INV-B2",
+ "title": "Billing creates a vendor bill from a confirmed purchase order, enters the bill date, confirms it and pays it in full",
+ "requirement": [
+  "F008-UC002",
+  "F008-UC004",
+  "F008-UC007"
+ ],
+ "persona": "billing",
+ "_seedNote": "a purchase order with something to bill (the purchasing journeys confirm orders of ordered-quantity products). Billing reads purchase orders (Purchasing.Reader): the row opens PurchaseOrder_View (C1-01).",
+ "seeds": [
+  {
+   "name": "orderNo",
+   "sql": "SELECT o.Number AS n FROM Purchasing.PurchaseOrder AS o WHERE o.BillingStatus = 'ToInvoice' AND o.Status = 'PurchaseOrder' ORDER BY o.Number DESC LIMIT 1"
+  }
+ ],
+ "steps": [
+  {
+   "name": "Open Purchase > RFQs & orders: the order is listed",
+   "actions": [
+    {
+     "do": "nav",
+     "group": "Purchase",
+     "item": "RFQs & orders"
+    }
+   ],
+   "ui": {
+    "ready": ".mx-name-gridMain",
+    "textPresent": [
+     "{{orderNo}}"
+    ]
+   }
+  },
+  {
+   "name": "Open the order: the read-only view with Create bill",
+   "actions": [
+    {
+     "do": "clickRow",
+     "widget": "gridMain",
+     "text": "{{orderNo}}"
+    }
+   ],
+   "ui": {
+    "ready": ".mx-name-btnCreatebill0",
+    "textPresent": [
+     "{{orderNo}}"
+    ]
+   }
+  },
+  {
+   "name": "Create bill: a draft vendor bill opens",
+   "actions": [
+    {
+     "do": "click",
+     "widget": "btnCreatebill0",
+     "label": "Create bill"
+    }
+   ],
+   "ui": {
+    "ready": ".mx-name-btnConfirm1",
+    "textPresent": [
+     "Draft"
+    ]
+   },
+   "data": {
+    "creates": "Invoicing.Invoice",
+    "delta": 1,
+    "scope": {
+     "newRowsBy": "id"
+    }
+   }
+  },
+  {
+   "name": "Enter the bill date and confirm: numbered BILL/",
+   "actions": [
+    {
+     "do": "fill",
+     "widget": "dpInvoiceDate",
+     "value": "10/16/2026",
+     "label": "Invoice date"
+    },
+    {
+     "do": "click",
+     "widget": "btnConfirm1",
+     "label": "Confirm"
+    }
+   ],
+   "ui": {
+    "ready": ".mx-name-btnRegisterpayment0",
+    "textPresent": [
+     "BILL/"
+    ]
+   }
+  },
+  {
+   "name": "Register payment for the whole amount due",
+   "actions": [
+    {
+     "do": "click",
+     "widget": "btnRegisterpayment0",
+     "label": "Register payment"
+    },
+    {
+     "do": "click",
+     "widget": "pbtnCreatepayment0",
+     "label": "Create payment"
+    }
+   ],
+   "ui": {
+    "ready": ".mx-name-dvMain"
+   },
+   "data": {
+    "creates": "Invoicing.Payment",
+    "delta": 1,
+    "scope": {
+     "newRowsBy": "id"
+    }
+   }
+  }
+ ],
+ "outcome": {
+  "label": "the order's newest bill is posted and paid, and the order reads fully billed",
+  "sql": "SELECT COUNT(i.ID) AS n FROM Invoicing.Invoice AS i WHERE i.ID = (SELECT MAX(x.ID) FROM Invoicing.Invoice AS x WHERE x.SourceDocument = '{{orderNo}}') AND i.InvoiceType = 'VendorBill' AND i.Status = 'Posted' AND i.PaymentStatus = 'Paid' AND i/Invoicing.Invoice_PurchaseOrder/Purchasing.PurchaseOrder/BillingStatus = 'FullyInvoiced'",
+  "expect": 1
+ }
+}

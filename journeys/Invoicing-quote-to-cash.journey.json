@@ -1,0 +1,153 @@
+{
+ "id": "J-INV-B1",
+ "title": "Billing invoices a confirmed sales order from its read-only view, confirms the invoice and registers a partial payment",
+ "requirement": [
+  "F008-UC001",
+  "F008-UC004",
+  "F008-UC007"
+ ],
+ "persona": "billing",
+ "_seedNote": "an order with something to invoice (J-SALES-01 and the sales journeys confirm cable/chair orders; ordered-quantity products are to invoice on confirmation). Billing reads orders (Sales.Reader): the row opens SalesOrder_View (C1-01), not the form.",
+ "seeds": [
+  {
+   "name": "orderNo",
+   "sql": "SELECT o.Number AS n FROM Sales.SalesOrder AS o WHERE o.InvoiceStatus = 'ToInvoice' AND o.Status = 'SalesOrder' ORDER BY o.Number DESC LIMIT 1"
+  }
+ ],
+ "steps": [
+  {
+   "name": "Open Sales > Quotations & orders: the order is listed",
+   "actions": [
+    {
+     "do": "nav",
+     "group": "Sales",
+     "item": "Quotations & orders"
+    }
+   ],
+   "ui": {
+    "ready": ".mx-name-gridMain",
+    "textPresent": [
+     "{{orderNo}}"
+    ]
+   }
+  },
+  {
+   "name": "Open the order: Billing gets the read-only view with Create invoice",
+   "actions": [
+    {
+     "do": "clickRow",
+     "widget": "gridMain",
+     "text": "{{orderNo}}"
+    }
+   ],
+   "ui": {
+    "ready": ".mx-name-btnCreateinvoice0",
+    "textPresent": [
+     "{{orderNo}}"
+    ],
+    "textAbsent": [
+     "Save"
+    ]
+   }
+  },
+  {
+   "name": "Create invoice: the popup explains what is invoiced",
+   "actions": [
+    {
+     "do": "click",
+     "widget": "btnCreateinvoice0",
+     "label": "Create invoice"
+    }
+   ],
+   "ui": {
+    "ready": ".mx-name-pbtnCreateinvoice0",
+    "textPresent": [
+     "Regular invoice"
+    ]
+   }
+  },
+  {
+   "name": "Confirm the popup: a draft invoice opens",
+   "actions": [
+    {
+     "do": "click",
+     "widget": "pbtnCreateinvoice0",
+     "label": "Create invoice"
+    }
+   ],
+   "ui": {
+    "ready": ".mx-name-btnConfirm1",
+    "textPresent": [
+     "Draft"
+    ]
+   },
+   "data": {
+    "creates": "Invoicing.Invoice",
+    "delta": 1,
+    "scope": {
+     "newRowsBy": "id"
+    }
+   }
+  },
+  {
+   "name": "Confirm the invoice: numbered INV/, Register payment offered",
+   "actions": [
+    {
+     "do": "click",
+     "widget": "btnConfirm1",
+     "label": "Confirm"
+    }
+   ],
+   "ui": {
+    "ready": ".mx-name-btnRegisterpayment0",
+    "textPresent": [
+     "INV/"
+    ]
+   }
+  },
+  {
+   "name": "Register payment: the popup proposes the amount due",
+   "actions": [
+    {
+     "do": "click",
+     "widget": "btnRegisterpayment0",
+     "label": "Register payment"
+    }
+   ],
+   "ui": {
+    "ready": ".mx-name-pbtnCreatepayment0"
+   }
+  },
+  {
+   "name": "Pay 10.00 of it",
+   "actions": [
+    {
+     "do": "fill",
+     "widget": "ptxtAmount",
+     "value": "10",
+     "label": "Amount"
+    },
+    {
+     "do": "click",
+     "widget": "pbtnCreatepayment0",
+     "label": "Create payment"
+    }
+   ],
+   "ui": {
+    "ready": ".mx-name-dvMain"
+   },
+   "data": {
+    "creates": "Invoicing.Payment",
+    "delta": 1,
+    "scope": {
+     "newRowsBy": "id"
+    }
+   }
+  }
+ ],
+ "outcome": {
+  "label": "the order's newest invoice is posted and partially paid, 10.00 less due than its total",
+  "sql": "SELECT COUNT(i.ID) AS n FROM Invoicing.Invoice AS i WHERE i.ID = (SELECT MAX(x.ID) FROM Invoicing.Invoice AS x WHERE x.SourceDocument = '{{orderNo}}') AND i.Status = 'Posted' AND i.PaymentStatus = 'PartiallyPaid' AND i.AmountDue = i.AmountTotal - 10",
+  "expect": 1
+ }
+}
