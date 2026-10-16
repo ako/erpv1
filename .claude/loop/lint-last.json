@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-10-16T12:26:45Z",
-  "verdict": "FAIL",
+  "timestamp": "2026-10-16T13:25:41Z",
+  "verdict": "PASS",
   "total": 442,
   "rule_count": 21,
   "counts": {
@@ -25,43 +25,5 @@
     "SEC003": 1,
     "SEC008": 2,
     "SEC010": 5
-  },
-  "new_findings": {
-    "ARCH001": [
-      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'cmbInvoiceBankAccount' in 'Invoicing.Invoice_NewEdit' references entity 'Partners.BankAccount' from module 'Part",
-      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'cmbInvoiceCurrency' in 'Invoicing.Invoice_NewEdit' references entity 'Core.Currency' from module 'Core'. Use a v",
-      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'cmbInvoiceDeliveryAddress' in 'Invoicing.Invoice_NewEdit' references entity 'Partners.Partner' from module 'Part",
-      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'cmbInvoicePaymentTerm' in 'Invoicing.Invoice_NewEdit' references entity 'Core.PaymentTerm' from module 'Core'. U",
-      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'cmbInvoiceSalesperson' in 'Invoicing.Invoice_NewEdit' references entity 'Administration.Account' from module 'Ad",
-      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'lncmbInvoiceLineProduct' in 'Invoicing.Invoice_NewEdit' references entity 'Products.Product' from module 'Produc",
-      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'lncmbInvoiceLineTaxes' in 'Invoicing.Invoice_NewEdit' references entity 'Core.Tax' from module 'Core'. Use a vie",
-      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'lncmbInvoiceLineUoM' in 'Invoicing.Invoice_NewEdit' references entity 'Products.UoM' from module 'Products'. Use",
-      "Invoicing | Invoicing.Payment_View | Widget 'cmbPaymentCurrency' in 'Invoicing.Payment_View' references entity 'Core.Currency' from module 'Core'. Use a view",
-      "Invoicing | Invoicing.Payment_View | Widget 'cmbPaymentPartner' in 'Invoicing.Payment_View' references entity 'Partners.Partner' from module 'Partners'. Use ",
-      "Purchasing | Purchasing.PurchaseOrder_View | Widget 'cmbPurchaseOrderBuyer' in 'Purchasing.PurchaseOrder_View' references entity 'Administration.Account' from module",
-      "Purchasing | Purchasing.PurchaseOrder_View | Widget 'cmbPurchaseOrderCurrency' in 'Purchasing.PurchaseOrder_View' references entity 'Core.Currency' from module 'Core",
-      "Purchasing | Purchasing.PurchaseOrder_View | Widget 'cmbPurchaseOrderPaymentTerm' in 'Purchasing.PurchaseOrder_View' references entity 'Core.PaymentTerm' from module",
-      "Purchasing | Purchasing.PurchaseOrder_View | Widget 'cmbPurchaseOrderVendor' in 'Purchasing.PurchaseOrder_View' references entity 'Partners.Partner' from module 'Par",
-      "Sales | Sales.SalesOrder_View | Widget 'cmbSalesOrderCustomer' in 'Sales.SalesOrder_View' references entity 'Partners.Partner' from module 'Partners'. U",
-      "Sales | Sales.SalesOrder_View | Widget 'cmbSalesOrderPaymentTerm' in 'Sales.SalesOrder_View' references entity 'Core.PaymentTerm' from module 'Core'. Us",
-      "Sales | Sales.SalesOrder_View | Widget 'cmbSalesOrderPricelist' in 'Sales.SalesOrder_View' references entity 'Products.Pricelist' from module 'Products'",
-      "Sales | Sales.SalesOrder_View | Widget 'cmbSalesOrderSalesperson' in 'Sales.SalesOrder_View' references entity 'Administration.Account' from module 'Adm"
-    ],
-    "CONV003": [
-      "Invoicing | Invoicing.CreditNote_Popup | Page 'CreditNote_Popup' does not end with a recognized suffix (_NewEdit, _View, _Overview, _Select, _Details, _Dashboard",
-      "Invoicing | Invoicing.InvoiceAnalysis_Report | Page 'InvoiceAnalysis_Report' does not end with a recognized suffix (_NewEdit, _View, _Overview, _Select, _Details, _Das",
-      "Invoicing | Invoicing.RegisterPayment_Popup | Page 'RegisterPayment_Popup' does not end with a recognized suffix (_NewEdit, _View, _Overview, _Select, _Details, _Dash",
-      "Sales | Sales.CreateInvoice_Popup | Page 'CreateInvoice_Popup' does not end with a recognized suffix (_NewEdit, _View, _Overview, _Select, _Details, _Dashbo"
-    ],
-    "CONV015": [
-      "Invoicing | Invoicing.Invoice | Entity 'Invoicing.Invoice' has 1 validation rule(s). Use VAL_ microflows for validation logic instead.",
-      "Invoicing | Invoicing.Payment | Entity 'Invoicing.Payment' has 2 validation rule(s). Use VAL_ microflows for validation logic instead."
-    ],
-    "CUSTOM002": [
-      "Invoicing | Invoicing.ASU_Invoicing_SeedData | Microflow 'ASU_Invoicing_SeedData' should start with a standard prefix (ACT_, SUB_, DS_, VAL_, SCH_, IVK_, OCH_)"
-    ],
-    "SEC010": [
-      "Sales | CreateInvoice_Popup | Combo box 'pcmbCreateInvoiceRequestSalesOrders' on page Sales.CreateInvoice_Popup lists Sales.SalesOrder, which user rol"
-    ]
   }
 }

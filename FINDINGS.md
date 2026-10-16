@@ -164,3 +164,13 @@
   plan_render.py to refresh them: it also rewrites the module briefs from MODULE_ROLES, which undid today's hand-made access
   rows (request entities, Creator's limited form access) and gave Partners.Manager full entity rights; mdl_domain.py reads
   those briefs for grants. Reverted, verified all 16 ledgers clean.
+
+### Why the lint baseline accepts the Invoicing rises (2026-10-16)
+
+- ARCH001 +18: pickers on Invoice_NewEdit / Payment_View / the order views list other modules' entities (partner, currency,
+  product, unit, tax, bank account). Same accepted pattern as every earlier module; a view entity per picker buys nothing here.
+- CONV003 +4: CreditNote_Popup, RegisterPayment_Popup, CreateInvoice_Popup, InvoiceAnalysis_Report keep the wireframe names.
+- CONV015 +1: Invoice/Payment Number uniqueness is enforced in the database (user decision, see the validation section).
+- CUSTOM002 +1: ASU_Invoicing_SeedData follows the startup-chain naming of every module's ASU_.
+- SEC010 +1 (security tier, approved by the user in chat 2026-10-16): CreateInvoice_Popup's order picker lists Sales.SalesOrder
+  under Sales.User's XPath (own orders only) — the intended row-level security, read-only on that popup.
