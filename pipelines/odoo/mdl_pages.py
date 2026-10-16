@@ -210,8 +210,8 @@ BUTTON_MF = {('CreditNote_Popup', 'Reverse'): 'Invoicing.ACT_Invoice_CreateCredi
 # (the form opens a popup whose confirmation opens the form): (page, caption) -> the script that inserts them.
 # The plan's script gets the page without them; the named script re-creates the whole page with them (create or modify, so
 # both re-run unchanged; an ALTER insert would refuse its second run as a duplicate widget).
-DEFERRED_PAGE_BUTTONS = {('Invoice_NewEdit', 'Register payment'): 'mdlsource/9-invoicing/909-invoicing-page-invoice-new-edit-complete.mdl',
-                         ('Invoice_NewEdit', 'Credit note'): 'mdlsource/9-invoicing/909-invoicing-page-invoice-new-edit-complete.mdl'}
+DEFERRED_PAGE_BUTTONS = {('Invoice_NewEdit', 'Register payment'): 'mdlsource/9-invoicing/913-invoicing-page-invoice-new-edit-complete.mdl',
+                         ('Invoice_NewEdit', 'Credit note'): 'mdlsource/9-invoicing/913-invoicing-page-invoice-new-edit-complete.mdl'}
 COMPLETE_PASS = False   # True while writing that second script
 # Visibility of a form button beyond its states: (page, caption) -> condition on $currentObject.
 BUTTON_VISIBLE = {('Invoice_NewEdit', 'Register payment'): '$currentObject/Status = Invoicing.ENUM_InvoiceStatus.Posted and $currentObject/AmountDue > 0',

@@ -1,59 +1,6 @@
 mdl 1;
--- Register payment and credit note: the popups' requests, their checks and the confirm actions (F008-UC006, F008-UC007).
--- The Open… actions that show the popups are in 907 (they need the popup pages, which need these confirm actions).
-
-/**
- * A register-payment request for the given documents (Odoo account.payment.register defaults): the amount is everything due,
- * dated today, by bank transfer; the memo is the document's number when there is one document.
- *
- * @param $Invoices the documents to pay
- * @returns the uncommitted request
- */
-create or modify microflow Invoicing.SUB_RegisterPaymentRequest_New ($Invoices: List of Invoicing.Invoice)
-returns Invoicing.RegisterPaymentRequest as $Request
-folder 'Payments/Microflows'
-begin
-  $Due = sum $Invoices by AmountDue;
-  $Count = count $Invoices;
-  $First = head $Invoices;
-  $Request = create Invoicing.RegisterPaymentRequest (Amount = $Due, PaymentDate = [%BeginOfCurrentDay%],
-    Method = Invoicing.ENUM_PaymentMethod.BankTransfer,
-    Memo = if $Count = 1 and $First != empty then $First/Number else '',
-    Invoicing.RegisterPaymentRequest_Invoices = $Invoices);
-  return $Request;
-end;
-
-/**
- * A register-payment request for one document (Register payment on Invoice_NewEdit).
- *
- * @param $Invoice the document to pay
- * @returns the uncommitted request
- */
-create or modify microflow Invoicing.SUB_RegisterPaymentRequest_NewForInvoice ($Invoice: Invoicing.Invoice)
-returns Invoicing.RegisterPaymentRequest as $Request
-folder 'Payments/Microflows'
-begin
-  $Invoices = create list of Invoicing.Invoice;
-  add $Invoice to $Invoices;
-  $Request = call microflow Invoicing.SUB_RegisterPaymentRequest_New(Invoices = $Invoices);
-  return $Request;
-end;
-
-/**
- * "Create payment" on RegisterPayment_Popup: checked, the payment is created and allocated, the popup closes.
- *
- * @param $RegisterPaymentRequest the popup's request
- */
-create or modify microflow Invoicing.ACT_RegisterPaymentRequest_Create ($RegisterPaymentRequest: Invoicing.RegisterPaymentRequest)
-folder 'Payments/Microflows'
-begin
-  $IsValid = call microflow Invoicing.VAL_RegisterPaymentRequest(RegisterPaymentRequest = $RegisterPaymentRequest);
-  if not($IsValid) then
-    return;
-  end if;
-  $Payment = call microflow Invoicing.SUB_Payment_Create(RegisterPaymentRequest = $RegisterPaymentRequest);
-  close page;
-end;
+-- Credit note (F008-UC006): the reversal request, its check and the Reverse action of CreditNote_Popup (905).
+-- The credit note itself (SUB_Invoice_CreateCreditNote) is in 900; the action that opens the popup is in 912.
 
 /**
  * A credit-note request for a document (Odoo account.move.reversal defaults): dated today, no reason yet.
@@ -127,5 +74,4 @@ begin
   show page Invoicing.Invoice_NewEdit(Invoice = $CreditNote);
 end;
 
-grant execute on microflow Invoicing.ACT_RegisterPaymentRequest_Create to Invoicing.Billing, Invoicing.Manager;
 grant execute on microflow Invoicing.ACT_Invoice_CreateCreditNote to Invoicing.Billing, Invoicing.Manager;

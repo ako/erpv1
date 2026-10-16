@@ -359,3 +359,7 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-16T10:43:12Z	909-invoicing-alter-invoice-form-buttons.mdl	pass	partial	69	0			0										73dae95
 2026-10-16T10:45:54Z	909-invoicing-page-invoice-new-edit-complete.mdl	pass	applied-lint-rose	95	0	1	437	0	45.5	0	79	0	98	29	76	90	437	73dae95
 2026-10-16T10:47:02Z	909-invoicing-page-invoice-new-edit-complete.mdl	pass	applied-lint-rose	67	0	1	437	0	45.5	0	79	0	98	29	76	90	437	73dae95
+2026-10-16T10:49:48Z	904-invoicing-mf-invoice-create-credit-note.mdl	pass	applied-lint-rose	65	0	1	437	0	45.5	0	79	0	98	29	76	90	437	afc5a81
+2026-10-16T10:50:53Z	906-invoicing-mf-payment-create.mdl	pass	applied-lint-rose	64	0	1	437	0	45.5	0	79	0	98	29	76	90	437	afc5a81
+2026-10-16T10:51:57Z	912-invoicing-mf-open-popups.mdl	pass	applied-lint-rose	64	0	1	437	0	45.5	0	79	0	98	29	76	90	437	afc5a81
+2026-10-16T10:53:06Z	913-invoicing-page-invoice-new-edit-complete.mdl	pass	applied-lint-rose	69	0	1	437	0	45.5	0	79	0	98	29	76	90	437	afc5a81

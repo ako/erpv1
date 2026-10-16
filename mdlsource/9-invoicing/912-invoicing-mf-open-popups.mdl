@@ -1,5 +1,5 @@
 mdl 1;
--- The actions that open the Register payment and Credit note popups (after 905/907, which define the popups).
+-- The actions that open the Register payment and Credit note popups (after 905 and 907, which define the popups).
 
 /**
  * "Register payment" on Invoice_NewEdit (F008-UC007): the popup for this document, amount proposed = what is due.
