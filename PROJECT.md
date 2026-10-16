@@ -87,6 +87,7 @@ Opt-in artifact erd: user asked for the target-domain ERD at Stage 2 close (chat
 | 5 (build) | Inventory coverage checklist (12 items, posted in chat 2026-10-15) confirmed as the module's definition of done | CONFIRMED | User 2026-10-15: "Yes, go with proposed assumptions" |
 | 5 (build) | Lint baseline raised for Inventory: ARCH001 cross-module pickers (+8), CONV003 ValidateTransfer_Popup / Warehouse_Edit (+2), CUSTOM002 ASU_Inventory_SeedData and SCE_ReorderRules_Run — the BRD's name (+2) | CONFIRMED | User 2026-10-16: "1. ok" |
 | 5 (build) | Order lists get the wireframe's tabs and filters: Quotations & sales orders, RFQs & purchase orders (and Transfers, whose spec carries tabs too) — LOOK 2026-10-16 P2 intent | CONFIRMED | User 2026-10-16: "2 yes" |
+| 5 (build) | Lint baseline (security tier): SEC010 1->4 — the row-scoped Sales order list now has one grid per tab (gridMain, gridQuotations, gridSalesOrders, gridToInvoice); same intended scoping as accepted 2026-10-15 | CONFIRMED | User 2026-10-16: "ok, baseline the SEC010 ones too" |
 
 Skeleton proven 2026-10-14: exec pass, journey pass/fail-control, look done (docs/skeleton-proof.md, 6 of 6 rows)
 

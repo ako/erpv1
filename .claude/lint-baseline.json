@@ -18,8 +18,8 @@
     "QUAL004": 4,
     "SEC003": 1,
     "SEC008": 2,
-    "SEC010": 1
+    "SEC010": 4
   },
-  "total": 405,
+  "total": 408,
   "note": "Per-rule finding counts on OUR modules. Gate fails when any rises."
 }
