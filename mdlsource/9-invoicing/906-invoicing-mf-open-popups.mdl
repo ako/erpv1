@@ -1,0 +1,55 @@
+mdl 1;
+-- The actions that open the Register payment and Credit note popups (after 905/907, which define the popups).
+
+/**
+ * "Register payment" on Invoice_NewEdit (F008-UC007): the popup for this document, amount proposed = what is due.
+ *
+ * @param $Invoice the posted document
+ */
+create or modify microflow Invoicing.ACT_Invoice_OpenRegisterPayment ($Invoice: Invoicing.Invoice)
+folder 'Payments/Microflows'
+begin
+  $Request = call microflow Invoicing.SUB_RegisterPaymentRequest_NewForInvoice(Invoice = $Invoice);
+  $IsValid = call microflow Invoicing.VAL_RegisterPaymentRequest(RegisterPaymentRequest = $Request);
+  if not($IsValid) then
+    return;
+  end if;
+  show page Invoicing.RegisterPayment_Popup(RegisterPaymentRequest = $Request);
+end;
+
+/**
+ * "Register payment" on a selection in Invoice_Overview (F008-UC007): one payment for posted documents of one partner and one
+ * direction, amount proposed = their total due; refused up front when the selection does not qualify.
+ *
+ * @param $InvoiceList the selected documents
+ */
+create or modify microflow Invoicing.ACT_Invoice_RegisterPayment ($InvoiceList: List of Invoicing.Invoice)
+folder 'Payments/Microflows'
+begin
+  $Request = call microflow Invoicing.SUB_RegisterPaymentRequest_New(Invoices = $InvoiceList);
+  $IsValid = call microflow Invoicing.VAL_RegisterPaymentRequest(RegisterPaymentRequest = $Request);
+  if not($IsValid) then
+    return;
+  end if;
+  show page Invoicing.RegisterPayment_Popup(RegisterPaymentRequest = $Request);
+end;
+
+/**
+ * "Credit note" on Invoice_NewEdit (F008-UC006): the reversal popup for this document.
+ *
+ * @param $Invoice the posted document
+ */
+create or modify microflow Invoicing.ACT_Invoice_OpenCreditNote ($Invoice: Invoicing.Invoice)
+folder 'Invoices/Microflows'
+begin
+  $Request = call microflow Invoicing.SUB_CreditNoteRequest_New(Invoice = $Invoice);
+  $IsValid = call microflow Invoicing.VAL_CreditNoteRequest(CreditNoteRequest = $Request);
+  if not($IsValid) then
+    return;
+  end if;
+  show page Invoicing.CreditNote_Popup(CreditNoteRequest = $Request);
+end;
+
+grant execute on microflow Invoicing.ACT_Invoice_OpenRegisterPayment to Invoicing.Billing, Invoicing.Manager;
+grant execute on microflow Invoicing.ACT_Invoice_RegisterPayment to Invoicing.Billing, Invoicing.Manager;
+grant execute on microflow Invoicing.ACT_Invoice_OpenCreditNote to Invoicing.Billing, Invoicing.Manager;

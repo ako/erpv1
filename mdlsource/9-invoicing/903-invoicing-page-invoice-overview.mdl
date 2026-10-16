@@ -18,15 +18,67 @@ create or modify page Invoicing.Invoice_Overview folder 'Invoices/Pages'
       actionbutton btnNew (Caption: 'New', Action: create object Invoicing."Invoice" then show page Invoicing.Invoice_NewEdit, ButtonStyle: Primary)
     }
   }
-  datagrid gridMain (DataSource: database Invoicing."Invoice" sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Invoicing.Invoice_NewEdit(Invoice = $currentObject)) {
-    column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumber }
-    column (Attribute: Invoice_Partner/Name, Caption: 'Partner', WrapText: true)
-    column (Attribute: "InvoiceDate", Caption: 'Invoice date', WrapText: true) { datefilter fInvoiceDate }
-    column (Attribute: "DueDate", Caption: 'Due date', WrapText: true) { datefilter fDueDate }
-    column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotal }
-    column (Attribute: "AmountDue", Caption: 'Amount due', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountDue }
-    column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatus }
-    column (Attribute: "PaymentStatus", Caption: 'Payment status', WrapText: true) { dropdownfilter fPaymentStatus }
+  tabcontainer tabsList {
+    tabpage tpAll (Caption: 'All') {
+      datagrid gridMain (DataSource: database Invoicing."Invoice" sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Invoicing.Invoice_NewEdit(Invoice = $currentObject), Selection: Multi) {
+        controlbar {
+          actionbutton btnSelRegisterpayment (Caption: 'Register payment', Action: call microflow Invoicing.ACT_Invoice_RegisterPayment(InvoiceList = $gridMain))
+        }
+        column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumber }
+        column (Attribute: Invoice_Partner/Name, Caption: 'Partner', WrapText: true)
+        column (Attribute: "InvoiceDate", Caption: 'Invoice date', WrapText: true) { datefilter fInvoiceDate }
+        column (Attribute: "DueDate", Caption: 'Due date', WrapText: true) { datefilter fDueDate }
+        column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotal }
+        column (Attribute: "AmountDue", Caption: 'Amount due', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountDue }
+        column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatus }
+        column (Attribute: "PaymentStatus", Caption: 'Payment status', WrapText: true) { dropdownfilter fPaymentStatus }
+      }
+    }
+    tabpage tpCustomerInvoices (Caption: 'Customer invoices') {
+      datagrid gridCustomerInvoices (DataSource: database Invoicing."Invoice" where [InvoiceType = 'CustomerInvoice'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Invoicing.Invoice_NewEdit(Invoice = $currentObject), Selection: Multi) {
+        controlbar {
+          actionbutton btnSelRegisterpaymentCustomerInvoices (Caption: 'Register payment', Action: call microflow Invoicing.ACT_Invoice_RegisterPayment(InvoiceList = $gridCustomerInvoices))
+        }
+        column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumberCustomerInvoices }
+        column (Attribute: Invoice_Partner/Name, Caption: 'Partner', WrapText: true)
+        column (Attribute: "InvoiceDate", Caption: 'Invoice date', WrapText: true) { datefilter fInvoiceDateCustomerInvoices }
+        column (Attribute: "DueDate", Caption: 'Due date', WrapText: true) { datefilter fDueDateCustomerInvoices }
+        column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotalCustomerInvoices }
+        column (Attribute: "AmountDue", Caption: 'Amount due', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountDueCustomerInvoices }
+        column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatusCustomerInvoices }
+        column (Attribute: "PaymentStatus", Caption: 'Payment status', WrapText: true) { dropdownfilter fPaymentStatusCustomerInvoices }
+      }
+    }
+    tabpage tpVendorBills (Caption: 'Vendor bills') {
+      datagrid gridVendorBills (DataSource: database Invoicing."Invoice" where [InvoiceType = 'VendorBill'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Invoicing.Invoice_NewEdit(Invoice = $currentObject), Selection: Multi) {
+        controlbar {
+          actionbutton btnSelRegisterpaymentVendorBills (Caption: 'Register payment', Action: call microflow Invoicing.ACT_Invoice_RegisterPayment(InvoiceList = $gridVendorBills))
+        }
+        column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumberVendorBills }
+        column (Attribute: Invoice_Partner/Name, Caption: 'Partner', WrapText: true)
+        column (Attribute: "InvoiceDate", Caption: 'Invoice date', WrapText: true) { datefilter fInvoiceDateVendorBills }
+        column (Attribute: "DueDate", Caption: 'Due date', WrapText: true) { datefilter fDueDateVendorBills }
+        column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotalVendorBills }
+        column (Attribute: "AmountDue", Caption: 'Amount due', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountDueVendorBills }
+        column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatusVendorBills }
+        column (Attribute: "PaymentStatus", Caption: 'Payment status', WrapText: true) { dropdownfilter fPaymentStatusVendorBills }
+      }
+    }
+    tabpage tpCreditNotes (Caption: 'Credit notes') {
+      datagrid gridCreditNotes (DataSource: database Invoicing."Invoice" where [InvoiceType = 'CustomerCreditNote' or InvoiceType = 'VendorCreditNote'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Invoicing.Invoice_NewEdit(Invoice = $currentObject), Selection: Multi) {
+        controlbar {
+          actionbutton btnSelRegisterpaymentCreditNotes (Caption: 'Register payment', Action: call microflow Invoicing.ACT_Invoice_RegisterPayment(InvoiceList = $gridCreditNotes))
+        }
+        column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumberCreditNotes }
+        column (Attribute: Invoice_Partner/Name, Caption: 'Partner', WrapText: true)
+        column (Attribute: "InvoiceDate", Caption: 'Invoice date', WrapText: true) { datefilter fInvoiceDateCreditNotes }
+        column (Attribute: "DueDate", Caption: 'Due date', WrapText: true) { datefilter fDueDateCreditNotes }
+        column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotalCreditNotes }
+        column (Attribute: "AmountDue", Caption: 'Amount due', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountDueCreditNotes }
+        column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatusCreditNotes }
+        column (Attribute: "PaymentStatus", Caption: 'Payment status', WrapText: true) { dropdownfilter fPaymentStatusCreditNotes }
+      }
+    }
   }
 };
 

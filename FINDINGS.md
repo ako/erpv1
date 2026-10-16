@@ -133,3 +133,14 @@
   not include it.
 - Evidence: tests/Constraints (17 tests: duplicates refused by the database, distinct rows and empty keys accepted,
   Odoo VAL checks), all 12 journeys green, Core journey re-runnable twice.
+
+## 2026-10-16 — Invoicing popups and form buttons
+
+- `ItemSelection: Multi` on a data grid is silently ignored; the MDL key is `Selection: Multi` (mxcli-findings X13). Found by
+  mxbuild CE0117 on the selection-driven Register payment button, verified by the clean build after the rename.
+- An `alter page … insert` cannot re-run (X14). The invoice form's popup buttons now come from a second, complete
+  `create or modify` of the page (909), run after the popups; exec'd twice, the second run reported the model unchanged.
+- Popups on non-persistent request entities need entity access rows in the module brief, or mxbuild reports CE2729 once the
+  popup becomes reachable; not before. RegisterPaymentRequest / CreditNoteRequest rows added (read/write, Billing + Manager).
+- Page-role grants: a selection button's action keeps the grant of its defining script (906: Billing, Manager). Otherwise the
+  invoice list's sales/purchase-manager viewers would have reached the payment popup (CE2729 found it).

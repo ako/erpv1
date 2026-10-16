@@ -72,7 +72,11 @@ TAB_WHERE = {
                                ('Purchase orders', "[Status = 'PurchaseOrder']")],
     'Transfer_Overview': [('All', '')] + [(cap, "[Inventory.Transfer_OperationType/Inventory.OperationType/Kind = '%s']" % k)
                                           for cap, k in (('Receipts', 'Receipt'), ('Deliveries', 'Delivery'), ('Internal', 'Internal'))],
+    'Invoice_Overview': [('All', ''), ('Customer invoices', "[InvoiceType = 'CustomerInvoice']"), ('Vendor bills', "[InvoiceType = 'VendorBill']"),
+                         ('Credit notes', "[InvoiceType = 'CustomerCreditNote' or InvoiceType = 'VendorCreditNote']")],
 }
+# A button over a list's selected rows (multi-select grid, control bar): (page, caption) -> microflow taking the list.
+LIST_SELECTION_BUTTON = {('Invoice_Overview', 'Register payment'): 'Invoicing.ACT_Invoice_RegisterPayment'}
 # A button on each row of an editable list: entity -> (caption, microflow taking the row). The row goes to the microflow with
 # its unsaved edits, so it cannot race the row's save-on-leave (Apply counts after typing a count applied nothing, J-INV-04).
 ROW_ACTION = {'Inventory.StockLevel': ('Apply', 'Inventory.ACT_StockLevel_ApplyCount'),
@@ -90,7 +94,9 @@ VISIBLE_WHEN = {('Sales.SalesOrder', 'SalesOrder_QuotationTemplate'):
                 "$currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation or $currentObject/Status = Sales.ENUM_SalesOrderStatus.QuotationSent"}
 # Fields shown but never typed into: computed or system-maintained (stock is changed only by moves and counts).
 READONLY_FIELDS = {('Inventory.StockLevel', 'Quantity'), ('Inventory.StockLevel', 'ReservedQuantity'),
-                   ('Inventory.StockMove', 'Status'), ('Inventory.Transfer', 'DateDone')}
+                   ('Inventory.StockMove', 'Status'), ('Inventory.Transfer', 'DateDone'),
+                   # a popup's documents are the ones it was opened for; the amount proposed is theirs (F008-UC006/UC007)
+                   ('Invoicing.RegisterPaymentRequest', 'RegisterPaymentRequest_Invoices'), ('Invoicing.CreditNoteRequest', 'CreditNoteRequest_Invoice')}
 # Page-level buttons on list pages: (page, caption) -> microflow without parameters.
 LIST_BUTTON = {('ReorderRule_Overview', 'Run scheduler'): 'Inventory.ACT_ReorderRules_RunNow'}
 # Smart buttons (Odoo stat buttons) under the status pill: (page, caption) -> microflow taking the form's object.
@@ -202,9 +208,15 @@ BUTTON_MF = {('CreditNote_Popup', 'Reverse'): 'Invoicing.ACT_Invoice_CreateCredi
              ('Invoice_NewEdit', 'Credit note'): 'Invoicing.ACT_Invoice_OpenCreditNote'}
 # Buttons left out of a generated page and inserted later by an ALTER script, to break a page <-> popup creation cycle
 # (the form opens a popup whose confirmation opens the form): (page, caption) -> the script that inserts them.
-DEFERRED_PAGE_BUTTONS = {('Invoice_NewEdit', 'Register payment'): '909-invoicing-alter-invoice-form-buttons.mdl',
-                         ('Invoice_NewEdit', 'Credit note'): '909-invoicing-alter-invoice-form-buttons.mdl',
-                         ('Invoice_Overview', 'Register payment'): 'not built: needs a selection-driven list button'}
+# The plan's script gets the page without them; the named script re-creates the whole page with them (create or modify, so
+# both re-run unchanged; an ALTER insert would refuse its second run as a duplicate widget).
+DEFERRED_PAGE_BUTTONS = {('Invoice_NewEdit', 'Register payment'): 'mdlsource/9-invoicing/909-invoicing-page-invoice-new-edit-complete.mdl',
+                         ('Invoice_NewEdit', 'Credit note'): 'mdlsource/9-invoicing/909-invoicing-page-invoice-new-edit-complete.mdl'}
+COMPLETE_PASS = False   # True while writing that second script
+# Visibility of a form button beyond its states: (page, caption) -> condition on $currentObject.
+BUTTON_VISIBLE = {('Invoice_NewEdit', 'Register payment'): '$currentObject/Status = Invoicing.ENUM_InvoiceStatus.Posted and $currentObject/AmountDue > 0',
+                  ('Invoice_NewEdit', 'Credit note'): '$currentObject/Status = Invoicing.ENUM_InvoiceStatus.Posted and '
+                  '($currentObject/InvoiceType = Invoicing.ENUM_InvoiceType.CustomerInvoice or $currentObject/InvoiceType = Invoicing.ENUM_InvoiceType.VendorBill)'}
 # Forms editable only in some states: page -> condition on the page parameter (Odoo locks posted documents).
 FORM_EDITABLE_WHEN = {'Invoice_NewEdit': '$Invoice/Status = Invoicing.ENUM_InvoiceStatus.Draft'}
 # Related links not rendered yet (their target page does not exist yet): (page, caption).
@@ -446,9 +458,17 @@ def gen_list(s):
     open_ = ''
     if s.get('open'):
         open_ = ', OnClick: %s' % show_page_action(s['open'], param_name(U.S[s['open']]['param']))
+    sel = [(cap, mf) for (pg, cap), mf in LIST_SELECTION_BUTTON.items() if pg == s['name']]
     def grid(name, where, sfx, ind):
-        g = ["%sdatagrid %s (DataSource: %s, PagingPosition: bottom, Class: 'density-compact'%s) {"
-             % (ind, name, src.replace(' sort by ', ' where %s sort by ' % where, 1) if where else src, open_)]
+        g = ["%sdatagrid %s (DataSource: %s, PagingPosition: bottom, Class: 'density-compact'%s%s) {"
+             % (ind, name, src.replace(' sort by ', ' where %s sort by ' % where, 1) if where else src, open_,
+                ', Selection: Multi' if sel else '')]
+        if sel:   # the control bar is not row-scoped: it passes the grid's selection
+            g.append(ind + '  controlbar {')
+            for cap, mf in sel:
+                g.append(ind + "    actionbutton %s (Caption: '%s', Action: call microflow %s(%sList = $%s))"
+                         % (wid('btnSel', cap + sfx), esc(cap), mf, s['entity'].split('.')[1], name))
+            g.append(ind + '  }')
         for c in s['columns']:   # every attribute column filterable (P2-3); filter names unique per page (CE0495)
             g.append(ind + '  ' + re.sub(r'(filter f\w+)', r'\g<1>' + sfx, column(e, c, filters=not assoc(e, c))))
         g.append(ind + '}')
@@ -530,10 +550,11 @@ def sections_block(e, sections, ind, readonly_all=False, popup_title=None):
 
 def buttons(s, e, pname, popup=False):
     out = []
+    shown = []   # the states of the buttons emitted so far
     for i, b in enumerate(s.get('buttons', [])):
         cap, act = b[0], b[1]
         states = b[2] if len(b) > 2 else None
-        if act in DEFERRED_BUTTONS or (s['name'], cap) in DEFERRED_PAGE_BUTTONS:
+        if act in DEFERRED_BUTTONS or ((s['name'], cap) in DEFERRED_PAGE_BUTTONS and not COMPLETE_PASS):
             continue
         if cap == 'Archive':
             act = 'ACT_%s_Archive' % e['name'].split('.')[1]
@@ -553,8 +574,13 @@ def buttons(s, e, pname, popup=False):
             en = attr(e, stat_attr)['enumeration']
             conds = ' or '.join('$currentObject/%s = %s.%s' % (stat_attr, en, enum_value_for_caption(en, st)) for st in states)
             vis = ', Visible: %s' % conds
+        if (s['name'], cap) in BUTTON_VISIBLE:
+            vis = ', Visible: %s' % BUTTON_VISIBLE[(s['name'], cap)]
         has_save = any(x[0] == 'Save' for x in s.get('buttons', []))
-        style = 'Primary' if (cap == 'Save' if has_save else not out) else 'Default'
+        # the first button of each state is primary (a posted invoice's Register payment, a draft's Confirm)
+        overlap = any(st is None or states is None or set(st) & set(states) for st in shown)
+        style = 'Primary' if (cap == 'Save' if has_save else not overlap) else 'Default'
+        shown.append(states)
         out.append("actionbutton %s (Caption: '%s', Action: %s, ButtonStyle: %s%s)" % (wid('btn', cap + str(i)), esc(cap), a, style, vis))
     if popup:
         out.append("actionbutton %sbtnCancel (Caption: 'Cancel', Action: cancel changes close page)" % WID_PREFIX)
@@ -959,6 +985,10 @@ end;
         # a Reader role views the page read-only: it gets navigation (…_Open…) and data sources only, so Mendix hides the
         # page's state-changing buttons from it (sales users open a delivery from their order, 2026-10-15)
         r = [x for x in r if not x.endswith('.Reader') or re.search(r'_Open|\.DS_', mf)]
+        # a selection button's microflow keeps the grant of the script that defines it (Register payment: Billing and
+        # Manager only, though sales and purchase managers see the invoice list; Mendix then hides the button from them)
+        if mf in LIST_SELECTION_BUTTON.values():
+            continue
         if not r:
             continue
         out.append('grant execute on microflow %s to %s;' % (mf, ', '.join(r)))
@@ -1025,6 +1055,21 @@ def main(argv):
         os.makedirs(os.path.dirname(p), exist_ok=True)
         open(p, 'w').write(gen_page(name))
         print('wrote', os.path.relpath(p, ROOT))
+        for later in sorted({v for (pg, _c), v in DEFERRED_PAGE_BUTTONS.items() if pg == name}):
+            global COMPLETE_PASS
+            COMPLETE_PASS = True
+            try:
+                body = gen_page(name)
+            finally:
+                COMPLETE_PASS = False
+            caps = ', '.join(c for (pg, c), v in DEFERRED_PAGE_BUTTONS.items() if pg == name and v == later)
+            note = ('-- The complete %s, with %s: those open popups whose confirmation opens this page, so the first pass (%s)\n'
+                    '-- leaves them out and this script, run after the popups, re-creates the page with them.\n') % (
+                    name, caps, os.path.relpath(p, os.path.join(ROOT, 'mdlsource')))
+            head, rest = body.split('\n', 1)
+            lp = done_aware(os.path.join(ROOT, later))
+            open(lp, 'w').write(head + '\n' + note + rest)
+            print('wrote', os.path.relpath(lp, ROOT))
 
 
 if __name__ == '__main__':

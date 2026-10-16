@@ -46,6 +46,10 @@
 | Invoicing.PaymentAllocation | entity | Invoicing.Billing | create, delete, read *, write * |
 | Invoicing.PaymentAllocation | entity | Invoicing.Manager | create, delete, read *, write * |
 | Invoicing.PaymentAllocation | entity | Invoicing.Creator | create, read *, write * |
+| Invoicing.RegisterPaymentRequest | entity | Invoicing.Billing | read *, write * |
+| Invoicing.RegisterPaymentRequest | entity | Invoicing.Manager | read *, write * |
+| Invoicing.CreditNoteRequest | entity | Invoicing.Billing | read *, write * |
+| Invoicing.CreditNoteRequest | entity | Invoicing.Manager | read *, write * |
 | Invoicing.Invoice_Overview | page | Invoicing.Billing, Invoicing.Creator, Invoicing.Manager | view |
 | Invoicing.Invoice_NewEdit | page | Invoicing.Billing, Invoicing.Manager | view |
 | Invoicing.RegisterPayment_Popup | page | Invoicing.Billing, Invoicing.Manager | view |

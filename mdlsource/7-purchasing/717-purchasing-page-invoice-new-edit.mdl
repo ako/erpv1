@@ -38,7 +38,7 @@ create or modify page Invoicing.Invoice_NewEdit folder 'Invoices/Pages'
       }
       container ctnPageHeadActions (Class: 'page-head-actions') {
         actionbutton btnConfirm1 (Caption: 'Confirm', Action: call microflow Invoicing.ACT_Invoice_Post(Invoice = $currentObject), ButtonStyle: Primary, Visible: $currentObject/Status = Invoicing.ENUM_InvoiceStatus.Draft)
-        actionbutton btnResettodraft3 (Caption: 'Reset to draft', Action: call microflow Invoicing.ACT_Invoice_ResetToDraft(Invoice = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Invoicing.ENUM_InvoiceStatus.Posted)
+        actionbutton btnResettodraft3 (Caption: 'Reset to draft', Action: call microflow Invoicing.ACT_Invoice_ResetToDraft(Invoice = $currentObject), ButtonStyle: Primary, Visible: $currentObject/Status = Invoicing.ENUM_InvoiceStatus.Posted)
         actionbutton btnCancel4 (Caption: 'Cancel', Action: call microflow Invoicing.ACT_Invoice_Cancel(Invoice = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Invoicing.ENUM_InvoiceStatus.Draft)
       }
     }

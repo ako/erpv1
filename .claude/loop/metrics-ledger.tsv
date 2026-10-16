@@ -345,3 +345,17 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-16T10:20:15Z	910-invoicing-page-payment-view.mdl	pass	applied-lint-rose	60	0	1	439	0	45.1	0	76	0	98	31	76	90	439	298767f
 2026-10-16T10:21:16Z	908-invoicing-page-payment-overview.mdl	pass	applied-lint-rose	60	0	1	439	0	45.1	0	76	0	98	31	76	90	439	84905ca
 2026-10-16T10:22:50Z	910-invoicing-page-payment-view.mdl	pass	applied-lint-rose	59	0	1	438	0	45.1	0	76	0	98	31	76	90	438	dce7f80
+2026-10-16T10:26:25Z	904-invoicing-mf-payment-credit-popups.mdl	pass	applied-lint-rose	60	0	1	437	0	45.3	0	77	0	98	31	76	90	437	822a419
+2026-10-16T10:28:03Z	905-invoicing-page-credit-note-popup.mdl	pass	applied-lint-rose	58	0	1	439	0	45	0	76	0	98	30	76	90	439	5f8c1a2
+2026-10-16T10:29:02Z	907-invoicing-page-register-payment-popup.mdl	pass	applied-lint-rose	58	0	1	441	0	44.7	0	75	0	98	29	76	90	441	8ef691f
+2026-10-16T10:30:06Z	906-invoicing-mf-open-popups.mdl	pass	applied-lint-rose	61	0	1	437	0	45.5	0	79	0	98	29	76	90	437	ca48905
+2026-10-16T10:32:12Z	909-invoicing-alter-invoice-form-buttons.mdl	fail	gate-failed	62	?			1										b088073
+2026-10-16T10:34:50Z	done-170-invoicing-domain.mdl	pass	applied-lint-rose	93	0	1	437	0	45.5	0	79	0	98	29	76	90	437	b088073
+2026-10-16T10:35:51Z	909-invoicing-alter-invoice-form-buttons.mdl	pass	applied-lint-rose	60	0	1	437	0	45.5	0	79	0	98	29	76	90	437	8172d65
+2026-10-16T10:36:55Z	903-invoicing-page-invoice-overview.mdl	fail	gate-failed	63	?			1										4e61922
+2026-10-16T10:39:02Z	903-invoicing-page-invoice-overview.mdl	fail	gate-failed	93	?			1										4e61922
+2026-10-16T10:40:56Z	903-invoicing-page-invoice-overview.mdl	pass	applied-lint-rose	93	0	1	437	0	45.5	0	79	0	98	29	76	90	437	4e61922
+2026-10-16T10:41:44Z	909-invoicing-alter-invoice-form-buttons.mdl	pass	partial	39	0			0										73dae95
+2026-10-16T10:43:12Z	909-invoicing-alter-invoice-form-buttons.mdl	pass	partial	69	0			0										73dae95
+2026-10-16T10:45:54Z	909-invoicing-page-invoice-new-edit-complete.mdl	pass	applied-lint-rose	95	0	1	437	0	45.5	0	79	0	98	29	76	90	437	73dae95
+2026-10-16T10:47:02Z	909-invoicing-page-invoice-new-edit-complete.mdl	pass	applied-lint-rose	67	0	1	437	0	45.5	0	79	0	98	29	76	90	437	73dae95

@@ -243,3 +243,7 @@ grant create, read *, write * on entity Invoicing."Payment" to Invoicing.Creator
 grant create, delete, read *, write * on entity Invoicing."PaymentAllocation" to Invoicing.Billing;
 grant create, delete, read *, write * on entity Invoicing."PaymentAllocation" to Invoicing.Manager;
 grant create, read *, write * on entity Invoicing."PaymentAllocation" to Invoicing.Creator;
+grant read *, write * on entity Invoicing."RegisterPaymentRequest" to Invoicing.Billing;
+grant read *, write * on entity Invoicing."RegisterPaymentRequest" to Invoicing.Manager;
+grant read *, write * on entity Invoicing."CreditNoteRequest" to Invoicing.Billing;
+grant read *, write * on entity Invoicing."CreditNoteRequest" to Invoicing.Manager;
