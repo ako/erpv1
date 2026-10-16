@@ -66,6 +66,10 @@
 // only its clear and arrow buttons. Tighter gutters, no clear button inside a line (a line's picker is changed, not emptied).
 @media (min-width: 768px) {
   .lines-list .row > [class*="col-"], .lines-head .row > [class*="col-"] { padding-left: 4px; padding-right: 4px; }
+  // One-column line inputs are ~54px (Atlas's flex grid keeps its 16px gaps; growing columns broke the caption row's
+  // alignment): tighter input padding and a slightly smaller face fit "120.00", "600.00" and a tax tag (LOOK 2026-10-16d P2).
+  .lines-list .form-control, .lines-list .widget-combobox-input-container { padding-left: 4px; padding-right: 4px; font-size: 13px; }
+  .lines-list .widget-combobox-down-arrow { padding-left: 0; padding-right: 2px; }
   .lines-list .widget-combobox-clear-button { display: none; }
 }
 

@@ -6,6 +6,7 @@
 // openRow: click row N of the first data grid / list view on the menu page (opens the NewEdit page).
 // click: a widget name (mx-name-*) to click after landing (e.g. a New button).
 // url: the page's route (its Url), opened directly instead of through the menu.
+// rowText: open the row of the first data grid that shows this text (instead of openRow).
 // Usage: node tests/e2e/look.js <shots.json> <outDir>
 // Prints one line per shot: page, size, title read off the page, console errors, Mendix error dialog text.
 const fs = require('fs');
@@ -61,7 +62,10 @@ async function nav(page, menu) {
         // url: open a page by its route (a page with Url) when the menu leaf is unreliable to click (collapsed groups)
         if (s.url) await page.goto(BASE + '/p/' + s.url); else if (s.menu) await nav(page, s.menu);
         await page.waitForTimeout(1200);
-        if (s.openRow) {
+        if (s.rowText) {   // open the grid row that shows this text (a specific record, not the newest)
+          await page.locator('.mx-name-gridMain [role="row"]', { hasText: s.rowText }).first().locator('[role="gridcell"]').nth(2).click();
+          await page.waitForTimeout(1500);
+        } else if (s.openRow) {
           const row = page.locator('.mx-name-gridMain [role="row"], .mx-name-gridMain .tr').nth(s.openRow);
           const lv = page.locator('.mx-listview-item').nth(s.openRow - 1);
           // a cell, not the row's centre: a multi-select grid (Invoice_Overview) opens rows from their cells

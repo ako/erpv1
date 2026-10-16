@@ -20,7 +20,7 @@ create or modify page Sales.SalesOrder_View folder 'Quotations/Pages'
         dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = if $currentObject/Number = empty or trim($currentObject/Number) = '' then 'New' else $currentObject/Number), RenderMode: H1)
       }
       container ctnPageHeadActions (Class: 'page-head-actions') {
-        actionbutton btnCreateinvoice0 (Caption: 'Create invoice', Action: call microflow Invoicing.ACT_SalesOrder_CreateInvoice(SalesOrder = $currentObject), ButtonStyle: Primary, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.SalesOrder)
+        actionbutton btnCreateinvoice0 (Caption: 'Create invoice', Action: call microflow Invoicing.ACT_SalesOrder_CreateInvoice(SalesOrder = $currentObject), ButtonStyle: Primary, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.SalesOrder and $currentObject/InvoiceStatus = Core.ENUM_InvoiceStatus.ToInvoice)
       }
     }
     dynamictext txtStatus (Content: '{1}', ContentParams: ({1} = "Status"), Class: 'pill pill-info spacing-outer-bottom-medium')

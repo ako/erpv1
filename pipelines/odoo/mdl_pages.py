@@ -228,7 +228,12 @@ ROLE_ACTIONS = {'Invoicing.Creator': r'\.ACT_InvoiceLine_',
                 # sales and purchase users read transfers but not each other's orders (CE2729): no Open order links for them
                 'Inventory.Reader': r'^(?!Inventory\.ACT_Transfer_Open(Sales|Purchase)Order$)'}
 # Visibility of a form button beyond its states: (page, caption) -> condition on $currentObject.
-BUTTON_VISIBLE = {('Invoice_NewEdit', 'Register payment'): '$currentObject/Status = Invoicing.ENUM_InvoiceStatus.Posted and $currentObject/AmountDue > 0',
+_TO_INV = '$currentObject/Status = Sales.ENUM_SalesOrderStatus.SalesOrder and $currentObject/InvoiceStatus = Core.ENUM_InvoiceStatus.ToInvoice'
+_TO_BILL = ('$currentObject/Status = Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder and '
+            '$currentObject/BillingStatus = Core.ENUM_InvoiceStatus.ToInvoice')
+BUTTON_VISIBLE = {   # Create invoice / bill only when there is something to invoice (LOOK 2026-10-16d P2)
+                  ('SalesOrder_NewEdit', 'Create invoice'): _TO_INV, ('SalesOrder_View', 'Create invoice'): _TO_INV,
+                  ('PurchaseOrder_NewEdit', 'Create bill'): _TO_BILL, ('PurchaseOrder_View', 'Create bill'): _TO_BILL,('Invoice_NewEdit', 'Register payment'): '$currentObject/Status = Invoicing.ENUM_InvoiceStatus.Posted and $currentObject/AmountDue > 0',
                   ('Invoice_NewEdit', 'Credit note'): '$currentObject/Status = Invoicing.ENUM_InvoiceStatus.Posted and '
                   '($currentObject/InvoiceType = Invoicing.ENUM_InvoiceType.CustomerInvoice or $currentObject/InvoiceType = Invoicing.ENUM_InvoiceType.VendorBill)'}
 # Forms editable only in some states: page -> condition on the page parameter (Odoo locks posted documents).

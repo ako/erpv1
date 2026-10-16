@@ -20,7 +20,7 @@ create or modify page Purchasing.PurchaseOrder_View folder 'RFQs/Pages'
         dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = if $currentObject/Number = empty or trim($currentObject/Number) = '' then 'New' else $currentObject/Number), RenderMode: H1)
       }
       container ctnPageHeadActions (Class: 'page-head-actions') {
-        actionbutton btnCreatebill0 (Caption: 'Create bill', Action: call microflow Invoicing.ACT_PurchaseOrder_CreateBill(PurchaseOrder = $currentObject), ButtonStyle: Primary, Visible: $currentObject/Status = Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder)
+        actionbutton btnCreatebill0 (Caption: 'Create bill', Action: call microflow Invoicing.ACT_PurchaseOrder_CreateBill(PurchaseOrder = $currentObject), ButtonStyle: Primary, Visible: $currentObject/Status = Purchasing.ENUM_PurchaseOrderStatus.PurchaseOrder and $currentObject/BillingStatus = Core.ENUM_InvoiceStatus.ToInvoice)
       }
     }
     dynamictext txtStatus (Content: '{1}', ContentParams: ({1} = "Status"), Class: 'pill pill-info spacing-outer-bottom-medium')

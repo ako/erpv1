@@ -87,8 +87,8 @@
    "Sales",
    "Quotations & orders"
   ],
-  "openRow": 1,
-  "click": "btnCreateinvoice0"
+  "click": "btnCreateinvoice0",
+  "rowText": "S00065"
  },
  {
   "module": "Purchasing",

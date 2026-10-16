@@ -179,3 +179,8 @@
   row's centre; a collapsed sidebar group's leaf reads as visible but the click does nothing. Fixed: wait for network idle +
   4 s, click a cell, `url` option (page route) for report pages. Verified by the h1 read off each shot. A real user's clicks
   worked throughout (probed separately); no app defect.
+- Line editors clipped numbers because Atlas's flex grid keeps a 16px column gap and subtracts it from each column (one-column
+  inputs 50px; measured with getComputedStyle in the running app). Letting columns grow fixed the widths but misaligned the
+  caption row (different column sets); reverted. Tighter input padding + 13px face fixed the numbers (re-shot 2026-10-16d).
+- Create invoice / Create bill now show only while the order is "to invoice" / "to bill" (LOOK 2026-10-16d P2: the button on an
+  order with nothing to invoice only led to a warning).
