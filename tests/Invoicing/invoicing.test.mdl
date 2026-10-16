@@ -1,0 +1,357 @@
+-- Invoicing unit tests (build-plan row 92, F008). Every test rolls back.
+-- Fixtures: the demo seed (Azure Interior, Gemini Furniture, Cable Pack 12.50 invoiced on ordered quantities, 21% sales tax).
+-- Tests run without a signed-in user.
+
+/**
+ * @test Create invoice on a confirmed order makes one draft customer invoice for the quantity to invoice (2 x 12.50 + 21%)
+ * @expect $Ok = true
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$Request = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SO);
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Inv = head $Invoices;
+$Count = count $Invoices;
+declare $Ok Boolean = $Count = 1 and $Inv/Status = Invoicing.ENUM_InvoiceStatus.Draft
+  and $Inv/InvoiceType = Invoicing.ENUM_InvoiceType.CustomerInvoice and $Inv/AmountTotal = 30.25;
+/
+
+/**
+ * @test A draft invoice already counts as invoiced: the order is fully invoiced (C1-08)
+ * @expect $After/InvoiceStatus = Core.ENUM_InvoiceStatus.FullyInvoiced
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$Request = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SO);
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Inv = head $Invoices;
+retrieve $Orders from $Inv/Invoicing.Invoice_SalesOrders;
+$After = head $Orders;
+/
+
+/**
+ * @test An order with nothing left to invoice is refused
+ * @expect $IsValid = false
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$Request = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SO);
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Inv = head $Invoices;
+$Again = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SO);
+$IsValid = call microflow Invoicing.VAL_CreateInvoiceRequest(CreateInvoiceRequest = $Again);
+/
+
+/**
+ * @test Posting numbers the invoice from the INV sequence and sets a due date
+ * @expect $Ok = true
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$Request = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SO);
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Inv = head $Invoices;
+call microflow Invoicing.SUB_Invoice_Post(Invoice = $Inv);
+declare $Ok Boolean = startsWith($Inv/Number, 'INV/') and $Inv/Status = Invoicing.ENUM_InvoiceStatus.Posted and $Inv/DueDate != empty;
+/
+
+/**
+ * @test A partial payment leaves the rest due and the invoice partially paid
+ * @expect $Ok = true
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$Request = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SO);
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Inv = head $Invoices;
+call microflow Invoicing.SUB_Invoice_Post(Invoice = $Inv);
+$Pay = call microflow Invoicing.SUB_RegisterPaymentRequest_NewForInvoice(Invoice = $Inv);
+change $Pay (Amount = 10);
+$Payment = call microflow Invoicing.SUB_Payment_Create(RegisterPaymentRequest = $Pay);
+retrieve $Fresh from Invoicing.Invoice where [Number = $Inv/Number] first;
+declare $Ok Boolean = $Fresh/AmountDue = 20.25 and $Fresh/PaymentStatus = Invoicing.ENUM_PaymentStatus.PartiallyPaid;
+/
+
+/**
+ * @test Paying the amount due makes the invoice paid
+ * @expect $Fresh/PaymentStatus = Invoicing.ENUM_PaymentStatus.Paid
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$Request = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SO);
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Inv = head $Invoices;
+call microflow Invoicing.SUB_Invoice_Post(Invoice = $Inv);
+$Pay = call microflow Invoicing.SUB_RegisterPaymentRequest_NewForInvoice(Invoice = $Inv);
+change $Pay (Amount = 30.25);
+$Payment = call microflow Invoicing.SUB_Payment_Create(RegisterPaymentRequest = $Pay);
+retrieve $Fresh from Invoicing.Invoice where [Number = $Inv/Number] first;
+/
+
+/**
+ * @test A payment above the amount due is refused
+ * @expect $IsValid = false
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$Request = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SO);
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Inv = head $Invoices;
+call microflow Invoicing.SUB_Invoice_Post(Invoice = $Inv);
+$Pay = call microflow Invoicing.SUB_RegisterPaymentRequest_NewForInvoice(Invoice = $Inv);
+change $Pay (Amount = 40);
+$IsValid = call microflow Invoicing.VAL_RegisterPaymentRequest(RegisterPaymentRequest = $Pay);
+/
+
+/**
+ * @test A paid invoice cannot be reset to draft
+ * @expect $IsValid = false
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$Request = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SO);
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Inv = head $Invoices;
+call microflow Invoicing.SUB_Invoice_Post(Invoice = $Inv);
+$Pay = call microflow Invoicing.SUB_RegisterPaymentRequest_NewForInvoice(Invoice = $Inv);
+change $Pay (Amount = 30.25);
+$Payment = call microflow Invoicing.SUB_Payment_Create(RegisterPaymentRequest = $Pay);
+retrieve $Fresh from Invoicing.Invoice where [Number = $Inv/Number] first;
+$IsValid = call microflow Invoicing.VAL_Invoice_ResetToDraft(Invoice = $Fresh);
+/
+
+/**
+ * @test A credit note copies the invoice as a draft of the opposite type
+ * @expect $Ok = true
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$Request = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SO);
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Inv = head $Invoices;
+call microflow Invoicing.SUB_Invoice_Post(Invoice = $Inv);
+$CN = call microflow Invoicing.SUB_Invoice_CreateCreditNote(Invoice = $Inv, Reason = 'Damaged', ReversalDate = empty);
+declare $Ok Boolean = $CN/InvoiceType = Invoicing.ENUM_InvoiceType.CustomerCreditNote and $CN/Status = Invoicing.ENUM_InvoiceStatus.Draft
+  and $CN/AmountTotal = 30.25 and $CN/Invoicing.Invoice_ReversalOf = $Inv;
+/
+
+/**
+ * @test A credit note gives the quantity back to invoice on the order (C1-08)
+ * @expect $OrderLine/QuantityToInvoice = 2
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$Request = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SO);
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Inv = head $Invoices;
+call microflow Invoicing.SUB_Invoice_Post(Invoice = $Inv);
+$CN = call microflow Invoicing.SUB_Invoice_CreateCreditNote(Invoice = $Inv, Reason = 'Damaged', ReversalDate = empty);
+retrieve $OrderLine from Sales.SalesOrderLine where [Sales.SalesOrderLine_SalesOrder = $SO] first;
+/
+
+/**
+ * @test A credit note is not reversed again
+ * @expect $IsValid = false
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$Request = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SO);
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Inv = head $Invoices;
+call microflow Invoicing.SUB_Invoice_Post(Invoice = $Inv);
+$CN = call microflow Invoicing.SUB_Invoice_CreateCreditNote(Invoice = $Inv, Reason = 'Damaged', ReversalDate = empty);
+call microflow Invoicing.SUB_Invoice_Post(Invoice = $CN);
+$Req = call microflow Invoicing.SUB_CreditNoteRequest_New(Invoice = $CN);
+$IsValid = call microflow Invoicing.VAL_CreditNoteRequest(CreditNoteRequest = $Req);
+/
+
+/**
+ * @test Cancelling a draft invoice puts the order back to invoice
+ * @expect $After/InvoiceStatus = Core.ENUM_InvoiceStatus.ToInvoice
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$Request = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SO);
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Inv = head $Invoices;
+call microflow Invoicing.SUB_Invoice_Cancel(Invoice = $Inv);
+retrieve $Orders from $Inv/Invoicing.Invoice_SalesOrders;
+$After = head $Orders;
+/
+
+/**
+ * @test Two orders of one customer, consolidated, make one invoice
+ * @expect $Count = 1
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$SO2 = call microflow Sales.SUB_SalesOrder_Create();
+change $SO2 (Sales.SalesOrder_Customer = $Azure);
+$Line2 = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO2, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line2);
+commit $Line2;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO2);
+$Request = create Sales.CreateInvoiceRequest (ConsolidatePerCustomer = true);
+add $SO to $Request/Sales.CreateInvoiceRequest_SalesOrders;
+add $SO2 to $Request/Sales.CreateInvoiceRequest_SalesOrders;
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Count = count $Invoices;
+/
+
+/**
+ * @test Two orders of one customer, not consolidated, make two invoices
+ * @expect $Count = 2
+ */
+retrieve $Azure from Partners.Partner where [Name = 'Azure Interior'][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+change $SO (Sales.SalesOrder_Customer = $Azure);
+$Line = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+commit $Line;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO);
+$SO2 = call microflow Sales.SUB_SalesOrder_Create();
+change $SO2 (Sales.SalesOrder_Customer = $Azure);
+$Line2 = create Sales.SalesOrderLine (Quantity = 2, Sales.SalesOrderLine_SalesOrder = $SO2, Sales.SalesOrderLine_Product = $Cable);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line2);
+commit $Line2;
+call microflow Sales.SUB_SalesOrder_Confirm(SalesOrder = $SO2);
+$Request = create Sales.CreateInvoiceRequest (ConsolidatePerCustomer = false);
+add $SO to $Request/Sales.CreateInvoiceRequest_SalesOrders;
+add $SO2 to $Request/Sales.CreateInvoiceRequest_SalesOrders;
+$Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $Request);
+$Count = count $Invoices;
+/
+
+/**
+ * @test Create bill on a confirmed purchase order makes a draft vendor bill for the vendor
+ * @expect $Ok = true
+ */
+retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+change $PO (Purchasing.PurchaseOrder_Vendor = $Gemini);
+change $Cable (BillPolicy = Products.ENUM_BillPolicy.OrderedQuantities);
+commit $Cable;
+$Line = create Purchasing.PurchaseOrderLine (Quantity = 10, Purchasing.PurchaseOrderLine_PurchaseOrder = $PO, Purchasing.PurchaseOrderLine_Product = $Cable);
+call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $Line);
+commit $Line;
+call microflow Purchasing.SUB_PurchaseOrder_Approve(PurchaseOrder = $PO);
+$Bill = call microflow Invoicing.SUB_PurchaseOrder_CreateBill(PurchaseOrder = $PO);
+declare $Ok Boolean = $Bill/InvoiceType = Invoicing.ENUM_InvoiceType.VendorBill and $Bill/Status = Invoicing.ENUM_InvoiceStatus.Draft
+  and $Bill/Invoicing.Invoice_Partner = $Gemini and $Bill/AmountUntaxed > 0;
+/
+
+/**
+ * @test A vendor bill without a bill date cannot be confirmed
+ * @expect $IsValid = false
+ */
+retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+change $PO (Purchasing.PurchaseOrder_Vendor = $Gemini);
+change $Cable (BillPolicy = Products.ENUM_BillPolicy.OrderedQuantities);
+commit $Cable;
+$Line = create Purchasing.PurchaseOrderLine (Quantity = 10, Purchasing.PurchaseOrderLine_PurchaseOrder = $PO, Purchasing.PurchaseOrderLine_Product = $Cable);
+call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $Line);
+commit $Line;
+call microflow Purchasing.SUB_PurchaseOrder_Approve(PurchaseOrder = $PO);
+$Bill = call microflow Invoicing.SUB_PurchaseOrder_CreateBill(PurchaseOrder = $PO);
+$IsValid = call microflow Invoicing.VAL_Invoice_Post(Invoice = $Bill);
+/
+
+/**
+ * @test A bill counts as billed on the purchase order (C1-08)
+ * @expect $After/BillingStatus = Core.ENUM_InvoiceStatus.FullyInvoiced
+ */
+retrieve $Gemini from Partners.Partner where [Name = 'Gemini Furniture'] first;
+retrieve $Cable from Products.Product where [InternalReference = 'CONS_0001'] first;
+$PO = call microflow Purchasing.SUB_PurchaseOrder_Create();
+change $PO (Purchasing.PurchaseOrder_Vendor = $Gemini);
+change $Cable (BillPolicy = Products.ENUM_BillPolicy.OrderedQuantities);
+commit $Cable;
+$Line = create Purchasing.PurchaseOrderLine (Quantity = 10, Purchasing.PurchaseOrderLine_PurchaseOrder = $PO, Purchasing.PurchaseOrderLine_Product = $Cable);
+call microflow Purchasing.SUB_PurchaseOrderLine_ApplyProduct(PurchaseOrderLine = $Line);
+commit $Line;
+call microflow Purchasing.SUB_PurchaseOrder_Approve(PurchaseOrder = $PO);
+$Bill = call microflow Invoicing.SUB_PurchaseOrder_CreateBill(PurchaseOrder = $PO);
+retrieve $After from $Bill/Invoicing.Invoice_PurchaseOrder;
+/
