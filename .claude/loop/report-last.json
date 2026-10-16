@@ -1,12 +1,12 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-16 11:55:00",
-  "overallScore": 45.7,
+  "date": "2026-10-16 12:08:24",
+  "overallScore": 46.1,
   "summary": {
-    "total": 444,
+    "total": 442,
     "errors": 0,
     "warnings": 147,
-    "infos": 297
+    "infos": 295
   },
   "categories": [
     {
@@ -26,16 +26,16 @@
     },
     {
       "name": "Quality",
-      "score": 81,
-      "total": 19,
+      "score": 83,
+      "total": 17,
       "errors": 0,
       "warnings": 0,
-      "infos": 19,
+      "infos": 17,
       "topActions": [
         "Replace entity validation rules with a VAL_Company microflow for explicit, testable validation",
-        "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
+        "Extract logical sections into SUB_ microflows to keep each under 15 activities",
         "Describe what the collection is for and where its images are used.",
-        "Extract logical sections into SUB_ microflows to keep each under 15 activities"
+        "Remove if unused, or verify it's configured as a menu item or home page."
       ]
     },
     {

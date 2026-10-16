@@ -253,7 +253,9 @@ entity('Sales.SalesOrderLine', 'sale.order.line', 'A product, section or note li
     ('Quantity', 'product_uom_qty', {}), ('UnitPrice', 'price_unit', {}), ('DiscountPercent', 'discount', {}),
     ('Subtotal', 'price_subtotal', {}), ('TaxAmount', 'price_tax', {}), ('Total', 'price_total', {}),
     ('QuantityDelivered', 'qty_delivered', {}), ('QuantityInvoiced', 'qty_invoiced', {}),
-    ('QuantityToInvoice', 'qty_to_invoice', {}), ('LeadTimeDays', 'customer_lead', {})], [
+    ('QuantityToInvoice', 'qty_to_invoice', {}), ('LeadTimeDays', 'customer_lead', {}),
+    ('IsPriceManual', None, {'type': 'Boolean', 'default': 'false',
+                             'note': 'the unit price was typed: a quantity or unit change no longer re-prices it (coherence C1-06)'})], [
     ('SalesOrderLine_SalesOrder', 'Sales.SalesOrder', 'Reference', 'order_id', 'delete lines with the order'),
     ('SalesOrderLine_Product', 'Products.Product', 'Reference', 'product_id', None),
     ('SalesOrderLine_UoM', 'Products.UoM', 'Reference', 'product_uom', None),

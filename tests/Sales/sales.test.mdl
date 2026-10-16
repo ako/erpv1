@@ -129,3 +129,54 @@ $SO = call microflow Sales.SUB_SalesOrder_Create();
 call microflow Sales.SUB_SalesOrder_Cancel(SalesOrder = $SO);
 $Done = call microflow Sales.ACT_SalesOrder_SetToQuotation(SalesOrder = $SO);
 /
+
+/**
+ * @test Changing a chair line to Dozens re-prices it per dozen (C1-06: 12 x 120.00)
+ * @expect $Line/UnitPrice = 1440
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+retrieve $Dozens from Products.UoM where [Name = 'Dozens'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+$Line = create Sales.SalesOrderLine (Quantity = 1, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Chair);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+change $Line (Sales.SalesOrderLine_UoM = $Dozens);
+call microflow Sales.SUB_SalesOrderLine_Reprice(SalesOrderLine = $Line);
+/
+
+/**
+ * @test A typed price survives a unit change (C1-06)
+ * @expect $Line/UnitPrice = 99
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+retrieve $Dozens from Products.UoM where [Name = 'Dozens'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+$Line = create Sales.SalesOrderLine (Quantity = 1, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Chair);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+change $Line (UnitPrice = 99);
+call microflow Sales.SUB_SalesOrderLine_MarkPriceTyped(SalesOrderLine = $Line);
+change $Line (Sales.SalesOrderLine_UoM = $Dozens);
+call microflow Sales.SUB_SalesOrderLine_Reprice(SalesOrderLine = $Line);
+/
+
+/**
+ * @test Choosing the product again makes the price the pricelist's (C1-06)
+ * @expect $Line/IsPriceManual = false
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+$Line = create Sales.SalesOrderLine (Quantity = 1, IsPriceManual = true, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Chair);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+/
+
+/**
+ * @test A unit of another category is refused (C1-06)
+ * @expect $IsValid = false
+ */
+retrieve $Chair from Products.Product where [InternalReference = 'FURN_0269'] first;
+retrieve $Kg from Products.UoM where [Name = 'kg'] first;
+$SO = call microflow Sales.SUB_SalesOrder_Create();
+$Line = create Sales.SalesOrderLine (Quantity = 1, Sales.SalesOrderLine_SalesOrder = $SO, Sales.SalesOrderLine_Product = $Chair);
+call microflow Sales.SUB_SalesOrderLine_ApplyProduct(SalesOrderLine = $Line);
+change $Line (Sales.SalesOrderLine_UoM = $Kg);
+$IsValid = call microflow Sales.VAL_SalesOrderLine_UoM(SalesOrderLine = $Line);
+/

@@ -155,3 +155,7 @@
   visibility). The order lists, the invoice form's Open order links and the restored transfer links all go through it.
   mxbuild accepted Readers running an action that can show the form (their read access covers every widget on it); the
   transfer links stay granted to inventory roles only, since sales and purchase users cannot read each other's orders.
+- Products.SUB_UoM_ConvertPrice rounded to 4 decimals and gave 1440.0001 for 120/unit expressed per dozen (factor 0.08333333);
+  found by the new Sales re-pricing test, fixed by rounding to 2 (Odoo's Product Price precision); Sales and Products tests pass.
+- ONCHANGE in mdl_pages.py is a dict built with `**{...}` spreads: a later spread silently overrides an earlier explicit key
+  (the C1-06 Quantity/UnitPrice actions were first emitted as the old Recompute). Verified by grepping the regenerated 606.

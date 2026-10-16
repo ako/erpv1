@@ -57,7 +57,7 @@ end;
 
 /**
  * Product defaults on a line (Odoo onchange product_id): description, unit, customer taxes and the pricelist price
- * for the line's quantity on the order date.
+ * for the line's quantity on the order date; the price is the pricelist's again (not typed, C1-06).
  *
  * @param $SalesOrderLine the line whose product was chosen
  */
@@ -77,7 +77,7 @@ begin
   declare $Description String = if $Product/SalesDescription = empty or trim($Product/SalesDescription) = '' then $Product/Name
     else $Product/Name + ' — ' + $Product/SalesDescription;
   change $SalesOrderLine (Description = $Description, Quantity = $Qty, UnitPrice = $Price, LineType = Core.ENUM_LineType.Product,
-    Sales.SalesOrderLine_UoM = $Product/Products.Product_UoM, Sales.SalesOrderLine_Taxes = $Taxes);
+    IsPriceManual = false, Sales.SalesOrderLine_UoM = $Product/Products.Product_UoM, Sales.SalesOrderLine_Taxes = $Taxes);
 end;
 
 /**

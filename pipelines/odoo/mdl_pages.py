@@ -34,13 +34,17 @@ LINK_TARGET = {'UserProfile_Edit': 'Administration.Account_Overview'}
 DECIMAL_PRECISION = {'Factor': 8}
 # On change of a field: the ACT_ that applies its dependent defaults (BRD onchange rules). Keyed by (entity, field).
 ONCHANGE = {('Invoicing.InvoiceLine', 'InvoiceLine_Product'): 'Invoicing.ACT_InvoiceLine_ChangeProduct',
+            # C1-06: quantity and unit re-price an untyped price; typing a price marks it typed
+            ('Sales.SalesOrderLine', 'Quantity'): 'Sales.ACT_SalesOrderLine_ChangeQuantity',
+            ('Sales.SalesOrderLine', 'SalesOrderLine_UoM'): 'Sales.ACT_SalesOrderLine_ChangeUoM',
+            ('Sales.SalesOrderLine', 'UnitPrice'): 'Sales.ACT_SalesOrderLine_ChangePrice',
             **{('Invoicing.InvoiceLine', f): 'Invoicing.ACT_InvoiceLine_Recompute'
                for f in ('Quantity', 'UnitPrice', 'DiscountPercent', 'InvoiceLine_Taxes')},
             ('Sales.SalesOrder', 'SalesOrder_Customer'): 'Sales.ACT_SalesOrder_ChangeCustomer',
             ('Sales.SalesOrder', 'SalesOrder_QuotationTemplate'): 'Sales.ACT_SalesOrder_ApplyTemplate',
             ('Sales.SalesOrderLine', 'SalesOrderLine_Product'): 'Sales.ACT_SalesOrderLine_ChangeProduct',
             **{('Sales.SalesOrderLine', f): 'Sales.ACT_SalesOrderLine_Recompute'
-               for f in ('Quantity', 'UnitPrice', 'DiscountPercent', 'SalesOrderLine_Taxes')},
+               for f in ('DiscountPercent', 'SalesOrderLine_Taxes')},   # Quantity / UnitPrice / UoM: C1-06 entries above
             ('Purchasing.PurchaseOrder', 'PurchaseOrder_Vendor'): 'Purchasing.ACT_PurchaseOrder_ChangeVendor',
             ('Purchasing.PurchaseOrderLine', 'PurchaseOrderLine_Product'): 'Purchasing.ACT_PurchaseOrderLine_ChangeProduct',
             **{('Purchasing.PurchaseOrderLine', f): 'Purchasing.ACT_PurchaseOrderLine_Recompute'

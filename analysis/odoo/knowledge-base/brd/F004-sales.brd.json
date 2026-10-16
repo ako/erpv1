@@ -836,6 +836,15 @@
      "mandatory": true,
      "label": "Lead Time",
      "odooComputedBy": "_compute_customer_lead"
+    },
+    {
+     "name": "IsPriceManual",
+     "type": "Boolean",
+     "sourceOdoo": "sale.order.line (framework, not extracted field-level)",
+     "mandatory": false,
+     "new": true,
+     "default": "false",
+     "note": "the unit price was typed: a quantity or unit change no longer re-prices it (coherence C1-06)"
     }
    ],
    "associations": [

@@ -1,0 +1,110 @@
+mdl 1;
+-- One-off: the C1-06 flag is IsPriceManual (CONV001 boolean prefix); ACT_SalesOrderLine_ChangePrice hands its change to
+-- SUB_SalesOrderLine_MarkPriceTyped (CONV010, MDL-V1-REBUILD: drop, replay 620).
+alter entity Sales.SalesOrderLine rename attribute PriceIsManual to IsPriceManual;
+drop microflow Sales.ACT_SalesOrderLine_ChangePrice;
+-- 620-sales-mf-sales-order-line-reprice.mdl — coherence C1-06 (PROJECT.md 2026-10-15, confirmed): a sales line's quantity or
+-- unit change re-prices it through the pricelist, the unit converted (Products.SUB_UoM_ConvertPrice), while its price is still
+-- the pricelist's; a typed price (IsPriceManual) is kept. The line editor's on-change actions for quantity, unit and price.
+
+/**
+ * Re-price a line from the pricelist (Odoo sale.order.line._compute_price_unit): the price per product unit for the quantity in
+ * the product's unit, expressed per the line's unit. A typed price, or a line without product, is left alone. Not committed.
+ *
+ * @param $SalesOrderLine the line
+ */
+create or modify microflow Sales.SUB_SalesOrderLine_Reprice ($SalesOrderLine: Sales.SalesOrderLine)
+folder 'Quotations/Microflows'
+begin
+  retrieve $Product from $SalesOrderLine/Sales.SalesOrderLine_Product;
+  if $SalesOrderLine/IsPriceManual or $Product = empty then
+    return;
+  end if;
+  retrieve $Order from $SalesOrderLine/Sales.SalesOrderLine_SalesOrder;
+  retrieve $Pricelist from $Order/Sales.SalesOrder_Pricelist;
+  retrieve $ProductUoM from $Product/Products.Product_UoM;
+  retrieve $LineUoM from $SalesOrderLine/Sales.SalesOrderLine_UoM;
+  $Qty = call microflow Products.SUB_UoM_ConvertQuantity(Quantity = if $SalesOrderLine/Quantity = empty then 0 else $SalesOrderLine/Quantity,
+    FromUoM = $LineUoM, ToUoM = $ProductUoM);
+  $Price = call microflow Products.SUB_Pricelist_GetPrice(Pricelist = $Pricelist, Product = $Product, Quantity = $Qty,
+    Date = if $Order/OrderDate = empty then [%CurrentDateTime%] else $Order/OrderDate);
+  $LinePrice = call microflow Products.SUB_UoM_ConvertPrice(Price = $Price, FromUoM = $ProductUoM, ToUoM = $LineUoM);
+  change $SalesOrderLine (UnitPrice = $LinePrice);
+end;
+
+/**
+ * A line's unit must be of its product's unit category (Odoo: "The unit of measure … must be in the same category").
+ *
+ * @param $SalesOrderLine the line
+ * @returns true when the unit fits
+ */
+create or modify microflow Sales.VAL_SalesOrderLine_UoM ($SalesOrderLine: Sales.SalesOrderLine)
+returns Boolean as $IsValid
+folder 'Quotations/Microflows'
+begin
+  retrieve $Product from $SalesOrderLine/Sales.SalesOrderLine_Product;
+  retrieve $LineUoM from $SalesOrderLine/Sales.SalesOrderLine_UoM;
+  if $Product = empty or $LineUoM = empty then
+    return true;
+  end if;
+  if $LineUoM/Products.UoM_Category != $Product/Products.Product_UoM/Products.UoM/Products.UoM_Category then
+    validation feedback $SalesOrderLine/Sales.SalesOrderLine_UoM message 'Choose a unit of the product''s unit category.';
+    return false;
+  end if;
+  return true;
+end;
+
+/**
+ * On change of a line's quantity: refused below the delivered quantity, else re-priced (unless typed) and the order totals.
+ *
+ * @param $SalesOrderLine the line
+ */
+create or modify microflow Sales.ACT_SalesOrderLine_ChangeQuantity ($SalesOrderLine: Sales.SalesOrderLine)
+folder 'Quotations/Microflows'
+begin
+  $IsValid = call microflow Sales.VAL_SalesOrderLine_Quantity(SalesOrderLine = $SalesOrderLine);
+  if not($IsValid) then
+    return;
+  end if;
+  call microflow Sales.SUB_SalesOrderLine_Reprice(SalesOrderLine = $SalesOrderLine);
+  $Recomputed = call microflow Sales.SUB_SalesOrderLine_RecomputeOrder(SalesOrderLine = $SalesOrderLine);
+end;
+
+/**
+ * On change of a line's unit: refused outside the product's unit category, else re-priced (unless typed) and the order totals.
+ *
+ * @param $SalesOrderLine the line
+ */
+create or modify microflow Sales.ACT_SalesOrderLine_ChangeUoM ($SalesOrderLine: Sales.SalesOrderLine)
+folder 'Quotations/Microflows'
+begin
+  $IsValid = call microflow Sales.VAL_SalesOrderLine_UoM(SalesOrderLine = $SalesOrderLine);
+  if not($IsValid) then
+    return;
+  end if;
+  call microflow Sales.SUB_SalesOrderLine_Reprice(SalesOrderLine = $SalesOrderLine);
+  $Recomputed = call microflow Sales.SUB_SalesOrderLine_RecomputeOrder(SalesOrderLine = $SalesOrderLine);
+end;
+
+/**
+ * Mark a line's price as typed: later quantity or unit changes keep it. Not committed.
+ *
+ * @param $SalesOrderLine the line
+ */
+create or modify microflow Sales.SUB_SalesOrderLine_MarkPriceTyped ($SalesOrderLine: Sales.SalesOrderLine)
+folder 'Quotations/Microflows'
+begin
+  change $SalesOrderLine (IsPriceManual = true);
+end;
+
+/**
+ * On change of a line's unit price: the price is now typed (kept by later quantity or unit changes), then the order totals.
+ *
+ * @param $SalesOrderLine the line
+ */
+create or modify microflow Sales.ACT_SalesOrderLine_ChangePrice ($SalesOrderLine: Sales.SalesOrderLine)
+folder 'Quotations/Microflows'
+begin
+  call microflow Sales.SUB_SalesOrderLine_MarkPriceTyped(SalesOrderLine = $SalesOrderLine);
+  $Recomputed = call microflow Sales.SUB_SalesOrderLine_RecomputeOrder(SalesOrderLine = $SalesOrderLine);
+end;

@@ -991,6 +991,12 @@
  },
  {
   "entity": "Sales.SalesOrderLine",
+  "attribute": "IsPriceManual",
+  "odoo": "sale.order.line (framework, not extracted field-level)",
+  "new": true
+ },
+ {
+  "entity": "Sales.SalesOrderLine",
   "association": "SalesOrderLine_SalesOrder",
   "odoo": "sale.order.line.order_id",
   "new": false

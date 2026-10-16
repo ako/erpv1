@@ -69,6 +69,7 @@ create or modify persistent entity Sales."SalesOrderLine" (
   "QuantityInvoiced": Decimal,
   "QuantityToInvoice": Decimal,
   "LeadTimeDays": Decimal,
+  "IsPriceManual": Boolean default false,
   CreatedDate: AutoCreatedDate,
   ChangedDate: AutoChangedDate,
   Owner: AutoOwner,

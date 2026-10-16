@@ -30,7 +30,8 @@ end;
 
 /**
  * Convert a unit price between two units of one category (inverse of the quantity conversion, not rounded up).
- * Rounded to 4 decimals: a bigger unit stores 1/n with 8 decimals (Dozens 0.08333333), so 120/dozen would read 9.9999996/unit.
+ * Rounded to 2 decimals (Odoo's default Product Price precision): a bigger unit stores 1/n with 8 decimals (Dozens
+ * 0.08333333), so 120/dozen would read 9.9999996/unit and 120/unit 1440.0001/dozen at 4 decimals (Sales test, 2026-10-16).
  *
  * @param $Price price per FromUoM
  * @param $FromUoM unit the price is per
@@ -44,5 +45,5 @@ begin
   if $Price = empty or $FromUoM = empty or $ToUoM = empty or $FromUoM = $ToUoM then
     return $Price;
   end if;
-  return round($Price * $FromUoM/Factor div $ToUoM/Factor, 4);
+  return round($Price * $FromUoM/Factor div $ToUoM/Factor, 2);
 end;
