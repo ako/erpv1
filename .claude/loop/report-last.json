@@ -1,27 +1,27 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-15 23:22:59",
+  "date": "2026-10-16 04:53:14",
   "overallScore": 49.1,
   "summary": {
-    "total": 405,
+    "total": 408,
     "errors": 0,
     "warnings": 133,
-    "infos": 272
+    "infos": 275
   },
   "categories": [
     {
       "name": "Security",
       "score": 0,
-      "total": 230,
+      "total": 233,
       "errors": 0,
       "warnings": 41,
-      "infos": 189,
+      "infos": 192,
       "topActions": [
         "Add an XPath constraint to limit which rows 'Core.Admin' can READ on 'Company'",
         "Remove the CREATE and DELETE rights and implement a microflow (ACT_) with security checks",
         "Review the user role assignments for 'Core.User' and ensure a 1:1 mapping",
-        "Add XPath constraints to scope access to the current user's own data, e.g. [Sales.Order_Customer/Sales.Customer/id = '[%CurrentUser%]']",
-        "ALTER APP SECURITY ( EnableDemoUsers: FALSE )"
+        "Intended if the list is meant to be row-scoped; otherwise grant an unconstrained READ to a module role those user roles hold",
+        "Add XPath constraints to scope access to the current user's own data, e.g. [Sales.Order_Customer/Sales.Customer/id = '[%CurrentUser%]']"
       ]
     },
     {

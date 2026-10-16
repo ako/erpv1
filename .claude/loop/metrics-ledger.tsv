@@ -300,3 +300,6 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-15T23:20:39Z	done-707-purchasing-page-purchase-order-new-edit.mdl	pass	applied-lint-rose	70	0	1	405	0	49.1	0	94	0	100	31	76	92	405	9e5d7fc
 2026-10-15T23:21:47Z	802-inventory-page-inventory-dashboard.mdl	pass	applied-lint-rose	65	0	1	405	0	49.1	0	94	0	100	31	76	92	405	60ef525
 2026-10-15T23:22:59Z	811-inventory-page-warehouse-edit.mdl	pass	applied-lint-rose	68	0	1	405	0	49.1	0	94	0	100	31	76	92	405	5bd9028
+2026-10-16T04:51:12Z	done-605-sales-page-sales-order-overview.mdl	pass	applied-lint-rose	117	0	1	408	0	49.1	0	94	0	100	31	76	92	408	1a33d89
+2026-10-16T04:52:15Z	done-706-purchasing-page-purchase-order-overview.mdl	pass	applied-lint-rose	63	0	1	408	0	49.1	0	94	0	100	31	76	92	408	5f956eb
+2026-10-16T04:53:14Z	done-803-inventory-page-transfer-overview.mdl	pass	applied-lint-rose	58	0	1	408	0	49.1	0	94	0	100	31	76	92	408	07106b2

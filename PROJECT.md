@@ -85,6 +85,8 @@ Opt-in artifact erd: user asked for the target-domain ERD at Stage 2 close (chat
 | 5 (build) | Manager-only actions: lock/unlock orders (Sales, Purchasing), archive contacts, and maintain vendor prices are limited to the Manager module roles (coherence C1-15) | CONFIRMED | User 2026-10-15: "Yes, go with proposed assumptions" |
 | 5 (build) | Lint baseline raised for Purchasing: ARCH001 Account pickers, CONV003 page names, CUSTOM002 ASU_, CONV010 on ACT_PurchaseApproval_Open (open user task is navigation; rule false positive) | CONFIRMED | User 2026-10-15: "Yes, go with proposed assumptions" |
 | 5 (build) | Inventory coverage checklist (12 items, posted in chat 2026-10-15) confirmed as the module's definition of done | CONFIRMED | User 2026-10-15: "Yes, go with proposed assumptions" |
+| 5 (build) | Lint baseline raised for Inventory: ARCH001 cross-module pickers (+8), CONV003 ValidateTransfer_Popup / Warehouse_Edit (+2), CUSTOM002 ASU_Inventory_SeedData and SCE_ReorderRules_Run — the BRD's name (+2) | CONFIRMED | User 2026-10-16: "1. ok" |
+| 5 (build) | Order lists get the wireframe's tabs and filters: Quotations & sales orders, RFQs & purchase orders (and Transfers, whose spec carries tabs too) — LOOK 2026-10-16 P2 intent | CONFIRMED | User 2026-10-16: "2 yes" |
 
 Skeleton proven 2026-10-14: exec pass, journey pass/fail-control, look done (docs/skeleton-proof.md, 6 of 6 rows)
 

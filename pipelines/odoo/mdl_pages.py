@@ -61,6 +61,15 @@ PICKER_WHERE = {('Sales.SalesOrder', 'SalesOrder_Customer'): ACTIVE + '[IsCustom
                 ('Purchasing.VendorPrice', 'VendorPrice_Product'): ACTIVE + '[CanBePurchased = true()]'}
 # Document lines removed through a guarded microflow (refuses delivered/received/invoiced lines, recomputes totals) — C1-04/05.
 LINE_DELETE = {'Sales.SalesOrderLine': 'Sales.ACT_SalesOrderLine_Delete', 'Purchasing.PurchaseOrderLine': 'Purchasing.ACT_PurchaseOrderLine_Delete'}
+# List-page tabs (wireframe lg-tabs, user 2026-10-16): caption -> XPath on the list's entity ('' = all).
+TAB_WHERE = {
+    'SalesOrder_Overview': [('All', ''), ('Quotations', "[Status = 'Quotation' or Status = 'QuotationSent']"),
+                            ('Sales orders', "[Status = 'SalesOrder']"), ('To invoice', "[InvoiceStatus = 'ToInvoice']")],
+    'PurchaseOrder_Overview': [('All', ''), ('RFQs', "[Status = 'RFQ' or Status = 'RFQSent']"), ('To approve', "[Status = 'ToApprove']"),
+                               ('Purchase orders', "[Status = 'PurchaseOrder']")],
+    'Transfer_Overview': [('All', '')] + [(cap, "[Inventory.Transfer_OperationType/Inventory.OperationType/Kind = '%s']" % k)
+                                          for cap, k in (('Receipts', 'Receipt'), ('Deliveries', 'Delivery'), ('Internal', 'Internal'))],
+}
 # A button on each row of an editable list: entity -> (caption, microflow taking the row). The row goes to the microflow with
 # its unsaved edits, so it cannot race the row's save-on-leave (Apply counts after typing a count applied nothing, J-INV-04).
 ROW_ACTION = {'Inventory.StockLevel': ('Apply', 'Inventory.ACT_StockLevel_ApplyCount'),
@@ -324,9 +333,23 @@ def gen_list(s):
     open_ = ''
     if s.get('open'):
         open_ = ', OnClick: %s' % show_page_action(s['open'], param_name(U.S[s['open']]['param']))
-    L.append("  datagrid gridMain (DataSource: %s, PagingPosition: bottom, Class: 'density-compact'%s) {" % (src, open_))
-    for c in s['columns']:
-        L.append('    ' + column(e, c, filters=not assoc(e, c)))   # every attribute column filterable (P2-3)
+    def grid(name, where, sfx, ind):
+        g = ["%sdatagrid %s (DataSource: %s, PagingPosition: bottom, Class: 'density-compact'%s) {"
+             % (ind, name, src.replace(' sort by ', ' where %s sort by ' % where, 1) if where else src, open_)]
+        for c in s['columns']:   # every attribute column filterable (P2-3); filter names unique per page (CE0495)
+            g.append(ind + '  ' + re.sub(r'(filter f\w+)', r'\g<1>' + sfx, column(e, c, filters=not assoc(e, c))))
+        g.append(ind + '}')
+        return g
+    tabs = TAB_WHERE.get(s['name'])
+    if not tabs:
+        return L + grid('gridMain', '', '', '  ')
+    # the wireframe's tabs (user 2026-10-16 "yes"): one grid per tab; the first keeps gridMain for journeys and shot lists
+    L.append('  tabcontainer tabsList {')
+    for i, (cap, where) in enumerate(tabs):
+        key = re.sub(r'\W', '', cap.title())
+        L.append("    tabpage tp%s (Caption: '%s') {" % (key, esc(cap)))
+        L += grid('gridMain' if i == 0 else 'grid' + key, where, '' if i == 0 else key, '      ')
+        L.append('    }')
     L.append('  }')
     return L
 

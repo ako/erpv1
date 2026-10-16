@@ -18,15 +18,55 @@ create or modify page Sales.SalesOrder_Overview folder 'Quotations/Pages'
       actionbutton btnNew (Caption: 'New', Action: call microflow Sales.ACT_SalesOrder_New, ButtonStyle: Primary)
     }
   }
-  datagrid gridMain (DataSource: database Sales."SalesOrder" sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Sales.SalesOrder_NewEdit(SalesOrder = $currentObject)) {
-    column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumber }
-    column (Attribute: "OrderDate", Caption: 'Order date', WrapText: true) { datefilter fOrderDate }
-    column (Attribute: SalesOrder_Customer/Name, Caption: 'Customer', WrapText: true)
-    column (Attribute: SalesOrder_Salesperson/FullName, Caption: 'Salesperson', WrapText: true)
-    column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotal }
-    column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatus }
-    column (Attribute: "InvoiceStatus", Caption: 'Invoice status', WrapText: true) { dropdownfilter fInvoiceStatus }
-    column (Attribute: "DeliveryStatus", Caption: 'Delivery status', WrapText: true) { dropdownfilter fDeliveryStatus }
+  tabcontainer tabsList {
+    tabpage tpAll (Caption: 'All') {
+      datagrid gridMain (DataSource: database Sales."SalesOrder" sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Sales.SalesOrder_NewEdit(SalesOrder = $currentObject)) {
+        column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumber }
+        column (Attribute: "OrderDate", Caption: 'Order date', WrapText: true) { datefilter fOrderDate }
+        column (Attribute: SalesOrder_Customer/Name, Caption: 'Customer', WrapText: true)
+        column (Attribute: SalesOrder_Salesperson/FullName, Caption: 'Salesperson', WrapText: true)
+        column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotal }
+        column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatus }
+        column (Attribute: "InvoiceStatus", Caption: 'Invoice status', WrapText: true) { dropdownfilter fInvoiceStatus }
+        column (Attribute: "DeliveryStatus", Caption: 'Delivery status', WrapText: true) { dropdownfilter fDeliveryStatus }
+      }
+    }
+    tabpage tpQuotations (Caption: 'Quotations') {
+      datagrid gridQuotations (DataSource: database Sales."SalesOrder" where [Status = 'Quotation' or Status = 'QuotationSent'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Sales.SalesOrder_NewEdit(SalesOrder = $currentObject)) {
+        column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumberQuotations }
+        column (Attribute: "OrderDate", Caption: 'Order date', WrapText: true) { datefilter fOrderDateQuotations }
+        column (Attribute: SalesOrder_Customer/Name, Caption: 'Customer', WrapText: true)
+        column (Attribute: SalesOrder_Salesperson/FullName, Caption: 'Salesperson', WrapText: true)
+        column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotalQuotations }
+        column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatusQuotations }
+        column (Attribute: "InvoiceStatus", Caption: 'Invoice status', WrapText: true) { dropdownfilter fInvoiceStatusQuotations }
+        column (Attribute: "DeliveryStatus", Caption: 'Delivery status', WrapText: true) { dropdownfilter fDeliveryStatusQuotations }
+      }
+    }
+    tabpage tpSalesOrders (Caption: 'Sales orders') {
+      datagrid gridSalesOrders (DataSource: database Sales."SalesOrder" where [Status = 'SalesOrder'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Sales.SalesOrder_NewEdit(SalesOrder = $currentObject)) {
+        column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumberSalesOrders }
+        column (Attribute: "OrderDate", Caption: 'Order date', WrapText: true) { datefilter fOrderDateSalesOrders }
+        column (Attribute: SalesOrder_Customer/Name, Caption: 'Customer', WrapText: true)
+        column (Attribute: SalesOrder_Salesperson/FullName, Caption: 'Salesperson', WrapText: true)
+        column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotalSalesOrders }
+        column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatusSalesOrders }
+        column (Attribute: "InvoiceStatus", Caption: 'Invoice status', WrapText: true) { dropdownfilter fInvoiceStatusSalesOrders }
+        column (Attribute: "DeliveryStatus", Caption: 'Delivery status', WrapText: true) { dropdownfilter fDeliveryStatusSalesOrders }
+      }
+    }
+    tabpage tpToInvoice (Caption: 'To invoice') {
+      datagrid gridToInvoice (DataSource: database Sales."SalesOrder" where [InvoiceStatus = 'ToInvoice'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Sales.SalesOrder_NewEdit(SalesOrder = $currentObject)) {
+        column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumberToInvoice }
+        column (Attribute: "OrderDate", Caption: 'Order date', WrapText: true) { datefilter fOrderDateToInvoice }
+        column (Attribute: SalesOrder_Customer/Name, Caption: 'Customer', WrapText: true)
+        column (Attribute: SalesOrder_Salesperson/FullName, Caption: 'Salesperson', WrapText: true)
+        column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotalToInvoice }
+        column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatusToInvoice }
+        column (Attribute: "InvoiceStatus", Caption: 'Invoice status', WrapText: true) { dropdownfilter fInvoiceStatusToInvoice }
+        column (Attribute: "DeliveryStatus", Caption: 'Delivery status', WrapText: true) { dropdownfilter fDeliveryStatusToInvoice }
+      }
+    }
   }
 };
 

@@ -18,15 +18,55 @@ create or modify page Purchasing.PurchaseOrder_Overview folder 'RFQs/Pages'
       actionbutton btnNew (Caption: 'New', Action: call microflow Purchasing.ACT_PurchaseOrder_New, ButtonStyle: Primary)
     }
   }
-  datagrid gridMain (DataSource: database Purchasing."PurchaseOrder" sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $currentObject)) {
-    column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumber }
-    column (Attribute: "OrderDeadline", Caption: 'Order deadline', WrapText: true) { datefilter fOrderDeadline }
-    column (Attribute: PurchaseOrder_Vendor/Name, Caption: 'Vendor', WrapText: true)
-    column (Attribute: PurchaseOrder_Buyer/FullName, Caption: 'Buyer', WrapText: true)
-    column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotal }
-    column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatus }
-    column (Attribute: "ReceiptStatus", Caption: 'Receipt status', WrapText: true) { dropdownfilter fReceiptStatus }
-    column (Attribute: "BillingStatus", Caption: 'Billing status', WrapText: true) { dropdownfilter fBillingStatus }
+  tabcontainer tabsList {
+    tabpage tpAll (Caption: 'All') {
+      datagrid gridMain (DataSource: database Purchasing."PurchaseOrder" sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $currentObject)) {
+        column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumber }
+        column (Attribute: "OrderDeadline", Caption: 'Order deadline', WrapText: true) { datefilter fOrderDeadline }
+        column (Attribute: PurchaseOrder_Vendor/Name, Caption: 'Vendor', WrapText: true)
+        column (Attribute: PurchaseOrder_Buyer/FullName, Caption: 'Buyer', WrapText: true)
+        column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotal }
+        column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatus }
+        column (Attribute: "ReceiptStatus", Caption: 'Receipt status', WrapText: true) { dropdownfilter fReceiptStatus }
+        column (Attribute: "BillingStatus", Caption: 'Billing status', WrapText: true) { dropdownfilter fBillingStatus }
+      }
+    }
+    tabpage tpRfqs (Caption: 'RFQs') {
+      datagrid gridRfqs (DataSource: database Purchasing."PurchaseOrder" where [Status = 'RFQ' or Status = 'RFQSent'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $currentObject)) {
+        column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumberRfqs }
+        column (Attribute: "OrderDeadline", Caption: 'Order deadline', WrapText: true) { datefilter fOrderDeadlineRfqs }
+        column (Attribute: PurchaseOrder_Vendor/Name, Caption: 'Vendor', WrapText: true)
+        column (Attribute: PurchaseOrder_Buyer/FullName, Caption: 'Buyer', WrapText: true)
+        column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotalRfqs }
+        column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatusRfqs }
+        column (Attribute: "ReceiptStatus", Caption: 'Receipt status', WrapText: true) { dropdownfilter fReceiptStatusRfqs }
+        column (Attribute: "BillingStatus", Caption: 'Billing status', WrapText: true) { dropdownfilter fBillingStatusRfqs }
+      }
+    }
+    tabpage tpToApprove (Caption: 'To approve') {
+      datagrid gridToApprove (DataSource: database Purchasing."PurchaseOrder" where [Status = 'ToApprove'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $currentObject)) {
+        column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumberToApprove }
+        column (Attribute: "OrderDeadline", Caption: 'Order deadline', WrapText: true) { datefilter fOrderDeadlineToApprove }
+        column (Attribute: PurchaseOrder_Vendor/Name, Caption: 'Vendor', WrapText: true)
+        column (Attribute: PurchaseOrder_Buyer/FullName, Caption: 'Buyer', WrapText: true)
+        column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotalToApprove }
+        column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatusToApprove }
+        column (Attribute: "ReceiptStatus", Caption: 'Receipt status', WrapText: true) { dropdownfilter fReceiptStatusToApprove }
+        column (Attribute: "BillingStatus", Caption: 'Billing status', WrapText: true) { dropdownfilter fBillingStatusToApprove }
+      }
+    }
+    tabpage tpPurchaseOrders (Caption: 'Purchase orders') {
+      datagrid gridPurchaseOrders (DataSource: database Purchasing."PurchaseOrder" where [Status = 'PurchaseOrder'] sort by "Number" desc, PagingPosition: bottom, Class: 'density-compact', OnClick: show page Purchasing.PurchaseOrder_NewEdit(PurchaseOrder = $currentObject)) {
+        column (Attribute: "Number", Caption: 'Number', WrapText: true) { textfilter fNumberPurchaseOrders }
+        column (Attribute: "OrderDeadline", Caption: 'Order deadline', WrapText: true) { datefilter fOrderDeadlinePurchaseOrders }
+        column (Attribute: PurchaseOrder_Vendor/Name, Caption: 'Vendor', WrapText: true)
+        column (Attribute: PurchaseOrder_Buyer/FullName, Caption: 'Buyer', WrapText: true)
+        column (Attribute: "AmountTotal", Caption: 'Amount total', Alignment: right, DynamicCellClass: 'num-right', WrapText: true) { numberfilter fAmountTotalPurchaseOrders }
+        column (Attribute: "Status", Caption: 'Status', WrapText: true) { dropdownfilter fStatusPurchaseOrders }
+        column (Attribute: "ReceiptStatus", Caption: 'Receipt status', WrapText: true) { dropdownfilter fReceiptStatusPurchaseOrders }
+        column (Attribute: "BillingStatus", Caption: 'Billing status', WrapText: true) { dropdownfilter fBillingStatusPurchaseOrders }
+      }
+    }
   }
 };
 

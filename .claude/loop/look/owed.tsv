@@ -173,3 +173,6 @@
 1792106439	2026-10-15T23:20:39Z	Purchasing.PurchaseOrder_NewEdit	mdlsource/7-purchasing/done-707-purchasing-page-purchase-order-new-edit.mdl
 1792106507	2026-10-15T23:21:47Z	Inventory.Inventory_Dashboard	mdlsource/8-inventory/802-inventory-page-inventory-dashboard.mdl
 1792106580	2026-10-15T23:23:00Z	Inventory.Warehouse_Edit	mdlsource/8-inventory/811-inventory-page-warehouse-edit.mdl
+1792126272	2026-10-16T04:51:12Z	Sales.SalesOrder_Overview	mdlsource/6-sales/done-605-sales-page-sales-order-overview.mdl
+1792126335	2026-10-16T04:52:15Z	Purchasing.PurchaseOrder_Overview	mdlsource/7-purchasing/done-706-purchasing-page-purchase-order-overview.mdl
+1792126394	2026-10-16T04:53:14Z	Inventory.Transfer_Overview	mdlsource/8-inventory/done-803-inventory-page-transfer-overview.mdl
