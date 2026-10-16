@@ -3,12 +3,12 @@ Invoicing	F008-invoicing-payments:`/actorRoleMapping/*` (4)	not-built	PRESENT	UN
 Invoicing	F008-invoicing-payments:`/actors/*` (4)	not-built	PRESENT	UNDERSTATED	SHOW USER ROLES
 Invoicing	F008-invoicing-payments:`/domainEntities/0/*` (23)	built	PRESENT	OK	DESCRIBE ENTITY Core.LineAmounts
 Invoicing	F008-invoicing-payments:`/domainEntities/1/*` (21)	built	PRESENT	OK	DESCRIBE ENTITY Sales.CreateInvoiceRequest
-Invoicing	F008-invoicing-payments:`/domainEntities/2/*` (181)	built	PRESENT	OK	DESCRIBE ENTITY Invoicing.Invoice
-Invoicing	F008-invoicing-payments:`/domainEntities/3/*` (112)	built	PRESENT	OK	DESCRIBE ENTITY Invoicing.InvoiceLine
-Invoicing	F008-invoicing-payments:`/domainEntities/4/*` (98)	built	PRESENT	OK	DESCRIBE ENTITY Invoicing.Payment
+Invoicing	F008-invoicing-payments:`/domainEntities/2/*` (218)	built	PRESENT	OK	DESCRIBE ENTITY Invoicing.Invoice
+Invoicing	F008-invoicing-payments:`/domainEntities/3/*` (167)	built	PRESENT	OK	DESCRIBE ENTITY Invoicing.InvoiceLine
+Invoicing	F008-invoicing-payments:`/domainEntities/4/*` (125)	built	PRESENT	OK	DESCRIBE ENTITY Invoicing.Payment
 Invoicing	F008-invoicing-payments:`/domainEntities/5/*` (27)	built	PRESENT	OK	DESCRIBE ENTITY Invoicing.PaymentAllocation
 Invoicing	F008-invoicing-payments:`/domainEntities/6/*` (43)	built	PRESENT	OK	DESCRIBE ENTITY Invoicing.RegisterPaymentRequest
-Invoicing	F008-invoicing-payments:`/domainEntities/7/*` (29)	built	PRESENT	OK	DESCRIBE ENTITY Invoicing.CreditNoteRequest
+Invoicing	F008-invoicing-payments:`/domainEntities/7/*` (35)	built	PRESENT	OK	DESCRIBE ENTITY Invoicing.CreditNoteRequest
 Invoicing	F008-invoicing-payments:`/enumerations/0/*` (13)	built	PRESENT	OK	DESCRIBE ENUMERATION Core.ENUM_LineType
 Invoicing	F008-invoicing-payments:`/enumerations/1/*` (13)	built	PRESENT	OK	DESCRIBE ENUMERATION Invoicing.ENUM_InvoiceStatus
 Invoicing	F008-invoicing-payments:`/enumerations/2/*` (19)	built	PRESENT	OK	DESCRIBE ENUMERATION Invoicing.ENUM_InvoiceType

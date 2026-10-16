@@ -1,0 +1,63 @@
+
+=== PREFLIGHT ===
+  SETUP  admin: OK at localhost:8090 (credential from .mxcli/run-local.json (the run --local handshake for :8080))
+  SETUP  sessions: 2 live — on a trial licence leaked sessions fill the cap; set JOURNEY_SESSION_CAP to refuse at it
+  [32mPASS[0m [ui] login  — billing
+
+=== JOURNEY J-INV-B1 — Billing invoices a confirmed sales order from its read-only view, confirms the invoice and registers a partial payment
+    persona: billing   requirements: F008-UC001, F008-UC004, F008-UC007
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+    seeds: {"orderNo":"S00078"}
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/7: Open Sales > Quotations & orders: the order is listed
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: the order is listed: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: the order is listed: page says "S00078"
+
+  --- step 2/7: Open the order: Billing gets the read-only view with Create invoice
+  [32mPASS[0m [ui] Open the order: Billing gets the read-only view with Create invoice: reached  — .mx-name-btnCreateinvoice0
+  [32mPASS[0m [ui] Open the order: Billing gets the read-only view with Create invoice: page says "S00078"
+  [32mPASS[0m [ui] Open the order: Billing gets the read-only view with Create invoice: page does NOT say "Save"
+
+  --- step 3/7: Create invoice: the popup explains what is invoiced
+  [32mPASS[0m [ui] Create invoice: the popup explains what is invoiced: reached  — .mx-name-pbtnCreateinvoice0
+  [32mPASS[0m [ui] Create invoice: the popup explains what is invoiced: page says "Regular invoice"
+
+  --- step 4/7: Confirm the popup: a draft invoice opens
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] Confirm the popup: a draft invoice opens: reached  — .mx-name-btnConfirm1
+  [32mPASS[0m [ui] Confirm the popup: a draft invoice opens: page says "Draft"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Confirm the popup: a draft invoice opens: Invoicing.Invoice +1  — before=4 after=5 delta=1
+
+  --- step 5/7: Confirm the invoice: numbered INV/, Register payment offered
+  [32mPASS[0m [ui] Confirm the invoice: numbered INV/, Register payment offered: reached  — .mx-name-btnRegisterpayment0
+  [32mPASS[0m [ui] Confirm the invoice: numbered INV/, Register payment offered: page says "INV/"
+
+  --- step 6/7: Register payment: the popup proposes the amount due
+  [32mPASS[0m [ui] Register payment: the popup proposes the amount due: reached  — .mx-name-pbtnCreatepayment0
+
+  --- step 7/7: Pay 10.00 of it
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] Pay 10.00 of it: reached  — .mx-name-dvMain
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Pay 10.00 of it: Invoicing.Payment +1  — before=4 after=5 delta=1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [outcome] J-INV-B1 end state  — got 1, expected 1
+
+=== SUMMARY ===
+  PASS 17   FAIL 0   INVALID 0
+  findings → ../tests/e2e/artifacts/journey-findings.json

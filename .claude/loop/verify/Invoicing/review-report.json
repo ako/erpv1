@@ -7,12 +7,12 @@
   "mprModifiedAt": null,
   "mendixVersion": null,
   "toolkitCommit": "99ef8f5",
-  "gitCommit": "f19006c",
+  "gitCommit": "8a5ce8b",
   "branch": "claude/friendly-dirac-db6s4k"
  },
  "run": {
-  "startedAt": "2026-10-16T12:38:51Z",
-  "finishedAt": "2026-10-16T12:39:52Z",
+  "startedAt": "2026-10-16T12:47:42Z",
+  "finishedAt": "2026-10-16T12:48:43Z",
   "trigger": "review-module",
   "target": "Invoicing",
   "env": {
@@ -44,7 +44,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -70,7 +70,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -96,7 +96,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -122,7 +122,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -136,7 +136,7 @@
    "blocks": []
   },
   {
-   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-2-181",
+   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-2-218",
    "instrument": "conformance",
    "kind": "conformance",
    "module": "Invoicing",
@@ -144,11 +144,11 @@
    "stepIndex": null,
    "stepName": null,
    "requirement": null,
-   "title": "F008-invoicing-payments:/domainEntities/2/* (181) — ledger says \"built\"",
+   "title": "F008-invoicing-payments:/domainEntities/2/* (218) — ledger says \"built\"",
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -162,7 +162,7 @@
    "blocks": []
   },
   {
-   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-3-112",
+   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-3-167",
    "instrument": "conformance",
    "kind": "conformance",
    "module": "Invoicing",
@@ -170,11 +170,11 @@
    "stepIndex": null,
    "stepName": null,
    "requirement": null,
-   "title": "F008-invoicing-payments:/domainEntities/3/* (112) — ledger says \"built\"",
+   "title": "F008-invoicing-payments:/domainEntities/3/* (167) — ledger says \"built\"",
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -188,7 +188,7 @@
    "blocks": []
   },
   {
-   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-4-98",
+   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-4-125",
    "instrument": "conformance",
    "kind": "conformance",
    "module": "Invoicing",
@@ -196,11 +196,11 @@
    "stepIndex": null,
    "stepName": null,
    "requirement": null,
-   "title": "F008-invoicing-payments:/domainEntities/4/* (98) — ledger says \"built\"",
+   "title": "F008-invoicing-payments:/domainEntities/4/* (125) — ledger says \"built\"",
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -226,7 +226,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -252,7 +252,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -266,7 +266,7 @@
    "blocks": []
   },
   {
-   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-7-29",
+   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-7-35",
    "instrument": "conformance",
    "kind": "conformance",
    "module": "Invoicing",
@@ -274,11 +274,11 @@
    "stepIndex": null,
    "stepName": null,
    "requirement": null,
-   "title": "F008-invoicing-payments:/domainEntities/7/* (29) — ledger says \"built\"",
+   "title": "F008-invoicing-payments:/domainEntities/7/* (35) — ledger says \"built\"",
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -304,7 +304,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -330,7 +330,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -356,7 +356,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -382,7 +382,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -408,7 +408,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -434,7 +434,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -460,7 +460,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -486,7 +486,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -512,7 +512,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -538,7 +538,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -564,7 +564,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -590,7 +590,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -616,7 +616,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -642,7 +642,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -668,7 +668,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -694,7 +694,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -720,7 +720,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -746,7 +746,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -772,7 +772,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -798,7 +798,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -824,7 +824,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -850,7 +850,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -876,7 +876,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -902,7 +902,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -928,7 +928,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -954,7 +954,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -980,7 +980,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -1006,7 +1006,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -1032,7 +1032,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -1058,7 +1058,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -1084,7 +1084,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "stored=built observed=PRESENT (OK)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -1110,7 +1110,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -1136,7 +1136,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -1162,7 +1162,7 @@
    "verdict": "fail",
    "provenance": "measured",
    "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "conformance has no positive control"
@@ -1188,7 +1188,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "112 elements · 11 inbound · 164 outbound",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "graph sweep has no positive control"
@@ -1215,7 +1215,7 @@
    "verdict": "manual",
    "provenance": "judged",
    "detail": "3 activities, and no inbound call / action / menu_item / show_page / datasource edge. Entry-point prefixes are already excluded. SHOW REFERENCES TO misses layout snippetcalls, so this is strong evidence of deadness, not proof.",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "graph sweep has no positive control"
@@ -1242,7 +1242,7 @@
    "verdict": "pass",
    "provenance": "measured",
    "detail": "leaves 1317 · claimed 1225 · unclaimed 0 · phantom 0 · double-claimed 0 · summed over 1 BRD ledger(s)",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "coverage-check has no positive control"
@@ -1269,7 +1269,7 @@
    "provenance": "declared",
    "notRun": true,
    "detail": "no journey run in this invocation. bin/review-module.sh answers a MODEL question (does what was built match what was decided) and deliberately never starts the app. Nothing in this report is evidence about runtime behaviour. For that: bin/loop/verify-module.sh Invoicing, with the stack up.",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "no journey ran, so no control could run either"
@@ -1296,7 +1296,7 @@
    "provenance": "declared",
    "notRun": true,
    "detail": "module-review.md stage 4 (the LOOK) was not performed in this invocation and cannot be: it is a judgement pass over rendered pages, assessed against the wireframe, the design system, or §4d's unaided rubric where neither exists. Nothing in this report is evidence about how Invoicing looks or whether a user could complete anything on it. For that: review-agent job 2, which writes design/ui-reviews/ui-review-<date>.html and appends P1/P2 findings to docs/improvement-register.md.",
-   "measuredAt": "2026-10-16T12:38:51Z",
+   "measuredAt": "2026-10-16T12:47:42Z",
    "nonVacuity": {
     "controlRan": false,
     "note": "nobody looked, so there is nothing to control for"
@@ -1353,7 +1353,7 @@
     "fault"
    ],
    "source": "BRD leaves vs coverage-ledger.md",
-   "rc": 1,
+   "rc": 0,
    "elapsedSec": 1,
    "log": ".claude/loop/review/Invoicing/coverage.txt"
   },

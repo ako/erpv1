@@ -1,0 +1,202 @@
+
+=== PREFLIGHT ===
+  SETUP  admin: OK at localhost:8090 (credential from .mxcli/run-local.json (the run --local handshake for :8080))
+  SETUP  sessions: 3 live — on a trial licence leaked sessions fill the cap; set JOURNEY_SESSION_CAP to refuse at it
+  [32mPASS[0m [ui] login  — billing
+
+=== JOURNEY J-INV-B1-CTL-ui-landing — (positive control · ui-landing — first step lands on a widget that does not exist; MUST fail)
+    persona: billing   requirements: F008-UC001, F008-UC004, F008-UC007
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+    seeds: {"orderNo":"S00076"}
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/7: Open Sales > Quotations & orders: the order is listed
+  [31mFAIL[0m [ui] Open Sales > Quotations & orders: the order is listed: reached  — ".mx-name-__this_widget_does_not_exist__" never appeared — screenshot J-INV-B1-CTL-ui-landing-step1-NOT-REACHED.png
+  [33mINVL[0m [ui] Open Sales > Quotations & orders: the order is listed: downstream rungs  — not reached; nothing measured
+  [32mPASS[0m [control] J-INV-B1 · ui-landing: first step lands on a widget that does not exist  — caught by "Open Sales > Quotations & orders: the order is listed: reached"
+
+=== JOURNEY J-INV-B1-CTL-ui-text — (positive control · ui-text — expect text the page never renders; MUST fail)
+    persona: billing   requirements: F008-UC001, F008-UC004, F008-UC007
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+    seeds: {"orderNo":"S00076"}
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/7: Open Sales > Quotations & orders: the order is listed
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: the order is listed: reached  — .mx-name-gridMain
+  [31mFAIL[0m [ui] Open Sales > Quotations & orders: the order is listed: page says "__text_this_page_will_never_render__"  — not found in rendered text
+
+  --- step 2/7: Open the order: Billing gets the read-only view with Create invoice
+  [32mPASS[0m [ui] Open the order: Billing gets the read-only view with Create invoice: reached  — .mx-name-btnCreateinvoice0
+  [32mPASS[0m [ui] Open the order: Billing gets the read-only view with Create invoice: page says "S00076"
+  [32mPASS[0m [ui] Open the order: Billing gets the read-only view with Create invoice: page does NOT say "Save"
+
+  --- step 3/7: Create invoice: the popup explains what is invoiced
+  [32mPASS[0m [ui] Create invoice: the popup explains what is invoiced: reached  — .mx-name-pbtnCreateinvoice0
+  [32mPASS[0m [ui] Create invoice: the popup explains what is invoiced: page says "Regular invoice"
+
+  --- step 4/7: Confirm the popup: a draft invoice opens
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] Confirm the popup: a draft invoice opens: reached  — .mx-name-btnConfirm1
+  [32mPASS[0m [ui] Confirm the popup: a draft invoice opens: page says "Draft"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Confirm the popup: a draft invoice opens: Invoicing.Invoice +1  — before=5 after=6 delta=1
+
+  --- step 5/7: Confirm the invoice: numbered INV/, Register payment offered
+  [32mPASS[0m [ui] Confirm the invoice: numbered INV/, Register payment offered: reached  — .mx-name-btnRegisterpayment0
+  [32mPASS[0m [ui] Confirm the invoice: numbered INV/, Register payment offered: page says "INV/"
+
+  --- step 6/7: Register payment: the popup proposes the amount due
+  [32mPASS[0m [ui] Register payment: the popup proposes the amount due: reached  — .mx-name-pbtnCreatepayment0
+
+  --- step 7/7: Pay 10.00 of it
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] Pay 10.00 of it: reached  — .mx-name-dvMain
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Pay 10.00 of it: Invoicing.Payment +1  — before=5 after=6 delta=1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [outcome] J-INV-B1-CTL-ui-text end state  — got 1, expected 1
+  [32mPASS[0m [control] J-INV-B1 · ui-text: expect text the page never renders  — caught by "Open Sales > Quotations & orders: the order is listed: page says "__text_this_page_will_never_render__""
+  [33mINVL[0m [control] J-INV-B1 · trace-order: expect a microflow that never fires  — this journey declares nothing this mutant can break — this rung is UNPROVEN for J-INV-B1, not passed (journey-proof.md: a rung with no mutant is fault, never pass)
+  [33mINVL[0m [control] J-INV-B1 · trace-negative: assert a microflow that DID run must not have run  — this journey declares nothing this mutant can break — this rung is UNPROVEN for J-INV-B1, not passed (journey-proof.md: a rung with no mutant is fault, never pass)
+
+=== JOURNEY J-INV-B1-CTL-data-delta — (positive control · data-delta — expect +2 rows from a +1 action; MUST fail)
+    persona: billing   requirements: F008-UC001, F008-UC004, F008-UC007
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+    seeds: {"orderNo":"S00075"}
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/7: Open Sales > Quotations & orders: the order is listed
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: the order is listed: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: the order is listed: page says "S00075"
+
+  --- step 2/7: Open the order: Billing gets the read-only view with Create invoice
+  [32mPASS[0m [ui] Open the order: Billing gets the read-only view with Create invoice: reached  — .mx-name-btnCreateinvoice0
+  [32mPASS[0m [ui] Open the order: Billing gets the read-only view with Create invoice: page says "S00075"
+  [32mPASS[0m [ui] Open the order: Billing gets the read-only view with Create invoice: page does NOT say "Save"
+
+  --- step 3/7: Create invoice: the popup explains what is invoiced
+  [32mPASS[0m [ui] Create invoice: the popup explains what is invoiced: reached  — .mx-name-pbtnCreateinvoice0
+  [32mPASS[0m [ui] Create invoice: the popup explains what is invoiced: page says "Regular invoice"
+
+  --- step 4/7: Confirm the popup: a draft invoice opens
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] Confirm the popup: a draft invoice opens: reached  — .mx-name-btnConfirm1
+  [32mPASS[0m [ui] Confirm the popup: a draft invoice opens: page says "Draft"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [31mFAIL[0m [data] Confirm the popup: a draft invoice opens: Invoicing.Invoice +2  — before=6 after=7 delta=1
+
+  --- step 5/7: Confirm the invoice: numbered INV/, Register payment offered
+  [32mPASS[0m [ui] Confirm the invoice: numbered INV/, Register payment offered: reached  — .mx-name-btnRegisterpayment0
+  [32mPASS[0m [ui] Confirm the invoice: numbered INV/, Register payment offered: page says "INV/"
+
+  --- step 6/7: Register payment: the popup proposes the amount due
+  [32mPASS[0m [ui] Register payment: the popup proposes the amount due: reached  — .mx-name-pbtnCreatepayment0
+
+  --- step 7/7: Pay 10.00 of it
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] Pay 10.00 of it: reached  — .mx-name-dvMain
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Pay 10.00 of it: Invoicing.Payment +1  — before=6 after=7 delta=1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [outcome] J-INV-B1-CTL-data-delta end state  — got 1, expected 1
+  [32mPASS[0m [control] J-INV-B1 · data-delta: expect +2 rows from a +1 action  — caught by "Confirm the popup: a draft invoice opens: Invoicing.Invoice +2"
+  [33mINVL[0m [control] J-INV-B1 · data-target: association must point at a value the journey never picked  — this journey declares nothing this mutant can break — this rung is UNPROVEN for J-INV-B1, not passed (journey-proof.md: a rung with no mutant is fault, never pass)
+
+=== JOURNEY J-INV-B1-CTL-outcome — (positive control · outcome — outcome query with an unreachable floor or exact value; MUST fail)
+    persona: billing   requirements: F008-UC001, F008-UC004, F008-UC007
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+    seeds: {"orderNo":"S00074"}
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+
+  --- step 1/7: Open Sales > Quotations & orders: the order is listed
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: the order is listed: reached  — .mx-name-gridMain
+  [32mPASS[0m [ui] Open Sales > Quotations & orders: the order is listed: page says "S00074"
+
+  --- step 2/7: Open the order: Billing gets the read-only view with Create invoice
+  [32mPASS[0m [ui] Open the order: Billing gets the read-only view with Create invoice: reached  — .mx-name-btnCreateinvoice0
+  [32mPASS[0m [ui] Open the order: Billing gets the read-only view with Create invoice: page says "S00074"
+  [32mPASS[0m [ui] Open the order: Billing gets the read-only view with Create invoice: page does NOT say "Save"
+
+  --- step 3/7: Create invoice: the popup explains what is invoiced
+  [32mPASS[0m [ui] Create invoice: the popup explains what is invoiced: reached  — .mx-name-pbtnCreateinvoice0
+  [32mPASS[0m [ui] Create invoice: the popup explains what is invoiced: page says "Regular invoice"
+
+  --- step 4/7: Confirm the popup: a draft invoice opens
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] Confirm the popup: a draft invoice opens: reached  — .mx-name-btnConfirm1
+  [32mPASS[0m [ui] Confirm the popup: a draft invoice opens: page says "Draft"
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Confirm the popup: a draft invoice opens: Invoicing.Invoice +1  — before=7 after=8 delta=1
+
+  --- step 5/7: Confirm the invoice: numbered INV/, Register payment offered
+  [32mPASS[0m [ui] Confirm the invoice: numbered INV/, Register payment offered: reached  — .mx-name-btnRegisterpayment0
+  [32mPASS[0m [ui] Confirm the invoice: numbered INV/, Register payment offered: page says "INV/"
+
+  --- step 6/7: Register payment: the popup proposes the amount due
+  [32mPASS[0m [ui] Register payment: the popup proposes the amount due: reached  — .mx-name-pbtnCreatepayment0
+
+  --- step 7/7: Pay 10.00 of it
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [ui] Pay 10.00 of it: reached  — .mx-name-dvMain
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [32mPASS[0m [data] Pay 10.00 of it: Invoicing.Payment +1  — before=7 after=8 delta=1
+Using project: /home/user/erpv1/app/erpv1.mpr (auto-detected in the current directory; pass -p to use another)
+(1 rows)
+  [31mFAIL[0m [outcome] J-INV-B1-CTL-outcome end state  — got 1, expected 999999
+  [32mPASS[0m [control] J-INV-B1 · outcome: outcome query with an unreachable floor or exact value  — caught by "J-INV-B1-CTL-outcome end state"
+
+=== SUMMARY ===
+  PASS 50   FAIL 4   INVALID 4
+  ⚠ INVALID means an instrument did not run. Those checks are NOT green —
+    they are absent. Fix the instrument before reading this report as coverage.
+  control rungs: 4 of 7 proven (7 rungs × 1 journeys)
+  ⚠ 3 rung(s) UNPROVEN — no mutant the journey could express:
+      J-INV-B1 · trace-order — this journey declares nothing this mutant can break
+      J-INV-B1 · trace-negative — this journey declares nothing this mutant can break
+      J-INV-B1 · data-target — this journey declares nothing this mutant can break
+    Unproven is fault, not pass. Declare the missing claim on the journey,
+    or accept that this rung has never been shown able to go red.
+  control verdict: FAIL — at least one rung is unproven; read the [control] rows above
+  findings → ../tests/e2e/artifacts/journey-findings-control.json

@@ -1,7 +1,7 @@
 report-normalize → docs/report.json
-  checks      624  (pass 317  fail 84  fault 218  skipped 3  manual 2)
-  of which declared-but-never-run (blocks): 48
-  instruments 98  (pass 39  fail 8  fault 12  skipped 7  manual 32)
+  checks      637  (pass 332  fail 84  fault 217  skipped 3  manual 1)
+  of which declared-but-never-run (blocks): 46
+  instruments 99  (pass 41  fail 8  fault 11  skipped 7  manual 32)
     FAULT  deferrals — .claude/loop/deferrals.jsonl does not exist — the instrument did not run, or ran without writing. No producer for this path is recorded in report-normalize.js PRODUCERS, so this report cannot say what writes it — closing that gap is the first step.
     FAULT  full-app-walkthrough — tests/e2e/artifacts/findings.json does not exist — the instrument did not run, or ran without writing. `node tests/e2e/full-app-walkthrough.js` writes it; until it does, nothing in this report is evidence about what it would have measured.
     FAULT  run-ledger — .claude/loop/run-ledger.jsonl does not exist — the instrument did not run, or ran without writing. No producer for this path is recorded in report-normalize.js PRODUCERS, so this report cannot say what writes it — closing that gap is the first step.
@@ -9,7 +9,6 @@ report-normalize → docs/report.json
     FAULT  verify-loop/Core/review (model vs decided — report.json) — no reason recorded
     FAULT  verify-loop/Inventory/design audit (rungs 6-7 — UI/a11y, informational) — no reason recorded
     FAULT  verify-loop/Invoicing/design audit (rungs 6-7 — UI/a11y, informational) — no reason recorded
-    FAULT  verify-loop/Invoicing/journeys — no reason recorded
     FAULT  verify-loop/Partners/design audit (rungs 6-7 — UI/a11y, informational) — no reason recorded
     FAULT  verify-loop/Products/design audit (rungs 6-7 — UI/a11y, informational) — no reason recorded
     FAULT  verify-loop/Purchasing/design audit (rungs 6-7 — UI/a11y, informational) — no reason recorded

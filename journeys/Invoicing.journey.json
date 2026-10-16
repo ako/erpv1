@@ -86,7 +86,18 @@
     "delta": 1,
     "scope": {
      "newRowsBy": "id"
-    }
+    },
+    "assocMustBeSet": [
+     {
+      "entity": "Invoicing.Invoice",
+      "assoc": "Invoicing.Invoice_SalesOrders",
+      "target": "Sales.SalesOrder",
+      "mustPointAt": {
+       "attr": "Number",
+       "value": "{{orderNo}}"
+      }
+     }
+    ]
    }
   },
   {

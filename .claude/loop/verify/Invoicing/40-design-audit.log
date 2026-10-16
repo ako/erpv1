@@ -115,10 +115,10 @@ findings:
   [fail] design-audit/rung7/structure/Sales.SalesOrder_Overview
          h1 count 1 (Quotations & sales orders); landmarks: NONE
   [fail] design-audit/rung7/a11y/Sales.SalesOrder_Overview
-         1 serious/critical of 1 violations over 31 rules: color-contrast(serious,x3)
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x3)
   [fail] design-audit/rung7/structure/Sales.SalesTeam_Overview
          h1 count 1 (Quotations & sales orders); landmarks: NONE
   [fail] design-audit/rung7/a11y/Sales.SalesTeam_Overview
-         1 serious/critical of 1 violations over 31 rules: color-contrast(serious,x3)
+         1 serious/critical of 1 violations over 32 rules: color-contrast(serious,x3)
 
 design-audit: INSTRUMENT FAULT (159) — this run measured nothing reliable.

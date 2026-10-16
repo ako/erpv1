@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-16T12:26:20.609Z",
-  "configuredUser": "inventory.manager",
-  "actualUser": "inventory.manager",
+  "capturedAt": "2026-10-16T12:55:41.671Z",
+  "configuredUser": "billing",
+  "actualUser": "billing",
   "usedFallback": false,
   "baseUrl": "http://localhost:8080",
   "positiveControl": false,
@@ -17,149 +17,511 @@
       "rung": "ui",
       "name": "login",
       "verdict": "PASS",
-      "detail": "inventory.manager",
+      "detail": "billing",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Reorder rules: the chair rule is listed: reached",
+      "name": "Open Sales > Quotations & orders: the order is listed: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-lvLines",
-      "requirement": "F006-UC007"
+      "detail": ".mx-name-gridMain",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Reorder rules: the chair rule is listed: page says \"Reorder rules\"",
+      "name": "Open Sales > Quotations & orders: the order is listed: page says \"S00073\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC007"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Run scheduler: the rules ran: reached",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-lvLines",
-      "requirement": "F006-UC007"
+      "detail": ".mx-name-btnCreateinvoice0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Run scheduler: the rules ran: page says \"Reorder rules\"",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: page says \"S00073\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC007"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: page does NOT say \"Save\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Create invoice: the popup explains what is invoiced: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreateinvoice0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Create invoice: the popup explains what is invoiced: page says \"Regular invoice\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm the popup: a draft invoice opens: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-btnConfirm1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm the popup: a draft invoice opens: page says \"Draft\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice +1",
+      "verdict": "PASS",
+      "detail": "before=8 after=9 delta=1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 38843546786084215)",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders points at the seeded Number",
+      "verdict": "PASS",
+      "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00073' (scoped to rows with id > 38843546786084215)",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm the invoice: numbered INV/, Register payment offered: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-btnRegisterpayment0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm the invoice: numbered INV/, Register payment offered: page says \"INV/\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Register payment: the popup proposes the amount due: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreatepayment0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Pay 10.00 of it: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "data",
+      "name": "Pay 10.00 of it: Invoicing.Payment +1",
+      "verdict": "PASS",
+      "detail": "before=8 after=9 delta=1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "outcome",
-      "name": "J-INV-03 end state",
+      "name": "J-INV-B1 end state",
       "verdict": "PASS",
-      "detail": "got 2, need >= 1",
-      "requirement": "F006-UC007"
+      "detail": "got 1, expected 1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     }
   ],
   "walks": [
     {
-      "journey": "J-INV-03",
-      "title": "Inventory manager runs the reorder rules: the Office Chair (below its minimum of 10) is ordered from Gemini Furniture",
-      "persona": "inventory.manager",
+      "journey": "J-INV-B1",
+      "title": "Billing invoices a confirmed sales order from its read-only view, confirms the invoice and registers a partial payment",
+      "persona": "billing",
       "requirement": [
-        "F006-UC007"
+        "F008-UC001",
+        "F008-UC004",
+        "F008-UC007"
       ],
-      "seeds": {},
+      "seeds": {
+        "orderNo": "S00073"
+      },
       "steps": [
         {
           "n": 1,
-          "name": "Open Inventory > Reorder rules: the chair rule is listed",
+          "name": "Open Sales > Quotations & orders: the order is listed",
           "requirement": [
-            "F006-UC007"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Inventory › Reorder rules",
+              "target": "Sales › Quotations & orders",
               "selector": null
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-lvLines",
+            "landsOn": ".mx-name-gridMain",
             "pageSays": [
-              "Reorder rules"
+              "{{orderNo}}"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-03-step1.png",
-            "title": "Mendix - Reorder rules",
-            "url": "http://localhost:8080/p/reorder-rule-overview",
-            "at": "2026-10-16T12:26:18.696Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-step1.png",
+            "title": "Mendix - Quotations & sales orders",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:33.078Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Inventory > Reorder rules: the chair rule is listed: reached",
+              "name": "Open Sales > Quotations & orders: the order is listed: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-lvLines"
+              "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Open Inventory > Reorder rules: the chair rule is listed: page says \"Reorder rules\"",
+              "name": "Open Sales > Quotations & orders: the order is listed: page says \"S00073\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1697
+          "ms": 1096
         },
         {
           "n": 2,
-          "name": "Run scheduler: the rules ran",
+          "name": "Open the order: Billing gets the read-only view with Create invoice",
           "requirement": [
-            "F006-UC007"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Open",
+              "target": "row \"S00073\" of gridMain",
+              "selector": ".mx-name-gridMain"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnCreateinvoice0",
+            "pageSays": [
+              "{{orderNo}}"
+            ],
+            "pageDoesNotSay": [
+              "Save"
+            ],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-step2.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:34.808Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnCreateinvoice0"
+            },
+            {
+              "rung": "ui",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: page says \"S00073\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "ui",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: page does NOT say \"Save\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1728
+        },
+        {
+          "n": 3,
+          "name": "Create invoice: the popup explains what is invoiced",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
               "verb": "Click",
-              "target": "Run scheduler",
-              "selector": ".mx-name-btnRunscheduler1"
-            },
-            {
-              "verb": "dismissModal",
-              "target": "",
-              "selector": null
+              "target": "Create invoice",
+              "selector": ".mx-name-btnCreateinvoice0"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-lvLines",
+            "landsOn": ".mx-name-pbtnCreateinvoice0",
             "pageSays": [
-              "Reorder rules"
+              "Regular invoice"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-03-step2.png",
-            "title": "Mendix - Reorder rules",
-            "url": "http://localhost:8080/p/reorder-rule-overview",
-            "at": "2026-10-16T12:26:20.476Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-step3.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:35.611Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Run scheduler: the rules ran: reached",
+              "name": "Create invoice: the popup explains what is invoiced: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-lvLines"
+              "detail": ".mx-name-pbtnCreateinvoice0"
             },
             {
               "rung": "ui",
-              "name": "Run scheduler: the rules ran: page says \"Reorder rules\"",
+              "name": "Create invoice: the popup explains what is invoiced: page says \"Regular invoice\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1777
+          "ms": 803
+        },
+        {
+          "n": 4,
+          "name": "Confirm the popup: a draft invoice opens",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Create invoice",
+              "selector": ".mx-name-pbtnCreateinvoice0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnConfirm1",
+            "pageSays": [
+              "Draft"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Invoicing.Invoice",
+              "delta": 1,
+              "associations": [
+                "Invoicing.Invoice_SalesOrders"
+              ]
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-step4.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:37.577Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Confirm the popup: a draft invoice opens: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnConfirm1"
+            },
+            {
+              "rung": "ui",
+              "name": "Confirm the popup: a draft invoice opens: page says \"Draft\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice +1",
+              "verdict": "PASS",
+              "detail": "before=8 after=9 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders set on every row",
+              "verdict": "PASS",
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 38843546786084215)"
+            },
+            {
+              "rung": "data",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders points at the seeded Number",
+              "verdict": "PASS",
+              "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00073' (scoped to rows with id > 38843546786084215)"
+            }
+          ],
+          "ms": 2187
+        },
+        {
+          "n": 5,
+          "name": "Confirm the invoice: numbered INV/, Register payment offered",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Confirm",
+              "selector": ".mx-name-btnConfirm1"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnRegisterpayment0",
+            "pageSays": [
+              "INV/"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-step5.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:39.337Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Confirm the invoice: numbered INV/, Register payment offered: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnRegisterpayment0"
+            },
+            {
+              "rung": "ui",
+              "name": "Confirm the invoice: numbered INV/, Register payment offered: page says \"INV/\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1539
+        },
+        {
+          "n": 6,
+          "name": "Register payment: the popup proposes the amount due",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Register payment",
+              "selector": ".mx-name-btnRegisterpayment0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-pbtnCreatepayment0",
+            "pageSays": [],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-step6.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:40.125Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Register payment: the popup proposes the amount due: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-pbtnCreatepayment0"
+            }
+          ],
+          "ms": 785
+        },
+        {
+          "n": 7,
+          "name": "Pay 10.00 of it",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Type",
+              "target": "\"10\" into Amount",
+              "selector": ".mx-name-ptxtAmount"
+            },
+            {
+              "verb": "Click",
+              "target": "Create payment",
+              "selector": ".mx-name-pbtnCreatepayment0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Invoicing.Payment",
+              "delta": 1,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-step7.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:41.501Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Pay 10.00 of it: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-dvMain"
+            },
+            {
+              "rung": "data",
+              "name": "Pay 10.00 of it: Invoicing.Payment +1",
+              "verdict": "PASS",
+              "detail": "before=8 after=9 delta=1"
+            }
+          ],
+          "ms": 1426
         }
       ]
     }

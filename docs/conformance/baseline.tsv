@@ -314,11 +314,15 @@ Invoicing	F008-invoicing-payments:`/actors/*` (4)	UNDERSTATED
 Invoicing	F008-invoicing-payments:`/domainEntities/0/*` (23)	OK
 Invoicing	F008-invoicing-payments:`/domainEntities/1/*` (21)	OK
 Invoicing	F008-invoicing-payments:`/domainEntities/2/*` (181)	OK
+Invoicing	F008-invoicing-payments:`/domainEntities/2/*` (218)	OK
 Invoicing	F008-invoicing-payments:`/domainEntities/3/*` (112)	OK
+Invoicing	F008-invoicing-payments:`/domainEntities/3/*` (167)	OK
+Invoicing	F008-invoicing-payments:`/domainEntities/4/*` (125)	OK
 Invoicing	F008-invoicing-payments:`/domainEntities/4/*` (98)	OK
 Invoicing	F008-invoicing-payments:`/domainEntities/5/*` (27)	OK
 Invoicing	F008-invoicing-payments:`/domainEntities/6/*` (43)	OK
 Invoicing	F008-invoicing-payments:`/domainEntities/7/*` (29)	OK
+Invoicing	F008-invoicing-payments:`/domainEntities/7/*` (35)	OK
 Invoicing	F008-invoicing-payments:`/enumerations/0/*` (13)	OK
 Invoicing	F008-invoicing-payments:`/enumerations/1/*` (13)	OK
 Invoicing	F008-invoicing-payments:`/enumerations/2/*` (19)	OK

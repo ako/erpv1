@@ -1,4 +1,4 @@
-══ review-module: Invoicing ══  2026-10-16T12:38:51Z
+══ review-module: Invoicing ══  2026-10-16T12:47:42Z
   scope: the MODEL against what was decided. Not the running app — no journey runs here.
 
 [1m── conformance (reusing the caller's run)[0m
@@ -8,10 +8,7 @@
 [32m  ✓ clean[0m  (0s)
 
 [1m── coverage (BRD leaves: UNCLAIMED/PHANTOM/DOUBLE · all 1 BRDs, one ledger each)[0m  [2m(budget 300s)[0m
-[31m  ✗ findings[0m (exit 1, 1s) — /home/user/erpv1/.claude/loop/review/Invoicing/coverage.txt
-      F008-invoicing-payments: FINDINGS —  leaves: 1317 CLAIMED: 1225 LEDGERED: 92 UNCLAIMED: 0 PHANTOM: 0 DOUBLE-CLAIMED:0 COUNT-MISMATCH:4 
-      
-      1 BRD(s) checked.
+[32m  ✓ clean[0m  (1s)
 
 [1m── journeys (the running app)[0m
 [33m  ! NOT RUN IN THIS INVOCATION[0m — review answers a model question.
@@ -28,13 +25,16 @@
 instrument	verdict	rc	elapsed	log
 conformance (reused)	PASS	0	-	docs/conformance/report-2026-10-16-F008-invoicing-payments.tsv
 graph sweep (orphans + wiring shape)	PASS	0	0s	.claude/loop/review/Invoicing/graph.tsv
-coverage (BRD leaves: UNCLAIMED/PHANTOM/DOUBLE · all 1 BRDs, one ledger each)	FINDING	1	1s	.claude/loop/review/Invoicing/coverage.txt
+coverage (BRD leaves: UNCLAIMED/PHANTOM/DOUBLE · all 1 BRDs, one ledger each)	PASS	0	1s	.claude/loop/review/Invoicing/coverage.txt
 journeys	FAULT	2	-	(no journey run in this invocation)
 look	FAULT	2	-	(no visual review in this invocation — module-review.md §4)
 ════════════════════════════════════════════════════════
   logs: .claude/loop/review/Invoicing
 
-[31m  FINDINGS[0m — 1 instrument(s) reported. Every one ran; the model disagreed with the claim.
+[32m  CLEAN[0m — every model instrument ran and found nothing.
+  Scope of that claim: ledger conformance, wiring shape, BRD coverage. It is NOT a
+  claim about the running app — no journey ran, and nobody looked at a page
+  (see the journeys and look fault rows in the report).
 review-report: 49 checks (22 fail · 2 fault · 1 manual · 24 pass) -> /home/user/erpv1/.claude/loop/verify/Invoicing/review-report.json
 
   report  .claude/loop/verify/Invoicing/review-report.json

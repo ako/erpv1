@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-15T21:24:08.390Z",
-  "configuredUser": "warehouse.user",
-  "actualUser": "warehouse.user",
+  "capturedAt": "2026-10-16T12:56:31.338Z",
+  "configuredUser": "billing",
+  "actualUser": "billing",
   "usedFallback": false,
   "baseUrl": "http://localhost:8080",
   "positiveControl": true,
@@ -12,12 +12,12 @@
     "proven": 5,
     "unsupported": [
       {
-        "journey": "J-INV-01",
+        "journey": "J-INV-B1",
         "rung": "trace-order",
         "why": "this journey declares nothing this mutant can break"
       },
       {
-        "journey": "J-INV-01",
+        "journey": "J-INV-B1",
         "rung": "trace-negative",
         "why": "this journey declares nothing this mutant can break"
       }
@@ -28,623 +28,673 @@
       "rung": "ui",
       "name": "login",
       "verdict": "PASS",
-      "detail": "warehouse.user",
+      "detail": "billing",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers: the delivery is listed: reached",
+      "name": "Open Sales > Quotations & orders: the order is listed: reached",
       "verdict": "FAIL",
-      "detail": "\".mx-name-__this_widget_does_not_exist__\" never appeared — screenshot J-INV-01-CTL-ui-landing-step1-NOT-REACHED.png",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": "\".mx-name-__this_widget_does_not_exist__\" never appeared — screenshot J-INV-B1-CTL-ui-landing-step1-NOT-REACHED.png",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers: the delivery is listed: downstream rungs",
+      "name": "Open Sales > Quotations & orders: the order is listed: downstream rungs",
       "verdict": "INVALID",
       "detail": "not reached; nothing measured",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "control",
-      "name": "J-INV-01 · ui-landing: first step lands on a widget that does not exist",
+      "name": "J-INV-B1 · ui-landing: first step lands on a widget that does not exist",
       "verdict": "PASS",
-      "detail": "caught by \"Open Inventory > Transfers: the delivery is listed: reached\"",
+      "detail": "caught by \"Open Sales > Quotations & orders: the order is listed: reached\"",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers: the delivery is listed: reached",
+      "name": "Open Sales > Quotations & orders: the order is listed: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers: the delivery is listed: page says \"__text_this_page_will_never_render__\"",
+      "name": "Open Sales > Quotations & orders: the order is listed: page says \"__text_this_page_will_never_render__\"",
       "verdict": "FAIL",
       "detail": "not found in rendered text",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-btnValidate0",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": ".mx-name-btnCreateinvoice0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00049\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: page says \"S00069\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: page does NOT say \"Save\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Create invoice: the popup explains what is invoiced: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreateinvoice0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Create invoice: the popup explains what is invoiced: page says \"Regular invoice\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm the popup: a draft invoice opens: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-btnConfirm1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm the popup: a draft invoice opens: page says \"Draft\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "data",
-      "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice +1",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": "before=9 after=10 delta=1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 38843546786084291)",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders points at the seeded Number",
+      "verdict": "PASS",
+      "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00069' (scoped to rows with id > 38843546786084291)",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007",
+      "evidenceStrength": "strong"
     },
     {
       "rung": "ui",
-      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+      "name": "Confirm the invoice: numbered INV/, Register payment offered: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-pbtnCreatebackorder",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": ".mx-name-btnRegisterpayment0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+      "name": "Confirm the invoice: numbered INV/, Register payment offered: page says \"INV/\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+      "name": "Register payment: the popup proposes the amount due: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreatepayment0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Pay 10.00 of it: reached",
       "verdict": "PASS",
       "detail": ".mx-name-dvMain",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "ui",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
+      "name": "Pay 10.00 of it: Invoicing.Payment +1",
       "verdict": "PASS",
-      "detail": "before=22 after=23 delta=1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
-      "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449458)",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
-      "verdict": "PASS",
-      "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00067' (scoped to rows with id > 36591746972449458)",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
-      "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
-      "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": "before=9 after=10 delta=1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "outcome",
-      "name": "J-INV-01-CTL-ui-text end state",
+      "name": "J-INV-B1-CTL-ui-text end state",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": "got 1, expected 1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "control",
-      "name": "J-INV-01 · ui-text: expect text the page never renders",
+      "name": "J-INV-B1 · ui-text: expect text the page never renders",
       "verdict": "PASS",
-      "detail": "caught by \"Open Inventory > Transfers: the delivery is listed: page says \"__text_this_page_will_never_render__\"\"",
+      "detail": "caught by \"Open Sales > Quotations & orders: the order is listed: page says \"__text_this_page_will_never_render__\"\"",
       "requirement": ""
     },
     {
       "rung": "control",
-      "name": "J-INV-01 · trace-order: expect a microflow that never fires",
+      "name": "J-INV-B1 · trace-order: expect a microflow that never fires",
       "verdict": "INVALID",
-      "detail": "this journey declares nothing this mutant can break — this rung is UNPROVEN for J-INV-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)",
+      "detail": "this journey declares nothing this mutant can break — this rung is UNPROVEN for J-INV-B1, not passed (journey-proof.md: a rung with no mutant is fault, never pass)",
       "requirement": ""
     },
     {
       "rung": "control",
-      "name": "J-INV-01 · trace-negative: assert a microflow that DID run must not have run",
+      "name": "J-INV-B1 · trace-negative: assert a microflow that DID run must not have run",
       "verdict": "INVALID",
-      "detail": "this journey declares nothing this mutant can break — this rung is UNPROVEN for J-INV-01, not passed (journey-proof.md: a rung with no mutant is fault, never pass)",
+      "detail": "this journey declares nothing this mutant can break — this rung is UNPROVEN for J-INV-B1, not passed (journey-proof.md: a rung with no mutant is fault, never pass)",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers: the delivery is listed: reached",
+      "name": "Open Sales > Quotations & orders: the order is listed: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00048\"",
+      "name": "Open Sales > Quotations & orders: the order is listed: page says \"S00068\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-btnValidate0",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": ".mx-name-btnCreateinvoice0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00048\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: page says \"S00068\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: page does NOT say \"Save\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Create invoice: the popup explains what is invoiced: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreateinvoice0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Create invoice: the popup explains what is invoiced: page says \"Regular invoice\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm the popup: a draft invoice opens: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-btnConfirm1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm the popup: a draft invoice opens: page says \"Draft\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "data",
-      "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice +2",
+      "verdict": "FAIL",
+      "detail": "before=10 after=11 delta=1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders set on every row",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 38843546786084465)",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders points at the seeded Number",
+      "verdict": "PASS",
+      "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00068' (scoped to rows with id > 38843546786084465)",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007",
+      "evidenceStrength": "strong"
     },
     {
       "rung": "ui",
-      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+      "name": "Confirm the invoice: numbered INV/, Register payment offered: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-pbtnCreatebackorder",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": ".mx-name-btnRegisterpayment0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+      "name": "Confirm the invoice: numbered INV/, Register payment offered: page says \"INV/\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+      "name": "Register payment: the popup proposes the amount due: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreatepayment0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Pay 10.00 of it: reached",
       "verdict": "PASS",
       "detail": ".mx-name-dvMain",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "ui",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +2",
-      "verdict": "FAIL",
-      "detail": "before=23 after=24 delta=1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
+      "name": "Pay 10.00 of it: Invoicing.Payment +1",
       "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449561)",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
-      "verdict": "PASS",
-      "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00066' (scoped to rows with id > 36591746972449561)",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
-      "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
-      "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": "before=10 after=11 delta=1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "outcome",
-      "name": "J-INV-01-CTL-data-delta end state",
+      "name": "J-INV-B1-CTL-data-delta end state",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": "got 1, expected 1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "control",
-      "name": "J-INV-01 · data-delta: expect +2 rows from a +1 action",
+      "name": "J-INV-B1 · data-delta: expect +2 rows from a +1 action",
       "verdict": "PASS",
-      "detail": "caught by \"Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +2\"",
+      "detail": "caught by \"Confirm the popup: a draft invoice opens: Invoicing.Invoice +2\"",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers: the delivery is listed: reached",
+      "name": "Open Sales > Quotations & orders: the order is listed: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00047\"",
+      "name": "Open Sales > Quotations & orders: the order is listed: page says \"S00067\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-btnValidate0",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": ".mx-name-btnCreateinvoice0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00047\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: page says \"S00067\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: page does NOT say \"Save\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Create invoice: the popup explains what is invoiced: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreateinvoice0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Create invoice: the popup explains what is invoiced: page says \"Regular invoice\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm the popup: a draft invoice opens: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-btnConfirm1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm the popup: a draft invoice opens: page says \"Draft\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "data",
-      "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice +1",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": "before=11 after=12 delta=1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 38843546786084579)",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders points at the seeded Number",
+      "verdict": "FAIL",
+      "detail": "0 row(s) link to Sales.SalesOrder where Number = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 38843546786084579)",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007",
+      "evidenceStrength": "strong"
     },
     {
       "rung": "ui",
-      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+      "name": "Confirm the invoice: numbered INV/, Register payment offered: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-pbtnCreatebackorder",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": ".mx-name-btnRegisterpayment0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+      "name": "Confirm the invoice: numbered INV/, Register payment offered: page says \"INV/\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+      "name": "Register payment: the popup proposes the amount due: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreatepayment0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Pay 10.00 of it: reached",
       "verdict": "PASS",
       "detail": ".mx-name-dvMain",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "ui",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
+      "name": "Pay 10.00 of it: Invoicing.Payment +1",
       "verdict": "PASS",
-      "detail": "before=24 after=25 delta=1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
-      "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449696)",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
-      "verdict": "FAIL",
-      "detail": "0 row(s) link to Sales.SalesOrder where Number = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 36591746972449696)",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
-      "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
-      "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": "before=11 after=12 delta=1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "outcome",
-      "name": "J-INV-01-CTL-data-target end state",
+      "name": "J-INV-B1-CTL-data-target end state",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": "got 1, expected 1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "control",
-      "name": "J-INV-01 · data-target: association must point at a value the journey never picked",
+      "name": "J-INV-B1 · data-target: association must point at a value the journey never picked",
       "verdict": "PASS",
-      "detail": "caught by \"Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number\"",
+      "detail": "caught by \"Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders points at the seeded Number\"",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers: the delivery is listed: reached",
+      "name": "Open Sales > Quotations & orders: the order is listed: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00041\"",
+      "name": "Open Sales > Quotations & orders: the order is listed: page says \"S00066\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-btnValidate0",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": ".mx-name-btnCreateinvoice0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00041\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: page says \"S00066\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Open the order: Billing gets the read-only view with Create invoice: page does NOT say \"Save\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Create invoice: the popup explains what is invoiced: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreateinvoice0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Create invoice: the popup explains what is invoiced: page says \"Regular invoice\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm the popup: a draft invoice opens: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-btnConfirm1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Confirm the popup: a draft invoice opens: page says \"Draft\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "data",
-      "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice +1",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": "before=12 after=13 delta=1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders set on every row",
+      "verdict": "PASS",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 38843546786084612)",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007",
+      "evidenceStrength": "strong"
+    },
+    {
+      "rung": "data",
+      "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders points at the seeded Number",
+      "verdict": "PASS",
+      "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00066' (scoped to rows with id > 38843546786084612)",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007",
+      "evidenceStrength": "strong"
     },
     {
       "rung": "ui",
-      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+      "name": "Confirm the invoice: numbered INV/, Register payment offered: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-pbtnCreatebackorder",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": ".mx-name-btnRegisterpayment0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+      "name": "Confirm the invoice: numbered INV/, Register payment offered: page says \"INV/\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "ui",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+      "name": "Register payment: the popup proposes the amount due: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-pbtnCreatepayment0",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
+    },
+    {
+      "rung": "ui",
+      "name": "Pay 10.00 of it: reached",
       "verdict": "PASS",
       "detail": ".mx-name-dvMain",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "ui",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
+      "name": "Pay 10.00 of it: Invoicing.Payment +1",
       "verdict": "PASS",
-      "detail": "before=25 after=26 delta=1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
-      "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449893)",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
-      "verdict": "PASS",
-      "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00061' (scoped to rows with id > 36591746972449893)",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
-      "evidenceStrength": "strong"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
-      "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
-    },
-    {
-      "rung": "data",
-      "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
-      "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": "before=12 after=13 delta=1",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "outcome",
-      "name": "J-INV-01-CTL-outcome end state",
+      "name": "J-INV-B1-CTL-outcome end state",
       "verdict": "FAIL",
-      "detail": "got 1, need >= 999999",
-      "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
+      "detail": "got 1, expected 999999",
+      "requirement": "F008-UC001, F008-UC004, F008-UC007"
     },
     {
       "rung": "control",
-      "name": "J-INV-01 · outcome: outcome query with an unreachable floor or exact value",
+      "name": "J-INV-B1 · outcome: outcome query with an unreachable floor or exact value",
       "verdict": "PASS",
-      "detail": "caught by \"J-INV-01-CTL-outcome end state\"",
+      "detail": "caught by \"J-INV-B1-CTL-outcome end state\"",
       "requirement": ""
     }
   ],
   "walks": [
     {
-      "journey": "J-INV-01-CTL-ui-landing",
+      "journey": "J-INV-B1-CTL-ui-landing",
       "title": "(positive control · ui-landing — first step lands on a widget that does not exist; MUST fail)",
-      "persona": "warehouse.user",
+      "persona": "billing",
       "requirement": [
-        "F006-UC002",
-        "F006-UC004",
-        "F007-UC001",
-        "F007-UC002"
+        "F008-UC001",
+        "F008-UC004",
+        "F008-UC007"
       ],
       "seeds": {
-        "deliveryNo": "WH/OUT/00049",
-        "orderNo": "S00067"
+        "orderNo": "S00069"
       },
       "steps": [
         {
           "n": 1,
-          "name": "Open Inventory > Transfers: the delivery is listed",
+          "name": "Open Sales > Quotations & orders: the order is listed",
           "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Inventory › Transfers",
+              "target": "Sales › Quotations & orders",
               "selector": null
             }
           ],
           "expects": {
             "landsOn": ".mx-name-__this_widget_does_not_exist__",
             "pageSays": [
-              "{{deliveryNo}}"
+              "{{orderNo}}"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-ui-landing-step1-NOT-REACHED.png",
-            "title": "Mendix - Transfers",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:23:35.390Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-ui-landing-step1-NOT-REACHED.png",
+            "title": "Mendix - Quotations & sales orders",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:47.591Z"
           },
           "reached": false,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Inventory > Transfers: the delivery is listed: reached",
+              "name": "Open Sales > Quotations & orders: the order is listed: reached",
               "verdict": "FAIL",
-              "detail": "\".mx-name-__this_widget_does_not_exist__\" never appeared — screenshot J-INV-01-CTL-ui-landing-step1-NOT-REACHED.png"
+              "detail": "\".mx-name-__this_widget_does_not_exist__\" never appeared — screenshot J-INV-B1-CTL-ui-landing-step1-NOT-REACHED.png"
             },
             {
               "rung": "ui",
-              "name": "Open Inventory > Transfers: the delivery is listed: downstream rungs",
+              "name": "Open Sales > Quotations & orders: the order is listed: downstream rungs",
               "verdict": "INVALID",
               "detail": "not reached; nothing measured"
             }
           ],
-          "ms": 1137
+          "ms": 1110
         }
       ]
     },
     {
-      "journey": "J-INV-01-CTL-ui-text",
+      "journey": "J-INV-B1-CTL-ui-text",
       "title": "(positive control · ui-text — expect text the page never renders; MUST fail)",
-      "persona": "warehouse.user",
+      "persona": "billing",
       "requirement": [
-        "F006-UC002",
-        "F006-UC004",
-        "F007-UC001",
-        "F007-UC002"
+        "F008-UC001",
+        "F008-UC004",
+        "F008-UC007"
       ],
       "seeds": {
-        "deliveryNo": "WH/OUT/00049",
-        "orderNo": "S00067"
+        "orderNo": "S00069"
       },
       "steps": [
         {
           "n": 1,
-          "name": "Open Inventory > Transfers: the delivery is listed",
+          "name": "Open Sales > Quotations & orders: the order is listed",
           "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Inventory › Transfers",
+              "target": "Sales › Quotations & orders",
               "selector": null
             }
           ],
@@ -658,1014 +708,1465 @@
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-ui-text-step1.png",
-            "title": "Mendix - Transfers",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:23:38.261Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-ui-text-step1.png",
+            "title": "Mendix - Quotations & sales orders",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:50.440Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Inventory > Transfers: the delivery is listed: reached",
+              "name": "Open Sales > Quotations & orders: the order is listed: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Open Inventory > Transfers: the delivery is listed: page says \"__text_this_page_will_never_render__\"",
+              "name": "Open Sales > Quotations & orders: the order is listed: page says \"__text_this_page_will_never_render__\"",
               "verdict": "FAIL",
               "detail": "not found in rendered text"
             }
           ],
-          "ms": 1118
+          "ms": 1080
         },
         {
           "n": 2,
-          "name": "Open the delivery: Ready, the order's chairs reserved",
+          "name": "Open the order: Billing gets the read-only view with Create invoice",
           "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
               "verb": "Open",
-              "target": "row \"WH/OUT/00049\" of gridMain",
+              "target": "row \"S00069\" of gridMain",
               "selector": ".mx-name-gridMain"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-btnValidate0",
+            "landsOn": ".mx-name-btnCreateinvoice0",
             "pageSays": [
-              "{{deliveryNo}}",
-              "Ready"
+              "{{orderNo}}"
             ],
-            "pageDoesNotSay": [],
+            "pageDoesNotSay": [
+              "Save"
+            ],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-ui-text-step2.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:23:40.202Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-ui-text-step2.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:52.225Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-btnValidate0"
+              "detail": ".mx-name-btnCreateinvoice0"
             },
             {
               "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00049\"",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: page says \"S00069\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: page does NOT say \"Save\"",
               "verdict": "PASS",
               "detail": ""
-            },
-            {
-              "rung": "data",
-              "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
-              "verdict": "PASS",
-              "detail": "got 1, need >= 1"
             }
           ],
-          "ms": 1998
+          "ms": 1785
         },
         {
           "n": 3,
-          "name": "Process 3 of the 5 chairs and validate: the backorder question opens",
+          "name": "Create invoice: the popup explains what is invoiced",
           "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
-              "verb": "Type",
-              "target": "\"3\" into Quantity (chairs processed)",
-              "selector": ".mx-name-lntxtQuantity"
-            },
-            {
               "verb": "Click",
-              "target": "Validate — straight after typing, as a user would",
-              "selector": ".mx-name-btnValidate0"
+              "target": "Create invoice",
+              "selector": ".mx-name-btnCreateinvoice0"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-pbtnCreatebackorder",
+            "landsOn": ".mx-name-pbtnCreateinvoice0",
             "pageSays": [
-              "less than the initial demand"
+              "Regular invoice"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-ui-text-step3.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:23:41.762Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-ui-text-step3.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:53.035Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+              "name": "Create invoice: the popup explains what is invoiced: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-pbtnCreatebackorder"
+              "detail": ".mx-name-pbtnCreateinvoice0"
             },
             {
               "rung": "ui",
-              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+              "name": "Create invoice: the popup explains what is invoiced: page says \"Regular invoice\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1501
+          "ms": 811
         },
         {
           "n": 4,
-          "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order",
+          "name": "Confirm the popup: a draft invoice opens",
           "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
               "verb": "Click",
-              "target": "Create backorder",
-              "selector": ".mx-name-pbtnCreatebackorder"
+              "target": "Create invoice",
+              "selector": ".mx-name-pbtnCreateinvoice0"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-dvMain",
+            "landsOn": ".mx-name-btnConfirm1",
             "pageSays": [
-              "Done"
+              "Draft"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Inventory.Transfer",
+              "entity": "Invoicing.Invoice",
               "delta": 1,
               "associations": [
-                "Inventory.Transfer_SalesOrder"
+                "Invoicing.Invoice_SalesOrders"
               ]
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-ui-text-step4.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:23:43.023Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-ui-text-step4.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:54.869Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+              "name": "Confirm the popup: a draft invoice opens: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-dvMain"
+              "detail": ".mx-name-btnConfirm1"
             },
             {
               "rung": "ui",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
+              "name": "Confirm the popup: a draft invoice opens: page says \"Draft\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice +1",
               "verdict": "PASS",
-              "detail": "before=22 after=23 delta=1"
+              "detail": "before=9 after=10 delta=1"
             },
             {
               "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders set on every row",
               "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449458)"
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 38843546786084291)"
             },
             {
               "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders points at the seeded Number",
               "verdict": "PASS",
-              "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00067' (scoped to rows with id > 36591746972449458)"
-            },
-            {
-              "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
-              "verdict": "PASS",
-              "detail": "got 1, need >= 1"
-            },
-            {
-              "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
-              "verdict": "PASS",
-              "detail": "got 1, need >= 1"
+              "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00069' (scoped to rows with id > 38843546786084291)"
             }
           ],
-          "ms": 1656
+          "ms": 2030
+        },
+        {
+          "n": 5,
+          "name": "Confirm the invoice: numbered INV/, Register payment offered",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Confirm",
+              "selector": ".mx-name-btnConfirm1"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnRegisterpayment0",
+            "pageSays": [
+              "INV/"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-ui-text-step5.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:56.591Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Confirm the invoice: numbered INV/, Register payment offered: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnRegisterpayment0"
+            },
+            {
+              "rung": "ui",
+              "name": "Confirm the invoice: numbered INV/, Register payment offered: page says \"INV/\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1525
+        },
+        {
+          "n": 6,
+          "name": "Register payment: the popup proposes the amount due",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Register payment",
+              "selector": ".mx-name-btnRegisterpayment0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-pbtnCreatepayment0",
+            "pageSays": [],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-ui-text-step6.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:57.359Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Register payment: the popup proposes the amount due: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-pbtnCreatepayment0"
+            }
+          ],
+          "ms": 763
+        },
+        {
+          "n": 7,
+          "name": "Pay 10.00 of it",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Type",
+              "target": "\"10\" into Amount",
+              "selector": ".mx-name-ptxtAmount"
+            },
+            {
+              "verb": "Click",
+              "target": "Create payment",
+              "selector": ".mx-name-pbtnCreatepayment0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Invoicing.Payment",
+              "delta": 1,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-ui-text-step7.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:55:58.699Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Pay 10.00 of it: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-dvMain"
+            },
+            {
+              "rung": "data",
+              "name": "Pay 10.00 of it: Invoicing.Payment +1",
+              "verdict": "PASS",
+              "detail": "before=9 after=10 delta=1"
+            }
+          ],
+          "ms": 1388
         }
       ]
     },
     {
-      "journey": "J-INV-01-CTL-data-delta",
+      "journey": "J-INV-B1-CTL-data-delta",
       "title": "(positive control · data-delta — expect +2 rows from a +1 action; MUST fail)",
-      "persona": "warehouse.user",
+      "persona": "billing",
       "requirement": [
-        "F006-UC002",
-        "F006-UC004",
-        "F007-UC001",
-        "F007-UC002"
+        "F008-UC001",
+        "F008-UC004",
+        "F008-UC007"
       ],
       "seeds": {
-        "deliveryNo": "WH/OUT/00048",
+        "orderNo": "S00068"
+      },
+      "steps": [
+        {
+          "n": 1,
+          "name": "Open Sales > Quotations & orders: the order is listed",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Navigate",
+              "target": "Sales › Quotations & orders",
+              "selector": null
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-gridMain",
+            "pageSays": [
+              "{{orderNo}}"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-delta-step1.png",
+            "title": "Mendix - Quotations & sales orders",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:01.645Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open Sales > Quotations & orders: the order is listed: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Open Sales > Quotations & orders: the order is listed: page says \"S00068\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1085
+        },
+        {
+          "n": 2,
+          "name": "Open the order: Billing gets the read-only view with Create invoice",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Open",
+              "target": "row \"S00068\" of gridMain",
+              "selector": ".mx-name-gridMain"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnCreateinvoice0",
+            "pageSays": [
+              "{{orderNo}}"
+            ],
+            "pageDoesNotSay": [
+              "Save"
+            ],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-delta-step2.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:02.740Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnCreateinvoice0"
+            },
+            {
+              "rung": "ui",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: page says \"S00068\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "ui",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: page does NOT say \"Save\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1092
+        },
+        {
+          "n": 3,
+          "name": "Create invoice: the popup explains what is invoiced",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Create invoice",
+              "selector": ".mx-name-btnCreateinvoice0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-pbtnCreateinvoice0",
+            "pageSays": [
+              "Regular invoice"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-delta-step3.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:03.496Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Create invoice: the popup explains what is invoiced: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-pbtnCreateinvoice0"
+            },
+            {
+              "rung": "ui",
+              "name": "Create invoice: the popup explains what is invoiced: page says \"Regular invoice\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 758
+        },
+        {
+          "n": 4,
+          "name": "Confirm the popup: a draft invoice opens",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Create invoice",
+              "selector": ".mx-name-pbtnCreateinvoice0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnConfirm1",
+            "pageSays": [
+              "Draft"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Invoicing.Invoice",
+              "delta": 2,
+              "associations": [
+                "Invoicing.Invoice_SalesOrders"
+              ]
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-delta-step4.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:04.841Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Confirm the popup: a draft invoice opens: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnConfirm1"
+            },
+            {
+              "rung": "ui",
+              "name": "Confirm the popup: a draft invoice opens: page says \"Draft\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice +2",
+              "verdict": "FAIL",
+              "detail": "before=10 after=11 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders set on every row",
+              "verdict": "PASS",
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 38843546786084465)"
+            },
+            {
+              "rung": "data",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders points at the seeded Number",
+              "verdict": "PASS",
+              "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00068' (scoped to rows with id > 38843546786084465)"
+            }
+          ],
+          "ms": 1528
+        },
+        {
+          "n": 5,
+          "name": "Confirm the invoice: numbered INV/, Register payment offered",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Confirm",
+              "selector": ".mx-name-btnConfirm1"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnRegisterpayment0",
+            "pageSays": [
+              "INV/"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-delta-step5.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:06.575Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Confirm the invoice: numbered INV/, Register payment offered: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnRegisterpayment0"
+            },
+            {
+              "rung": "ui",
+              "name": "Confirm the invoice: numbered INV/, Register payment offered: page says \"INV/\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1549
+        },
+        {
+          "n": 6,
+          "name": "Register payment: the popup proposes the amount due",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Register payment",
+              "selector": ".mx-name-btnRegisterpayment0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-pbtnCreatepayment0",
+            "pageSays": [],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-delta-step6.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:07.360Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Register payment: the popup proposes the amount due: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-pbtnCreatepayment0"
+            }
+          ],
+          "ms": 782
+        },
+        {
+          "n": 7,
+          "name": "Pay 10.00 of it",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Type",
+              "target": "\"10\" into Amount",
+              "selector": ".mx-name-ptxtAmount"
+            },
+            {
+              "verb": "Click",
+              "target": "Create payment",
+              "selector": ".mx-name-pbtnCreatepayment0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Invoicing.Payment",
+              "delta": 1,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-delta-step7.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:08.729Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Pay 10.00 of it: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-dvMain"
+            },
+            {
+              "rung": "data",
+              "name": "Pay 10.00 of it: Invoicing.Payment +1",
+              "verdict": "PASS",
+              "detail": "before=10 after=11 delta=1"
+            }
+          ],
+          "ms": 1428
+        }
+      ]
+    },
+    {
+      "journey": "J-INV-B1-CTL-data-target",
+      "title": "(positive control · data-target — association must point at a value the journey never picked; MUST fail)",
+      "persona": "billing",
+      "requirement": [
+        "F008-UC001",
+        "F008-UC004",
+        "F008-UC007"
+      ],
+      "seeds": {
+        "orderNo": "S00067"
+      },
+      "steps": [
+        {
+          "n": 1,
+          "name": "Open Sales > Quotations & orders: the order is listed",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Navigate",
+              "target": "Sales › Quotations & orders",
+              "selector": null
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-gridMain",
+            "pageSays": [
+              "{{orderNo}}"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-target-step1.png",
+            "title": "Mendix - Quotations & sales orders",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:11.712Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open Sales > Quotations & orders: the order is listed: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-gridMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Open Sales > Quotations & orders: the order is listed: page says \"S00067\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1091
+        },
+        {
+          "n": 2,
+          "name": "Open the order: Billing gets the read-only view with Create invoice",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Open",
+              "target": "row \"S00067\" of gridMain",
+              "selector": ".mx-name-gridMain"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnCreateinvoice0",
+            "pageSays": [
+              "{{orderNo}}"
+            ],
+            "pageDoesNotSay": [
+              "Save"
+            ],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-target-step2.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:13.285Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnCreateinvoice0"
+            },
+            {
+              "rung": "ui",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: page says \"S00067\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "ui",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: page does NOT say \"Save\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1572
+        },
+        {
+          "n": 3,
+          "name": "Create invoice: the popup explains what is invoiced",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Create invoice",
+              "selector": ".mx-name-btnCreateinvoice0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-pbtnCreateinvoice0",
+            "pageSays": [
+              "Regular invoice"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-target-step3.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:14.041Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Create invoice: the popup explains what is invoiced: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-pbtnCreateinvoice0"
+            },
+            {
+              "rung": "ui",
+              "name": "Create invoice: the popup explains what is invoiced: page says \"Regular invoice\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 756
+        },
+        {
+          "n": 4,
+          "name": "Confirm the popup: a draft invoice opens",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Create invoice",
+              "selector": ".mx-name-pbtnCreateinvoice0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnConfirm1",
+            "pageSays": [
+              "Draft"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Invoicing.Invoice",
+              "delta": 1,
+              "associations": [
+                "Invoicing.Invoice_SalesOrders"
+              ]
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-target-step4.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:15.893Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Confirm the popup: a draft invoice opens: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnConfirm1"
+            },
+            {
+              "rung": "ui",
+              "name": "Confirm the popup: a draft invoice opens: page says \"Draft\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice +1",
+              "verdict": "PASS",
+              "detail": "before=11 after=12 delta=1"
+            },
+            {
+              "rung": "data",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders set on every row",
+              "verdict": "PASS",
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 38843546786084579)"
+            },
+            {
+              "rung": "data",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders points at the seeded Number",
+              "verdict": "FAIL",
+              "detail": "0 row(s) link to Sales.SalesOrder where Number = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 38843546786084579)"
+            }
+          ],
+          "ms": 2065
+        },
+        {
+          "n": 5,
+          "name": "Confirm the invoice: numbered INV/, Register payment offered",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Confirm",
+              "selector": ".mx-name-btnConfirm1"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnRegisterpayment0",
+            "pageSays": [
+              "INV/"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-target-step5.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:17.638Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Confirm the invoice: numbered INV/, Register payment offered: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnRegisterpayment0"
+            },
+            {
+              "rung": "ui",
+              "name": "Confirm the invoice: numbered INV/, Register payment offered: page says \"INV/\"",
+              "verdict": "PASS",
+              "detail": ""
+            }
+          ],
+          "ms": 1531
+        },
+        {
+          "n": 6,
+          "name": "Register payment: the popup proposes the amount due",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Register payment",
+              "selector": ".mx-name-btnRegisterpayment0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-pbtnCreatepayment0",
+            "pageSays": [],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-target-step6.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:18.419Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Register payment: the popup proposes the amount due: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-pbtnCreatepayment0"
+            }
+          ],
+          "ms": 778
+        },
+        {
+          "n": 7,
+          "name": "Pay 10.00 of it",
+          "requirement": [
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
+          ],
+          "actions": [
+            {
+              "verb": "Type",
+              "target": "\"10\" into Amount",
+              "selector": ".mx-name-ptxtAmount"
+            },
+            {
+              "verb": "Click",
+              "target": "Create payment",
+              "selector": ".mx-name-pbtnCreatepayment0"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Invoicing.Payment",
+              "delta": 1,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-data-target-step7.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:19.777Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Pay 10.00 of it: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-dvMain"
+            },
+            {
+              "rung": "data",
+              "name": "Pay 10.00 of it: Invoicing.Payment +1",
+              "verdict": "PASS",
+              "detail": "before=11 after=12 delta=1"
+            }
+          ],
+          "ms": 1408
+        }
+      ]
+    },
+    {
+      "journey": "J-INV-B1-CTL-outcome",
+      "title": "(positive control · outcome — outcome query with an unreachable floor or exact value; MUST fail)",
+      "persona": "billing",
+      "requirement": [
+        "F008-UC001",
+        "F008-UC004",
+        "F008-UC007"
+      ],
+      "seeds": {
         "orderNo": "S00066"
       },
       "steps": [
         {
           "n": 1,
-          "name": "Open Inventory > Transfers: the delivery is listed",
+          "name": "Open Sales > Quotations & orders: the order is listed",
           "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Inventory › Transfers",
+              "target": "Sales › Quotations & orders",
               "selector": null
             }
           ],
           "expects": {
             "landsOn": ".mx-name-gridMain",
             "pageSays": [
-              "{{deliveryNo}}"
+              "{{orderNo}}"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-delta-step1.png",
-            "title": "Mendix - Transfers",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:23:46.457Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-outcome-step1.png",
+            "title": "Mendix - Quotations & sales orders",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:22.756Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Inventory > Transfers: the delivery is listed: reached",
+              "name": "Open Sales > Quotations & orders: the order is listed: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
             },
             {
               "rung": "ui",
-              "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00048\"",
+              "name": "Open Sales > Quotations & orders: the order is listed: page says \"S00066\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1146
+          "ms": 1095
         },
         {
           "n": 2,
-          "name": "Open the delivery: Ready, the order's chairs reserved",
+          "name": "Open the order: Billing gets the read-only view with Create invoice",
           "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
               "verb": "Open",
-              "target": "row \"WH/OUT/00048\" of gridMain",
+              "target": "row \"S00066\" of gridMain",
               "selector": ".mx-name-gridMain"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-btnValidate0",
+            "landsOn": ".mx-name-btnCreateinvoice0",
             "pageSays": [
-              "{{deliveryNo}}",
-              "Ready"
+              "{{orderNo}}"
             ],
-            "pageDoesNotSay": [],
+            "pageDoesNotSay": [
+              "Save"
+            ],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-delta-step2.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:23:48.232Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-outcome-step2.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:24.495Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-btnValidate0"
+              "detail": ".mx-name-btnCreateinvoice0"
             },
             {
               "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00048\"",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: page says \"S00066\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
+              "name": "Open the order: Billing gets the read-only view with Create invoice: page does NOT say \"Save\"",
               "verdict": "PASS",
               "detail": ""
-            },
-            {
-              "rung": "data",
-              "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
-              "verdict": "PASS",
-              "detail": "got 1, need >= 1"
             }
           ],
-          "ms": 1834
+          "ms": 1739
         },
         {
           "n": 3,
-          "name": "Process 3 of the 5 chairs and validate: the backorder question opens",
+          "name": "Create invoice: the popup explains what is invoiced",
           "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
-              "verb": "Type",
-              "target": "\"3\" into Quantity (chairs processed)",
-              "selector": ".mx-name-lntxtQuantity"
-            },
-            {
               "verb": "Click",
-              "target": "Validate — straight after typing, as a user would",
-              "selector": ".mx-name-btnValidate0"
+              "target": "Create invoice",
+              "selector": ".mx-name-btnCreateinvoice0"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-pbtnCreatebackorder",
+            "landsOn": ".mx-name-pbtnCreateinvoice0",
             "pageSays": [
-              "less than the initial demand"
+              "Regular invoice"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-delta-step3.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:23:49.626Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-outcome-step3.png",
+            "title": "Mendix - Sales order",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:25.334Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
+              "name": "Create invoice: the popup explains what is invoiced: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-pbtnCreatebackorder"
+              "detail": ".mx-name-pbtnCreateinvoice0"
             },
             {
               "rung": "ui",
-              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
+              "name": "Create invoice: the popup explains what is invoiced: page says \"Regular invoice\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1333
+          "ms": 842
         },
         {
           "n": 4,
-          "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order",
+          "name": "Confirm the popup: a draft invoice opens",
           "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
               "verb": "Click",
-              "target": "Create backorder",
-              "selector": ".mx-name-pbtnCreatebackorder"
+              "target": "Create invoice",
+              "selector": ".mx-name-pbtnCreateinvoice0"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-dvMain",
+            "landsOn": ".mx-name-btnConfirm1",
             "pageSays": [
-              "Done"
+              "Draft"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Inventory.Transfer",
-              "delta": 2,
-              "associations": [
-                "Inventory.Transfer_SalesOrder"
-              ]
-            }
-          },
-          "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-delta-step4.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:23:50.889Z"
-          },
-          "reached": true,
-          "checks": [
-            {
-              "rung": "ui",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
-              "verdict": "PASS",
-              "detail": ".mx-name-dvMain"
-            },
-            {
-              "rung": "ui",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
-              "verdict": "PASS",
-              "detail": ""
-            },
-            {
-              "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +2",
-              "verdict": "FAIL",
-              "detail": "before=23 after=24 delta=1"
-            },
-            {
-              "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
-              "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449561)"
-            },
-            {
-              "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
-              "verdict": "PASS",
-              "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00066' (scoped to rows with id > 36591746972449561)"
-            },
-            {
-              "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
-              "verdict": "PASS",
-              "detail": "got 1, need >= 1"
-            },
-            {
-              "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
-              "verdict": "PASS",
-              "detail": "got 1, need >= 1"
-            }
-          ],
-          "ms": 1702
-        }
-      ]
-    },
-    {
-      "journey": "J-INV-01-CTL-data-target",
-      "title": "(positive control · data-target — association must point at a value the journey never picked; MUST fail)",
-      "persona": "warehouse.user",
-      "requirement": [
-        "F006-UC002",
-        "F006-UC004",
-        "F007-UC001",
-        "F007-UC002"
-      ],
-      "seeds": {
-        "deliveryNo": "WH/OUT/00047",
-        "orderNo": "S00065"
-      },
-      "steps": [
-        {
-          "n": 1,
-          "name": "Open Inventory > Transfers: the delivery is listed",
-          "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
-          ],
-          "actions": [
-            {
-              "verb": "Navigate",
-              "target": "Inventory › Transfers",
-              "selector": null
-            }
-          ],
-          "expects": {
-            "landsOn": ".mx-name-gridMain",
-            "pageSays": [
-              "{{deliveryNo}}"
-            ],
-            "pageDoesNotSay": [],
-            "microflows": [],
-            "writes": null
-          },
-          "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-target-step1.png",
-            "title": "Mendix - Transfers",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:23:54.295Z"
-          },
-          "reached": true,
-          "checks": [
-            {
-              "rung": "ui",
-              "name": "Open Inventory > Transfers: the delivery is listed: reached",
-              "verdict": "PASS",
-              "detail": ".mx-name-gridMain"
-            },
-            {
-              "rung": "ui",
-              "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00047\"",
-              "verdict": "PASS",
-              "detail": ""
-            }
-          ],
-          "ms": 1128
-        },
-        {
-          "n": 2,
-          "name": "Open the delivery: Ready, the order's chairs reserved",
-          "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
-          ],
-          "actions": [
-            {
-              "verb": "Open",
-              "target": "row \"WH/OUT/00047\" of gridMain",
-              "selector": ".mx-name-gridMain"
-            }
-          ],
-          "expects": {
-            "landsOn": ".mx-name-btnValidate0",
-            "pageSays": [
-              "{{deliveryNo}}",
-              "Ready"
-            ],
-            "pageDoesNotSay": [],
-            "microflows": [],
-            "writes": null
-          },
-          "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-target-step2.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:23:56.010Z"
-          },
-          "reached": true,
-          "checks": [
-            {
-              "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: reached",
-              "verdict": "PASS",
-              "detail": ".mx-name-btnValidate0"
-            },
-            {
-              "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00047\"",
-              "verdict": "PASS",
-              "detail": ""
-            },
-            {
-              "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
-              "verdict": "PASS",
-              "detail": ""
-            },
-            {
-              "rung": "data",
-              "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
-              "verdict": "PASS",
-              "detail": "got 1, need >= 1"
-            }
-          ],
-          "ms": 1803
-        },
-        {
-          "n": 3,
-          "name": "Process 3 of the 5 chairs and validate: the backorder question opens",
-          "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
-          ],
-          "actions": [
-            {
-              "verb": "Type",
-              "target": "\"3\" into Quantity (chairs processed)",
-              "selector": ".mx-name-lntxtQuantity"
-            },
-            {
-              "verb": "Click",
-              "target": "Validate — straight after typing, as a user would",
-              "selector": ".mx-name-btnValidate0"
-            }
-          ],
-          "expects": {
-            "landsOn": ".mx-name-pbtnCreatebackorder",
-            "pageSays": [
-              "less than the initial demand"
-            ],
-            "pageDoesNotSay": [],
-            "microflows": [],
-            "writes": null
-          },
-          "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-target-step3.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:23:57.457Z"
-          },
-          "reached": true,
-          "checks": [
-            {
-              "rung": "ui",
-              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
-              "verdict": "PASS",
-              "detail": ".mx-name-pbtnCreatebackorder"
-            },
-            {
-              "rung": "ui",
-              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
-              "verdict": "PASS",
-              "detail": ""
-            }
-          ],
-          "ms": 1361
-        },
-        {
-          "n": 4,
-          "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order",
-          "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
-          ],
-          "actions": [
-            {
-              "verb": "Click",
-              "target": "Create backorder",
-              "selector": ".mx-name-pbtnCreatebackorder"
-            }
-          ],
-          "expects": {
-            "landsOn": ".mx-name-dvMain",
-            "pageSays": [
-              "Done"
-            ],
-            "pageDoesNotSay": [],
-            "microflows": [],
-            "writes": {
-              "entity": "Inventory.Transfer",
+              "entity": "Invoicing.Invoice",
               "delta": 1,
               "associations": [
-                "Inventory.Transfer_SalesOrder"
+                "Invoicing.Invoice_SalesOrders"
               ]
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-data-target-step4.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:23:59.353Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-outcome-step4.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:27.292Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+              "name": "Confirm the popup: a draft invoice opens: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-dvMain"
+              "detail": ".mx-name-btnConfirm1"
             },
             {
               "rung": "ui",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
+              "name": "Confirm the popup: a draft invoice opens: page says \"Draft\"",
               "verdict": "PASS",
               "detail": ""
             },
             {
               "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice +1",
               "verdict": "PASS",
-              "detail": "before=24 after=25 delta=1"
+              "detail": "before=12 after=13 delta=1"
             },
             {
               "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders set on every row",
               "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449696)"
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 38843546786084612)"
             },
             {
               "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
-              "verdict": "FAIL",
-              "detail": "0 row(s) link to Sales.SalesOrder where Number = '__LOC_THAT_WAS_NEVER_SELECTED__' (scoped to rows with id > 36591746972449696)"
-            },
-            {
-              "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
+              "name": "Confirm the popup: a draft invoice opens: Invoicing.Invoice_SalesOrders points at the seeded Number",
               "verdict": "PASS",
-              "detail": "got 1, need >= 1"
-            },
-            {
-              "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
-              "verdict": "PASS",
-              "detail": "got 1, need >= 1"
+              "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00066' (scoped to rows with id > 38843546786084612)"
             }
           ],
-          "ms": 2256
-        }
-      ]
-    },
-    {
-      "journey": "J-INV-01-CTL-outcome",
-      "title": "(positive control · outcome — outcome query with an unreachable floor or exact value; MUST fail)",
-      "persona": "warehouse.user",
-      "requirement": [
-        "F006-UC002",
-        "F006-UC004",
-        "F007-UC001",
-        "F007-UC002"
-      ],
-      "seeds": {
-        "deliveryNo": "WH/OUT/00041",
-        "orderNo": "S00061"
-      },
-      "steps": [
+          "ms": 2146
+        },
         {
-          "n": 1,
-          "name": "Open Inventory > Transfers: the delivery is listed",
+          "n": 5,
+          "name": "Confirm the invoice: numbered INV/, Register payment offered",
           "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
-              "verb": "Navigate",
-              "target": "Inventory › Transfers",
-              "selector": null
+              "verb": "Click",
+              "target": "Confirm",
+              "selector": ".mx-name-btnConfirm1"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-gridMain",
+            "landsOn": ".mx-name-btnRegisterpayment0",
             "pageSays": [
-              "{{deliveryNo}}"
+              "INV/"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-outcome-step1.png",
-            "title": "Mendix - Transfers",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:24:02.746Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-outcome-step5.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:29.027Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Inventory > Transfers: the delivery is listed: reached",
+              "name": "Confirm the invoice: numbered INV/, Register payment offered: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-gridMain"
+              "detail": ".mx-name-btnRegisterpayment0"
             },
             {
               "rung": "ui",
-              "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00041\"",
+              "name": "Confirm the invoice: numbered INV/, Register payment offered: page says \"INV/\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1141
+          "ms": 1545
         },
         {
-          "n": 2,
-          "name": "Open the delivery: Ready, the order's chairs reserved",
+          "n": 6,
+          "name": "Register payment: the popup proposes the amount due",
           "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
-              "verb": "Open",
-              "target": "row \"WH/OUT/00041\" of gridMain",
-              "selector": ".mx-name-gridMain"
+              "verb": "Click",
+              "target": "Register payment",
+              "selector": ".mx-name-btnRegisterpayment0"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-btnValidate0",
-            "pageSays": [
-              "{{deliveryNo}}",
-              "Ready"
-            ],
+            "landsOn": ".mx-name-pbtnCreatepayment0",
+            "pageSays": [],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-outcome-step2.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:24:04.533Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-outcome-step6.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:29.807Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: reached",
+              "name": "Register payment: the popup proposes the amount due: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-btnValidate0"
-            },
-            {
-              "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00041\"",
-              "verdict": "PASS",
-              "detail": ""
-            },
-            {
-              "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"Ready\"",
-              "verdict": "PASS",
-              "detail": ""
-            },
-            {
-              "rung": "data",
-              "name": "Open the delivery: Ready, the order's chairs reserved: the delivery carries the order as its source document (shown in an input, which textPresent cannot read)",
-              "verdict": "PASS",
-              "detail": "got 1, need >= 1"
+              "detail": ".mx-name-pbtnCreatepayment0"
             }
           ],
-          "ms": 1846
+          "ms": 775
         },
         {
-          "n": 3,
-          "name": "Process 3 of the 5 chairs and validate: the backorder question opens",
+          "n": 7,
+          "name": "Pay 10.00 of it",
           "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
+            "F008-UC001",
+            "F008-UC004",
+            "F008-UC007"
           ],
           "actions": [
             {
               "verb": "Type",
-              "target": "\"3\" into Quantity (chairs processed)",
-              "selector": ".mx-name-lntxtQuantity"
+              "target": "\"10\" into Amount",
+              "selector": ".mx-name-ptxtAmount"
             },
             {
               "verb": "Click",
-              "target": "Validate — straight after typing, as a user would",
-              "selector": ".mx-name-btnValidate0"
-            }
-          ],
-          "expects": {
-            "landsOn": ".mx-name-pbtnCreatebackorder",
-            "pageSays": [
-              "less than the initial demand"
-            ],
-            "pageDoesNotSay": [],
-            "microflows": [],
-            "writes": null
-          },
-          "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-outcome-step3.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:24:05.924Z"
-          },
-          "reached": true,
-          "checks": [
-            {
-              "rung": "ui",
-              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: reached",
-              "verdict": "PASS",
-              "detail": ".mx-name-pbtnCreatebackorder"
-            },
-            {
-              "rung": "ui",
-              "name": "Process 3 of the 5 chairs and validate: the backorder question opens: page says \"less than the initial demand\"",
-              "verdict": "PASS",
-              "detail": ""
-            }
-          ],
-          "ms": 1331
-        },
-        {
-          "n": 4,
-          "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order",
-          "requirement": [
-            "F006-UC002",
-            "F006-UC004",
-            "F007-UC001",
-            "F007-UC002"
-          ],
-          "actions": [
-            {
-              "verb": "Click",
-              "target": "Create backorder",
-              "selector": ".mx-name-pbtnCreatebackorder"
+              "target": "Create payment",
+              "selector": ".mx-name-pbtnCreatepayment0"
             }
           ],
           "expects": {
             "landsOn": ".mx-name-dvMain",
-            "pageSays": [
-              "Done"
-            ],
+            "pageSays": [],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": {
-              "entity": "Inventory.Transfer",
+              "entity": "Invoicing.Payment",
               "delta": 1,
-              "associations": [
-                "Inventory.Transfer_SalesOrder"
-              ]
+              "associations": []
             }
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-INV-01-CTL-outcome-step4.png",
-            "title": "Mendix - Transfer",
-            "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T21:24:07.792Z"
+            "file": "../tests/e2e/artifacts/J-INV-B1-CTL-outcome-step7.png",
+            "title": "Mendix - Invoice",
+            "url": "http://localhost:8080/p/sales-order-overview",
+            "at": "2026-10-16T12:56:31.159Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: reached",
+              "name": "Pay 10.00 of it: reached",
               "verdict": "PASS",
               "detail": ".mx-name-dvMain"
             },
             {
-              "rung": "ui",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: page says \"Done\"",
-              "verdict": "PASS",
-              "detail": ""
-            },
-            {
               "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
+              "name": "Pay 10.00 of it: Invoicing.Payment +1",
               "verdict": "PASS",
-              "detail": "before=25 after=26 delta=1"
-            },
-            {
-              "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
-              "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972449893)"
-            },
-            {
-              "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
-              "verdict": "PASS",
-              "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00061' (scoped to rows with id > 36591746972449893)"
-            },
-            {
-              "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the delivery is done with 3 chairs",
-              "verdict": "PASS",
-              "detail": "got 1, need >= 1"
-            },
-            {
-              "rung": "data",
-              "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: the backorder carries the 2 chairs not delivered",
-              "verdict": "PASS",
-              "detail": "got 1, need >= 1"
+              "detail": "before=12 after=13 delta=1"
             }
           ],
-          "ms": 2277
+          "ms": 1397
         }
       ]
     }
