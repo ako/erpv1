@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-16T06:48:56.961Z",
-  "configuredUser": "purchase.manager",
-  "actualUser": "purchase.manager",
+  "capturedAt": "2026-10-16T07:14:44.725Z",
+  "configuredUser": "warehouse.user",
+  "actualUser": "warehouse.user",
   "usedFallback": false,
   "baseUrl": "http://localhost:8080",
   "positiveControl": false,
@@ -17,215 +17,172 @@
       "rung": "ui",
       "name": "login",
       "verdict": "PASS",
-      "detail": "purchase.manager",
+      "detail": "warehouse.user",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Purchase > Approvals and the waiting order's task: reached",
+      "name": "Open Inventory > Transfers and the receipt: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-btnReject",
-      "requirement": "F005-UC004"
+      "detail": ".mx-name-btnValidate0",
+      "requirement": "F006-UC001, F007-UC004, F007-UC005"
     },
     {
       "rung": "ui",
-      "name": "Open Purchase > Approvals and the waiting order's task: page says \"P00023\"",
+      "name": "Open Inventory > Transfers and the receipt: page says \"WH/IN/00018\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F005-UC004"
+      "requirement": "F006-UC001, F007-UC004, F007-UC005"
     },
     {
       "rung": "ui",
-      "name": "Reject without a reason: refused, the reason is asked for: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-btnReject",
-      "requirement": "F005-UC004"
-    },
-    {
-      "rung": "ui",
-      "name": "Reject without a reason: refused, the reason is asked for: page says \"Give the purchaser a reason for the rejection.\"",
+      "name": "Open Inventory > Transfers and the receipt: page says \"Ready\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F005-UC004"
+      "requirement": "F006-UC001, F007-UC004, F007-UC005"
     },
     {
       "rung": "ui",
-      "name": "Reject with the reason 'Negotiate price': back in the inbox, the order no longer waits: reached",
+      "name": "Validate: the receipt is done: reached",
       "verdict": "PASS",
-      "detail": ".mx-name-gridMain",
-      "requirement": "F005-UC004"
+      "detail": ".mx-name-dvMain",
+      "requirement": "F006-UC001, F007-UC004, F007-UC005"
     },
     {
       "rung": "ui",
-      "name": "Reject with the reason 'Negotiate price': back in the inbox, the order no longer waits: page does NOT say \"P00023\"",
+      "name": "Validate: the receipt is done: page says \"Done\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F005-UC004"
+      "requirement": "F006-UC001, F007-UC004, F007-UC005"
     },
     {
       "rung": "outcome",
-      "name": "J-PURCH-03 end state",
+      "name": "J-INV-02 end state",
       "verdict": "PASS",
       "detail": "got 1, need >= 1",
-      "requirement": "F005-UC004"
+      "requirement": "F006-UC001, F007-UC004, F007-UC005"
     }
   ],
   "walks": [
     {
-      "journey": "J-PURCH-03",
-      "title": "Purchase manager rejects a waiting order with a reason: it goes back to RFQ and the purchaser sees why",
-      "persona": "purchase.manager",
+      "journey": "J-INV-02",
+      "title": "Warehouse user validates the receipt of an approved purchase order: the order reads fully received",
+      "persona": "warehouse.user",
       "requirement": [
-        "F005-UC004"
+        "F006-UC001",
+        "F007-UC004",
+        "F007-UC005"
       ],
       "seeds": {
-        "poNumber": "P00023"
+        "receiptNo": "WH/IN/00018",
+        "orderNo": "P00040"
       },
       "steps": [
         {
           "n": 1,
-          "name": "Open Purchase > Approvals and the waiting order's task",
+          "name": "Open Inventory > Transfers and the receipt",
           "requirement": [
-            "F005-UC004"
+            "F006-UC001",
+            "F007-UC004",
+            "F007-UC005"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Purchase › Approvals",
+              "target": "Inventory › Transfers",
               "selector": null
             },
             {
               "verb": "Open",
-              "target": "row \"P00023\" of gridMain",
+              "target": "row \"WH/IN/00018\" of gridMain",
               "selector": ".mx-name-gridMain"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-btnReject",
+            "landsOn": ".mx-name-btnValidate0",
             "pageSays": [
-              "{{poNumber}}"
+              "{{receiptNo}}",
+              "Ready"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-PURCH-03-step1.png",
-            "title": "Mendix - Approve purchase order",
-            "url": "http://localhost:8080/p/purchase-approval-inbox",
-            "at": "2026-10-16T06:48:54.073Z"
+            "file": "../tests/e2e/artifacts/J-INV-02-step1.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-16T07:14:43.770Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Open Purchase > Approvals and the waiting order's task: reached",
+              "name": "Open Inventory > Transfers and the receipt: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-btnReject"
+              "detail": ".mx-name-btnValidate0"
             },
             {
               "rung": "ui",
-              "name": "Open Purchase > Approvals and the waiting order's task: page says \"P00023\"",
+              "name": "Open Inventory > Transfers and the receipt: page says \"WH/IN/00018\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "ui",
+              "name": "Open Inventory > Transfers and the receipt: page says \"Ready\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 2073
+          "ms": 2306
         },
         {
           "n": 2,
-          "name": "Reject without a reason: refused, the reason is asked for",
+          "name": "Validate: the receipt is done",
           "requirement": [
-            "F005-UC004"
+            "F006-UC001",
+            "F007-UC004",
+            "F007-UC005"
           ],
           "actions": [
             {
               "verb": "Click",
-              "target": "Reject",
-              "selector": ".mx-name-btnReject"
+              "target": "Validate",
+              "selector": ".mx-name-btnValidate0"
             }
           ],
           "expects": {
-            "landsOn": ".mx-name-btnReject",
+            "landsOn": ".mx-name-dvMain",
             "pageSays": [
-              "Give the purchaser a reason for the rejection."
+              "Done"
             ],
             "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-PURCH-03-step2.png",
-            "title": "Mendix - Approve purchase order",
-            "url": "http://localhost:8080/p/purchase-approval-inbox",
-            "at": "2026-10-16T06:48:54.848Z"
+            "file": "../tests/e2e/artifacts/J-INV-02-step2.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-16T07:14:44.584Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Reject without a reason: refused, the reason is asked for: reached",
+              "name": "Validate: the receipt is done: reached",
               "verdict": "PASS",
-              "detail": ".mx-name-btnReject"
+              "detail": ".mx-name-dvMain"
             },
             {
               "rung": "ui",
-              "name": "Reject without a reason: refused, the reason is asked for: page says \"Give the purchaser a reason for the rejection.\"",
+              "name": "Validate: the receipt is done: page says \"Done\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 773
-        },
-        {
-          "n": 3,
-          "name": "Reject with the reason 'Negotiate price': back in the inbox, the order no longer waits",
-          "requirement": [
-            "F005-UC004"
-          ],
-          "actions": [
-            {
-              "verb": "Type",
-              "target": "\"Negotiate price\" into taApprovalComment",
-              "selector": ".mx-name-taApprovalComment"
-            },
-            {
-              "verb": "Click",
-              "target": "Reject",
-              "selector": ".mx-name-btnReject"
-            }
-          ],
-          "expects": {
-            "landsOn": ".mx-name-gridMain",
-            "pageSays": [],
-            "pageDoesNotSay": [
-              "{{poNumber}}"
-            ],
-            "microflows": [],
-            "writes": null
-          },
-          "shot": {
-            "file": "../tests/e2e/artifacts/J-PURCH-03-step3.png",
-            "title": "Mendix - Purchase approvals",
-            "url": "http://localhost:8080/p/purchase-approval-inbox",
-            "at": "2026-10-16T06:48:56.831Z"
-          },
-          "reached": true,
-          "checks": [
-            {
-              "rung": "ui",
-              "name": "Reject with the reason 'Negotiate price': back in the inbox, the order no longer waits: reached",
-              "verdict": "PASS",
-              "detail": ".mx-name-gridMain"
-            },
-            {
-              "rung": "ui",
-              "name": "Reject with the reason 'Negotiate price': back in the inbox, the order no longer waits: page does NOT say \"P00023\"",
-              "verdict": "PASS",
-              "detail": ""
-            }
-          ],
-          "ms": 1982
+          "ms": 811
         }
       ]
     }
