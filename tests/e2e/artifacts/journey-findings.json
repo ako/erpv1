@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-15T23:10:41.043Z",
+  "capturedAt": "2026-10-16T00:19:25.171Z",
   "configuredUser": "warehouse.user",
   "actualUser": "warehouse.user",
   "usedFallback": false,
@@ -29,7 +29,7 @@
     },
     {
       "rung": "ui",
-      "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00061\"",
+      "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00063\"",
       "verdict": "PASS",
       "detail": "",
       "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
@@ -43,7 +43,7 @@
     },
     {
       "rung": "ui",
-      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00061\"",
+      "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00063\"",
       "verdict": "PASS",
       "detail": "",
       "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
@@ -94,14 +94,14 @@
       "rung": "data",
       "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
       "verdict": "PASS",
-      "detail": "before=41 after=42 delta=1",
+      "detail": "before=43 after=44 delta=1",
       "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002"
     },
     {
       "rung": "data",
       "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
       "verdict": "PASS",
-      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972475176)",
+      "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972487833)",
       "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
       "evidenceStrength": "strong"
     },
@@ -109,7 +109,7 @@
       "rung": "data",
       "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
       "verdict": "PASS",
-      "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00073' (scoped to rows with id > 36591746972475176)",
+      "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00074' (scoped to rows with id > 36591746972487833)",
       "requirement": "F006-UC002, F006-UC004, F007-UC001, F007-UC002",
       "evidenceStrength": "strong"
     },
@@ -147,8 +147,8 @@
         "F007-UC002"
       ],
       "seeds": {
-        "deliveryNo": "WH/OUT/00061",
-        "orderNo": "S00073"
+        "deliveryNo": "WH/OUT/00063",
+        "orderNo": "S00074"
       },
       "steps": [
         {
@@ -180,7 +180,7 @@
             "file": "../tests/e2e/artifacts/J-INV-01-step1.png",
             "title": "Mendix - Transfers",
             "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T23:10:35.607Z"
+            "at": "2026-10-16T00:19:20.324Z"
           },
           "reached": true,
           "checks": [
@@ -192,12 +192,12 @@
             },
             {
               "rung": "ui",
-              "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00061\"",
+              "name": "Open Inventory > Transfers: the delivery is listed: page says \"WH/OUT/00063\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1135
+          "ms": 1118
         },
         {
           "n": 2,
@@ -211,7 +211,7 @@
           "actions": [
             {
               "verb": "Open",
-              "target": "row \"WH/OUT/00061\" of gridMain",
+              "target": "row \"WH/OUT/00063\" of gridMain",
               "selector": ".mx-name-gridMain"
             }
           ],
@@ -229,7 +229,7 @@
             "file": "../tests/e2e/artifacts/J-INV-01-step2.png",
             "title": "Mendix - Transfer",
             "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T23:10:37.361Z"
+            "at": "2026-10-16T00:19:21.614Z"
           },
           "reached": true,
           "checks": [
@@ -241,7 +241,7 @@
             },
             {
               "rung": "ui",
-              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00061\"",
+              "name": "Open the delivery: Ready, the order's chairs reserved: page says \"WH/OUT/00063\"",
               "verdict": "PASS",
               "detail": ""
             },
@@ -258,7 +258,7 @@
               "detail": "got 1, need >= 1"
             }
           ],
-          "ms": 1805
+          "ms": 1341
         },
         {
           "n": 3,
@@ -294,7 +294,7 @@
             "file": "../tests/e2e/artifacts/J-INV-01-step3.png",
             "title": "Mendix - Transfer",
             "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T23:10:38.744Z"
+            "at": "2026-10-16T00:19:23.000Z"
           },
           "reached": true,
           "checks": [
@@ -311,7 +311,7 @@
               "detail": ""
             }
           ],
-          "ms": 1328
+          "ms": 1332
         },
         {
           "n": 4,
@@ -348,7 +348,7 @@
             "file": "../tests/e2e/artifacts/J-INV-01-step4.png",
             "title": "Mendix - Transfer",
             "url": "http://localhost:8080/p/transfer-overview",
-            "at": "2026-10-15T23:10:40.560Z"
+            "at": "2026-10-16T00:19:24.644Z"
           },
           "reached": true,
           "checks": [
@@ -368,19 +368,19 @@
               "rung": "data",
               "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer +1",
               "verdict": "PASS",
-              "detail": "before=41 after=42 delta=1"
+              "detail": "before=43 after=44 delta=1"
             },
             {
               "rung": "data",
               "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder set on every row",
               "verdict": "PASS",
-              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972475176)"
+              "detail": "1/1 linked, 0 row(s) saved with no association (scoped to rows with id > 36591746972487833)"
             },
             {
               "rung": "data",
               "name": "Create backorder: the delivery is done and the rest waits on a new delivery for the same order: Inventory.Transfer_SalesOrder points at the seeded Number",
               "verdict": "PASS",
-              "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00073' (scoped to rows with id > 36591746972475176)"
+              "detail": "1 row(s) link to Sales.SalesOrder where Number = 'S00074' (scoped to rows with id > 36591746972487833)"
             },
             {
               "rung": "data",
@@ -395,7 +395,7 @@
               "detail": "got 1, need >= 1"
             }
           ],
-          "ms": 2168
+          "ms": 2024
         }
       ]
     }
