@@ -98,6 +98,99 @@ SMART_ACTION = {('SalesOrder_NewEdit', 'Delivery'): ('Inventory.ACT_SalesOrder_O
 # Related links that open the object behind an association: (page, caption) -> (microflow taking the form's object, visible).
 LINK_ACTION = {('Transfer_NewEdit', 'Open sales order'): ('Inventory.ACT_Transfer_OpenSalesOrder', '$currentObject/Inventory.Transfer_SalesOrder != empty'),
                ('Transfer_NewEdit', 'Open purchase order'): ('Inventory.ACT_Transfer_OpenPurchaseOrder', '$currentObject/Inventory.Transfer_PurchaseOrder != empty')}
+# Odoo checks (BRD odooConstraints/odooChecks, disposition "val: <entity's VAL_>") added to the generated VAL_<E>, after the
+# required fields (hand-written VALs — VAL_UoMCategory 401, VAL_Product 405 — carry their Odoo checks themselves).
+# Each block is MDL; $E is the form's object. Lines are checked over the association, as the form holds them.
+VAL_EXTRA = {
+    'Core.PaymentTerm': ['''  retrieve $TermLines from $E/Core.PaymentTermLine_PaymentTerm;
+  $BadPercent = find $TermLines where $currentObject/Value = Core.ENUM_PaymentTermValue.Percent and ($currentObject/ValueAmount < 0 or $currentObject/ValueAmount > 100);
+  if $BadPercent != empty then
+    validation feedback $BadPercent/ValueAmount message 'Percentages on the payment term lines must be between 0 and 100.';
+    set $IsValid = false;
+  end if;'''],
+    'Products.ProductCategory': ['''  retrieve $NewParent from $E/Products.ProductCategory_Parent;
+  if $NewParent != empty and ($NewParent = $E or ($E/FullName != empty and startsWith($NewParent/FullName, $E/FullName + ' / '))) then
+    validation feedback $E/Products.ProductCategory_Parent message 'You cannot create recursive categories.';
+    set $IsValid = false;
+  end if;'''],
+    'Products.Pricelist': ['''  retrieve $Rules from $E/Products.PriceRule_Pricelist;
+  $BadDates = find $Rules where $currentObject/ValidFrom != empty and $currentObject/ValidTo != empty and $currentObject/ValidTo < $currentObject/ValidFrom;
+  if $BadDates != empty then
+    validation feedback $BadDates/ValidTo message 'The end date of a price rule cannot be before its start date.';
+    set $IsValid = false;
+  end if;
+  $NoCategory = find $Rules where $currentObject/AppliesTo = Products.ENUM_PriceRuleScope.ProductCategory and $currentObject/Products.PriceRule_Category = empty;
+  if $NoCategory != empty then
+    validation feedback $NoCategory/Products.PriceRule_Category message 'Choose the category this rule applies to.';
+    set $IsValid = false;
+  end if;
+  $NoProduct = find $Rules where $currentObject/AppliesTo = Products.ENUM_PriceRuleScope.Product and $currentObject/Products.PriceRule_Product = empty;
+  if $NoProduct != empty then
+    validation feedback $NoProduct/Products.PriceRule_Product message 'Choose the product this rule applies to.';
+    set $IsValid = false;
+  end if;'''],
+    'Sales.QuotationTemplate': ['''  retrieve $TemplateLines from $E/Sales.QuotationTemplateLine_Template;
+  $NoProduct = find $TemplateLines where $currentObject/Sales.QuotationTemplateLine_Product = empty;
+  if $NoProduct != empty then
+    validation feedback $NoProduct/Sales.QuotationTemplateLine_Product message 'Every template line needs a product.';
+    set $IsValid = false;
+  end if;'''],
+}
+# Row checks on editable list pages (rows save on change): (condition on $E, member, message). A row with such checks saves
+# through ACT_<E>_SaveRow -> VAL_<E>_Row instead of "save changes", so a bad value is flagged on the row and not stored
+# (user 2026-10-16; inline lists bypassed every VAL_).
+ROW_VAL = {
+    'Core.Sequence': [("$E/Code = empty or trim($E/Code) = ''", 'Code', 'Code is required.')],
+    'Purchasing.VendorPrice': [("$E/Price = empty", 'Price', 'Price is required.'),
+                               ("$E/Price != empty and $E/Price < 0", 'Price', 'The price cannot be negative.'),
+                               ("$E/MinQuantity != empty and $E/MinQuantity < 0", 'MinQuantity', 'The minimum quantity cannot be negative.')],
+    'Inventory.ReorderRule': [("$E/MinQuantity != empty and $E/MaxQuantity != empty and $E/MinQuantity > $E/MaxQuantity", 'MinQuantity',
+                               'The minimum quantity must be less than or equal to the maximum quantity.'),
+                              ("$E/MinQuantity != empty and $E/MinQuantity < 0", 'MinQuantity', 'The minimum quantity cannot be negative.'),
+                              ("$E/MaxQuantity != empty and $E/MaxQuantity < 0", 'MaxQuantity', 'The maximum quantity cannot be negative.')],
+}
+
+
+def row_save_microflows(s, folder):
+    """VAL_<E>_Row / SUB_<E>_SaveRow / ACT_<E>_SaveRow for an editable list whose rows carry checks (ROW_VAL)."""
+    e = s['entity']
+    if e not in ROW_VAL:
+        return []
+    mod, short = module_of(e), e.split('.')[1]
+    mf = folder.replace('/Pages', '/Microflows')
+    checks = '\n'.join('''  if %s then
+    validation feedback $%s/%s message '%s';
+    set $IsValid = false;
+  end if;''' % (c.replace('$E', '$' + short), short, m, esc(msg)) for c, m, msg in ROW_VAL[e])
+    return ['''/** Checks on one %(short)s row of %(page)s (the row saves on change). */
+create or modify microflow %(mod)s.VAL_%(short)s_Row ($%(short)s: %(e)s)
+returns Boolean as $IsValid
+folder '%(f)s'
+begin
+  declare $IsValid Boolean = true;
+%(checks)s
+  return $IsValid;
+end;
+
+/** Persist one checked %(short)s row. */
+create or modify microflow %(mod)s.SUB_%(short)s_SaveRow ($%(short)s: %(e)s)
+folder '%(f)s'
+begin
+  commit $%(short)s with events refresh;
+end;
+
+/** On change of a %(short)s row on %(page)s: save it when its checks pass, else flag the field and keep it unsaved. */
+create or modify microflow %(mod)s.ACT_%(short)s_SaveRow ($%(short)s: %(e)s)
+folder '%(f)s'
+begin
+  $IsValid = call microflow %(mod)s.VAL_%(short)s_Row(%(short)s = $%(short)s);
+  if $IsValid then
+    call microflow %(mod)s.SUB_%(short)s_SaveRow(%(short)s = $%(short)s);
+  end if;
+end;
+''' % dict(short=short, mod=mod, e=e, page=s['name'], f=mf, checks=checks)]
+
+
 SAVE_HOOK = {'Products.ProductCategory': 'Products.SUB_ProductCategory_ComputeFullName'}
 LINK_CAPTION = {'Administration.Account_Overview': 'User accounts (Administration)'}
 
@@ -198,6 +291,8 @@ def input_widget(e, f, ind, readonly=False, prefix='in', row_save=False):
     oc = ONCHANGE.get((e['name'], f))
     if oc and not ro:
         ro = ', OnChange: call microflow %s(%s = $currentObject)' % (oc, e['name'].split('.')[1])
+    elif row_save and not ro and e['name'] in ROW_VAL:
+        ro = ', OnChange: call microflow %s.ACT_%s_SaveRow(%s = $currentObject)' % (module_of(e['name']), e['name'].split('.')[1], e['name'].split('.')[1])
     elif row_save and not ro:
         ro = ', OnChange: save changes'   # a row of an editable list page commits itself (C1-07: edits were lost)
     if (e['name'], f) in EDITABLE_WHEN_EMPTY and 'Editable: Never' not in ro:
@@ -566,6 +661,7 @@ def save_microflows(s, folder):
     validation feedback $%s/%s message '%s is required.';
     set $IsValid = false;
   end if;''' % (c, short, f if attr(e, f) else '%s.%s' % (mod, f), esc(label_of(e, f))) for f, c in checks)
+    body += ''.join('\n' + b.replace('$E', '$' + short) for b in VAL_EXTRA.get(e['name'], []))
     mfolder = folder.replace('/Pages', '/Microflows')
     hook = SAVE_HOOK.get(e['name'])
     hook_call = ('  call microflow %s(%s = $%s);\n' % (hook, short, short)) if hook else ''
@@ -712,6 +808,8 @@ def gen_page(name):
     out = ['mdl 1;', '-- GENERATED by pipelines/odoo/mdl_pages.py from ui_spec.py["%s"] — wireframe design/wireframes/%s.html.' % (name, name),
            '-- Regenerate, do not hand-edit. Reached from: %s.' % '; '.join(s['reached']), '']
     if s['kind'] == 'list':
+        if s.get('editable'):
+            out += row_save_microflows(s, folder)
         if s.get('editable') and s.get('add'):
             short = s['entity'].split('.')[1]
             mf = folder.replace('/Pages', '/Microflows')

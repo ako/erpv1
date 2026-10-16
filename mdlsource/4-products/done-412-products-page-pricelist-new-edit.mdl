@@ -16,6 +16,22 @@ begin
     validation feedback $Pricelist/Products.Pricelist_Currency message 'Currency is required.';
     set $IsValid = false;
   end if;
+  retrieve $Rules from $Pricelist/Products.PriceRule_Pricelist;
+  $BadDates = find $Rules where $currentObject/ValidFrom != empty and $currentObject/ValidTo != empty and $currentObject/ValidTo < $currentObject/ValidFrom;
+  if $BadDates != empty then
+    validation feedback $BadDates/ValidTo message 'The end date of a price rule cannot be before its start date.';
+    set $IsValid = false;
+  end if;
+  $NoCategory = find $Rules where $currentObject/AppliesTo = Products.ENUM_PriceRuleScope.ProductCategory and $currentObject/Products.PriceRule_Category = empty;
+  if $NoCategory != empty then
+    validation feedback $NoCategory/Products.PriceRule_Category message 'Choose the category this rule applies to.';
+    set $IsValid = false;
+  end if;
+  $NoProduct = find $Rules where $currentObject/AppliesTo = Products.ENUM_PriceRuleScope.Product and $currentObject/Products.PriceRule_Product = empty;
+  if $NoProduct != empty then
+    validation feedback $NoProduct/Products.PriceRule_Product message 'Choose the product this rule applies to.';
+    set $IsValid = false;
+  end if;
   return $IsValid;
 end;
 

@@ -12,6 +12,12 @@ begin
     validation feedback $PaymentTerm/Name message 'Name is required.';
     set $IsValid = false;
   end if;
+  retrieve $TermLines from $PaymentTerm/Core.PaymentTermLine_PaymentTerm;
+  $BadPercent = find $TermLines where $currentObject/Value = Core.ENUM_PaymentTermValue.Percent and ($currentObject/ValueAmount < 0 or $currentObject/ValueAmount > 100);
+  if $BadPercent != empty then
+    validation feedback $BadPercent/ValueAmount message 'Percentages on the payment term lines must be between 0 and 100.';
+    set $IsValid = false;
+  end if;
   return $IsValid;
 end;
 

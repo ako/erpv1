@@ -12,6 +12,12 @@ begin
     validation feedback $QuotationTemplate/Name message 'Name is required.';
     set $IsValid = false;
   end if;
+  retrieve $TemplateLines from $QuotationTemplate/Sales.QuotationTemplateLine_Template;
+  $NoProduct = find $TemplateLines where $currentObject/Sales.QuotationTemplateLine_Product = empty;
+  if $NoProduct != empty then
+    validation feedback $NoProduct/Sales.QuotationTemplateLine_Product message 'Every template line needs a product.';
+    set $IsValid = false;
+  end if;
   return $IsValid;
 end;
 

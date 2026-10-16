@@ -12,6 +12,11 @@ begin
     validation feedback $ProductCategory/Name message 'Name is required.';
     set $IsValid = false;
   end if;
+  retrieve $NewParent from $ProductCategory/Products.ProductCategory_Parent;
+  if $NewParent != empty and ($NewParent = $ProductCategory or ($ProductCategory/FullName != empty and startsWith($NewParent/FullName, $ProductCategory/FullName + ' / '))) then
+    validation feedback $ProductCategory/Products.ProductCategory_Parent message 'You cannot create recursive categories.';
+    set $IsValid = false;
+  end if;
   return $IsValid;
 end;
 

@@ -684,7 +684,7 @@
      "definition": "CHECK(display_type IS NOT NULL OR is_downpayment OR (product_id IS NOT NULL AND product_uom IS NOT NULL))",
      "message": "Missing required fields on accountable sale order line.",
      "kind": "check",
-     "disposition": "val: Sales.VAL_SalesOrder_Confirm (every line has a product)"
+     "disposition": "covered: Sales.SUB_SalesOrder_LinesReadyToConfirm (Confirm refuses a line without a product)"
     },
     {
      "odooName": "non_accountable_null_fields",

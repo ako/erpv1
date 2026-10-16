@@ -28,6 +28,10 @@ begin
       validation feedback $Unit/Name message 'Unit name is required.';
       set $IsValid = false;
     end if;
+    if $Unit/UoMType = Products.ENUM_UoMType.Reference and $Unit/Factor != 1 then
+      validation feedback $Unit/Factor message 'The reference unit of a category must have a ratio of 1.';
+      set $IsValid = false;
+    end if;
     if $Unit/Factor = empty or $Unit/Factor <= 0 then
       validation feedback $Unit/Factor message 'The ratio must be greater than 0.';
       set $IsValid = false;

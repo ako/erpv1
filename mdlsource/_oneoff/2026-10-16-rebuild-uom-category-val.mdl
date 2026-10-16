@@ -1,0 +1,53 @@
+mdl 1;
+-- One-off: VAL_UoMCategory adds Odoo's factor_reference_is_one (the reference unit has ratio 1; BRD odooConstraints,
+-- disposition val). Reshape (MDL-V1-REBUILD): drop and replay done-401.
+drop microflow Products.VAL_UoMCategory;
+-- ── replay: mdlsource/4-products/done-401-products-mf-uo-m-category.mdl
+-- 401-products-mf-uo-m-category.mdl — build-plan row 25 (F002-UC001). Owns Products.VAL_UoMCategory.
+
+/**
+ * Validate a unit category before save (Odoo uom.category / uom.uom constraints):
+ * a name; exactly one active reference unit; every unit has a name, a factor > 0 and a rounding > 0.
+ * Every invalid field is flagged on the same submit.
+ *
+ * @param $UoMCategory the category being saved, with its units
+ * @returns true when the category and all its units are valid
+ */
+create or modify microflow Products.VAL_UoMCategory ($UoMCategory: Products.UoMCategory)
+returns Boolean as $IsValid
+folder 'Units of measure/Microflows'
+begin
+  declare $IsValid Boolean = true;
+  if $UoMCategory/Name = empty or trim($UoMCategory/Name) = '' then
+    validation feedback $UoMCategory/Name message 'Name is required.';
+    set $IsValid = false;
+  end if;
+  retrieve $Units from $UoMCategory/Products.UoM_Category;
+  declare $ReferenceCount Integer = 0;
+  loop $Unit in $Units begin
+    if $Unit/Active and $Unit/UoMType = Products.ENUM_UoMType.Reference then
+      set $ReferenceCount = $ReferenceCount + 1;
+    end if;
+    if $Unit/Name = empty or trim($Unit/Name) = '' then
+      validation feedback $Unit/Name message 'Unit name is required.';
+      set $IsValid = false;
+    end if;
+    if $Unit/UoMType = Products.ENUM_UoMType.Reference and $Unit/Factor != 1 then
+      validation feedback $Unit/Factor message 'The reference unit of a category must have a ratio of 1.';
+      set $IsValid = false;
+    end if;
+    if $Unit/Factor = empty or $Unit/Factor <= 0 then
+      validation feedback $Unit/Factor message 'The ratio must be greater than 0.';
+      set $IsValid = false;
+    end if;
+    if $Unit/Rounding = empty or $Unit/Rounding <= 0 then
+      validation feedback $Unit/Rounding message 'The rounding precision must be greater than 0.';
+      set $IsValid = false;
+    end if;
+  end loop;
+  if $ReferenceCount != 1 then
+    validation feedback $UoMCategory/Name message 'A category needs exactly one active reference unit (it has ' + toString($ReferenceCount) + ').';
+    set $IsValid = false;
+  end if;
+  return $IsValid;
+end;

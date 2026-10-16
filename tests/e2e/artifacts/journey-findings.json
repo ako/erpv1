@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-16T04:56:34.115Z",
-  "configuredUser": "purchase.manager",
-  "actualUser": "purchase.manager",
+  "capturedAt": "2026-10-16T06:48:12.620Z",
+  "configuredUser": "warehouse.user",
+  "actualUser": "warehouse.user",
   "usedFallback": false,
   "baseUrl": "http://localhost:8080",
   "positiveControl": false,
@@ -17,215 +17,289 @@
       "rung": "ui",
       "name": "login",
       "verdict": "PASS",
-      "detail": "purchase.manager",
+      "detail": "warehouse.user",
       "requirement": ""
     },
     {
       "rung": "ui",
-      "name": "Open Purchase > Approvals and the waiting order's task: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-btnReject",
-      "requirement": "F005-UC004"
-    },
-    {
-      "rung": "ui",
-      "name": "Open Purchase > Approvals and the waiting order's task: page says \"P00024\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F005-UC004"
-    },
-    {
-      "rung": "ui",
-      "name": "Reject without a reason: refused, the reason is asked for: reached",
-      "verdict": "PASS",
-      "detail": ".mx-name-btnReject",
-      "requirement": "F005-UC004"
-    },
-    {
-      "rung": "ui",
-      "name": "Reject without a reason: refused, the reason is asked for: page says \"Give the purchaser a reason for the rejection.\"",
-      "verdict": "PASS",
-      "detail": "",
-      "requirement": "F005-UC004"
-    },
-    {
-      "rung": "ui",
-      "name": "Reject with the reason 'Negotiate price': back in the inbox, the order no longer waits: reached",
+      "name": "Open Inventory > Transfers: reached",
       "verdict": "PASS",
       "detail": ".mx-name-gridMain",
-      "requirement": "F005-UC004"
+      "requirement": "F006-UC003"
     },
     {
       "rung": "ui",
-      "name": "Reject with the reason 'Negotiate price': back in the inbox, the order no longer waits: page does NOT say \"P00024\"",
+      "name": "New: a draft internal transfer opens: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-btnMarkastodo1",
+      "requirement": "F006-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "New: a draft internal transfer opens: page says \"WH/INT/\"",
       "verdict": "PASS",
       "detail": "",
-      "requirement": "F005-UC004"
+      "requirement": "F006-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "New: a draft internal transfer opens: Inventory.Transfer +1",
+      "verdict": "PASS",
+      "detail": "before=50 after=51 delta=1",
+      "requirement": "F006-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: 2 Office Chairs: combobox lncmbStockMoveProduct committed the seeded value",
+      "verdict": "PASS",
+      "detail": "Office Chair",
+      "requirement": "F006-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Add a line: 2 Office Chairs: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-lvLines",
+      "requirement": "F006-UC003"
+    },
+    {
+      "rung": "data",
+      "name": "Add a line: 2 Office Chairs: Inventory.StockMove +1",
+      "verdict": "PASS",
+      "detail": "before=58 after=59 delta=1",
+      "requirement": "F006-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Mark as to do — straight after typing: the transfer is planned with the typed demand: reached",
+      "verdict": "PASS",
+      "detail": ".mx-name-dvMain",
+      "requirement": "F006-UC003"
+    },
+    {
+      "rung": "ui",
+      "name": "Mark as to do — straight after typing: the transfer is planned with the typed demand: page does NOT say \"Draft\"",
+      "verdict": "PASS",
+      "detail": "",
+      "requirement": "F006-UC003"
     },
     {
       "rung": "outcome",
-      "name": "J-PURCH-03 end state",
+      "name": "J-INV-05 end state",
       "verdict": "PASS",
-      "detail": "got 1, need >= 1",
-      "requirement": "F005-UC004"
+      "detail": "got 1, expected 1",
+      "requirement": "F006-UC003"
     }
   ],
   "walks": [
     {
-      "journey": "J-PURCH-03",
-      "title": "Purchase manager rejects a waiting order with a reason: it goes back to RFQ and the purchaser sees why",
-      "persona": "purchase.manager",
+      "journey": "J-INV-05",
+      "title": "Warehouse user creates an internal transfer, types a line and marks it as to do: the typed demand is what gets planned",
+      "persona": "warehouse.user",
       "requirement": [
-        "F005-UC004"
+        "F006-UC003"
       ],
-      "seeds": {
-        "poNumber": "P00024"
-      },
+      "seeds": {},
       "steps": [
         {
           "n": 1,
-          "name": "Open Purchase > Approvals and the waiting order's task",
+          "name": "Open Inventory > Transfers",
           "requirement": [
-            "F005-UC004"
+            "F006-UC003"
           ],
           "actions": [
             {
               "verb": "Navigate",
-              "target": "Purchase › Approvals",
+              "target": "Inventory › Transfers",
               "selector": null
-            },
-            {
-              "verb": "Open",
-              "target": "row \"P00024\" of gridMain",
-              "selector": ".mx-name-gridMain"
-            }
-          ],
-          "expects": {
-            "landsOn": ".mx-name-btnReject",
-            "pageSays": [
-              "{{poNumber}}"
-            ],
-            "pageDoesNotSay": [],
-            "microflows": [],
-            "writes": null
-          },
-          "shot": {
-            "file": "../tests/e2e/artifacts/J-PURCH-03-step1.png",
-            "title": "Mendix - Approve purchase order",
-            "url": "http://localhost:8080/p/purchase-approval-inbox",
-            "at": "2026-10-16T04:56:31.264Z"
-          },
-          "reached": true,
-          "checks": [
-            {
-              "rung": "ui",
-              "name": "Open Purchase > Approvals and the waiting order's task: reached",
-              "verdict": "PASS",
-              "detail": ".mx-name-btnReject"
-            },
-            {
-              "rung": "ui",
-              "name": "Open Purchase > Approvals and the waiting order's task: page says \"P00024\"",
-              "verdict": "PASS",
-              "detail": ""
-            }
-          ],
-          "ms": 2510
-        },
-        {
-          "n": 2,
-          "name": "Reject without a reason: refused, the reason is asked for",
-          "requirement": [
-            "F005-UC004"
-          ],
-          "actions": [
-            {
-              "verb": "Click",
-              "target": "Reject",
-              "selector": ".mx-name-btnReject"
-            }
-          ],
-          "expects": {
-            "landsOn": ".mx-name-btnReject",
-            "pageSays": [
-              "Give the purchaser a reason for the rejection."
-            ],
-            "pageDoesNotSay": [],
-            "microflows": [],
-            "writes": null
-          },
-          "shot": {
-            "file": "../tests/e2e/artifacts/J-PURCH-03-step2.png",
-            "title": "Mendix - Approve purchase order",
-            "url": "http://localhost:8080/p/purchase-approval-inbox",
-            "at": "2026-10-16T04:56:32.026Z"
-          },
-          "reached": true,
-          "checks": [
-            {
-              "rung": "ui",
-              "name": "Reject without a reason: refused, the reason is asked for: reached",
-              "verdict": "PASS",
-              "detail": ".mx-name-btnReject"
-            },
-            {
-              "rung": "ui",
-              "name": "Reject without a reason: refused, the reason is asked for: page says \"Give the purchaser a reason for the rejection.\"",
-              "verdict": "PASS",
-              "detail": ""
-            }
-          ],
-          "ms": 761
-        },
-        {
-          "n": 3,
-          "name": "Reject with the reason 'Negotiate price': back in the inbox, the order no longer waits",
-          "requirement": [
-            "F005-UC004"
-          ],
-          "actions": [
-            {
-              "verb": "Type",
-              "target": "\"Negotiate price\" into taApprovalComment",
-              "selector": ".mx-name-taApprovalComment"
-            },
-            {
-              "verb": "Click",
-              "target": "Reject",
-              "selector": ".mx-name-btnReject"
             }
           ],
           "expects": {
             "landsOn": ".mx-name-gridMain",
             "pageSays": [],
-            "pageDoesNotSay": [
-              "{{poNumber}}"
-            ],
+            "pageDoesNotSay": [],
             "microflows": [],
             "writes": null
           },
           "shot": {
-            "file": "../tests/e2e/artifacts/J-PURCH-03-step3.png",
-            "title": "Mendix - Purchase approvals",
-            "url": "http://localhost:8080/p/purchase-approval-inbox",
-            "at": "2026-10-16T04:56:34.004Z"
+            "file": "../tests/e2e/artifacts/J-INV-05-step1.png",
+            "title": "Mendix - Transfers",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-16T06:48:05.441Z"
           },
           "reached": true,
           "checks": [
             {
               "rung": "ui",
-              "name": "Reject with the reason 'Negotiate price': back in the inbox, the order no longer waits: reached",
+              "name": "Open Inventory > Transfers: reached",
               "verdict": "PASS",
               "detail": ".mx-name-gridMain"
+            }
+          ],
+          "ms": 1077
+        },
+        {
+          "n": 2,
+          "name": "New: a draft internal transfer opens",
+          "requirement": [
+            "F006-UC003"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "New",
+              "selector": ".mx-name-btnNew"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-btnMarkastodo1",
+            "pageSays": [
+              "WH/INT/"
+            ],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Inventory.Transfer",
+              "delta": 1,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-05-step2.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-16T06:48:07.251Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "New: a draft internal transfer opens: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-btnMarkastodo1"
             },
             {
               "rung": "ui",
-              "name": "Reject with the reason 'Negotiate price': back in the inbox, the order no longer waits: page does NOT say \"P00024\"",
+              "name": "New: a draft internal transfer opens: page says \"WH/INT/\"",
+              "verdict": "PASS",
+              "detail": ""
+            },
+            {
+              "rung": "data",
+              "name": "New: a draft internal transfer opens: Inventory.Transfer +1",
+              "verdict": "PASS",
+              "detail": "before=50 after=51 delta=1"
+            }
+          ],
+          "ms": 1864
+        },
+        {
+          "n": 3,
+          "name": "Add a line: 2 Office Chairs",
+          "requirement": [
+            "F006-UC003"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "+ Add a line",
+              "selector": ".mx-name-btnAddLine"
+            },
+            {
+              "verb": "Select",
+              "target": "\"Office Chair\" in Product",
+              "selector": ".mx-name-lncmbStockMoveProduct"
+            },
+            {
+              "verb": "Type",
+              "target": "\"2\" into Demand quantity",
+              "selector": ".mx-name-lntxtDemandQuantity"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-lvLines",
+            "pageSays": [],
+            "pageDoesNotSay": [],
+            "microflows": [],
+            "writes": {
+              "entity": "Inventory.StockMove",
+              "delta": 1,
+              "associations": []
+            }
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-05-step3.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-16T06:48:11.666Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Add a line: 2 Office Chairs: combobox lncmbStockMoveProduct committed the seeded value",
+              "verdict": "PASS",
+              "detail": "Office Chair"
+            },
+            {
+              "rung": "ui",
+              "name": "Add a line: 2 Office Chairs: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-lvLines"
+            },
+            {
+              "rung": "data",
+              "name": "Add a line: 2 Office Chairs: Inventory.StockMove +1",
+              "verdict": "PASS",
+              "detail": "before=58 after=59 delta=1"
+            }
+          ],
+          "ms": 4423
+        },
+        {
+          "n": 4,
+          "name": "Mark as to do — straight after typing: the transfer is planned with the typed demand",
+          "requirement": [
+            "F006-UC003"
+          ],
+          "actions": [
+            {
+              "verb": "Click",
+              "target": "Mark as to do",
+              "selector": ".mx-name-btnMarkastodo1"
+            }
+          ],
+          "expects": {
+            "landsOn": ".mx-name-dvMain",
+            "pageSays": [],
+            "pageDoesNotSay": [
+              "Draft"
+            ],
+            "microflows": [],
+            "writes": null
+          },
+          "shot": {
+            "file": "../tests/e2e/artifacts/J-INV-05-step4.png",
+            "title": "Mendix - Transfer",
+            "url": "http://localhost:8080/p/transfer-overview",
+            "at": "2026-10-16T06:48:12.498Z"
+          },
+          "reached": true,
+          "checks": [
+            {
+              "rung": "ui",
+              "name": "Mark as to do — straight after typing: the transfer is planned with the typed demand: reached",
+              "verdict": "PASS",
+              "detail": ".mx-name-dvMain"
+            },
+            {
+              "rung": "ui",
+              "name": "Mark as to do — straight after typing: the transfer is planned with the typed demand: page does NOT say \"Draft\"",
               "verdict": "PASS",
               "detail": ""
             }
           ],
-          "ms": 1978
+          "ms": 773
         }
       ]
     }
