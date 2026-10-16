@@ -1,0 +1,40 @@
+══ review-module: Invoicing ══  2026-10-16T12:28:10Z
+  scope: the MODEL against what was decided. Not the running app — no journey runs here.
+
+[1m── conformance (reusing the caller's run)[0m
+[32m  ✓ reused[0m  (44 rows from 1 report(s): docs/conformance/report-2026-10-16-F008-invoicing-payments.tsv)
+
+[1m── graph sweep (orphans + wiring shape)[0m  [2m(budget 300s)[0m
+[32m  ✓ clean[0m  (0s)
+
+[1m── coverage (BRD leaves: UNCLAIMED/PHANTOM/DOUBLE · all 1 BRDs, one ledger each)[0m  [2m(budget 300s)[0m
+[31m  ✗ findings[0m (exit 1, 2s) — /home/user/erpv1/.claude/loop/review/Invoicing/coverage.txt
+      F008-invoicing-payments: FINDINGS —  leaves: 1317 CLAIMED: 1225 LEDGERED: 92 UNCLAIMED: 0 PHANTOM: 0 DOUBLE-CLAIMED:0 COUNT-MISMATCH:4 
+      
+      1 BRD(s) checked.
+
+[1m── journeys (the running app)[0m
+[33m  ! NOT RUN IN THIS INVOCATION[0m — review answers a model question.
+      The report carries a journey `fault` row so it cannot render as covered.
+      For the app-side answer: bin/verify-module.sh Invoicing (needs the stack up).
+
+[1m── look (module-review.md §4 — the rendered pages)[0m
+[33m  ! NOT RUN IN THIS INVOCATION[0m — review answers a model question.
+      The report carries a `look` fault row so it cannot render as covered.
+      For the visual answer: review-agent, job 2 — every page in Invoicing assessed
+      against wireframe, design system, or module-review.md §4d's unaided rubric.
+
+════════════════════════════════════════════════════════
+instrument	verdict	rc	elapsed	log
+conformance (reused)	PASS	0	-	docs/conformance/report-2026-10-16-F008-invoicing-payments.tsv
+graph sweep (orphans + wiring shape)	PASS	0	0s	.claude/loop/review/Invoicing/graph.tsv
+coverage (BRD leaves: UNCLAIMED/PHANTOM/DOUBLE · all 1 BRDs, one ledger each)	FINDING	1	2s	.claude/loop/review/Invoicing/coverage.txt
+journeys	FAULT	2	-	(no journey run in this invocation)
+look	FAULT	2	-	(no visual review in this invocation — module-review.md §4)
+════════════════════════════════════════════════════════
+  logs: .claude/loop/review/Invoicing
+
+[31m  FINDINGS[0m — 1 instrument(s) reported. Every one ran; the model disagreed with the claim.
+review-report: 49 checks (22 fail · 2 fault · 1 manual · 24 pass) -> /home/user/erpv1/.claude/loop/verify/Invoicing/review-report.json
+
+  report  .claude/loop/verify/Invoicing/review-report.json

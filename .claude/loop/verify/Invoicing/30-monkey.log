@@ -1,0 +1,9 @@
+
+  REFUSING TO RUN — app ownership is "unknown" for :8080 (from guess).
+  A Mendix may be answering there, but nothing proves it is THIS project's.
+  On 2026-08-18 this exact path pointed at another project's app on :8080.
+
+  Fix:  ./bin/test-stack-up.sh          (starts our stack and verifies ownership)
+  Or:   APP_PORT=<port> ...             (assert it by hand, recorded as "asserted")
+  Or:   ALLOW_UNVERIFIED_APP=1 ...      (proceed anyway; the report will say "unverified")
+

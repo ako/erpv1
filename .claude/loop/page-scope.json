@@ -1,19 +1,19 @@
 {
   "counts": {
     "modules": 7,
-    "pagesTotal": 39,
+    "pagesTotal": 49,
     "perModule": {
       "Core": 7,
       "Inventory": 7,
-      "Invoicing": 0,
+      "Invoicing": 7,
       "Partners": 4,
       "Products": 8,
-      "Purchasing": 6,
-      "Sales": 7
+      "Purchasing": 7,
+      "Sales": 9
     }
   },
-  "distinctRolePageSets": 16,
-  "generatedAt": "2026-10-15T20:10:03Z",
+  "distinctRolePageSets": 19,
+  "generatedAt": "2026-10-16T12:29:30Z",
   "inScope": [
     "Core.Company_Edit",
     "Core.Home_Web",
@@ -29,6 +29,13 @@
     "Inventory.Transfer_Overview",
     "Inventory.ValidateTransfer_Popup",
     "Inventory.Warehouse_Edit",
+    "Invoicing.CreditNote_Popup",
+    "Invoicing.InvoiceAnalysis_Report",
+    "Invoicing.Invoice_NewEdit",
+    "Invoicing.Invoice_Overview",
+    "Invoicing.Payment_Overview",
+    "Invoicing.Payment_View",
+    "Invoicing.RegisterPayment_Popup",
     "Partners.PartnerChild_NewEdit",
     "Partners.Partner_NewEdit",
     "Partners.Partner_Overview",
@@ -46,12 +53,15 @@
     "Purchasing.PurchaseApproval_Task",
     "Purchasing.PurchaseOrder_NewEdit",
     "Purchasing.PurchaseOrder_Overview",
+    "Purchasing.PurchaseOrder_View",
     "Purchasing.VendorPrice_Overview",
+    "Sales.CreateInvoice_Popup",
     "Sales.QuotationTemplate_NewEdit",
     "Sales.QuotationTemplate_Overview",
     "Sales.SalesAnalysis_Report",
     "Sales.SalesOrder_NewEdit",
     "Sales.SalesOrder_Overview",
+    "Sales.SalesOrder_View",
     "Sales.SalesTeam_NewEdit",
     "Sales.SalesTeam_Overview"
   ],
@@ -139,6 +149,39 @@
       "role": "Inventory.User"
     },
     {
+      "inScopePages": 6,
+      "pages": [
+        "Invoicing.CreditNote_Popup",
+        "Invoicing.Invoice_NewEdit",
+        "Invoicing.Invoice_Overview",
+        "Invoicing.Payment_Overview",
+        "Invoicing.Payment_View",
+        "Invoicing.RegisterPayment_Popup"
+      ],
+      "role": "Invoicing.Billing"
+    },
+    {
+      "inScopePages": 2,
+      "pages": [
+        "Invoicing.Invoice_NewEdit",
+        "Invoicing.Invoice_Overview"
+      ],
+      "role": "Invoicing.Creator"
+    },
+    {
+      "inScopePages": 7,
+      "pages": [
+        "Invoicing.CreditNote_Popup",
+        "Invoicing.InvoiceAnalysis_Report",
+        "Invoicing.Invoice_NewEdit",
+        "Invoicing.Invoice_Overview",
+        "Invoicing.Payment_Overview",
+        "Invoicing.Payment_View",
+        "Invoicing.RegisterPayment_Popup"
+      ],
+      "role": "Invoicing.Manager"
+    },
+    {
       "inScopePages": 3,
       "pages": [
         "Partners.Partner_NewEdit",
@@ -190,9 +233,10 @@
       "role": "Purchasing.Manager"
     },
     {
-      "inScopePages": 1,
+      "inScopePages": 2,
       "pages": [
-        "Purchasing.PurchaseOrder_Overview"
+        "Purchasing.PurchaseOrder_Overview",
+        "Purchasing.PurchaseOrder_View"
       ],
       "role": "Purchasing.Reader"
     },
@@ -206,8 +250,9 @@
       "role": "Purchasing.User"
     },
     {
-      "inScopePages": 7,
+      "inScopePages": 8,
       "pages": [
+        "Sales.CreateInvoice_Popup",
         "Sales.QuotationTemplate_NewEdit",
         "Sales.QuotationTemplate_Overview",
         "Sales.SalesAnalysis_Report",
@@ -219,15 +264,18 @@
       "role": "Sales.Manager"
     },
     {
-      "inScopePages": 1,
+      "inScopePages": 3,
       "pages": [
-        "Sales.SalesOrder_Overview"
+        "Sales.CreateInvoice_Popup",
+        "Sales.SalesOrder_Overview",
+        "Sales.SalesOrder_View"
       ],
       "role": "Sales.Reader"
     },
     {
-      "inScopePages": 2,
+      "inScopePages": 3,
       "pages": [
+        "Sales.CreateInvoice_Popup",
         "Sales.SalesOrder_NewEdit",
         "Sales.SalesOrder_Overview"
       ],

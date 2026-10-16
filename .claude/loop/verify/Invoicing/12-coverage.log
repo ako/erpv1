@@ -1,0 +1,15 @@
+coverage · LEVEL 1 · MEASURED — ledger found for Invoicing
+  ledger: architecture/modules/Invoicing/coverage-ledger
+
+coverage-check: analysis/odoo/knowledge-base/brd/F008-invoicing-payments.brd.json
+  ledger:        architecture/modules/Invoicing/coverage-ledger/F008-invoicing-payments.md
+  leaves:        1317
+  CLAIMED:       1225
+  LEDGERED:      92
+  UNCLAIMED:     0
+  PHANTOM:       0
+  DOUBLE-CLAIMED:0
+  COUNT-MISMATCH:4
+
+  per-BRD ledgers: 1 of 8 BRD(s) measured against architecture/modules/Invoicing/coverage-ledger/<BRDID>.md;
+  7 BRD(s) have no ledger here (another module's, not measured): F001-contacts-company-users F002-units-of-measure F003-product-catalogue-pricing F004-sales F005-purchasing F006-inventory F007-order-fulfilment

@@ -1,0 +1,2 @@
+instrument	verdict	rc	elapsed	log
+stack (test-stack-up --check)	PASS	0	1s	.claude/loop/verify/Invoicing/00-stack.log

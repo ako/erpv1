@@ -1,0 +1,11 @@
+graph-sweep · catalog 2026-10-16T12:20:44 (build_mode full) · 1380 objects · 6702 typed edges (member=2083 parameter=651 xpath=592 call=571 associate=428 retrieve=358 value=338 action=261)
+
+  module wiring (>= 20 elements)
+    MODULE                   ELEMENTS   INBOUND   OUTBOUND
+    Invoicing                     112        11        164
+
+  orphaned microflows (no call / action / nav inbound, entry-point prefixes excluded): 1
+    Invoicing.ASU_Invoicing_SeedData                         3 activities
+
+  0 module(s) with no inbound references.
+  Whether that is a defect is an intent question — check the module brief.

@@ -1,0 +1,1418 @@
+{
+ "schemaVersion": "1.1",
+ "project": {
+  "id": "erpv1",
+  "displayName": "erpv1",
+  "mpr": "erpv1.mpr",
+  "mprModifiedAt": null,
+  "mendixVersion": null,
+  "toolkitCommit": "99ef8f5",
+  "gitCommit": "3ae337f",
+  "branch": "claude/friendly-dirac-db6s4k"
+ },
+ "run": {
+  "startedAt": "2026-10-16T12:28:10Z",
+  "finishedAt": "2026-10-16T12:29:12Z",
+  "trigger": "review-module",
+  "target": "Invoicing",
+  "env": {
+   "baseUrl": null,
+   "host": null,
+   "ownership": "unknown",
+   "ownershipBasis": "no app contacted — this is a model-side review, run with the app down",
+   "user": null,
+   "userFallbackUsed": false,
+   "database": null
+  },
+  "reproduce": {
+   "command": "bin/review-module.sh Invoicing",
+   "seeds": null,
+   "monkeySeed": null
+  }
+ },
+ "checks": [
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-actorrolemapping-4",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/actorRoleMapping/* (4) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "SHOW USER ROLES"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-actors-4",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/actors/* (4) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "SHOW USER ROLES"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-0-23",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/domainEntities/0/* (23) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Core.LineAmounts"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-1-21",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/domainEntities/1/* (21) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Sales.CreateInvoiceRequest"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-2-181",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/domainEntities/2/* (181) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Invoicing.Invoice"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-3-112",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/domainEntities/3/* (112) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Invoicing.InvoiceLine"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-4-98",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/domainEntities/4/* (98) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Invoicing.Payment"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-5-27",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/domainEntities/5/* (27) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Invoicing.PaymentAllocation"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-6-43",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/domainEntities/6/* (43) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Invoicing.RegisterPaymentRequest"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-domainentities-7-29",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/domainEntities/7/* (29) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Invoicing.CreditNoteRequest"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-enumerations-0-13",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/enumerations/0/* (13) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Core.ENUM_LineType"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-enumerations-1-13",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/enumerations/1/* (13) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Invoicing.ENUM_InvoiceStatus"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-enumerations-2-19",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/enumerations/2/* (19) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Invoicing.ENUM_InvoiceType"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-enumerations-3-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/enumerations/3/* (10) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Invoicing.ENUM_PartnerKind"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-enumerations-4-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/enumerations/4/* (10) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Invoicing.ENUM_PaymentDirection"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-enumerations-5-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/enumerations/5/* (10) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Invoicing.ENUM_PaymentMethod"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-enumerations-6-15",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/enumerations/6/* (15) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Invoicing.ENUM_PaymentState"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-enumerations-7-19",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/enumerations/7/* (19) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENUMERATION Invoicing.ENUM_PaymentStatus"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-microflows-0-9",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/microflows/0/* (9) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Invoicing.ACT_SalesOrder_CreateInvoice"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-microflows-1-14",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/microflows/1/* (14) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Invoicing.SUB_SalesOrders_CreateInvoices"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-microflows-10-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/microflows/10/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Invoicing.ACT_Invoice_RegisterPayment"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-microflows-11-13",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/microflows/11/* (13) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Invoicing.SUB_Payment_Create"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-microflows-12-9",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/microflows/12/* (9) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Invoicing.SUB_Invoice_UpdatePaymentStatus"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-microflows-2-13",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/microflows/2/* (13) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Invoicing.ACT_PurchaseOrder_CreateBill"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-microflows-3-19",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/microflows/3/* (19) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Core.SUB_Tax_ComputeLine"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-microflows-4-11",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/microflows/4/* (11) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Invoicing.SUB_Invoice_RecomputeTotals"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-microflows-5-12",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/microflows/5/* (12) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Core.SUB_PaymentTerm_ComputeDueDate"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-microflows-6-18",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/microflows/6/* (18) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Invoicing.ACT_Invoice_Post"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-microflows-7-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/microflows/7/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Invoicing.ACT_Invoice_ResetToDraft"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-microflows-8-9",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/microflows/8/* (9) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Invoicing.ACT_Invoice_Cancel"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-microflows-9-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/microflows/9/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE MICROFLOW Invoicing.ACT_Invoice_CreateCreditNote"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-pages-0-14",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/pages/0/* (14) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Invoicing.Invoice_Overview"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-pages-1-18",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/pages/1/* (18) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Invoicing.Invoice_NewEdit"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-pages-10-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/pages/10/* (10) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Core.Tax_NewEdit"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-pages-11-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/pages/11/* (10) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Core.PaymentTerm_Overview"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-pages-2-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/pages/2/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Sales.CreateInvoice_Popup"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-pages-3-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/pages/3/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Invoicing.RegisterPayment_Popup"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-pages-4-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/pages/4/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Invoicing.CreditNote_Popup"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-pages-5-9",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/pages/5/* (9) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Invoicing.Payment_Overview"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-pages-6-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/pages/6/* (10) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Core.Tax_Overview"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-pages-7-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/pages/7/* (10) — ledger says \"built\"",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "stored=built observed=PRESENT (OK)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Core.PaymentTerm_NewEdit"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-pages-8-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/pages/8/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Invoicing.InvoiceAnalysis_Report"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-pages-9-10",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/pages/9/* (10) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE PAGE Invoicing.Payment_View"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/conformance/invoicing/f008-invoicing-payments-viewentities-0-4",
+   "instrument": "conformance",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "F008-invoicing-payments:/viewEntities/0/* (4) — ledger says \"not-built\"",
+   "verdict": "fail",
+   "provenance": "measured",
+   "detail": "stored=not-built observed=PRESENT (UNDERSTATED) — ledger claims not-built; the model says the element is PRESENT",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "conformance has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "DESCRIBE ENTITY Invoicing.InvoiceAnalysis"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/wiring/invoicing",
+   "instrument": "graph-sweep",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Invoicing — module wiring shape",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "112 elements · 11 inbound · 164 outbound",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "graph sweep has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "query",
+     "sql": "objects/refs in .mxcli/catalog.db, grouped by module",
+     "value": "11 inbound"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/orphan/invoicing-asu-invoicing-seeddata",
+   "instrument": "graph-sweep",
+   "kind": "conformance",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Invoicing.ASU_Invoicing_SeedData — microflow with no inbound call",
+   "verdict": "manual",
+   "provenance": "judged",
+   "detail": "3 activities, and no inbound call / action / menu_item / show_page / datasource edge. Entry-point prefixes are already excluded. SHOW REFERENCES TO misses layout snippetcalls, so this is strong evidence of deadness, not proof.",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "graph sweep has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "query",
+     "sql": "microflows_data LEFT JOIN refs (catalog.db)",
+     "value": "Invoicing.ASU_Invoicing_SeedData"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/coverage/invoicing",
+   "instrument": "coverage",
+   "kind": "coverage",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Invoicing — every BRD leaf claimed by exactly one ledger row",
+   "verdict": "pass",
+   "provenance": "measured",
+   "detail": "leaves 1317 · claimed 1225 · unclaimed 0 · phantom 0 · double-claimed 0 · summed over 1 BRD ledger(s)",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "coverage-check has no positive control"
+   },
+   "evidence": [
+    {
+     "type": "log",
+     "path": "../../review/Invoicing/coverage.txt"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/journey/invoicing",
+   "instrument": "journey-runner",
+   "kind": "outcome",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Invoicing — the running app was never contacted",
+   "verdict": "fault",
+   "provenance": "declared",
+   "notRun": true,
+   "detail": "no journey run in this invocation. bin/review-module.sh answers a MODEL question (does what was built match what was decided) and deliberately never starts the app. Nothing in this report is evidence about runtime behaviour. For that: bin/loop/verify-module.sh Invoicing, with the stack up.",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "no journey ran, so no control could run either"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "bin/loop/verify-module.sh Invoicing"
+    }
+   ],
+   "blocks": []
+  },
+  {
+   "id": "review/look/invoicing",
+   "instrument": "ui-review",
+   "kind": "outcome",
+   "module": "Invoicing",
+   "journey": null,
+   "stepIndex": null,
+   "stepName": null,
+   "requirement": null,
+   "title": "Invoicing — no page in this module was looked at",
+   "verdict": "fault",
+   "provenance": "declared",
+   "notRun": true,
+   "detail": "module-review.md stage 4 (the LOOK) was not performed in this invocation and cannot be: it is a judgement pass over rendered pages, assessed against the wireframe, the design system, or §4d's unaided rubric where neither exists. Nothing in this report is evidence about how Invoicing looks or whether a user could complete anything on it. For that: review-agent job 2, which writes design/ui-reviews/ui-review-<date>.html and appends P1/P2 findings to docs/improvement-register.md.",
+   "measuredAt": "2026-10-16T12:28:10Z",
+   "nonVacuity": {
+    "controlRan": false,
+    "note": "nobody looked, so there is nothing to control for"
+   },
+   "evidence": [
+    {
+     "type": "command",
+     "command": "review-agent — module-review.md §4 over Invoicing"
+    }
+   ],
+   "blocks": []
+  }
+ ],
+ "instruments": [
+  {
+   "name": "conformance",
+   "verdict": "pass",
+   "canExpressFault": true,
+   "evidenceStrength": "strong",
+   "expressibleVerdicts": [
+    "pass",
+    "fail",
+    "fault"
+   ],
+   "source": "architecture/modules/Invoicing/coverage-ledger.md vs erpv1.mpr",
+   "rc": 0,
+   "elapsedSec": null,
+   "log": "docs/conformance/report-2026-10-16-F008-invoicing-payments.tsv"
+  },
+  {
+   "name": "graph-sweep",
+   "verdict": "pass",
+   "canExpressFault": true,
+   "evidenceStrength": "medium",
+   "expressibleVerdicts": [
+    "pass",
+    "fault",
+    "manual"
+   ],
+   "source": ".mxcli/catalog.db",
+   "note": "wiring shape is measured; whether a given shape is a DEFECT is an intent question answered against the module brief, not here",
+   "rc": 0,
+   "elapsedSec": 0,
+   "log": ".claude/loop/review/Invoicing/graph.tsv"
+  },
+  {
+   "name": "coverage",
+   "verdict": "pass",
+   "canExpressFault": true,
+   "evidenceStrength": "medium",
+   "expressibleVerdicts": [
+    "pass",
+    "fail",
+    "fault"
+   ],
+   "source": "BRD leaves vs coverage-ledger.md",
+   "rc": 1,
+   "elapsedSec": 2,
+   "log": ".claude/loop/review/Invoicing/coverage.txt"
+  },
+  {
+   "name": "journey-runner",
+   "verdict": "fault",
+   "canExpressFault": true,
+   "evidenceStrength": "strong",
+   "expressibleVerdicts": [
+    "pass",
+    "fail",
+    "fault"
+   ],
+   "source": "journeys/Invoicing.journey.json",
+   "rc": 2,
+   "elapsedSec": null,
+   "log": null,
+   "reason": "no journey run in this invocation"
+  },
+  {
+   "name": "ui-review",
+   "verdict": "fault",
+   "canExpressFault": true,
+   "evidenceStrength": "none",
+   "expressibleVerdicts": [
+    "fault"
+   ],
+   "source": "design/ui-reviews/ui-review-<date>.html (written by review-agent, not by this script)",
+   "note": "the visual assessment of every page in the module against wireframe, design system, or module-review.md §4d's unaided rubric. Judgement, not measurement — it is performed by a reviewer looking at rendered screens, and this chain never performs it",
+   "rc": 2,
+   "elapsedSec": null,
+   "log": null,
+   "reason": "no visual review in this invocation - module-review.md stage 4"
+  }
+ ],
+ "coverage": [
+  {
+   "module": "Invoicing",
+   "brd": null,
+   "leaves": {
+    "total": 1317,
+    "claimed": 1225,
+    "unclaimed": 0,
+    "phantom": 0,
+    "doubleClaimed": 0
+   },
+   "rows": null,
+   "conformance": {
+    "checked": 44,
+    "ok": 22,
+    "stale": 0,
+    "understated": 22,
+    "unrunnable": 0
+   },
+   "journeys": [],
+   "source": "architecture/modules/Invoicing/coverage-ledger.md",
+   "generatedAt": null
+  }
+ ],
+ "deferrals": [],
+ "walks": []
+}
