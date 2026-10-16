@@ -387,3 +387,10 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-16T11:29:08Z	done-804-inventory-page-transfer-new-edit.mdl	pass	applied-lint-rose	63	0	1	444	0	45.6	0	80	0	98	28	76	90	444	0ff51b8
 2026-10-16T11:30:16Z	717-purchasing-page-invoice-new-edit.mdl	pass	applied-lint-rose	67	0	1	444	0	45.6	0	80	0	98	28	76	90	444	a0356fd
 2026-10-16T11:31:22Z	913-invoicing-page-invoice-new-edit-complete.mdl	pass	applied-lint-rose	64	0	1	444	0	45.6	0	80	0	98	28	76	90	444	a564195
+2026-10-16T11:33:48Z	911-invoicing-view-invoice-analysis.mdl	pass	applied-lint-rose	61	0	1	445	0	45.4	0	79	0	98	28	76	90	445	f4b5d98
+2026-10-16T11:35:13Z	909-invoicing-page-invoice-analysis-report.mdl	pass	applied-lint-rose	61	0	1	446	0	45.3	0	79	0	98	27	76	90	446	1408804
+2026-10-16T11:36:30Z	done-010-navigation.mdl	pass	applied-lint-rose	60	0	1	444	0	45.7	0	81	0	98	27	76	90	444	8940246
+2026-10-16T11:39:50Z	915-invoicing-mf-seed-data.mdl	pass	applied-lint-rose	66	0	1	447	0	45.3	0	79	0	98	27	76	89	447	f1e0621
+2026-10-16T11:40:53Z	done-020-settings.mdl	pass	applied-lint-rose	62	0	1	446	0	45.5	0	80	0	98	27	76	89	446	164ab91
+2026-10-16T11:42:34Z	2026-10-16-rebuild-invoice-seed-history.mdl	pass	applied-lint-rose	70	0	1	445	0	45.7	0	81	0	98	27	76	89	445	0875b3f
+2026-10-16T11:42:35Z	915-invoicing-mf-seed-data.mdl	not-run	blocked	0	?			0										0875b3f

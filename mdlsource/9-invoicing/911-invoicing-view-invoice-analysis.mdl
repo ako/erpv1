@@ -1,0 +1,80 @@
+mdl 1;
+-- 911-invoicing-view-invoice-analysis.mdl — build-plan row 91, F008-UC008 "Follow up receivables and payables" (Odoo
+-- account.invoice.report). Read-only view entities over posted documents, the KPI data source and their grants
+-- (Invoicing.Manager only; brief access table: InvoiceAnalysis_Report -> Manager view). Same OQL shape as Purchasing 713.
+-- Credit notes count negative, as in Odoo's report.
+
+/**
+ * Invoice analysis: posted invoices, bills and credit notes grouped by month (of the invoice date), partner and document
+ * type: untaxed, total and residual (amount due), credit notes negative. (Odoo account.invoice.report; F008-UC008)
+ */
+create or modify view entity Invoicing."InvoiceAnalysis" (
+  "InvoiceYear": Integer,
+  "InvoiceMonthNo": Integer,
+  "Period": String(200),
+  "PartnerName": String(200),
+  "TypeName": String(200),
+  "Untaxed": Decimal,
+  "Total": Decimal,
+  "Residual": Decimal
+) as (
+  from Invoicing.Invoice as i
+  join i/Invoicing.Invoice_Partner/Partners.Partner as p
+  where i.Status = 'Posted'
+  group by datepart(year, i.InvoiceDate), datepart(month, i.InvoiceDate), cast(datepart(year, i.InvoiceDate) as string) + (case when datepart(month, i.InvoiceDate) < 10 then '-0' else '-' end) + cast(datepart(month, i.InvoiceDate) as string), p.Name, i.InvoiceType
+  select
+    datepart(year, i.InvoiceDate) as InvoiceYear,
+    datepart(month, i.InvoiceDate) as InvoiceMonthNo,
+    cast(datepart(year, i.InvoiceDate) as string) + (case when datepart(month, i.InvoiceDate) < 10 then '-0' else '-' end) + cast(datepart(month, i.InvoiceDate) as string) as Period,
+    p.Name as PartnerName,
+    case when i.InvoiceType = 'CustomerInvoice' then 'Customer invoice' when i.InvoiceType = 'CustomerCreditNote' then 'Customer credit note'
+      when i.InvoiceType = 'VendorBill' then 'Vendor bill' else 'Vendor credit note' end as TypeName,
+    case when i.InvoiceType = 'CustomerCreditNote' or i.InvoiceType = 'VendorCreditNote' then -sum(coalesce(i.AmountUntaxed, 0)) else sum(coalesce(i.AmountUntaxed, 0)) end as Untaxed,
+    case when i.InvoiceType = 'CustomerCreditNote' or i.InvoiceType = 'VendorCreditNote' then -sum(coalesce(i.AmountTotal, 0)) else sum(coalesce(i.AmountTotal, 0)) end as Total,
+    case when i.InvoiceType = 'CustomerCreditNote' or i.InvoiceType = 'VendorCreditNote' then -sum(coalesce(i.AmountDue, 0)) else sum(coalesce(i.AmountDue, 0)) end as Residual
+);
+
+/**
+ * Receivable totals: a single row over posted customer documents — invoiced (untaxed, credit notes negative) and open
+ * receivables (amount due, credit notes negative). Overdue depends on today, which OQL cannot name: DS_InvoiceKpi_Get adds it.
+ */
+create or modify view entity Invoicing."InvoiceKpiTotals" (
+  "Invoiced": Decimal,
+  "OpenReceivables": Decimal
+) as (
+  from Invoicing.Invoice as i
+  where i.Status = 'Posted' and (i.InvoiceType = 'CustomerInvoice' or i.InvoiceType = 'CustomerCreditNote')
+  select
+    coalesce(sum(case when i.InvoiceType = 'CustomerCreditNote' then -coalesce(i.AmountUntaxed, 0) else coalesce(i.AmountUntaxed, 0) end), 0) as Invoiced,
+    coalesce(sum(case when i.InvoiceType = 'CustomerCreditNote' then -coalesce(i.AmountDue, 0) else coalesce(i.AmountDue, 0) end), 0) as OpenReceivables
+);
+
+/** The KPI tiles of InvoiceAnalysis_Report (not stored): invoiced, open receivables, overdue receivables. */
+create or modify non-persistent entity Invoicing."InvoiceKpi" (
+  "Invoiced": Decimal,
+  "OpenReceivables": Decimal,
+  "Overdue": Decimal
+);
+
+/**
+ * Data source of the InvoiceAnalysis_Report KPI tiles: the totals row plus overdue = amount due of posted customer invoices
+ * whose due date has passed.
+ *
+ * @returns the KPI object
+ */
+create or modify microflow Invoicing.DS_InvoiceKpi_Get ()
+returns Invoicing.InvoiceKpi as $Kpi
+folder 'Reporting/Microflows'
+begin
+  retrieve $Totals from Invoicing.InvoiceKpiTotals first;
+  retrieve $Overdue from Invoicing.Invoice where [Status = 'Posted'][InvoiceType = 'CustomerInvoice'][AmountDue > 0][DueDate < '[%BeginOfCurrentDay%]'];
+  $OverdueAmount = sum $Overdue by AmountDue;
+  $Kpi = create Invoicing.InvoiceKpi (Invoiced = if $Totals = empty then 0 else $Totals/Invoiced,
+    OpenReceivables = if $Totals = empty then 0 else $Totals/OpenReceivables, Overdue = $OverdueAmount);
+  return $Kpi;
+end;
+
+grant read * on entity Invoicing.InvoiceAnalysis to Invoicing.Manager;
+grant read * on entity Invoicing.InvoiceKpiTotals to Invoicing.Manager;
+grant read * on entity Invoicing.InvoiceKpi to Invoicing.Manager;
+grant execute on microflow Invoicing.DS_InvoiceKpi_Get to Invoicing.Manager;

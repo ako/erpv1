@@ -1015,8 +1015,8 @@ end;
 
 
 # Pages no plan row names (not BRD pages): page -> script.
-PAGE_SCRIPT = {'SalesOrder_View': 'mdlsource/6-sales/615-sales-page-sales-order-view.mdl',
-               'PurchaseOrder_View': 'mdlsource/7-purchasing/718-purchasing-page-purchase-order-view.mdl'}
+PAGE_SCRIPT = {'SalesOrder_View': 'mdlsource/6-sales/618-sales-page-sales-order-view.mdl',
+               'PurchaseOrder_View': 'mdlsource/7-purchasing/721-purchasing-page-purchase-order-view.mdl'}
 
 
 def script_path(name):

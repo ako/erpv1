@@ -1,6 +1,6 @@
 mdl 1;
 -- Open sales order / Open purchase order on Invoice_NewEdit: the order behind an invoice, in the page the user may work in
--- (Sales.SUB_SalesOrder_Show 616, Purchasing.SUB_PurchaseOrder_Show 719).
+-- (Sales.SUB_SalesOrder_Show 619, Purchasing.SUB_PurchaseOrder_Show 722).
 
 /**
  * The first sales order behind an invoice (by number), or empty.

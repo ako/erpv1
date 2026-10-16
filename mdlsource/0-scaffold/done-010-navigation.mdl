@@ -10,6 +10,8 @@ create or modify navigation Responsive
   home page Purchasing.PurchaseApproval_Inbox for PurchaseManager
   home page Inventory.Inventory_Dashboard for InventoryUser
   home page Inventory.Inventory_Dashboard for InventoryManager
+  home page Invoicing.Invoice_Overview for Billing
+  home page Invoicing.Invoice_Overview for InvoicingManager
   home page Core.Company_Edit for Administrator
 {
   menu item 'Home' ( OnClick: show page Core.Home_Web, Icon: Atlas_Core.Atlas.home )
@@ -29,6 +31,10 @@ create or modify navigation Responsive
     menu item 'Stock' ( OnClick: show page Inventory.StockLevel_Overview, Icon: Atlas_Core.Atlas."hierarchy-files" )
     menu item 'Reorder rules' ( OnClick: show page Inventory.ReorderRule_Overview, Icon: Atlas_Core.Atlas."hierarchy-files" )
   }
+  menu 'Invoicing' ( Icon: Atlas_Core.Atlas.euro ) {
+    menu item 'Invoices & bills' ( OnClick: show page Invoicing.Invoice_Overview, Icon: Atlas_Core.Atlas.euro )
+    menu item 'Payments' ( OnClick: show page Invoicing.Payment_Overview, Icon: Atlas_Core.Atlas.euro )
+  }
   menu 'Contacts' ( Icon: Atlas_Core.Atlas.contacts ) {
     menu item 'Contacts' ( OnClick: show page Partners.Partner_Overview, Icon: Atlas_Core.Atlas.contacts )
   }
@@ -39,6 +45,7 @@ create or modify navigation Responsive
   menu 'Reporting' ( Icon: Atlas_Core.Atlas."analytics-bars" ) {
     menu item 'Sales analysis' ( OnClick: show page Sales.SalesAnalysis_Report, Icon: Atlas_Core.Atlas."analytics-bars" )
     menu item 'Purchase analysis' ( OnClick: show page Purchasing.PurchaseAnalysis_Report, Icon: Atlas_Core.Atlas."analytics-bars" )
+    menu item 'Invoice analysis' ( OnClick: show page Invoicing.InvoiceAnalysis_Report, Icon: Atlas_Core.Atlas."analytics-bars" )
   }
   menu 'Configuration' ( Icon: Atlas_Core.Atlas.cog ) {
     menu item 'Company' ( OnClick: show page Core.Company_Edit, Icon: Atlas_Core.Atlas.cog )

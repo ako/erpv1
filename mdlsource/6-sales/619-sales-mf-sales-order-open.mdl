@@ -1,6 +1,6 @@
 mdl 1;
 -- Open a sales order from anywhere (its list, an invoice, a transfer): the form for the roles that edit sales orders, the read-only
--- SalesOrder_View for the rest (coherence C1-01, PROJECT.md 2026-10-15). Runs after the view page (615).
+-- SalesOrder_View for the rest (coherence C1-01, PROJECT.md 2026-10-15). Runs after the view page (618).
 
 /**
  * Whether the current user edits sales orders: holds user role SalesUser or SalesManager. Everyone else who reads them gets the read-only view.

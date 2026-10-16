@@ -1,0 +1,82 @@
+mdl 1;
+-- 909-invoicing-page-invoice-analysis-report.mdl — build-plan row 91, F008-UC008 "Follow up receivables and payables".
+-- Wireframe design/wireframes/InvoiceAnalysis_Report.html. Reached from: menu Reporting > Invoice analysis. Drawn as role
+-- InvoicingManager. Depends on 911 (view entities, DS_InvoiceKpi_Get). Derived from Purchasing 712.
+
+/** Invoice analysis — InvoiceAnalysis_Report. */
+create or modify page Invoicing.InvoiceAnalysis_Report folder 'Reporting/Pages'
+(
+  Title: 'Invoice analysis',
+  Layout: Core.App_Default,
+  Url: 'invoice-analysis-report'
+)
+{
+  container ctnPageHead (Class: 'page-head spacing-outer-bottom-large') {
+    container ctnPageHeadTitle (Class: 'page-head-title') {
+      dynamictext txtTitle (Content: 'Invoice analysis', RenderMode: H1)
+    }
+  }
+  layoutgrid gridKpiOuter (Class: 'spacing-outer-bottom-large') {
+    row {
+      column (DesktopWidth: 12) {
+  dataview dvKpi (DataSource: microflow Invoicing.DS_InvoiceKpi_Get) {
+    layoutgrid gridKpi {
+      row {
+        column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) {
+          container ctnKpiInvoiced (Class: 'card spacing-inner-medium') {
+            dynamictext txtKpiInvoicedLabel (Content: 'Invoiced (posted)', RenderMode: Text, Class: 'text-small spacing-outer-bottom-small')
+
+            textbox txtKpiInvoiced (Attribute: "Invoiced", DecimalPrecision: 2, GroupDigits: true, Editable: Never)
+          }
+        }
+        column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) {
+          container ctnKpiOpen (Class: 'card spacing-inner-medium') {
+            dynamictext txtKpiOpenLabel (Content: 'Open receivables', RenderMode: Text, Class: 'text-small spacing-outer-bottom-small')
+
+            textbox txtKpiOpen (Attribute: "OpenReceivables", DecimalPrecision: 2, GroupDigits: true, Editable: Never)
+          }
+        }
+        column (DesktopWidth: 4, TabletWidth: 4, PhoneWidth: 12) {
+          container ctnKpiOverdue (Class: 'card spacing-inner-medium') {
+            dynamictext txtKpiOverdueLabel (Content: 'Overdue', RenderMode: Text, Class: 'text-small spacing-outer-bottom-small')
+
+            textbox txtKpiOverdue (Attribute: "Overdue", DecimalPrecision: 2, GroupDigits: true, Editable: Never)
+          }
+        }
+      }
+    }
+  }
+      }
+    }
+  }
+  layoutgrid gridCharts (Class: 'spacing-outer-bottom-large') {
+    row {
+      column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+        container ctnChartMonth (Class: 'card spacing-inner-medium') {
+          dynamictext hChartMonth (Content: 'Invoiced per month', RenderMode: H3)
+          columnchart chartMonth (showLegend: false, gridLines: 'horizontal', customLayout: '{"xaxis": {"type": "category"}}') {
+            series serMonth (dataSet: 'static', staticDataSource: database Invoicing.InvoiceAnalysis where [TypeName = 'Customer invoice' or TypeName = 'Customer credit note'] sort by "Period" asc, staticName: 'Invoiced', staticXAttribute: "Period", staticYAttribute: "Untaxed", aggregationType: 'sum')
+          }
+        }
+      }
+      column (DesktopWidth: 6, TabletWidth: 6, PhoneWidth: 12) {
+        container ctnChartPartner (Class: 'card spacing-inner-medium') {
+          dynamictext hChartPartner (Content: 'Receivables by partner', RenderMode: H3)
+          columnchart chartPartner (showLegend: false, gridLines: 'horizontal') {
+            series serPartner (dataSet: 'static', staticDataSource: database Invoicing.InvoiceAnalysis where [TypeName = 'Customer invoice' or TypeName = 'Customer credit note'], staticName: 'Receivable', staticXAttribute: "PartnerName", staticYAttribute: "Residual", aggregationType: 'sum')
+          }
+        }
+      }
+    }
+  }
+  datagrid gridMain (DataSource: database Invoicing."InvoiceAnalysis" sort by "Period" desc, PagingPosition: bottom, Class: 'density-compact') {
+    column (Attribute: "Period", Caption: 'Month') { textfilter fPeriod }
+    column (Attribute: "PartnerName", Caption: 'Partner') { textfilter fPartnerName }
+    column (Attribute: "TypeName", Caption: 'Type') { textfilter fTypeName }
+    column (Attribute: "Untaxed", Caption: 'Untaxed', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fUntaxed }
+    column (Attribute: "Total", Caption: 'Total', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fTotal }
+    column (Attribute: "Residual", Caption: 'Residual', Alignment: right, DynamicCellClass: 'num-right') { numberfilter fResidual }
+  }
+};
+
+grant view on page Invoicing.InvoiceAnalysis_Report to Invoicing.Manager;

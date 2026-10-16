@@ -1,0 +1,94 @@
+mdl 1;
+-- One-off (MDL-V1-REBUILD): SUB_Invoice_SeedHistory hands its payment to SUB_Invoice_SeedPayment (CONV009). Drop it, replay 915.
+drop microflow Invoicing.SUB_Invoice_SeedHistory;
+-- 915-invoicing-mf-seed-data.mdl — PROJECT.md 5 (build) "Demo data" + startup chain. Owns SUB_Invoice_SeedHistory,
+-- SUB_Invoicing_SeedDemo and ASU_Invoicing_SeedData = Inventory's chain, then the Invoicing demo fixtures when
+-- Core.SeedDemoData (docs/demo-script.md: INV/BILL/RINV/PAY numbers that do not start at 1; posted September history so
+-- InvoiceAnalysis_Report and the receivables are not empty). The fixtures are made by the business flows themselves (post,
+-- register payment), so their amounts, statuses and numbers are what the app would produce.
+
+/**
+ * A payment of the demo history for a posted invoice, at most its amount due (0: none).
+ *
+ * @param $Invoice the posted invoice
+ * @param $Paid the amount paid
+ * @param $PaymentDate the payment date
+ */
+create or modify microflow Invoicing.SUB_Invoice_SeedPayment ($Invoice: Invoicing.Invoice, $Paid: Decimal, $PaymentDate: DateTime)
+folder 'Setup/Microflows'
+begin
+  if $Paid <= 0 then
+    return;
+  end if;
+  $Request = call microflow Invoicing.SUB_RegisterPaymentRequest_NewForInvoice(Invoice = $Invoice);
+  change $Request (Amount = if $Paid > $Invoice/AmountDue then $Invoice/AmountDue else $Paid, PaymentDate = $PaymentDate);
+  $Payment = call microflow Invoicing.SUB_Payment_Create(RegisterPaymentRequest = $Request);
+end;
+
+/**
+ * A posted customer invoice of the demo history, one product line, paid for the given amount (0: not paid). Skipped when the
+ * partner already has an invoice with this source document (business key).
+ *
+ * @param $PartnerName the customer
+ * @param $SourceDocument the history marker (business key with the partner)
+ * @param $InvoiceDate the invoice date
+ * @param $ProductReference the product's internal reference
+ * @param $Quantity the quantity
+ * @param $Paid the amount paid on the invoice date (0: none)
+ */
+create or modify microflow Invoicing.SUB_Invoice_SeedHistory ($PartnerName: String, $SourceDocument: String, $InvoiceDate: DateTime,
+  $ProductReference: String, $Quantity: Decimal, $Paid: Decimal)
+folder 'Setup/Microflows'
+begin
+  retrieve $Partner from Partners.Partner where [Name = $PartnerName][not(Partners.Partner_ParentCompany/Partners.Partner)] first;
+  retrieve $Product from Products.Product where [InternalReference = $ProductReference] first;
+  if $Partner = empty or $Product = empty then
+    log warning node 'Invoicing.Seed' 'Invoice history not seeded: missing ' + $PartnerName + ' or ' + $ProductReference;
+    return;
+  end if;
+  retrieve $Existing from Invoicing.Invoice where [Invoicing.Invoice_Partner = $Partner][SourceDocument = $SourceDocument] first;
+  if $Existing != empty then
+    return;
+  end if;
+  $Invoice = create Invoicing.Invoice (InvoiceType = Invoicing.ENUM_InvoiceType.CustomerInvoice, Status = Invoicing.ENUM_InvoiceStatus.Draft,
+    PaymentStatus = Invoicing.ENUM_PaymentStatus.NotPaid, InvoiceDate = $InvoiceDate, SourceDocument = $SourceDocument,
+    Invoicing.Invoice_Partner = $Partner, Invoicing.Invoice_PaymentTerm = $Partner/Partners.Partner_CustomerPaymentTerm);
+  commit $Invoice with events;
+  $Line = create Invoicing.InvoiceLine (Sequence = 10, Quantity = $Quantity, Invoicing.InvoiceLine_Invoice = $Invoice, Invoicing.InvoiceLine_Product = $Product);
+  call microflow Invoicing.SUB_InvoiceLine_ApplyProduct(InvoiceLine = $Line);
+  call microflow Invoicing.SUB_InvoiceLine_Recompute(InvoiceLine = $Line);
+  commit $Line with events;
+  call microflow Invoicing.SUB_Invoice_Post(Invoice = $Invoice);
+  call microflow Invoicing.SUB_Invoice_SeedPayment(Invoice = $Invoice, Paid = $Paid, PaymentDate = $InvoiceDate);
+end;
+
+/** Invoicing demo fixtures: numbering that does not start at 1, then the posted September history. */
+create or modify microflow Invoicing.SUB_Invoicing_SeedDemo ()
+folder 'Setup/Microflows'
+begin
+  call microflow Inventory.SUB_Sequence_RaiseTo(Code = 'account.move.out_invoice', NextNumber = 18);
+  call microflow Inventory.SUB_Sequence_RaiseTo(Code = 'account.move.in_invoice', NextNumber = 8);
+  call microflow Inventory.SUB_Sequence_RaiseTo(Code = 'account.move.out_refund', NextNumber = 3);
+  call microflow Inventory.SUB_Sequence_RaiseTo(Code = 'account.payment', NextNumber = 7);
+  call microflow Invoicing.SUB_Invoice_SeedHistory(PartnerName = 'Azure Interior', SourceDocument = 'Demo history 2026-09',
+    InvoiceDate = parseDateTime('2026-09-15', 'yyyy-MM-dd'), ProductReference = 'FURN_7800', Quantity = 6, Paid = 1000000);
+  call microflow Invoicing.SUB_Invoice_SeedHistory(PartnerName = 'Wood Corner', SourceDocument = 'Demo history 2026-09',
+    InvoiceDate = parseDateTime('2026-09-28', 'yyyy-MM-dd'), ProductReference = 'FURN_0269', Quantity = 4, Paid = 100);
+end;
+
+/**
+ * After-startup microflow (top of the chain): Inventory's chain (which runs Purchasing's, Sales', …), then the Invoicing demo
+ * fixtures when Core.SeedDemoData.
+ *
+ * @returns true
+ */
+create or modify microflow Invoicing.ASU_Invoicing_SeedData ()
+returns Boolean as $Done
+folder 'Setup/Microflows'
+begin
+  $InventoryDone = call microflow Inventory.ASU_Inventory_SeedData();
+  if @Core.SeedDemoData then
+    call microflow Invoicing.SUB_Invoicing_SeedDemo();
+  end if;
+  return true;
+end;
