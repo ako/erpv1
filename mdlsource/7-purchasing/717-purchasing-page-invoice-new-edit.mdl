@@ -65,8 +65,6 @@ create or modify page Invoicing.Invoice_NewEdit folder 'Invoices/Pages'
           dynamictext hOtherinfo (Content: 'Other info', RenderMode: H2)
           combobox cmbInvoiceSalesperson (Label: 'Salesperson', Attribute: Invoice_Salesperson, DataSource: database Administration."Account" sort by "FullName" asc, CaptionAttribute: "FullName", Editable: $Invoice/Status = Invoicing.ENUM_InvoiceStatus.Draft)
           textbox txtSourceDocument (Label: 'Source document', Attribute: "SourceDocument", Editable: $Invoice/Status = Invoicing.ENUM_InvoiceStatus.Draft)
-          combobox cmbInvoiceSalesOrders (Label: 'Sales orders', Attribute: Invoice_SalesOrders, DataSource: database Sales."SalesOrder" sort by "Number" asc, CaptionAttribute: "Number", Editable: $Invoice/Status = Invoicing.ENUM_InvoiceStatus.Draft)
-          combobox cmbInvoicePurchaseOrder (Label: 'Purchase order', Attribute: Invoice_PurchaseOrder, DataSource: database Purchasing."PurchaseOrder" sort by "Number" asc, CaptionAttribute: "Number", Editable: $Invoice/Status = Invoicing.ENUM_InvoiceStatus.Draft)
           combobox cmbInvoiceReversalOf (Label: 'Reversal of', Attribute: Invoice_ReversalOf, DataSource: database Invoicing."Invoice" sort by "Number" asc, CaptionAttribute: "Number", Editable: $Invoice/Status = Invoicing.ENUM_InvoiceStatus.Draft)
         }
       }
@@ -113,11 +111,11 @@ create or modify page Invoicing.Invoice_NewEdit folder 'Invoices/Pages'
   }
 };
 
-grant view on page Invoicing.Invoice_NewEdit to Invoicing.Billing, Invoicing.Manager;
-grant execute on microflow Invoicing.ACT_InvoiceLine_Add to Invoicing.Billing, Invoicing.Manager;
-grant execute on microflow Invoicing.ACT_InvoiceLine_ChangeProduct to Invoicing.Billing, Invoicing.Manager;
-grant execute on microflow Invoicing.ACT_InvoiceLine_Delete to Invoicing.Billing, Invoicing.Manager;
-grant execute on microflow Invoicing.ACT_InvoiceLine_Recompute to Invoicing.Billing, Invoicing.Manager;
+grant view on page Invoicing.Invoice_NewEdit to Invoicing.Billing, Invoicing.Manager, Invoicing.Creator;
+grant execute on microflow Invoicing.ACT_InvoiceLine_Add to Invoicing.Billing, Invoicing.Manager, Invoicing.Creator;
+grant execute on microflow Invoicing.ACT_InvoiceLine_ChangeProduct to Invoicing.Billing, Invoicing.Manager, Invoicing.Creator;
+grant execute on microflow Invoicing.ACT_InvoiceLine_Delete to Invoicing.Billing, Invoicing.Manager, Invoicing.Creator;
+grant execute on microflow Invoicing.ACT_InvoiceLine_Recompute to Invoicing.Billing, Invoicing.Manager, Invoicing.Creator;
 grant execute on microflow Invoicing.ACT_Invoice_Cancel to Invoicing.Billing, Invoicing.Manager;
 grant execute on microflow Invoicing.ACT_Invoice_Post to Invoicing.Billing, Invoicing.Manager;
 grant execute on microflow Invoicing.ACT_Invoice_ResetToDraft to Invoicing.Billing, Invoicing.Manager;

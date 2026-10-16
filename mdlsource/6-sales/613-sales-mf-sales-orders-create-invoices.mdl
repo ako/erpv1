@@ -1,0 +1,170 @@
+mdl 1;
+-- 613-sales-mf-sales-orders-create-invoices.mdl — build-plan row 52 (F008-UC001). Owns Invoicing.SUB_SalesOrders_CreateInvoices
+-- and the Create invoice action of Sales.CreateInvoice_Popup (614). Replay after 9-invoicing/900 (it calls the invoice core).
+
+/**
+ * The partner an order is invoiced to (Odoo partner_invoice_id): its invoice address, else its customer.
+ *
+ * @param $SalesOrder the order
+ * @returns the invoice partner
+ */
+create or modify microflow Invoicing.SUB_SalesOrder_GetInvoicePartner ($SalesOrder: Sales.SalesOrder)
+returns Partners.Partner as $Partner
+folder 'Invoices/Microflows'
+begin
+  retrieve $Address from $SalesOrder/Sales.SalesOrder_InvoiceAddress;
+  if $Address != empty then
+    return $Address;
+  end if;
+  retrieve $Customer from $SalesOrder/Sales.SalesOrder_Customer;
+  return $Customer;
+end;
+
+/**
+ * A draft customer invoice for an order (Odoo sale.order._prepare_invoice): partner, delivery address, payment term,
+ * salesperson, currency and the customer reference copied; the order is its source document. Committed.
+ *
+ * @param $SalesOrder the order
+ * @param $Partner the invoice partner
+ * @returns the draft invoice
+ */
+create or modify microflow Invoicing.SUB_Invoice_NewForSalesOrder ($SalesOrder: Sales.SalesOrder, $Partner: Partners.Partner)
+returns Invoicing.Invoice as $Invoice
+folder 'Invoices/Microflows'
+begin
+  $Invoice = create Invoicing.Invoice (InvoiceType = Invoicing.ENUM_InvoiceType.CustomerInvoice, Status = Invoicing.ENUM_InvoiceStatus.Draft,
+    PaymentStatus = Invoicing.ENUM_PaymentStatus.NotPaid, Reference = $SalesOrder/CustomerReference, SourceDocument = $SalesOrder/Number,
+    Invoicing.Invoice_Partner = $Partner, Invoicing.Invoice_DeliveryAddress = $SalesOrder/Sales.SalesOrder_DeliveryAddress,
+    Invoicing.Invoice_PaymentTerm = $SalesOrder/Sales.SalesOrder_PaymentTerm, Invoicing.Invoice_Salesperson = $SalesOrder/Sales.SalesOrder_Salesperson,
+    Invoicing.Invoice_Currency = $SalesOrder/Sales.SalesOrder_Currency);
+  commit $Invoice with events;
+  return $Invoice;
+end;
+
+/**
+ * One invoice line per order line with a quantity to invoice (Odoo sale.order.line._prepare_invoice_line): product, label,
+ * quantity to invoice, unit, price, discount and taxes copied; the invoice line is linked to the order line. Sections and
+ * notes are not copied. The order joins the invoice's orders.
+ *
+ * @param $SalesOrder the order
+ * @param $Invoice the draft invoice
+ */
+create or modify microflow Invoicing.SUB_SalesOrder_AddInvoiceLines ($SalesOrder: Sales.SalesOrder, $Invoice: Invoicing.Invoice)
+folder 'Invoices/Microflows'
+begin
+  retrieve $OrderLines from Sales.SalesOrderLine where [Sales.SalesOrderLine_SalesOrder = $SalesOrder][QuantityToInvoice > 0] sort by Sequence asc;
+  $InvoiceLines = create list of Invoicing.InvoiceLine;
+  @annotation 'One loop over the order''s lines to invoice (tens at most): an invoice line each, recomputed in memory; one commit after it.'
+  loop $OrderLine in $OrderLines begin
+    retrieve $Taxes from $OrderLine/Sales.SalesOrderLine_Taxes;
+    $InvoiceLine = create Invoicing.InvoiceLine (Sequence = $OrderLine/Sequence, LineType = Core.ENUM_LineType.Product,
+      Description = if length($OrderLine/Description) > 200 then substring($OrderLine/Description, 0, 200) else $OrderLine/Description,
+      Quantity = $OrderLine/QuantityToInvoice, UnitPrice = $OrderLine/UnitPrice,
+      DiscountPercent = if $OrderLine/DiscountPercent = empty then 0 else $OrderLine/DiscountPercent,
+      Invoicing.InvoiceLine_Invoice = $Invoice, Invoicing.InvoiceLine_Product = $OrderLine/Sales.SalesOrderLine_Product,
+      Invoicing.InvoiceLine_UoM = $OrderLine/Sales.SalesOrderLine_UoM, Invoicing.InvoiceLine_Taxes = $Taxes);
+    add $OrderLine to $InvoiceLine/Invoicing.InvoiceLine_SalesOrderLines;
+    call microflow Invoicing.SUB_InvoiceLine_Recompute(InvoiceLine = $InvoiceLine);
+    add $InvoiceLine to $InvoiceLines;
+  end loop;
+  commit $InvoiceLines with events;
+  add $SalesOrder to $Invoice/Invoicing.Invoice_SalesOrders;
+  commit $Invoice with events;
+end;
+
+/**
+ * Checks of an invoicing request (Odoo sale.advance.payment.inv): at least one selected order has something to invoice.
+ *
+ * @param $CreateInvoiceRequest the popup's request
+ * @returns true when invoices may be created
+ */
+create or modify microflow Invoicing.VAL_CreateInvoiceRequest ($CreateInvoiceRequest: Sales.CreateInvoiceRequest)
+returns Boolean as $IsValid
+folder 'Invoices/Microflows'
+begin
+  retrieve $Orders from $CreateInvoiceRequest/Sales.CreateInvoiceRequest_SalesOrders;
+  $ToInvoice = find $Orders where $currentObject/InvoiceStatus = Core.ENUM_InvoiceStatus.ToInvoice;
+  if $ToInvoice = empty then
+    show message 'There is nothing to invoice. If a product is invoiced on delivered quantities, make sure a quantity has been delivered.' type Warning;
+    return false;
+  end if;
+  return true;
+end;
+
+/**
+ * Invoice sales orders (F008-UC001, Odoo sale.order._create_invoices): one draft invoice per order, or per invoice partner when
+ * consolidated, with a line per order line to invoice; totals, invoiced quantities and order invoice statuses follow (C1-08).
+ *
+ * @param $CreateInvoiceRequest a checked request
+ * @returns the draft invoices
+ */
+create or modify microflow Invoicing.SUB_SalesOrders_CreateInvoices ($CreateInvoiceRequest: Sales.CreateInvoiceRequest)
+returns List of Invoicing.Invoice as $Invoices
+folder 'Invoices/Microflows'
+begin
+  retrieve $Selected from $CreateInvoiceRequest/Sales.CreateInvoiceRequest_SalesOrders;
+  $ToInvoice = filter $Selected where $currentObject/InvoiceStatus = Core.ENUM_InvoiceStatus.ToInvoice;
+  $Orders = sort $ToInvoice by Number asc;
+  $Invoices = create list of Invoicing.Invoice;
+  @annotation 'One loop over the selected orders (a handful): find or open the invoice, then add the order''s lines in a sub-flow.'
+  loop $Order in $Orders begin
+    $Partner = call microflow Invoicing.SUB_SalesOrder_GetInvoicePartner(SalesOrder = $Order);
+    $Existing = find $Invoices where $CreateInvoiceRequest/ConsolidatePerCustomer and $currentObject/Invoicing.Invoice_Partner = $Partner;
+    if $Existing != empty then
+      call microflow Invoicing.SUB_SalesOrder_AddInvoiceLines(SalesOrder = $Order, Invoice = $Existing);
+    else
+      $New = call microflow Invoicing.SUB_Invoice_NewForSalesOrder(SalesOrder = $Order, Partner = $Partner);
+      call microflow Invoicing.SUB_SalesOrder_AddInvoiceLines(SalesOrder = $Order, Invoice = $New);
+      add $New to $Invoices;
+    end if;
+  end loop;
+  @annotation 'One loop over the new invoices: totals, then the orders'' invoiced quantities and statuses.'
+  loop $Invoice in $Invoices begin
+    $Totals = call microflow Invoicing.SUB_Invoice_RecomputeTotals(Invoice = $Invoice);
+    call microflow Invoicing.SUB_Invoice_SyncSalesOrders(Invoice = $Invoice);
+  end loop;
+  return $Invoices;
+end;
+
+/**
+ * The one invoice of a list, or empty when the list holds none or several.
+ *
+ * @param $Invoices the invoices
+ * @returns the single invoice, or empty
+ */
+create or modify microflow Invoicing.SUB_Invoices_GetSingle ($Invoices: List of Invoicing.Invoice)
+returns Invoicing.Invoice as $Single
+folder 'Invoices/Microflows'
+begin
+  $Count = count $Invoices;
+  if $Count != 1 then
+    return empty;
+  end if;
+  $First = head $Invoices;
+  return $First;
+end;
+
+/**
+ * "Create invoice" on CreateInvoice_Popup: checked, the draft invoices are created; one opens in Invoice_NewEdit, several in the
+ * invoice list.
+ *
+ * @param $CreateInvoiceRequest the popup's request
+ */
+create or modify microflow Invoicing.ACT_CreateInvoiceRequest_Create ($CreateInvoiceRequest: Sales.CreateInvoiceRequest)
+folder 'Invoices/Microflows'
+begin
+  $IsValid = call microflow Invoicing.VAL_CreateInvoiceRequest(CreateInvoiceRequest = $CreateInvoiceRequest);
+  if not($IsValid) then
+    return;
+  end if;
+  $Invoices = call microflow Invoicing.SUB_SalesOrders_CreateInvoices(CreateInvoiceRequest = $CreateInvoiceRequest);
+  $Single = call microflow Invoicing.SUB_Invoices_GetSingle(Invoices = $Invoices);
+  close page;
+  if $Single != empty then
+    show page Invoicing.Invoice_NewEdit(Invoice = $Single);
+  else
+    show page Invoicing.Invoice_Overview;
+  end if;
+end;
+
+grant execute on microflow Invoicing.ACT_CreateInvoiceRequest_Create to Invoicing.Creator, Invoicing.Billing, Invoicing.Manager;

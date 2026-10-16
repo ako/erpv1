@@ -24,7 +24,7 @@
 | Screen (→ wireframe file) | Roles that reach it | Nav wire point |
 |---|---|---|
 | Invoice_Overview (design/wireframes/Invoice_Overview.html) | Billing, InvoicingManager, SalesManager, PurchaseManager | Invoicing › Invoices & bills |
-| Invoice_NewEdit (design/wireframes/Invoice_NewEdit.html) | Billing, InvoicingManager | opened from row of Invoice_Overview |
+| Invoice_NewEdit (design/wireframes/Invoice_NewEdit.html) | Billing, InvoicingManager; SalesUser, SalesManager, Purchaser, PurchaseManager (draft lines only, 2026-10-16) | opened from row of Invoice_Overview, Create invoice / Create bill |
 | RegisterPayment_Popup (design/wireframes/RegisterPayment_Popup.html) | Billing, InvoicingManager | opened from Register payment on Invoice_NewEdit / selection on Invoice_Overview |
 | CreditNote_Popup (design/wireframes/CreditNote_Popup.html) | Billing, InvoicingManager | opened from Credit note on Invoice_NewEdit |
 | Payment_Overview (design/wireframes/Payment_Overview.html) | Billing, InvoicingManager | Invoicing › Payments |
@@ -51,7 +51,7 @@
 | Invoicing.CreditNoteRequest | entity | Invoicing.Billing | read *, write * |
 | Invoicing.CreditNoteRequest | entity | Invoicing.Manager | read *, write * |
 | Invoicing.Invoice_Overview | page | Invoicing.Billing, Invoicing.Creator, Invoicing.Manager | view |
-| Invoicing.Invoice_NewEdit | page | Invoicing.Billing, Invoicing.Manager | view |
+| Invoicing.Invoice_NewEdit | page | Invoicing.Billing, Invoicing.Creator, Invoicing.Manager | view |
 | Invoicing.RegisterPayment_Popup | page | Invoicing.Billing, Invoicing.Manager | view |
 | Invoicing.CreditNote_Popup | page | Invoicing.Billing, Invoicing.Manager | view |
 | Invoicing.Payment_Overview | page | Invoicing.Billing, Invoicing.Manager | view |

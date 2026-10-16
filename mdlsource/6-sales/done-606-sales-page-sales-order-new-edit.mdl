@@ -37,6 +37,7 @@ create or modify page Sales.SalesOrder_NewEdit folder 'Quotations/Pages'
         dynamictext txtTitle (Content: '{1}', ContentParams: ({1} = if $currentObject/Number = empty or trim($currentObject/Number) = '' then 'New' else $currentObject/Number), RenderMode: H1)
       }
       container ctnPageHeadActions (Class: 'page-head-actions') {
+        actionbutton btnCreateinvoice0 (Caption: 'Create invoice', Action: call microflow Invoicing.ACT_SalesOrder_CreateInvoice(SalesOrder = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.SalesOrder)
         actionbutton btnSendmarkassent1 (Caption: 'Send (mark as sent)', Action: call microflow Sales.ACT_SalesOrder_MarkSent(SalesOrder = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation)
         actionbutton btnConfirm2 (Caption: 'Confirm', Action: call microflow Sales.ACT_SalesOrder_Confirm(SalesOrder = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation or $currentObject/Status = Sales.ENUM_SalesOrderStatus.QuotationSent)
         actionbutton btnCancelorder3 (Caption: 'Cancel order', Action: call microflow Sales.ACT_SalesOrder_Cancel(SalesOrder = $currentObject), ButtonStyle: Default, Visible: $currentObject/Status = Sales.ENUM_SalesOrderStatus.Quotation or $currentObject/Status = Sales.ENUM_SalesOrderStatus.QuotationSent or $currentObject/Status = Sales.ENUM_SalesOrderStatus.SalesOrder)

@@ -50,6 +50,9 @@
 | Sales.QuotationTemplateLine | entity | Sales.User | create, delete, read *, write * |
 | Sales.QuotationTemplateLine | entity | Sales.Manager | create, delete, read *, write * |
 | Sales.QuotationTemplateLine | entity | Sales.Reader | read * |
+| Sales.CreateInvoiceRequest | entity | Sales.User | read *, write * |
+| Sales.CreateInvoiceRequest | entity | Sales.Manager | read *, write * |
+| Sales.CreateInvoiceRequest | entity | Sales.Reader | read *, write * |
 | Sales.SalesOrder_Overview | page | Sales.Manager, Sales.Reader, Sales.User | view |
 | Sales.SalesOrder_NewEdit | page | Sales.Manager, Sales.User | view |
 | Sales.QuotationTemplate_Overview | page | Sales.Manager | view |

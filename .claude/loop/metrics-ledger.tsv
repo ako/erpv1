@@ -363,3 +363,16 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-16T10:50:53Z	906-invoicing-mf-payment-create.mdl	pass	applied-lint-rose	64	0	1	437	0	45.5	0	79	0	98	29	76	90	437	afc5a81
 2026-10-16T10:51:57Z	912-invoicing-mf-open-popups.mdl	pass	applied-lint-rose	64	0	1	437	0	45.5	0	79	0	98	29	76	90	437	afc5a81
 2026-10-16T10:53:06Z	913-invoicing-page-invoice-new-edit-complete.mdl	pass	applied-lint-rose	69	0	1	437	0	45.5	0	79	0	98	29	76	90	437	afc5a81
+2026-10-16T10:57:25Z	613-sales-mf-sales-orders-create-invoices.mdl	pass	applied-lint-rose	66	0	1	438	0	45.7	0	80	0	98	29	76	90	438	017078a
+2026-10-16T10:59:05Z	2026-10-16-rebuild-create-invoice-request-act.mdl	pass	applied-lint-rose	63	0	1	436	0	45.7	0	80	0	98	29	76	90	436	a882b6f
+2026-10-16T10:59:06Z	613-sales-mf-sales-orders-create-invoices.mdl	not-run	blocked	0	?			0										a882b6f
+2026-10-16T11:00:19Z	done-140-sales-domain.mdl	pass	applied-lint-rose	66	0	1	436	0	45.7	0	80	0	98	29	76	90	436	3cfcd3e
+2026-10-16T11:01:35Z	614-sales-page-create-invoice-popup.mdl	pass	applied-lint-rose	60	0	1	439	0	45.4	0	79	0	98	28	76	90	439	fc299c9
+2026-10-16T11:03:12Z	901-invoicing-mf-sales-order-create-invoice.mdl	pass	applied-lint-rose	58	0	1	438	0	45.6	0	80	0	98	28	76	90	438	8ffb7df
+2026-10-16T11:04:45Z	716-purchasing-mf-purchase-order-create-bill.mdl	pass	applied-lint-rose	63	0	1	438	0	45.6	0	80	0	98	28	76	90	438	46cb8f6
+2026-10-16T11:06:05Z	done-606-sales-page-sales-order-new-edit.mdl	fail	gate-failed	63	?			1										9f57f46
+2026-10-16T11:07:40Z	done-707-purchasing-page-purchase-order-new-edit.mdl	fail	gate-failed	95	?			1										9f57f46
+2026-10-16T11:11:07Z	717-purchasing-page-invoice-new-edit.mdl	pass	applied-lint-rose	99	0	1	436	0	45.6	0	80	0	98	28	76	90	436	9f57f46
+2026-10-16T11:12:12Z	913-invoicing-page-invoice-new-edit-complete.mdl	pass	applied-lint-rose	64	0	1	436	0	45.6	0	80	0	98	28	76	90	436	c3bc967
+2026-10-16T11:13:16Z	done-606-sales-page-sales-order-new-edit.mdl	pass	applied-lint-rose	63	0	1	436	0	45.6	0	80	0	98	28	76	90	436	e27ca1f
+2026-10-16T11:14:20Z	done-707-purchasing-page-purchase-order-new-edit.mdl	pass	applied-lint-rose	63	0	1	436	0	45.6	0	80	0	98	28	76	90	436	f018571

@@ -144,3 +144,9 @@
   popup becomes reachable; not before. RegisterPaymentRequest / CreditNoteRequest rows added (read/write, Billing + Manager).
 - Page-role grants: a selection button's action keeps the grant of its defining script (906: Billing, Manager). Otherwise the
   invoice list's sales/purchase-manager viewers would have reached the payment popup (CE2729 found it).
+- mxbuild checks a page's widgets for every user role that can run a microflow which shows the page, not only for the page's
+  allowed roles: Create bill (granted to Invoicing.Creator) opening Invoice_NewEdit (granted to Billing/Manager) reported CE2729
+  for Purchaser on the form's Sales orders picker. Resolved by the access decision in PROJECT.md (Creator opens the form; the
+  cross-department pickers removed), verified by a clean build of 717, 913, 606 and 707.
+- Replay order: the plan files 613 (6-sales), 716 and 717 (7-purchasing) call 9-invoicing/900's invoice core; a replay from an
+  empty model must run 900 and 902 before them. Only the invoice form <-> popup pair is a true cycle (handled by 913).

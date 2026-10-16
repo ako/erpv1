@@ -1,0 +1,95 @@
+mdl 1;
+-- 716-purchasing-mf-purchase-order-create-bill.mdl — build-plan row 64 (F008-UC002). Owns Invoicing.ACT_PurchaseOrder_CreateBill.
+-- Replay after 9-invoicing/900 (it calls the invoice core) and after 717 (it opens Invoice_NewEdit).
+
+/**
+ * Checks of Create bill (Odoo purchase.order.action_create_invoice): the order has something to bill.
+ *
+ * @param $PurchaseOrder the order
+ * @returns true when a bill may be created
+ */
+create or modify microflow Invoicing.VAL_PurchaseOrder_CreateBill ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Boolean as $IsValid
+folder 'Invoices/Microflows'
+begin
+  if $PurchaseOrder/BillingStatus != Core.ENUM_InvoiceStatus.ToInvoice then
+    show message 'There is nothing to bill. If a product is billed on received quantities, make sure a quantity has been received.' type Warning;
+    return false;
+  end if;
+  return true;
+end;
+
+/**
+ * Bill lines for an order's lines with a quantity to bill (Odoo purchase.order.line._prepare_account_move_line): product, label,
+ * quantity to bill, unit, price, discount and taxes copied; each bill line linked to its order line. Sections and notes are
+ * not copied.
+ *
+ * @param $PurchaseOrder the order
+ * @param $Bill the draft bill
+ */
+create or modify microflow Invoicing.SUB_PurchaseOrder_AddBillLines ($PurchaseOrder: Purchasing.PurchaseOrder, $Bill: Invoicing.Invoice)
+folder 'Invoices/Microflows'
+begin
+  retrieve $OrderLines from Purchasing.PurchaseOrderLine where [Purchasing.PurchaseOrderLine_PurchaseOrder = $PurchaseOrder][QuantityToBill > 0] sort by Sequence asc;
+  $BillLines = create list of Invoicing.InvoiceLine;
+  @annotation 'One loop over the order''s lines to bill (tens at most): a bill line each, recomputed in memory; one commit after it.'
+  loop $OrderLine in $OrderLines begin
+    retrieve $Taxes from $OrderLine/Purchasing.PurchaseOrderLine_Taxes;
+    $BillLine = create Invoicing.InvoiceLine (Sequence = $OrderLine/Sequence, LineType = Core.ENUM_LineType.Product,
+      Description = if length($OrderLine/Description) > 200 then substring($OrderLine/Description, 0, 200) else $OrderLine/Description,
+      Quantity = $OrderLine/QuantityToBill, UnitPrice = $OrderLine/UnitPrice,
+      DiscountPercent = if $OrderLine/DiscountPercent = empty then 0 else $OrderLine/DiscountPercent,
+      Invoicing.InvoiceLine_Invoice = $Bill, Invoicing.InvoiceLine_Product = $OrderLine/Purchasing.PurchaseOrderLine_Product,
+      Invoicing.InvoiceLine_UoM = $OrderLine/Purchasing.PurchaseOrderLine_UoM, Invoicing.InvoiceLine_Taxes = $Taxes,
+      Invoicing.InvoiceLine_PurchaseOrderLine = $OrderLine);
+    call microflow Invoicing.SUB_InvoiceLine_Recompute(InvoiceLine = $BillLine);
+    add $BillLine to $BillLines;
+  end loop;
+  commit $BillLines with events;
+end;
+
+/**
+ * Create bill (F008-UC002, Odoo purchase.order._prepare_invoice): a draft vendor bill for the vendor with the order's payment
+ * term, currency, buyer and vendor reference, and a line per order line to bill; totals, billed quantities and the order's
+ * billing status follow (C1-08). The bill date is left for the user (required to confirm).
+ *
+ * @param $PurchaseOrder a checked order
+ * @returns the draft bill
+ */
+create or modify microflow Invoicing.SUB_PurchaseOrder_CreateBill ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Invoicing.Invoice as $Bill
+folder 'Invoices/Microflows'
+begin
+  $Bill = create Invoicing.Invoice (InvoiceType = Invoicing.ENUM_InvoiceType.VendorBill, Status = Invoicing.ENUM_InvoiceStatus.Draft,
+    PaymentStatus = Invoicing.ENUM_PaymentStatus.NotPaid, Reference = $PurchaseOrder/VendorReference, SourceDocument = $PurchaseOrder/Number,
+    Invoicing.Invoice_Partner = $PurchaseOrder/Purchasing.PurchaseOrder_Vendor, Invoicing.Invoice_PaymentTerm = $PurchaseOrder/Purchasing.PurchaseOrder_PaymentTerm,
+    Invoicing.Invoice_Currency = $PurchaseOrder/Purchasing.PurchaseOrder_Currency, Invoicing.Invoice_Salesperson = $PurchaseOrder/Purchasing.PurchaseOrder_Buyer,
+    Invoicing.Invoice_PurchaseOrder = $PurchaseOrder);
+  commit $Bill with events;
+  call microflow Invoicing.SUB_PurchaseOrder_AddBillLines(PurchaseOrder = $PurchaseOrder, Bill = $Bill);
+  $Totals = call microflow Invoicing.SUB_Invoice_RecomputeTotals(Invoice = $Bill);
+  call microflow Invoicing.SUB_Invoice_SyncPurchaseOrder(Invoice = $Bill);
+  return $Bill;
+end;
+
+/**
+ * "Create bill" on PurchaseOrder_NewEdit (F008-UC002): checked, the draft bill is created and opened for the bill date and
+ * reference.
+ *
+ * @param $PurchaseOrder the order
+ * @returns the draft bill (empty when refused)
+ */
+create or modify microflow Invoicing.ACT_PurchaseOrder_CreateBill ($PurchaseOrder: Purchasing.PurchaseOrder)
+returns Invoicing.Invoice as $Bill
+folder 'Invoices/Microflows'
+begin
+  $IsValid = call microflow Invoicing.VAL_PurchaseOrder_CreateBill(PurchaseOrder = $PurchaseOrder);
+  if not($IsValid) then
+    return empty;
+  end if;
+  $Bill = call microflow Invoicing.SUB_PurchaseOrder_CreateBill(PurchaseOrder = $PurchaseOrder);
+  show page Invoicing.Invoice_NewEdit(Invoice = $Bill);
+  return $Bill;
+end;
+
+grant execute on microflow Invoicing.ACT_PurchaseOrder_CreateBill to Invoicing.Creator, Invoicing.Billing, Invoicing.Manager;

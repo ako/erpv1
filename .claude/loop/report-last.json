@@ -1,21 +1,21 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-16 10:53:06",
-  "overallScore": 45.5,
+  "date": "2026-10-16 11:14:20",
+  "overallScore": 45.6,
   "summary": {
-    "total": 437,
+    "total": 436,
     "errors": 0,
-    "warnings": 141,
-    "infos": 296
+    "warnings": 139,
+    "infos": 297
   },
   "categories": [
     {
       "name": "Security",
       "score": 0,
-      "total": 233,
+      "total": 234,
       "errors": 0,
       "warnings": 41,
-      "infos": 192,
+      "infos": 193,
       "topActions": [
         "Add an XPath constraint to limit which rows 'Core.Admin' can READ on 'Company'",
         "Remove the CREATE and DELETE rights and implement a microflow (ACT_) with security checks",
@@ -26,11 +26,11 @@
     },
     {
       "name": "Quality",
-      "score": 79,
-      "total": 21,
+      "score": 80,
+      "total": 20,
       "errors": 0,
       "warnings": 0,
-      "infos": 21,
+      "infos": 20,
       "topActions": [
         "Replace entity validation rules with a VAL_Company microflow for explicit, testable validation",
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
@@ -41,9 +41,9 @@
     {
       "name": "Architecture",
       "score": 0,
-      "total": 92,
+      "total": 90,
       "errors": 0,
-      "warnings": 92,
+      "warnings": 90,
       "infos": 0,
       "topActions": [
         "Create a view entity in 'Inventory' that exposes the needed data from 'Products', or use a microflow to retrieve the data.",
@@ -65,11 +65,11 @@
     },
     {
       "name": "Naming",
-      "score": 29,
-      "total": 71,
+      "score": 28,
+      "total": 72,
       "errors": 0,
       "warnings": 0,
-      "infos": 71,
+      "infos": 72,
       "topActions": [
         "Remove the default value and set it in a Before Create (BCR_) microflow for 'Company'",
         "Rename to 'IsPOApprovalEnabled' or another appropriate prefix (Has, Can, Should, Was, Will)",

@@ -49,8 +49,7 @@ ONCHANGE = {('Invoicing.InvoiceLine', 'InvoiceLine_Product'): 'Invoicing.ACT_Inv
 NEW_ACTION = {'SalesOrder_Overview': 'Sales.ACT_SalesOrder_New', 'PurchaseOrder_Overview': 'Purchasing.ACT_PurchaseOrder_New',
               'Transfer_Overview': 'Inventory.ACT_Transfer_New'}
 # Buttons whose microflow belongs to a later phase: left off the page until that phase builds it (build plan).
-DEFERRED_BUTTONS = {'ACT_SalesOrder_CreateInvoice': 'Invoicing phase, build-plan row 52',
-                    'ACT_PurchaseOrder_CreateBill': 'Invoicing phase, build-plan row 64'}
+DEFERRED_BUTTONS = {}   # (Create invoice / Create bill were held until Invoicing; built 2026-10-16)
 # Picker data-source constraints (coherence 2026-10-15 C1-02): archived records and the wrong kind never offered.
 ACTIVE = '[Active = true()]'
 PICKER_WHERE = {('Sales.SalesOrder', 'SalesOrder_Customer'): ACTIVE + '[IsCustomer = true()]',
@@ -96,7 +95,8 @@ VISIBLE_WHEN = {('Sales.SalesOrder', 'SalesOrder_QuotationTemplate'):
 READONLY_FIELDS = {('Inventory.StockLevel', 'Quantity'), ('Inventory.StockLevel', 'ReservedQuantity'),
                    ('Inventory.StockMove', 'Status'), ('Inventory.Transfer', 'DateDone'),
                    # a popup's documents are the ones it was opened for; the amount proposed is theirs (F008-UC006/UC007)
-                   ('Invoicing.RegisterPaymentRequest', 'RegisterPaymentRequest_Invoices'), ('Invoicing.CreditNoteRequest', 'CreditNoteRequest_Invoice')}
+                   ('Invoicing.RegisterPaymentRequest', 'RegisterPaymentRequest_Invoices'), ('Invoicing.CreditNoteRequest', 'CreditNoteRequest_Invoice'),
+                   ('Sales.CreateInvoiceRequest', 'CreateInvoiceRequest_SalesOrders')}
 # Page-level buttons on list pages: (page, caption) -> microflow without parameters.
 LIST_BUTTON = {('ReorderRule_Overview', 'Run scheduler'): 'Inventory.ACT_ReorderRules_RunNow'}
 # Smart buttons (Odoo stat buttons) under the status pill: (page, caption) -> microflow taking the form's object.
@@ -213,6 +213,8 @@ BUTTON_MF = {('CreditNote_Popup', 'Reverse'): 'Invoicing.ACT_Invoice_CreateCredi
 DEFERRED_PAGE_BUTTONS = {('Invoice_NewEdit', 'Register payment'): 'mdlsource/9-invoicing/913-invoicing-page-invoice-new-edit-complete.mdl',
                          ('Invoice_NewEdit', 'Credit note'): 'mdlsource/9-invoicing/913-invoicing-page-invoice-new-edit-complete.mdl'}
 COMPLETE_PASS = False   # True while writing that second script
+# Module roles that get only some of a page's actions: role -> pattern the microflow name must match.
+ROLE_ACTIONS = {'Invoicing.Creator': r'\.ACT_InvoiceLine_'}
 # Visibility of a form button beyond its states: (page, caption) -> condition on $currentObject.
 BUTTON_VISIBLE = {('Invoice_NewEdit', 'Register payment'): '$currentObject/Status = Invoicing.ENUM_InvoiceStatus.Posted and $currentObject/AmountDue > 0',
                   ('Invoice_NewEdit', 'Credit note'): '$currentObject/Status = Invoicing.ENUM_InvoiceStatus.Posted and '
@@ -630,6 +632,8 @@ def gen_form(s, popup=False):
             if sm:
                 L.append("    linkbutton %s (Caption: '%s', Action: call microflow %s(%s = $currentObject), Visible: %s)"
                          % (wid('lnkSmart', cap), esc(cap), sm[0], pname, sm[1]))
+    if s.get('message'):   # the wireframe's explanatory line above the fields
+        L.append("    dynamictext %s (Content: '%s', RenderMode: Paragraph)" % (wid('txt', 'Message'), esc(s['message'])))
     L += sections_block(e, s.get('sections', []), '    ', readonly_all=s.get('readonly', False),
                         popup_title=s['title'] if popup else None)
     for ln in ([s['lines']] if isinstance(s.get('lines'), dict) else s.get('lines', []) or []):
@@ -985,6 +989,9 @@ end;
         # a Reader role views the page read-only: it gets navigation (…_Open…) and data sources only, so Mendix hides the
         # page's state-changing buttons from it (sales users open a delivery from their order, 2026-10-15)
         r = [x for x in r if not x.endswith('.Reader') or re.search(r'_Open|\.DS_', mf)]
+        # Invoicing.Creator (sales and purchase users) opens the invoices it creates and edits their draft lines; posting,
+        # resetting, cancelling, payments and credit notes stay with Billing and Manager (2026-10-16)
+        r = [x for x in r if x not in ROLE_ACTIONS or re.search(ROLE_ACTIONS[x], mf)]
         # a selection button's microflow keeps the grant of the script that defines it (Register payment: Billing and
         # Manager only, though sales and purchase managers see the invoice list; Mendix then hides the button from them)
         if mf in LIST_SELECTION_BUTTON.values():

@@ -317,7 +317,7 @@ screen('Invoice_Overview', 'list', 'Invoices & bills', 'Invoicing.Invoice', BILL
        buttons=[('Register payment', 'ACT_Invoice_RegisterPayment')],
        rows=[['INV/2026/00021', 'Azure Interior', '2026-10-12', '2026-11-11', '1 263.24', '1 263.24', 'Posted', 'Not paid'],
              ['INV/2026/00020', 'Wood Corner', '2026-10-01', '2026-10-31', '544.50', '244.50', 'Posted', 'Partially paid']])
-screen('Invoice_NewEdit', 'form', 'Invoice', 'Invoicing.Invoice', BILL,
+screen('Invoice_NewEdit', 'form', 'Invoice', 'Invoicing.Invoice', BILL + SALES + PURCH,
        ['row of Invoice_Overview', 'New on Invoice_Overview', 'Invoices / Bills smart button on SalesOrder_NewEdit / PurchaseOrder_NewEdit',
         'invoice link on Payment_View'],
        param='Invoicing.Invoice', statusbar=('Status', ['Draft', 'Posted'], 'Posted'),
@@ -327,7 +327,9 @@ screen('Invoice_NewEdit', 'form', 'Invoice', 'Invoicing.Invoice', BILL,
        header='Number', badge='PaymentStatus',
        sections=[('Partner', ['InvoiceType', 'Invoice_Partner', 'Invoice_DeliveryAddress', 'Reference', 'PaymentReference', 'Invoice_BankAccount']),
                  ('Dates & terms', ['InvoiceDate', 'DueDate', 'Invoice_PaymentTerm', 'Invoice_Currency']),
-                 ('Other info', ['Invoice_Salesperson', 'SourceDocument', 'Invoice_SalesOrders', 'Invoice_PurchaseOrder', 'Invoice_ReversalOf'])],
+                 # no Sales orders / Purchase order pickers: sales and purchase users open this form (2026-10-16) and may not
+                 # read each other's orders (CE2729); the source document shows the order numbers
+                 ('Other info', ['Invoice_Salesperson', 'SourceDocument', 'Invoice_ReversalOf'])],
        links=[('Open sales order', 'SalesOrder_NewEdit'), ('Open purchase order', 'PurchaseOrder_NewEdit')],
        lines=dict(entity='Invoicing.InvoiceLine', via='InvoiceLine_Invoice', title='Invoice lines', editable=True,
                   columns=['InvoiceLine_Product', 'Description', 'Quantity', 'InvoiceLine_UoM', 'UnitPrice', 'InvoiceLine_Taxes', 'DiscountPercent', 'Subtotal'],

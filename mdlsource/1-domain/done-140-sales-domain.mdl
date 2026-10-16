@@ -200,3 +200,6 @@ grant read * on entity Sales."QuotationTemplate" to Sales.Reader;
 grant create, delete, read *, write * on entity Sales."QuotationTemplateLine" to Sales.User;
 grant create, delete, read *, write * on entity Sales."QuotationTemplateLine" to Sales.Manager;
 grant read * on entity Sales."QuotationTemplateLine" to Sales.Reader;
+grant read *, write * on entity Sales."CreateInvoiceRequest" to Sales.User;
+grant read *, write * on entity Sales."CreateInvoiceRequest" to Sales.Manager;
+grant read *, write * on entity Sales."CreateInvoiceRequest" to Sales.Reader;

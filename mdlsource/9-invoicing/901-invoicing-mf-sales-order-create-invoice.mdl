@@ -1,0 +1,40 @@
+mdl 1;
+-- 901-invoicing-mf-sales-order-create-invoice.mdl — build-plan row 85 (F008-UC001). Create invoice on SalesOrder_NewEdit: the
+-- request for the order and the popup (Sales.CreateInvoice_Popup, 614; its Create invoice action is in 613).
+
+/**
+ * An invoicing request for one order (Create invoice on SalesOrder_NewEdit); not consolidated.
+ *
+ * @param $SalesOrder the order
+ * @returns the uncommitted request
+ */
+create or modify microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder ($SalesOrder: Sales.SalesOrder)
+returns Sales.CreateInvoiceRequest as $Request
+folder 'Invoices/Microflows'
+begin
+  $Request = create Sales.CreateInvoiceRequest (ConsolidatePerCustomer = false);
+  add $SalesOrder to $Request/Sales.CreateInvoiceRequest_SalesOrders;
+  return $Request;
+end;
+
+/**
+ * "Create invoice" on SalesOrder_NewEdit (F008-UC001, Odoo sale.order.action_view_invoice / sale.advance.payment.inv): the
+ * create-invoice popup for this order; refused up front when it has nothing to invoice.
+ *
+ * @param $SalesOrder the order
+ * @returns true when the popup opened
+ */
+create or modify microflow Invoicing.ACT_SalesOrder_CreateInvoice ($SalesOrder: Sales.SalesOrder)
+returns Boolean as $Opened
+folder 'Invoices/Microflows'
+begin
+  $Request = call microflow Invoicing.SUB_CreateInvoiceRequest_NewForOrder(SalesOrder = $SalesOrder);
+  $IsValid = call microflow Invoicing.VAL_CreateInvoiceRequest(CreateInvoiceRequest = $Request);
+  if not($IsValid) then
+    return false;
+  end if;
+  show page Sales.CreateInvoice_Popup(CreateInvoiceRequest = $Request);
+  return true;
+end;
+
+grant execute on microflow Invoicing.ACT_SalesOrder_CreateInvoice to Invoicing.Creator, Invoicing.Billing, Invoicing.Manager;
