@@ -428,7 +428,19 @@
      "definition": "",
      "message": "Another entry with the same name already exists.",
      "kind": "check",
-     "disposition": "not-applicable: definition not extracted"
+     "disposition": "covered: entity unique rule on Number (EXTRA_CONSTRAINTS; the extractor did not read its definition)"
+    },
+    {
+     "odooName": "(account.move unique_name) number_uniq",
+     "kind": "unique",
+     "members": [
+      "Number"
+     ],
+     "message": "Another entry with the same number already exists.",
+     "disposition": "implement",
+     "basis": "Odoo account.move unique_name (index, definition not extracted); drafts keep an empty number until posted",
+     "definition": "",
+     "source": "design"
     }
    ],
    "odooChecks": [
@@ -444,7 +456,7 @@
      "messages": [
       "For this entry to be automatically posted, it required a bill date."
      ],
-     "disposition": "not-applicable: auto-post is out of scope"
+     "disposition": "val: Invoicing.VAL_Invoice_Post (a vendor document needs its bill date before posting; auto-post itself is out of scope)"
     },
     {
      "odooMethod": "_check_journal_move_type",
@@ -742,7 +754,7 @@
      "definition": "CHECK(display_type IN ('line_section', 'line_note') OR account_id IS NOT NULL)",
      "message": "Missing required account on accountable line.",
      "kind": "check",
-     "disposition": "deferred: Invoicing phase (an invoice line has a product or a label)"
+     "disposition": "val: Invoicing.VAL_Invoice_PostLines (every line has a product or a label)"
     },
     {
      "odooName": "check_non_accountable_fields_null",
@@ -798,7 +810,7 @@
      "messages": [
       "The Unit of Measure (UoM) '%(uom)s' you have selected for product '%(product)s', "
      ],
-     "disposition": "deferred: Invoicing phase (line unit in the product unit category)"
+     "disposition": "val: Invoicing.VAL_Invoice_PostLines (line unit in the product unit category)"
     },
     {
      "odooMethod": "_check_caba_non_caba_shared_tags",
@@ -988,6 +1000,18 @@
      "operator": ">=",
      "value": "0.0",
      "disposition": "implement"
+    },
+    {
+     "odooName": "(design) number_uniq",
+     "kind": "unique",
+     "members": [
+      "Number"
+     ],
+     "message": "Another payment with the same number already exists.",
+     "disposition": "implement",
+     "basis": "payments are drawn from the account.payment sequence; the number identifies them on statements",
+     "definition": "",
+     "source": "design"
     }
    ],
    "odooChecks": [

@@ -1,12 +1,12 @@
 {
   "projectName": "erpv1",
-  "date": "2026-10-16 09:25:12",
-  "overallScore": 46.1,
+  "date": "2026-10-16 10:22:50",
+  "overallScore": 45.1,
   "summary": {
-    "total": 425,
+    "total": 438,
     "errors": 0,
-    "warnings": 133,
-    "infos": 292
+    "warnings": 141,
+    "infos": 297
   },
   "categories": [
     {
@@ -26,11 +26,11 @@
     },
     {
       "name": "Quality",
-      "score": 81,
-      "total": 19,
+      "score": 76,
+      "total": 24,
       "errors": 0,
       "warnings": 0,
-      "infos": 19,
+      "infos": 24,
       "topActions": [
         "Replace entity validation rules with a VAL_Company microflow for explicit, testable validation",
         "Remove if unused, or rename with ACT_/SCH_ prefix if it's an entry point.",
@@ -41,14 +41,14 @@
     {
       "name": "Architecture",
       "score": 0,
-      "total": 84,
+      "total": 92,
       "errors": 0,
-      "warnings": 84,
+      "warnings": 92,
       "infos": 0,
       "topActions": [
-        "Add an attribute like 'CompanyCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE",
         "Create a view entity in 'Inventory' that exposes the needed data from 'Products', or use a microflow to retrieve the data.",
-        "Create microflows (e.g., ACT_SaveInvoice, VAL_Invoice) to handle create/update operations with proper validation.",
+        "Add an attribute like 'CompanyCode or ExternalID' with UNIQUE and NOT NULL constraints. Example: Code: String(50) NOT NULL UNIQUE",
+        "Create microflows (e.g., ACT_SaveBankAccount, VAL_BankAccount) to handle create/update operations with proper validation.",
         "Move the 'OpenUserTaskAction' action to a SUB_ microflow and call it from 'ACT_PurchaseApproval_Open'"
       ]
     },

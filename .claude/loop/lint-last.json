@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-10-16T09:30:07Z",
-  "verdict": "PASS",
-  "total": 425,
+  "timestamp": "2026-10-16T10:22:40Z",
+  "verdict": "FAIL",
+  "total": 438,
   "rule_count": 21,
   "counts": {
-    "ARCH001": 37,
-    "ARCH002": 8,
+    "ARCH001": 49,
+    "ARCH002": 4,
     "ARCH003": 38,
     "CONV001": 26,
     "CONV002": 34,
@@ -15,15 +15,42 @@
     "CONV008": 14,
     "CONV009": 1,
     "CONV010": 1,
-    "CONV015": 13,
+    "CONV015": 14,
     "CONV016": 2,
     "CUSTOM002": 9,
     "DESIGN001": 8,
     "MDL-FLOW01": 1,
     "QUAL002": 1,
-    "QUAL004": 4,
+    "QUAL004": 8,
     "SEC003": 1,
     "SEC008": 2,
     "SEC010": 4
+  },
+  "new_findings": {
+    "ARCH001": [
+      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'cmbInvoiceBankAccount' in 'Invoicing.Invoice_NewEdit' references entity 'Partners.BankAccount' from module 'Part",
+      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'cmbInvoiceCurrency' in 'Invoicing.Invoice_NewEdit' references entity 'Core.Currency' from module 'Core'. Use a v",
+      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'cmbInvoiceDeliveryAddress' in 'Invoicing.Invoice_NewEdit' references entity 'Partners.Partner' from module 'Part",
+      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'cmbInvoicePaymentTerm' in 'Invoicing.Invoice_NewEdit' references entity 'Core.PaymentTerm' from module 'Core'. U",
+      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'cmbInvoicePurchaseOrder' in 'Invoicing.Invoice_NewEdit' references entity 'Purchasing.PurchaseOrder' from module",
+      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'cmbInvoiceSalesOrders' in 'Invoicing.Invoice_NewEdit' references entity 'Sales.SalesOrder' from module 'Sales'. ",
+      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'cmbInvoiceSalesperson' in 'Invoicing.Invoice_NewEdit' references entity 'Administration.Account' from module 'Ad",
+      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'lncmbInvoiceLineProduct' in 'Invoicing.Invoice_NewEdit' references entity 'Products.Product' from module 'Produc",
+      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'lncmbInvoiceLineTaxes' in 'Invoicing.Invoice_NewEdit' references entity 'Core.Tax' from module 'Core'. Use a vie",
+      "Invoicing | Invoicing.Invoice_NewEdit | Widget 'lncmbInvoiceLineUoM' in 'Invoicing.Invoice_NewEdit' references entity 'Products.UoM' from module 'Products'. Use",
+      "Invoicing | Invoicing.Payment_View | Widget 'cmbPaymentCurrency' in 'Invoicing.Payment_View' references entity 'Core.Currency' from module 'Core'. Use a view",
+      "Invoicing | Invoicing.Payment_View | Widget 'cmbPaymentPartner' in 'Invoicing.Payment_View' references entity 'Partners.Partner' from module 'Partners'. Use "
+    ],
+    "CONV015": [
+      "Invoicing | Invoicing.Invoice | Entity 'Invoicing.Invoice' has 1 validation rule(s). Use VAL_ microflows for validation logic instead.",
+      "Invoicing | Invoicing.Payment | Entity 'Invoicing.Payment' has 2 validation rule(s). Use VAL_ microflows for validation logic instead."
+    ],
+    "QUAL004": [
+      "Invoicing | Invoicing.SUB_Invoice_CreateCreditNote | Microflow 'SUB_Invoice_CreateCreditNote' is not called from anywhere.",
+      "Invoicing | Invoicing.SUB_Payment_Create | Microflow 'SUB_Payment_Create' is not called from anywhere.",
+      "Invoicing | Invoicing.VAL_RegisterPaymentRequest | Microflow 'VAL_RegisterPaymentRequest' is not called from anywhere.",
+      "Invoicing | Invoicing.Invoice_Overview | Page 'Invoice_Overview' is not shown from any microflow.",
+      "Invoicing | Invoicing.Payment_Overview | Page 'Payment_Overview' is not shown from any microflow."
+    ]
   }
 }

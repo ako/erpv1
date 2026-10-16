@@ -53,7 +53,7 @@ create or modify enumeration Invoicing."ENUM_PaymentStatus" (
 
 /** Customer invoice / credit note or vendor bill / credit note (no journal entries). (Odoo account.move; F008) */
 create or modify persistent entity Invoicing."Invoice" (
-  "Number": String(200),
+  "Number": String(200) unique error message 'Another entry with the same number already exists.',
   "InvoiceType": Enumeration(Invoicing.ENUM_InvoiceType),
   "Status": Enumeration(Invoicing.ENUM_InvoiceStatus) default Draft,
   "PaymentStatus": Enumeration(Invoicing.ENUM_PaymentStatus),
@@ -92,7 +92,7 @@ create or modify persistent entity Invoicing."InvoiceLine" (
 
 /** Money received from a customer or paid to a vendor, allocated to invoices. (Odoo account.payment; F008) */
 create or modify persistent entity Invoicing."Payment" (
-  "Number": String(200),
+  "Number": String(200) unique error message 'Another payment with the same number already exists.',
   "Direction": Enumeration(Invoicing.ENUM_PaymentDirection) default Inbound,
   "PartnerKind": Enumeration(Invoicing.ENUM_PartnerKind) default Customer,
   "Amount": Decimal,

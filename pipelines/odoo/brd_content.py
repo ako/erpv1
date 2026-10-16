@@ -800,6 +800,7 @@ BRDS['F006']['useCases'].append(uc(
 #   'deferred: <why>'          belongs to a later phase
 #   'not-applicable: <why>'    the feature it guards is out of scope
 CONSTRAINT_TRIAGE = {
+    ('Invoicing.Invoice', 'unique_name'): 'covered: entity unique rule on Number (EXTRA_CONSTRAINTS; the extractor did not read its definition)',
     ('Inventory.Location', 'barcode_company_uniq'): 'not-applicable: barcodes are not maintained (no scanning); locations share an empty barcode',
     ('Core.Currency', '_check_company_currency_stays_active'): 'not-applicable: currencies are seeded reference data with no maintenance page',
     ('Partners.Partner', 'check_name'): 'val: Partners.VAL_Partner (Name required)',
@@ -831,21 +832,27 @@ CONSTRAINT_TRIAGE = {
     ('Inventory.StockLevel', 'check_location_id'): 'covered: Inventory.SUB_StockLevel_Adjust keeps stock at internal locations only',
     ('Inventory.ReorderRule', '_check_product_uom'): 'not-applicable: reorder rules carry no unit',
     ('Inventory.ReorderRule', '_check_min_max_qty'): 'val: Inventory.VAL_ReorderRule (minimum not above maximum; row save on the list)',
-    ('Invoicing.Invoice', '_require_bill_date_for_autopost'): 'not-applicable: auto-post is out of scope',
+    ('Invoicing.Invoice', '_require_bill_date_for_autopost'): 'val: Invoicing.VAL_Invoice_Post (a vendor document needs its bill date before posting; auto-post itself is out of scope)',
     ('Invoicing.Invoice', '_check_journal_move_type'): 'not-applicable: journals are out of scope',
     ('Invoicing.InvoiceLine', 'check_credit_debit'): 'not-applicable: no journal items (accounting out of scope)',
     ('Invoicing.InvoiceLine', 'check_amount_currency_balance_sign'): 'not-applicable: no journal items',
-    ('Invoicing.InvoiceLine', 'check_accountable_required_fields'): 'deferred: Invoicing phase (an invoice line has a product or a label)',
+    ('Invoicing.InvoiceLine', 'check_accountable_required_fields'): 'val: Invoicing.VAL_Invoice_PostLines (every line has a product or a label)',
     ('Invoicing.InvoiceLine', 'check_non_accountable_fields_null'): 'not-applicable: section and note lines are out of scope',
     ('Invoicing.InvoiceLine', '_check_off_balance'): 'not-applicable: off-balance accounts are out of scope',
     ('Invoicing.InvoiceLine', '_check_payable_receivable'): 'not-applicable: accounts are out of scope',
-    ('Invoicing.InvoiceLine', '_check_product_uom_category_id'): 'deferred: Invoicing phase (line unit in the product unit category)',
+    ('Invoicing.InvoiceLine', '_check_product_uom_category_id'): 'val: Invoicing.VAL_Invoice_PostLines (line unit in the product unit category)',
     ('Invoicing.InvoiceLine', '_check_caba_non_caba_shared_tags'): 'not-applicable: cash-basis taxes are out of scope',
     ('Invoicing.Payment', '_check_move_id'): 'not-applicable: outstanding accounts are out of scope',
     ('Invoicing.CreditNoteRequest', '_check_journal_type'): 'not-applicable: journals are out of scope',
 }
 # Rules this app adds on top of Odoo (design, not extracted): business keys the app's own logic depends on.
 EXTRA_CONSTRAINTS = {
+    'Invoicing.Invoice': [dict(odooName='(account.move unique_name) number_uniq', kind='unique', members=['Number'],
+                               message='Another entry with the same number already exists.', disposition='implement',
+                               basis='Odoo account.move unique_name (index, definition not extracted); drafts keep an empty number until posted')],
+    'Invoicing.Payment': [dict(odooName='(design) number_uniq', kind='unique', members=['Number'],
+                               message='Another payment with the same number already exists.', disposition='implement',
+                               basis='payments are drawn from the account.payment sequence; the number identifies them on statements')],
     'Core.Tax': [dict(odooName='(_constrains_name) name_scope_uniq', kind='unique', members=['Name', 'Scope'],
                       message='Tax names must be unique per scope.', disposition='implement',
                       basis='Odoo account.tax._constrains_name is a Python check; enforced here in the database (user 2026-10-16)')],

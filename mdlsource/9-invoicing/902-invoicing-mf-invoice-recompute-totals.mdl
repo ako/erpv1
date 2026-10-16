@@ -1,0 +1,100 @@
+mdl 1;
+-- 902-invoicing-mf-invoice-recompute-totals.mdl — build-plan row 85 (F008): the invoice form's line actions. Owns
+-- SUB_InvoiceLine_ApplyProduct, SUB_InvoiceLine_Save, ACT_InvoiceLine_ChangeProduct, ACT_InvoiceLine_Recompute and
+-- SUB/ACT_InvoiceLine_Delete. Customer documents take the product's sales price and customer taxes; vendor documents its cost
+-- and vendor taxes (Odoo account.move.line _compute_price_unit / _compute_tax_ids).
+
+/**
+ * A line takes its product's label, unit, price and taxes, by the document's side (customer or vendor). Not committed.
+ *
+ * @param $InvoiceLine the line
+ */
+create or modify microflow Invoicing.SUB_InvoiceLine_ApplyProduct ($InvoiceLine: Invoicing.InvoiceLine)
+folder 'Invoices/Microflows'
+begin
+  retrieve $Product from $InvoiceLine/Invoicing.InvoiceLine_Product;
+  retrieve $Invoice from $InvoiceLine/Invoicing.InvoiceLine_Invoice;
+  if $Product = empty or $Invoice = empty then
+    return;
+  end if;
+  declare $Vendor Boolean = $Invoice/InvoiceType = Invoicing.ENUM_InvoiceType.VendorBill or $Invoice/InvoiceType = Invoicing.ENUM_InvoiceType.VendorCreditNote;
+  if $Vendor then
+    retrieve $VendorTaxes from $Product/Products.Product_VendorTaxes;
+    change $InvoiceLine (UnitPrice = if $Product/Cost = empty then 0 else $Product/Cost, Invoicing.InvoiceLine_Taxes = $VendorTaxes,
+      Invoicing.InvoiceLine_UoM = if $Product/Products.Product_PurchaseUoM != empty then $Product/Products.Product_PurchaseUoM else $Product/Products.Product_UoM);
+  else
+    retrieve $CustomerTaxes from $Product/Products.Product_CustomerTaxes;
+    change $InvoiceLine (UnitPrice = $Product/SalesPrice, Invoicing.InvoiceLine_Taxes = $CustomerTaxes, Invoicing.InvoiceLine_UoM = $Product/Products.Product_UoM);
+  end if;
+  change $InvoiceLine (Description = $Product/Name, LineType = Core.ENUM_LineType.Product);
+end;
+
+/**
+ * A line edited on the form: amounts, commit, then the invoice totals.
+ *
+ * @param $InvoiceLine the line
+ */
+create or modify microflow Invoicing.SUB_InvoiceLine_Save ($InvoiceLine: Invoicing.InvoiceLine)
+folder 'Invoices/Microflows'
+begin
+  call microflow Invoicing.SUB_InvoiceLine_Recompute(InvoiceLine = $InvoiceLine);
+  commit $InvoiceLine with events refresh;
+  retrieve $Invoice from $InvoiceLine/Invoicing.InvoiceLine_Invoice;
+  $Totals = call microflow Invoicing.SUB_Invoice_RecomputeTotals(Invoice = $Invoice);
+end;
+
+/**
+ * On change of a line's product.
+ *
+ * @param $InvoiceLine the line
+ */
+create or modify microflow Invoicing.ACT_InvoiceLine_ChangeProduct ($InvoiceLine: Invoicing.InvoiceLine)
+folder 'Invoices/Microflows'
+begin
+  call microflow Invoicing.SUB_InvoiceLine_ApplyProduct(InvoiceLine = $InvoiceLine);
+  call microflow Invoicing.SUB_InvoiceLine_Save(InvoiceLine = $InvoiceLine);
+end;
+
+/**
+ * On change of a line's quantity, price, discount or taxes.
+ *
+ * @param $InvoiceLine the line
+ */
+create or modify microflow Invoicing.ACT_InvoiceLine_Recompute ($InvoiceLine: Invoicing.InvoiceLine)
+folder 'Invoices/Microflows'
+begin
+  call microflow Invoicing.SUB_InvoiceLine_Save(InvoiceLine = $InvoiceLine);
+end;
+
+/**
+ * Remove a line of a draft; the totals follow.
+ *
+ * @param $InvoiceLine the line
+ * @returns true when removed
+ */
+create or modify microflow Invoicing.SUB_InvoiceLine_Delete ($InvoiceLine: Invoicing.InvoiceLine)
+returns Boolean as $Done
+folder 'Invoices/Microflows'
+begin
+  retrieve $Invoice from $InvoiceLine/Invoicing.InvoiceLine_Invoice;
+  if $Invoice != empty and $Invoice/Status != Invoicing.ENUM_InvoiceStatus.Draft then
+    show message 'Lines of a posted or cancelled document cannot be removed.' type Warning;
+    return false;
+  end if;
+  delete $InvoiceLine;
+  if $Invoice != empty then
+    $Totals = call microflow Invoicing.SUB_Invoice_RecomputeTotals(Invoice = $Invoice);
+  end if;
+  return true;
+end;
+
+/**
+ * Remove link on a line of the invoice form.
+ *
+ * @param $InvoiceLine the line
+ */
+create or modify microflow Invoicing.ACT_InvoiceLine_Delete ($InvoiceLine: Invoicing.InvoiceLine)
+folder 'Invoices/Microflows'
+begin
+  $Removed = call microflow Invoicing.SUB_InvoiceLine_Delete(InvoiceLine = $InvoiceLine);
+end;

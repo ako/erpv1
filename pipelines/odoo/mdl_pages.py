@@ -33,7 +33,10 @@ LINK_TARGET = {'UserProfile_Edit': 'Administration.Account_Overview'}
 # ratios stored with 8 decimals must display them all (Dozens = 0.08333333; ui-review 2026-10-15 P2-4)
 DECIMAL_PRECISION = {'Factor': 8}
 # On change of a field: the ACT_ that applies its dependent defaults (BRD onchange rules). Keyed by (entity, field).
-ONCHANGE = {('Sales.SalesOrder', 'SalesOrder_Customer'): 'Sales.ACT_SalesOrder_ChangeCustomer',
+ONCHANGE = {('Invoicing.InvoiceLine', 'InvoiceLine_Product'): 'Invoicing.ACT_InvoiceLine_ChangeProduct',
+            **{('Invoicing.InvoiceLine', f): 'Invoicing.ACT_InvoiceLine_Recompute'
+               for f in ('Quantity', 'UnitPrice', 'DiscountPercent', 'InvoiceLine_Taxes')},
+            ('Sales.SalesOrder', 'SalesOrder_Customer'): 'Sales.ACT_SalesOrder_ChangeCustomer',
             ('Sales.SalesOrder', 'SalesOrder_QuotationTemplate'): 'Sales.ACT_SalesOrder_ApplyTemplate',
             ('Sales.SalesOrderLine', 'SalesOrderLine_Product'): 'Sales.ACT_SalesOrderLine_ChangeProduct',
             **{('Sales.SalesOrderLine', f): 'Sales.ACT_SalesOrderLine_Recompute'
@@ -60,7 +63,7 @@ PICKER_WHERE = {('Sales.SalesOrder', 'SalesOrder_Customer'): ACTIVE + '[IsCustom
                 ('Purchasing.VendorPrice', 'VendorPrice_Vendor'): ACTIVE + '[IsVendor = true()]',
                 ('Purchasing.VendorPrice', 'VendorPrice_Product'): ACTIVE + '[CanBePurchased = true()]'}
 # Document lines removed through a guarded microflow (refuses delivered/received/invoiced lines, recomputes totals) — C1-04/05.
-LINE_DELETE = {'Sales.SalesOrderLine': 'Sales.ACT_SalesOrderLine_Delete', 'Purchasing.PurchaseOrderLine': 'Purchasing.ACT_PurchaseOrderLine_Delete'}
+LINE_DELETE = {'Invoicing.InvoiceLine': 'Invoicing.ACT_InvoiceLine_Delete', 'Sales.SalesOrderLine': 'Sales.ACT_SalesOrderLine_Delete', 'Purchasing.PurchaseOrderLine': 'Purchasing.ACT_PurchaseOrderLine_Delete'}
 # List-page tabs (wireframe lg-tabs, user 2026-10-16): caption -> XPath on the list's entity ('' = all).
 TAB_WHERE = {
     'SalesOrder_Overview': [('All', ''), ('Quotations', "[Status = 'Quotation' or Status = 'QuotationSent']"),
@@ -190,6 +193,22 @@ end;
 ''' % dict(short=short, mod=mod, e=e, page=s['name'], f=mf, checks=checks)]
 
 
+# Buttons whose microflow differs from the spec's BRD name: (page, caption) -> qualified microflow, called with the page's object.
+# Popup confirmations call an ACT that checks, creates and closes (a SUB on a button has no grant, so users would not see it).
+BUTTON_MF = {('CreditNote_Popup', 'Reverse'): 'Invoicing.ACT_Invoice_CreateCreditNote',
+             ('RegisterPayment_Popup', 'Create payment'): 'Invoicing.ACT_RegisterPaymentRequest_Create',
+             ('CreateInvoice_Popup', 'Create invoice'): 'Invoicing.ACT_CreateInvoiceRequest_Create',
+             ('Invoice_NewEdit', 'Register payment'): 'Invoicing.ACT_Invoice_OpenRegisterPayment',
+             ('Invoice_NewEdit', 'Credit note'): 'Invoicing.ACT_Invoice_OpenCreditNote'}
+# Buttons left out of a generated page and inserted later by an ALTER script, to break a page <-> popup creation cycle
+# (the form opens a popup whose confirmation opens the form): (page, caption) -> the script that inserts them.
+DEFERRED_PAGE_BUTTONS = {('Invoice_NewEdit', 'Register payment'): '909-invoicing-alter-invoice-form-buttons.mdl',
+                         ('Invoice_NewEdit', 'Credit note'): '909-invoicing-alter-invoice-form-buttons.mdl',
+                         ('Invoice_Overview', 'Register payment'): 'not built: needs a selection-driven list button'}
+# Forms editable only in some states: page -> condition on the page parameter (Odoo locks posted documents).
+FORM_EDITABLE_WHEN = {'Invoice_NewEdit': '$Invoice/Status = Invoicing.ENUM_InvoiceStatus.Draft'}
+# Related links not rendered yet (their target page does not exist yet): (page, caption).
+LINK_DEFERRED = {('Invoice_NewEdit', 'Open sales order'), ('Invoice_NewEdit', 'Open purchase order')}
 SAVE_HOOK = {'Products.ProductCategory': 'Products.SUB_ProductCategory_ComputeFullName'}
 LINK_CAPTION = {'Administration.Account_Overview': 'User accounts (Administration)'}
 
@@ -514,13 +533,15 @@ def buttons(s, e, pname, popup=False):
     for i, b in enumerate(s.get('buttons', [])):
         cap, act = b[0], b[1]
         states = b[2] if len(b) > 2 else None
-        if act in DEFERRED_BUTTONS:
+        if act in DEFERRED_BUTTONS or (s['name'], cap) in DEFERRED_PAGE_BUTTONS:
             continue
         if cap == 'Archive':
             act = 'ACT_%s_Archive' % e['name'].split('.')[1]
         if act == 'save' or act.startswith('VAL_'):
             short = e['name'].split('.')[1]
             a = 'call microflow %s.ACT_%s_Save(%s = $currentObject)' % (module_of(e['name']), short, short)
+        elif (s['name'], cap) in BUTTON_MF:
+            a = 'call microflow %s(%s = $currentObject)' % (BUTTON_MF[(s['name'], cap)], e['name'].split('.')[1])
         else:
             mod = D_MF_MODULE(act, e['name'])
             params = MF_PARAMS(act, e['name'])
@@ -598,7 +619,11 @@ def gen_form(s, popup=False):
             L += editable_listview(le, ln['columns'], src, '    ', add_mf)
         else:
             open_ = ''
-            if ln.get('open'):
+            if ln.get('open_via'):   # the row opens the object across an association, not the row itself
+                tp = U.S[ln['open']]
+                open_ = ', OnClick: call microflow %s.ACT_%s_Open%s(%s = $currentObject)' % (
+                    lmod, ln['entity'].split('.')[1], tp['param'].split('.')[1], param_name(ln['entity']))
+            elif ln.get('open'):
                 tp = U.S[ln['open']]
                 open_ = ', OnClick: show page %s.%s(%s = $currentObject)' % (module_of(tp['entity']), ln['open'], param_name(tp['param']))
             # a database query, not $currentObject/<assoc>: the association may be a self-reference (Partner_ParentCompany),
@@ -606,7 +631,7 @@ def gen_form(s, popup=False):
             dsrc = "database %s where [%s.%s = '[%%CurrentObject%%]']" % (D.qn(ln['entity']), lmod, ln['via'])
             L.append("    datagrid %s (DataSource: %s, Class: 'density-compact'%s) {" % (wid('grid', ln['title']), dsrc, open_))
             L += ['      ' + column(le, c) for c in ln['columns']] + ['    }']
-            if ln.get('open'):
+            if ln.get('open') and ln.get('add', True):
                 L.append("    linkbutton btnAddChild (Caption: '+ Add', Action: call microflow %s.ACT_%s_AddTo%s(%s = $currentObject))"
                          % (lmod, ln['entity'].split('.')[1], pname, pname))
     if s.get('totals'):
@@ -617,9 +642,11 @@ def gen_form(s, popup=False):
     if s.get('notes'):
         L.append(input_widget(e, s['notes'], '    '))
     links = [(t, LINK_TARGET.get(g) or existing_page(g)) for t, g in s.get('links', [])]
-    if any(p or LINK_ACTION.get((s['name'], t)) for t, p in links):
+    if any((p or LINK_ACTION.get((s['name'], t))) and (s['name'], t) not in LINK_DEFERRED for t, p in links):
         L.append("    dynamictext hRelated (Content: 'Related', RenderMode: H2)")
     for i, (text, page) in enumerate(links):
+        if (s['name'], text) in LINK_DEFERRED:
+            continue
         la = LINK_ACTION.get((s['name'], text))
         if la:
             L.append("    linkbutton lnk%d (Caption: '%s', Action: call microflow %s(%s = $currentObject), Visible: %s)" % (i, esc(text), la[0], pname, la[1]))
@@ -629,6 +656,18 @@ def gen_form(s, popup=False):
         L.append('    footer {')
         L += ['      ' + a for a in acts]
         L.append('    }')
+    cond = FORM_EDITABLE_WHEN.get(s['name'])
+    if cond:   # every input, and the line add/remove links, only while the condition holds (posted documents are locked)
+        out = []
+        for ln in L:
+            if re.match(r'\s*(column \([^)]*\) \{ )?(textbox|textarea|combobox|datepicker|checkbox|radiobuttons) ', ln) and 'Editable:' not in ln:
+                tail = ') }' if ln.rstrip().endswith(') }') else ')'
+                ln = ln.rstrip()[:-len(tail)] + ', Editable: %s%s' % (cond, tail)
+            elif re.search(r'linkbutton (btnAddLine|btnLineDelete) ', ln) and 'Visible:' not in ln:
+                tail = ') }' if ln.rstrip().endswith(') }') else ')'
+                ln = ln.rstrip()[:-len(tail)] + ', Visible: %s%s' % (cond, tail)
+            out.append(ln)
+        L = out
     return L, pname
 
 
@@ -759,6 +798,34 @@ def child_add_microflows(s):
         lmod, lshort = module_of(ln['entity']), ln['entity'].split('.')[1]
         tp = U.S[ln['open']]
         mf = folder_of(module_of(pq), s['name']).replace('/Pages', '/Microflows')
+        if ln.get('open_via'):
+            tq = tp['param']
+            rn = param_name(ln['entity'])
+            ts = tq.split('.')[1]
+            out.append('''/** The %(ts)s this %(ls)s points at (empty when it points nowhere). */
+create or modify microflow %(m)s.SUB_%(ls)s_Get%(ts)s ($%(rn)s: %(le)s)
+returns %(tq)s as $Target
+folder '%(f)s'
+begin
+  retrieve $Target from $%(rn)s/%(m)s.%(via)s;
+  return $Target;
+end;
+
+/** A %(ls)s row on %(page)s opens its %(ts)s in %(open)s. */
+create or modify microflow %(m)s.ACT_%(ls)s_Open%(ts)s ($%(rn)s: %(le)s)
+folder '%(f)s'
+begin
+  $Target = call microflow %(m)s.SUB_%(ls)s_Get%(ts)s(%(rn)s = $%(rn)s);
+  if $Target = empty then
+    show message 'This row is not linked to a %(tl)s.' type Information;
+    return;
+  end if;
+  show page %(tm)s.%(open)s(%(tp)s = $Target);
+end;
+''' % dict(ts=ts, ls=lshort, m=lmod, rn=rn, le=ln['entity'], tq=tq, f=mf, via=ln['open_via'], page=s['name'],
+           open=ln['open'], tl=ts.lower(), tm=module_of(tp['entity']), tp=param_name(tq)))
+        if not ln.get('add', True):
+            continue
         out.append('''/** A new, uncommitted %s linked to this %s. */
 create or modify microflow %s.SUB_%s_NewFor%s ($%s: %s)
 returns %s as $Child

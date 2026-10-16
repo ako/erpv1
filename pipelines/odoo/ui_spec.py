@@ -358,7 +358,7 @@ screen('Payment_View', 'form', 'Payment', 'Invoicing.Payment', BILL, ['row of Pa
        sections=[('Payment', ['Direction', 'PartnerKind', 'Payment_Partner', 'Amount', 'Payment_Currency', 'PaymentDate', 'Method', 'Memo', 'Status'])],
        lines=dict(entity='Invoicing.PaymentAllocation', via='PaymentAllocation_Payment', title='Allocated to', editable=False,
                   columns=['PaymentAllocation_Invoice', 'Amount'], rows=[['INV/2026/00020', '300.00'], ['INV/2026/00017', '0.00']],
-                  open='Invoice_NewEdit'))
+                  open='Invoice_NewEdit', open_via='PaymentAllocation_Invoice', add=False))
 screen('Tax_Overview', 'list', 'Taxes', 'Core.Tax', ['InvoicingManager', 'Administrator'], ['menu Configuration › Taxes'],
        columns=['Name', 'Scope', 'Computation', 'Amount', 'IncludedInPrice', 'Active'], open='Tax_NewEdit', new='Tax_NewEdit',
        rows=[['VAT 21%', 'Sales', 'Percentage', '21.00', '', 'yes'], ['VAT 21% (purchase)', 'Purchases', 'Percentage', '21.00', '', 'yes']])

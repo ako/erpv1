@@ -1,0 +1,532 @@
+mdl 1;
+-- One-off: ACT_Invoice_Cancel / _ResetToDraft delegate their changes to SUBs (CONV010). Reshapes (MDL-V1-REBUILD): drop and replay 900
+-- (no grants yet: the page scripts grant the ACTs).
+drop microflow Invoicing.ACT_Invoice_Cancel;
+drop microflow Invoicing.ACT_Invoice_ResetToDraft;
+-- ── replay: mdlsource/9-invoicing/900-invoicing-mf-invoice-core.mdl
+-- 900-invoicing-mf-invoice-core.mdl — build-plan rows 85/87/88/89/90 (F008-UC004..UC007): the invoice life cycle without
+-- pages. Owns SUB_Invoice_SequenceCode, SUB_InvoiceLine_Recompute, SUB_Invoice_RecomputeLines, SUB_Invoice_RecomputeTotals,
+-- SUB_Invoice_UpdatePaymentStatus, the order-quantity sync (C1-08), VAL_Invoice_Post / _PostLines, SUB_Invoice_Post,
+-- ACT_Invoice_Post / _ResetToDraft / _Cancel, the credit-note copy and SUB_Payment_Create with its checks.
+-- Form edits travel with a button's call but are not in the database: buttons save the form's lines first, and the lines of an
+-- invoice are always read over the association (FINDINGS.md 2026-10-16).
+
+/**
+ * The numbering sequence of an invoice type (Odoo account.move journals: INV, BILL, RINV, RBILL).
+ *
+ * @param $InvoiceType the type
+ * @returns the Core.Sequence code
+ */
+create or modify microflow Invoicing.SUB_Invoice_SequenceCode ($InvoiceType: Enumeration(Invoicing.ENUM_InvoiceType))
+returns String as $Code
+folder 'Invoices/Microflows'
+begin
+  return if $InvoiceType = Invoicing.ENUM_InvoiceType.VendorBill then 'account.move.in_invoice'
+    else if $InvoiceType = Invoicing.ENUM_InvoiceType.CustomerCreditNote then 'account.move.out_refund'
+    else if $InvoiceType = Invoicing.ENUM_InvoiceType.VendorCreditNote then 'account.move.in_refund'
+    else 'account.move.out_invoice';
+end;
+
+/**
+ * Amounts of one invoice line (Odoo account.move.line _compute_totals): taxes via Core.SUB_Tax_ComputeLine. Not committed.
+ *
+ * @param $InvoiceLine the line
+ */
+create or modify microflow Invoicing.SUB_InvoiceLine_Recompute ($InvoiceLine: Invoicing.InvoiceLine)
+folder 'Invoices/Microflows'
+begin
+  retrieve $Taxes from $InvoiceLine/Invoicing.InvoiceLine_Taxes;
+  $Amounts = call microflow Core.SUB_Tax_ComputeLine(UnitPrice = $InvoiceLine/UnitPrice, Quantity = $InvoiceLine/Quantity,
+    DiscountPercent = $InvoiceLine/DiscountPercent, Taxes = $Taxes);
+  change $InvoiceLine (Subtotal = $Amounts/Subtotal, Total = $Amounts/Total);
+end;
+
+/**
+ * Amount due and payment status (Odoo _compute_payment_state): posted invoices only; paid amounts are allocations of paid
+ * payments, credited amounts are posted credit notes reversing the invoice. A credit note that reverses an invoice is settled
+ * against it (Odoo reconciles the two).
+ *
+ * @param $Invoice the invoice
+ * @returns true
+ */
+create or modify microflow Invoicing.SUB_Invoice_UpdatePaymentStatus ($Invoice: Invoicing.Invoice)
+returns Boolean as $Done
+folder 'Payments/Microflows'
+begin
+  retrieve $Allocations from Invoicing.PaymentAllocation where [Invoicing.PaymentAllocation_Invoice = $Invoice][Invoicing.PaymentAllocation_Payment/Invoicing.Payment/Status = 'Paid'];
+  $Paid = sum $Allocations by Amount;
+  retrieve $Reversals from Invoicing.Invoice where [Invoicing.Invoice_ReversalOf = $Invoice][Status = 'Posted'];
+  $Credited = sum $Reversals by AmountTotal;
+  declare $Total Decimal = if $Invoice/AmountTotal = empty then 0 else $Invoice/AmountTotal;
+  declare $Settled Boolean = $Invoice/Invoicing.Invoice_ReversalOf != empty and $Invoice/Status = Invoicing.ENUM_InvoiceStatus.Posted;
+  declare $Due Decimal = if $Settled then 0 else (if $Total - $Paid - $Credited > 0 then $Total - $Paid - $Credited else 0);
+  declare $Status Enumeration(Invoicing.ENUM_PaymentStatus) = if $Invoice/Status != Invoicing.ENUM_InvoiceStatus.Posted then Invoicing.ENUM_PaymentStatus.NotPaid
+    else if $Settled then Invoicing.ENUM_PaymentStatus.Paid
+    else if $Total > 0 and $Credited >= $Total then Invoicing.ENUM_PaymentStatus.Reversed
+    else if $Due <= 0 then Invoicing.ENUM_PaymentStatus.Paid
+    else if $Paid + $Credited > 0 then Invoicing.ENUM_PaymentStatus.PartiallyPaid
+    else Invoicing.ENUM_PaymentStatus.NotPaid;
+  change $Invoice (AmountDue = if $Invoice/Status = Invoicing.ENUM_InvoiceStatus.Posted then $Due else $Total, PaymentStatus = $Status);
+  commit $Invoice with events refresh;
+  return true;
+end;
+
+/**
+ * Totals of an invoice from its lines (Odoo _compute_amount); then the amount due and payment status follow.
+ *
+ * @param $Invoice the invoice
+ * @returns true
+ */
+create or modify microflow Invoicing.SUB_Invoice_RecomputeTotals ($Invoice: Invoicing.Invoice)
+returns Boolean as $Done
+folder 'Invoices/Microflows'
+begin
+  retrieve $Lines from $Invoice/Invoicing.InvoiceLine_Invoice;
+  $Untaxed = sum $Lines by Subtotal;
+  $Total = sum $Lines by Total;
+  change $Invoice (AmountUntaxed = $Untaxed, AmountTax = $Total - $Untaxed, AmountTotal = $Total);
+  commit $Invoice with events refresh;
+  $Status = call microflow Invoicing.SUB_Invoice_UpdatePaymentStatus(Invoice = $Invoice);
+  return true;
+end;
+
+/**
+ * Recompute every line of an invoice and the totals; commits the lines (they come from the form or a copy).
+ *
+ * @param $Invoice the invoice
+ */
+create or modify microflow Invoicing.SUB_Invoice_RecomputeLines ($Invoice: Invoicing.Invoice)
+folder 'Invoices/Microflows'
+begin
+  retrieve $Lines from $Invoice/Invoicing.InvoiceLine_Invoice;
+  @annotation 'One loop over an invoice''s lines (tens at most); one commit after it.'
+  loop $Line in $Lines begin
+    call microflow Invoicing.SUB_InvoiceLine_Recompute(InvoiceLine = $Line);
+  end loop;
+  commit $Lines with events;
+  $Done = call microflow Invoicing.SUB_Invoice_RecomputeTotals(Invoice = $Invoice);
+end;
+
+/**
+ * Invoiced quantity of a sales order line (C1-08, PROJECT.md: moves when the draft is created): invoice lines linked to it on
+ * customer invoices that are not cancelled, minus those on customer credit notes. Not committed.
+ *
+ * @param $SalesOrderLine the order line
+ */
+create or modify microflow Invoicing.SUB_SalesOrderLine_RecomputeInvoiced ($SalesOrderLine: Sales.SalesOrderLine)
+folder 'Invoices/Microflows'
+begin
+  retrieve $Invoiced from Invoicing.InvoiceLine where [Invoicing.InvoiceLine_SalesOrderLines = $SalesOrderLine]
+    [Invoicing.InvoiceLine_Invoice/Invoicing.Invoice/Status != 'Cancelled'][Invoicing.InvoiceLine_Invoice/Invoicing.Invoice/InvoiceType = 'CustomerInvoice'];
+  retrieve $Refunded from Invoicing.InvoiceLine where [Invoicing.InvoiceLine_SalesOrderLines = $SalesOrderLine]
+    [Invoicing.InvoiceLine_Invoice/Invoicing.Invoice/Status != 'Cancelled'][Invoicing.InvoiceLine_Invoice/Invoicing.Invoice/InvoiceType = 'CustomerCreditNote'];
+  $Plus = sum $Invoiced by Quantity;
+  $Minus = sum $Refunded by Quantity;
+  change $SalesOrderLine (QuantityInvoiced = $Plus - $Minus);
+end;
+
+/**
+ * Billed quantity of a purchase order line (C1-08): vendor bills not cancelled minus vendor credit notes. Not committed.
+ *
+ * @param $PurchaseOrderLine the order line
+ */
+create or modify microflow Invoicing.SUB_PurchaseOrderLine_RecomputeBilled ($PurchaseOrderLine: Purchasing.PurchaseOrderLine)
+folder 'Invoices/Microflows'
+begin
+  retrieve $Billed from Invoicing.InvoiceLine where [Invoicing.InvoiceLine_PurchaseOrderLine = $PurchaseOrderLine]
+    [Invoicing.InvoiceLine_Invoice/Invoicing.Invoice/Status != 'Cancelled'][Invoicing.InvoiceLine_Invoice/Invoicing.Invoice/InvoiceType = 'VendorBill'];
+  retrieve $Refunded from Invoicing.InvoiceLine where [Invoicing.InvoiceLine_PurchaseOrderLine = $PurchaseOrderLine]
+    [Invoicing.InvoiceLine_Invoice/Invoicing.Invoice/Status != 'Cancelled'][Invoicing.InvoiceLine_Invoice/Invoicing.Invoice/InvoiceType = 'VendorCreditNote'];
+  $Plus = sum $Billed by Quantity;
+  $Minus = sum $Refunded by Quantity;
+  change $PurchaseOrderLine (QuantityBilled = $Plus - $Minus);
+end;
+
+/**
+ * The sales orders behind an invoice follow it: invoiced quantities of their linked lines, then their invoice status.
+ *
+ * @param $Invoice the invoice (customer invoice or credit note)
+ */
+create or modify microflow Invoicing.SUB_Invoice_SyncSalesOrders ($Invoice: Invoicing.Invoice)
+folder 'Invoices/Microflows'
+begin
+  retrieve $OrderLines from Sales.SalesOrderLine where [Invoicing.InvoiceLine_SalesOrderLines/Invoicing.InvoiceLine/Invoicing.InvoiceLine_Invoice = $Invoice];
+  @annotation 'One loop over the order lines this invoice touches (tens at most); one commit after it.'
+  loop $OrderLine in $OrderLines begin
+    call microflow Invoicing.SUB_SalesOrderLine_RecomputeInvoiced(SalesOrderLine = $OrderLine);
+  end loop;
+  commit $OrderLines with events;
+  retrieve $Orders from $Invoice/Invoicing.Invoice_SalesOrders;
+  @annotation 'One loop over the invoice''s orders (one, a few when consolidated per customer).'
+  loop $Order in $Orders begin
+    $Updated = call microflow Sales.SUB_SalesOrder_UpdateInvoiceStatus(SalesOrder = $Order);
+  end loop;
+end;
+
+/**
+ * The purchase order behind a bill follows it: billed quantities of its linked lines, then its billing status.
+ *
+ * @param $Invoice the bill or vendor credit note
+ */
+create or modify microflow Invoicing.SUB_Invoice_SyncPurchaseOrder ($Invoice: Invoicing.Invoice)
+folder 'Invoices/Microflows'
+begin
+  retrieve $OrderLines from Purchasing.PurchaseOrderLine where [Invoicing.InvoiceLine_PurchaseOrderLine/Invoicing.InvoiceLine/Invoicing.InvoiceLine_Invoice = $Invoice];
+  @annotation 'One loop over the order lines this bill touches (tens at most); one commit after it.'
+  loop $OrderLine in $OrderLines begin
+    call microflow Invoicing.SUB_PurchaseOrderLine_RecomputeBilled(PurchaseOrderLine = $OrderLine);
+  end loop;
+  commit $OrderLines with events;
+  retrieve $Order from $Invoice/Invoicing.Invoice_PurchaseOrder;
+  if $Order != empty then
+    $Updated = call microflow Purchasing.SUB_PurchaseOrder_UpdateBillingStatus(PurchaseOrder = $Order);
+  end if;
+end;
+
+/**
+ * Both sides: the orders behind an invoice follow its lines and status.
+ *
+ * @param $Invoice the invoice
+ */
+create or modify microflow Invoicing.SUB_Invoice_SyncOrders ($Invoice: Invoicing.Invoice)
+folder 'Invoices/Microflows'
+begin
+  call microflow Invoicing.SUB_Invoice_SyncSalesOrders(Invoice = $Invoice);
+  call microflow Invoicing.SUB_Invoice_SyncPurchaseOrder(Invoice = $Invoice);
+end;
+
+/**
+ * Header checks before posting (Odoo _post): a partner, a total that is not negative, a bill date on vendor documents.
+ *
+ * @param $Invoice the invoice
+ * @returns true when it may be posted
+ */
+create or modify microflow Invoicing.VAL_Invoice_Post ($Invoice: Invoicing.Invoice)
+returns Boolean as $IsValid
+folder 'Invoices/Microflows'
+begin
+  declare $IsValid Boolean = true;
+  if $Invoice/Invoicing.Invoice_Partner = empty then
+    validation feedback $Invoice/Invoicing.Invoice_Partner message 'Choose the partner of this document.';
+    set $IsValid = false;
+  end if;
+  if $Invoice/AmountTotal != empty and $Invoice/AmountTotal < 0 then
+    show message 'You cannot validate a document with a negative total. Create a credit note instead.' type Warning;
+    set $IsValid = false;
+  end if;
+  if ($Invoice/InvoiceType = Invoicing.ENUM_InvoiceType.VendorBill or $Invoice/InvoiceType = Invoicing.ENUM_InvoiceType.VendorCreditNote) and $Invoice/InvoiceDate = empty then
+    validation feedback $Invoice/InvoiceDate message 'The bill date is required to validate this document.';
+    set $IsValid = false;
+  end if;
+  return $IsValid;
+end;
+
+/**
+ * Line checks before posting: at least one line (Odoo: add a line before posting); every line has a product or a label
+ * (account.move.line check_accountable_required_fields, deferred to Invoicing); a line's unit is in its product's unit
+ * category (_check_product_uom_category_id).
+ *
+ * @param $Invoice the invoice
+ * @returns true when the lines allow posting
+ */
+create or modify microflow Invoicing.VAL_Invoice_PostLines ($Invoice: Invoicing.Invoice)
+returns Boolean as $IsValid
+folder 'Invoices/Microflows'
+begin
+  retrieve $Lines from $Invoice/Invoicing.InvoiceLine_Invoice;
+  $LineCount = count $Lines;
+  if $LineCount = 0 then
+    show message 'You need to add a line before posting.' type Warning;
+    return false;
+  end if;
+  $NoLabel = find $Lines where $currentObject/Invoicing.InvoiceLine_Product = empty and ($currentObject/Description = empty or trim($currentObject/Description) = '');
+  if $NoLabel != empty then
+    show message 'Every line needs a product or a label.' type Warning;
+    return false;
+  end if;
+  $WrongUnit = find $Lines where $currentObject/Invoicing.InvoiceLine_Product != empty and $currentObject/Invoicing.InvoiceLine_UoM != empty
+    and $currentObject/Invoicing.InvoiceLine_UoM/Products.UoM/Products.UoM_Category != $currentObject/Invoicing.InvoiceLine_Product/Products.Product/Products.Product_UoM/Products.UoM/Products.UoM_Category;
+  if $WrongUnit != empty then
+    show message 'The unit of a line must be in the same category as its product''s unit.' type Warning;
+    return false;
+  end if;
+  return true;
+end;
+
+/**
+ * Post (Odoo action_post): invoice date (today when empty), due date from the payment term, the number of the type's sequence,
+ * Posted; then totals and payment status; a credit note also settles the invoice it reverses.
+ *
+ * @param $Invoice a checked draft
+ */
+create or modify microflow Invoicing.SUB_Invoice_Post ($Invoice: Invoicing.Invoice)
+folder 'Invoices/Microflows'
+begin
+  declare $Date DateTime = if $Invoice/InvoiceDate = empty then [%BeginOfCurrentDay%] else $Invoice/InvoiceDate;
+  retrieve $Term from $Invoice/Invoicing.Invoice_PaymentTerm;
+  $TermDue = call microflow Core.SUB_PaymentTerm_ComputeDueDate(PaymentTerm = $Term, InvoiceDate = $Date);
+  declare $Number String = $Invoice/Number;
+  if $Number = empty or trim($Number) = '' then
+    $Code = call microflow Invoicing.SUB_Invoice_SequenceCode(InvoiceType = $Invoice/InvoiceType);
+    $NewNumber = call microflow Core.SUB_Sequence_NextNumber(Code = $Code);
+    set $Number = $NewNumber;
+  end if;
+  change $Invoice (InvoiceDate = $Date, DueDate = if $Invoice/DueDate = empty then $TermDue else $Invoice/DueDate, Number = $Number,
+    Status = Invoicing.ENUM_InvoiceStatus.Posted);
+  commit $Invoice with events refresh;
+  $Totals = call microflow Invoicing.SUB_Invoice_RecomputeTotals(Invoice = $Invoice);
+  retrieve $Reversed from $Invoice/Invoicing.Invoice_ReversalOf;
+  if $Reversed != empty then
+    $Settled = call microflow Invoicing.SUB_Invoice_UpdatePaymentStatus(Invoice = $Reversed);
+  end if;
+end;
+
+/**
+ * Confirm button (F008-UC004): the form's lines are saved and recomputed, the document is checked, then posted.
+ *
+ * @param $Invoice the draft on the form
+ * @returns true when posted
+ */
+create or modify microflow Invoicing.ACT_Invoice_Post ($Invoice: Invoicing.Invoice)
+returns Boolean as $Done
+folder 'Invoices/Microflows'
+begin
+  if $Invoice/Status != Invoicing.ENUM_InvoiceStatus.Draft then
+    show message 'Only a draft can be confirmed.' type Warning;
+    return false;
+  end if;
+  call microflow Invoicing.SUB_Invoice_RecomputeLines(Invoice = $Invoice);
+  $HeaderValid = call microflow Invoicing.VAL_Invoice_Post(Invoice = $Invoice);
+  $LinesValid = call microflow Invoicing.VAL_Invoice_PostLines(Invoice = $Invoice);
+  if not($HeaderValid) or not($LinesValid) then
+    return false;
+  end if;
+  call microflow Invoicing.SUB_Invoice_Post(Invoice = $Invoice);
+  return true;
+end;
+
+/**
+ * May a document go back to draft (Odoo button_draft): posted, and no payment allocated to it.
+ *
+ * @param $Invoice the document
+ * @returns true when it may be reset
+ */
+create or modify microflow Invoicing.VAL_Invoice_ResetToDraft ($Invoice: Invoicing.Invoice)
+returns Boolean as $IsValid
+folder 'Invoices/Microflows'
+begin
+  retrieve $Allocation from Invoicing.PaymentAllocation where [Invoicing.PaymentAllocation_Invoice = $Invoice] first;
+  if $Invoice/Status != Invoicing.ENUM_InvoiceStatus.Posted or $Allocation != empty then
+    show message 'Only a posted document without payments can be reset to draft.' type Warning;
+    return false;
+  end if;
+  return true;
+end;
+
+/**
+ * Back to draft; the payment status of the document, and of the invoice a credit note reverses, follow.
+ *
+ * @param $Invoice a checked posted document
+ */
+create or modify microflow Invoicing.SUB_Invoice_ResetToDraft ($Invoice: Invoicing.Invoice)
+folder 'Invoices/Microflows'
+begin
+  change $Invoice (Status = Invoicing.ENUM_InvoiceStatus.Draft);
+  commit $Invoice with events refresh;
+  $Status = call microflow Invoicing.SUB_Invoice_UpdatePaymentStatus(Invoice = $Invoice);
+  retrieve $Reversed from $Invoice/Invoicing.Invoice_ReversalOf;
+  if $Reversed != empty then
+    $Unsettled = call microflow Invoicing.SUB_Invoice_UpdatePaymentStatus(Invoice = $Reversed);
+  end if;
+end;
+
+/**
+ * Reset to draft button (F008-UC005).
+ *
+ * @param $Invoice the posted document
+ * @returns true when reset
+ */
+create or modify microflow Invoicing.ACT_Invoice_ResetToDraft ($Invoice: Invoicing.Invoice)
+returns Boolean as $Done
+folder 'Invoices/Microflows'
+begin
+  $IsValid = call microflow Invoicing.VAL_Invoice_ResetToDraft(Invoice = $Invoice);
+  if not($IsValid) then
+    return false;
+  end if;
+  call microflow Invoicing.SUB_Invoice_ResetToDraft(Invoice = $Invoice);
+  return true;
+end;
+
+/**
+ * Cancelled; the document's quantities go back to its orders (C1-08).
+ *
+ * @param $Invoice a draft
+ */
+create or modify microflow Invoicing.SUB_Invoice_Cancel ($Invoice: Invoicing.Invoice)
+folder 'Invoices/Microflows'
+begin
+  change $Invoice (Status = Invoicing.ENUM_InvoiceStatus.Cancelled);
+  commit $Invoice with events refresh;
+  call microflow Invoicing.SUB_Invoice_SyncOrders(Invoice = $Invoice);
+end;
+
+/**
+ * Cancel (F008-UC005, Odoo button_cancel): a draft only; its quantities go back to the orders (C1-08).
+ *
+ * @param $Invoice the draft
+ * @returns true when cancelled
+ */
+create or modify microflow Invoicing.ACT_Invoice_Cancel ($Invoice: Invoicing.Invoice)
+returns Boolean as $Done
+folder 'Invoices/Microflows'
+begin
+  if $Invoice/Status != Invoicing.ENUM_InvoiceStatus.Draft then
+    show message 'Only a draft can be cancelled; reset a posted document to draft first.' type Warning;
+    return false;
+  end if;
+  call microflow Invoicing.SUB_Invoice_Cancel(Invoice = $Invoice);
+  return true;
+end;
+
+/**
+ * The lines of a credit note: one per line of the reversed document, same product, quantity, price, taxes and order links.
+ *
+ * @param $Invoice the reversed document
+ * @param $CreditNote the new credit note
+ */
+create or modify microflow Invoicing.SUB_Invoice_CopyLines ($Invoice: Invoicing.Invoice, $CreditNote: Invoicing.Invoice)
+folder 'Invoices/Microflows'
+begin
+  retrieve $Lines from $Invoice/Invoicing.InvoiceLine_Invoice;
+  $Copies = create list of Invoicing.InvoiceLine;
+  @annotation 'One loop over the reversed document''s lines (tens at most); the copies are committed after it.'
+  loop $Line in $Lines begin
+    retrieve $Taxes from $Line/Invoicing.InvoiceLine_Taxes;
+    retrieve $OrderLines from $Line/Invoicing.InvoiceLine_SalesOrderLines;
+    $Copy = create Invoicing.InvoiceLine (Sequence = $Line/Sequence, LineType = $Line/LineType, Description = $Line/Description, Quantity = $Line/Quantity,
+      UnitPrice = $Line/UnitPrice, DiscountPercent = $Line/DiscountPercent, Subtotal = $Line/Subtotal, Total = $Line/Total,
+      Invoicing.InvoiceLine_Invoice = $CreditNote, Invoicing.InvoiceLine_Product = $Line/Invoicing.InvoiceLine_Product,
+      Invoicing.InvoiceLine_UoM = $Line/Invoicing.InvoiceLine_UoM, Invoicing.InvoiceLine_Taxes = $Taxes,
+      Invoicing.InvoiceLine_SalesOrderLines = $OrderLines, Invoicing.InvoiceLine_PurchaseOrderLine = $Line/Invoicing.InvoiceLine_PurchaseOrderLine);
+    add $Copy to $Copies;
+  end loop;
+  commit $Copies with events;
+end;
+
+/**
+ * Credit note (F008-UC006, Odoo account.move.reversal): a draft of the opposite type for the same partner and orders, linked by
+ * Invoice_ReversalOf, with every line copied; the orders' invoiced quantities go down (C1-08).
+ *
+ * @param $Invoice the posted document to reverse
+ * @param $Reason the reason (reference)
+ * @param $ReversalDate the credit note date (empty: today)
+ * @returns the draft credit note
+ */
+create or modify microflow Invoicing.SUB_Invoice_CreateCreditNote ($Invoice: Invoicing.Invoice, $Reason: String, $ReversalDate: DateTime)
+returns Invoicing.Invoice as $CreditNote
+folder 'Invoices/Microflows'
+begin
+  retrieve $Orders from $Invoice/Invoicing.Invoice_SalesOrders;
+  $CreditNote = create Invoicing.Invoice (Status = Invoicing.ENUM_InvoiceStatus.Draft, PaymentStatus = Invoicing.ENUM_PaymentStatus.NotPaid,
+    InvoiceType = if $Invoice/InvoiceType = Invoicing.ENUM_InvoiceType.VendorBill then Invoicing.ENUM_InvoiceType.VendorCreditNote else Invoicing.ENUM_InvoiceType.CustomerCreditNote,
+    InvoiceDate = if $ReversalDate = empty then [%BeginOfCurrentDay%] else $ReversalDate,
+    Reference = 'Reversal of: ' + $Invoice/Number + (if $Reason = empty or trim($Reason) = '' then '' else ', ' + $Reason), SourceDocument = $Invoice/SourceDocument,
+    Invoicing.Invoice_Partner = $Invoice/Invoicing.Invoice_Partner, Invoicing.Invoice_DeliveryAddress = $Invoice/Invoicing.Invoice_DeliveryAddress,
+    Invoicing.Invoice_Currency = $Invoice/Invoicing.Invoice_Currency, Invoicing.Invoice_Salesperson = $Invoice/Invoicing.Invoice_Salesperson,
+    Invoicing.Invoice_ReversalOf = $Invoice, Invoicing.Invoice_SalesOrders = $Orders, Invoicing.Invoice_PurchaseOrder = $Invoice/Invoicing.Invoice_PurchaseOrder);
+  commit $CreditNote with events;
+  call microflow Invoicing.SUB_Invoice_CopyLines(Invoice = $Invoice, CreditNote = $CreditNote);
+  $Totals = call microflow Invoicing.SUB_Invoice_RecomputeTotals(Invoice = $CreditNote);
+  call microflow Invoicing.SUB_Invoice_SyncOrders(Invoice = $CreditNote);
+  return $CreditNote;
+end;
+
+/**
+ * Checks of a payment registration (Odoo account.payment.register): posted documents only, one partner, one direction, an
+ * amount above 0 and not above what is due.
+ *
+ * @param $RegisterPaymentRequest the popup's request
+ * @returns true when the payment may be created
+ */
+create or modify microflow Invoicing.VAL_RegisterPaymentRequest ($RegisterPaymentRequest: Invoicing.RegisterPaymentRequest)
+returns Boolean as $IsValid
+folder 'Payments/Microflows'
+begin
+  retrieve $Invoices from $RegisterPaymentRequest/Invoicing.RegisterPaymentRequest_Invoices;
+  $First = head $Invoices;
+  if $First = empty then
+    show message 'Select at least one posted document.' type Warning;
+    return false;
+  end if;
+  $NotPosted = find $Invoices where $currentObject/Status != Invoicing.ENUM_InvoiceStatus.Posted or $currentObject/AmountDue = empty or $currentObject/AmountDue <= 0;
+  $OtherPartner = find $Invoices where $currentObject/Invoicing.Invoice_Partner != $First/Invoicing.Invoice_Partner;
+  $Inbound = find $Invoices where $currentObject/InvoiceType = Invoicing.ENUM_InvoiceType.CustomerInvoice or $currentObject/InvoiceType = Invoicing.ENUM_InvoiceType.VendorCreditNote;
+  $Outbound = find $Invoices where $currentObject/InvoiceType = Invoicing.ENUM_InvoiceType.VendorBill or $currentObject/InvoiceType = Invoicing.ENUM_InvoiceType.CustomerCreditNote;
+  if $NotPosted != empty or $OtherPartner != empty or ($Inbound != empty and $Outbound != empty) then
+    show message 'A payment covers posted documents with an amount due, of one partner and one direction.' type Warning;
+    return false;
+  end if;
+  $Due = sum $Invoices by AmountDue;
+  if $RegisterPaymentRequest/Amount = empty or $RegisterPaymentRequest/Amount <= 0 or $RegisterPaymentRequest/Amount > $Due then
+    validation feedback $RegisterPaymentRequest/Amount message 'The amount must be above 0 and at most the amount due (' + toString($Due) + ').';
+    return false;
+  end if;
+  return true;
+end;
+
+/**
+ * Allocate a payment to documents in the given order (oldest due first), each up to its amount due; statuses follow.
+ *
+ * @param $Payment the payment
+ * @param $Invoices the documents, in allocation order
+ */
+create or modify microflow Invoicing.SUB_Payment_Allocate ($Payment: Invoicing.Payment, $Invoices: List of Invoicing.Invoice)
+folder 'Payments/Microflows'
+begin
+  declare $Left Decimal = $Payment/Amount;
+  $Allocations = create list of Invoicing.PaymentAllocation;
+  @annotation 'One loop over the selected documents (a handful): an allocation each while money is left; one commit after it.'
+  loop $Invoice in $Invoices begin
+    declare $Take Decimal = if $Left >= $Invoice/AmountDue then $Invoice/AmountDue else $Left;
+    if $Take > 0 then
+      $Allocation = create Invoicing.PaymentAllocation (Amount = $Take, Invoicing.PaymentAllocation_Payment = $Payment, Invoicing.PaymentAllocation_Invoice = $Invoice);
+      add $Allocation to $Allocations;
+      set $Left = $Left - $Take;
+    end if;
+  end loop;
+  commit $Allocations with events;
+  @annotation 'One loop over the same documents: amount due and payment status from the new allocations.'
+  loop $Paid in $Invoices begin
+    $Status = call microflow Invoicing.SUB_Invoice_UpdatePaymentStatus(Invoice = $Paid);
+  end loop;
+end;
+
+/**
+ * Register payment (F008-UC007, Odoo account.payment.register action_create_payments): a paid payment for the partner, allocated
+ * to the documents oldest due date first; each document's amount due and payment status follow.
+ *
+ * @param $RegisterPaymentRequest a checked request
+ * @returns the payment
+ */
+create or modify microflow Invoicing.SUB_Payment_Create ($RegisterPaymentRequest: Invoicing.RegisterPaymentRequest)
+returns Invoicing.Payment as $Payment
+folder 'Payments/Microflows'
+begin
+  retrieve $Selected from $RegisterPaymentRequest/Invoicing.RegisterPaymentRequest_Invoices;
+  $Invoices = sort $Selected by DueDate asc;
+  $First = head $Invoices;
+  declare $Incoming Boolean = $First/InvoiceType = Invoicing.ENUM_InvoiceType.CustomerInvoice or $First/InvoiceType = Invoicing.ENUM_InvoiceType.VendorCreditNote;
+  $Number = call microflow Core.SUB_Sequence_NextNumber(Code = 'account.payment');
+  $Payment = create Invoicing.Payment (Number = $Number, Amount = $RegisterPaymentRequest/Amount, Status = Invoicing.ENUM_PaymentState.Paid,
+    PaymentDate = if $RegisterPaymentRequest/PaymentDate = empty then [%BeginOfCurrentDay%] else $RegisterPaymentRequest/PaymentDate,
+    Memo = $RegisterPaymentRequest/Memo, Method = $RegisterPaymentRequest/Method,
+    Direction = if $Incoming then Invoicing.ENUM_PaymentDirection.Inbound else Invoicing.ENUM_PaymentDirection.Outbound,
+    PartnerKind = if $First/InvoiceType = Invoicing.ENUM_InvoiceType.CustomerInvoice or $First/InvoiceType = Invoicing.ENUM_InvoiceType.CustomerCreditNote
+      then Invoicing.ENUM_PartnerKind.Customer else Invoicing.ENUM_PartnerKind.Vendor,
+    Invoicing.Payment_Partner = $First/Invoicing.Invoice_Partner, Invoicing.Payment_Currency = $First/Invoicing.Invoice_Currency, Invoicing.Payment_Invoices = $Invoices);
+  commit $Payment with events;
+  call microflow Invoicing.SUB_Payment_Allocate(Payment = $Payment, Invoices = $Invoices);
+  return $Payment;
+end;
+

@@ -334,3 +334,14 @@ ts	script	gate	result	elapsed_s	mxbuild_errors	lint_rc	lint_total	restored	score
 2026-10-16T09:23:14Z	175-domain-composite-keys.mdl	pass	applied-lint-blind	64	0	3		0	45.9	0	80	0	98	31	76	90	426	7261927
 2026-10-16T09:24:30Z	2026-10-16-rebuild-startup-key-backfills.mdl	pass	applied-lint-blind	67	0	3		0	46.1	0	81	0	98	31	76	90	425	3926acd
 2026-10-16T09:25:12Z	175-domain-composite-keys.mdl	pass	applied-lint-blind	41	0	3		0	46.1	0	81	0	98	31	76	90	425	d426f4f
+2026-10-16T10:04:35Z	done-170-invoicing-domain.mdl	pass	applied-lint-rose	83	0	1	426	0	45.9	0	80	0	98	31	76	90	426	c1e2d45
+2026-10-16T10:05:54Z	900-invoicing-mf-invoice-core.mdl	pass	applied-lint-rose	79	0	1	430	0	45.5	0	78	0	98	31	76	90	430	12ed222
+2026-10-16T10:08:00Z	2026-10-16-rebuild-invoice-cancel-reset.mdl	pass	applied-lint-rose	78	0	1	424	0	45.5	0	78	0	98	31	76	90	424	ace5325
+2026-10-16T10:09:50Z	902-invoicing-mf-invoice-recompute-totals.mdl	pass	applied-lint-rose	57	0	1	424	0	45.5	0	78	0	98	31	76	90	424	052b86a
+2026-10-16T10:15:58Z	717-purchasing-page-invoice-new-edit.mdl	pass	applied-lint-rose	63	0	1	435	0	45.3	0	77	0	98	31	76	90	435	9b54709
+2026-10-16T10:16:58Z	910-invoicing-page-payment-view.mdl	fail	gate-failed	59	?			1										9b9b95f
+2026-10-16T10:18:27Z	903-invoicing-page-invoice-overview.mdl	pass	applied-lint-rose	89	0	1	435	0	45.3	0	77	0	98	31	76	90	435	9b9b95f
+2026-10-16T10:18:29Z	908-invoicing-page-payment-overview.mdl	not-run	blocked	2	?			0										298767f
+2026-10-16T10:20:15Z	910-invoicing-page-payment-view.mdl	pass	applied-lint-rose	60	0	1	439	0	45.1	0	76	0	98	31	76	90	439	298767f
+2026-10-16T10:21:16Z	908-invoicing-page-payment-overview.mdl	pass	applied-lint-rose	60	0	1	439	0	45.1	0	76	0	98	31	76	90	439	84905ca
+2026-10-16T10:22:50Z	910-invoicing-page-payment-view.mdl	pass	applied-lint-rose	59	0	1	438	0	45.1	0	76	0	98	31	76	90	438	dce7f80
