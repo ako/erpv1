@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-20T13:24:20.507Z",
+ "generatedAt": "2026-10-20T13:58:19.476Z",
  "project": "erpv1",
  "root": "/home/user/erpv1",
  "entryMode": "Migration",
@@ -2713,6 +2713,1236 @@
    "detail": "owed from stage 6; the register's Current stage is 5 (skills/module-review.md)"
   }
  ],
+ "allArtifactStatus": {
+  "intake": {
+   "exists": true,
+   "found": [
+    "intake.md"
+   ]
+  },
+  "register": {
+   "exists": true,
+   "found": [
+    "PROJECT.md"
+   ]
+  },
+  "triage": {
+   "exists": true,
+   "found": [
+    "triage.md"
+   ]
+  },
+  "app-report": {
+   "exists": false,
+   "found": []
+  },
+  "extraction-report": {
+   "exists": true,
+   "found": [
+    "analysis/odoo/knowledge-base/extraction-report.html"
+   ]
+  },
+  "source-ledger": {
+   "exists": true,
+   "found": [
+    "analysis/source-ledger.html"
+   ]
+  },
+  "brds": {
+   "exists": true,
+   "found": [
+    "analysis/odoo/knowledge-base/brd/F001-contacts-company-users.brd.json",
+    "analysis/odoo/knowledge-base/brd/F002-units-of-measure.brd.json",
+    "analysis/odoo/knowledge-base/brd/F003-product-catalogue-pricing.brd.json",
+    "analysis/odoo/knowledge-base/brd/F004-sales.brd.json",
+    "analysis/odoo/knowledge-base/brd/F005-purchasing.brd.json",
+    "analysis/odoo/knowledge-base/brd/F006-inventory.brd.json",
+    "analysis/odoo/knowledge-base/brd/F007-order-fulfilment.brd.json",
+    "analysis/odoo/knowledge-base/brd/F008-invoicing-payments.brd.json"
+   ]
+  },
+  "brd-validation": {
+   "exists": true,
+   "found": [
+    "analysis/odoo/knowledge-base/reports/validation-report.md"
+   ]
+  },
+  "brd-surface": {
+   "exists": true,
+   "found": [
+    "analysis/brd-report.html"
+   ]
+  },
+  "module-design": {
+   "exists": true,
+   "found": [
+    "architecture/module-design.html"
+   ]
+  },
+  "fit-gap": {
+   "exists": true,
+   "found": [
+    "architecture/fit-gap.md"
+   ]
+  },
+  "blueprint-md": {
+   "exists": true,
+   "found": [
+    "architecture/blueprint.md"
+   ]
+  },
+  "blueprint-html": {
+   "exists": true,
+   "found": [
+    "architecture/blueprint.html"
+   ]
+  },
+  "design-system": {
+   "exists": true,
+   "found": [
+    "design/design-system.html"
+   ]
+  },
+  "ds-css": {
+   "exists": true,
+   "found": [
+    "design/ds.css"
+   ]
+  },
+  "wireframes": {
+   "exists": true,
+   "found": [
+    "design/wireframes/Company_Edit.html",
+    "design/wireframes/CreateInvoice_Popup.html",
+    "design/wireframes/CreditNote_Popup.html",
+    "design/wireframes/Home.html",
+    "design/wireframes/Inventory_Dashboard.html",
+    "design/wireframes/InvoiceAnalysis_Report.html",
+    "design/wireframes/Invoice_NewEdit.html",
+    "design/wireframes/Invoice_Overview.html",
+    "design/wireframes/PartnerChild_NewEdit.html",
+    "design/wireframes/Partner_NewEdit.html",
+    "design/wireframes/Partner_Overview.html",
+    "design/wireframes/PaymentTerm_NewEdit.html",
+    "design/wireframes/PaymentTerm_Overview.html",
+    "design/wireframes/Payment_Overview.html",
+    "design/wireframes/Payment_View.html",
+    "design/wireframes/Pricelist_NewEdit.html",
+    "design/wireframes/Pricelist_Overview.html",
+    "design/wireframes/ProductCategory_NewEdit.html",
+    "design/wireframes/ProductCategory_Overview.html",
+    "design/wireframes/Product_NewEdit.html",
+    "design/wireframes/Product_Overview.html",
+    "design/wireframes/PurchaseAnalysis_Report.html",
+    "design/wireframes/PurchaseApproval_Inbox.html",
+    "design/wireframes/PurchaseApproval_Task.html",
+    "design/wireframes/PurchaseOrder_NewEdit.html",
+    "design/wireframes/PurchaseOrder_Overview.html",
+    "design/wireframes/QuotationTemplate_NewEdit.html",
+    "design/wireframes/QuotationTemplate_Overview.html",
+    "design/wireframes/RegisterPayment_Popup.html",
+    "design/wireframes/ReorderRule_Overview.html",
+    "design/wireframes/SalesAnalysis_Report.html",
+    "design/wireframes/SalesOrder_NewEdit.html",
+    "design/wireframes/SalesOrder_Overview.html",
+    "design/wireframes/SalesTeam_NewEdit.html",
+    "design/wireframes/SalesTeam_Overview.html",
+    "design/wireframes/Sequence_Overview.html",
+    "design/wireframes/StockLevel_Overview.html",
+    "design/wireframes/Tax_NewEdit.html",
+    "design/wireframes/Tax_Overview.html",
+    "design/wireframes/Transfer_NewEdit.html",
+    "design/wireframes/Transfer_Overview.html",
+    "design/wireframes/UoMCategory_NewEdit.html",
+    "design/wireframes/UoMCategory_Overview.html",
+    "design/wireframes/UserProfile_Edit.html",
+    "design/wireframes/ValidateTransfer_Popup.html",
+    "design/wireframes/VendorPrice_Overview.html",
+    "design/wireframes/Warehouse_Edit.html"
+   ]
+  },
+  "module-definition": {
+   "exists": true,
+   "found": [
+    "architecture/modules/Core/definition.md",
+    "architecture/modules/Inventory/definition.md",
+    "architecture/modules/Invoicing/definition.md",
+    "architecture/modules/Partners/definition.md",
+    "architecture/modules/Products/definition.md",
+    "architecture/modules/Purchasing/definition.md",
+    "architecture/modules/Sales/definition.md"
+   ]
+  },
+  "build-plan": {
+   "exists": true,
+   "found": [
+    "architecture/build-plan.md"
+   ]
+  },
+  "build-plan-html": {
+   "exists": true,
+   "found": [
+    "architecture/build-plan.html"
+   ]
+  },
+  "build-plan-json": {
+   "exists": true,
+   "found": [
+    "architecture/build-plan.json"
+   ]
+  },
+  "module-brief": {
+   "exists": true,
+   "found": [
+    "architecture/modules/Core/module-brief.md",
+    "architecture/modules/Inventory/module-brief.md",
+    "architecture/modules/Invoicing/module-brief.md",
+    "architecture/modules/Partners/module-brief.md",
+    "architecture/modules/Products/module-brief.md",
+    "architecture/modules/Purchasing/module-brief.md",
+    "architecture/modules/Sales/module-brief.md"
+   ]
+  },
+  "coverage-ledger": {
+   "exists": true,
+   "found": [
+    "architecture/modules/Core/coverage-ledger.md",
+    "architecture/modules/Inventory/coverage-ledger.md",
+    "architecture/modules/Invoicing/coverage-ledger.md",
+    "architecture/modules/Partners/coverage-ledger.md",
+    "architecture/modules/Products/coverage-ledger.md",
+    "architecture/modules/Purchasing/coverage-ledger.md",
+    "architecture/modules/Sales/coverage-ledger.md"
+   ]
+  },
+  "ui-reviews": {
+   "exists": true,
+   "found": [
+    "design/ui-reviews/ui-review-2026-10-14-core.html",
+    "design/ui-reviews/ui-review-2026-10-15-partners.html",
+    "design/ui-reviews/ui-review-2026-10-15-products.html",
+    "design/ui-reviews/ui-review-2026-10-15-purchasing.html",
+    "design/ui-reviews/ui-review-2026-10-15-sales.html",
+    "design/ui-reviews/ui-review-2026-10-16.html",
+    "design/ui-reviews/ui-review-2026-10-16b.html",
+    "design/ui-reviews/ui-review-2026-10-16c.html",
+    "design/ui-reviews/ui-review-2026-10-16d.html"
+   ]
+  },
+  "journeys": {
+   "exists": true,
+   "found": [
+    "journeys/Core.journey.json",
+    "journeys/Inventory-count.journey.json",
+    "journeys/Inventory-receipt.journey.json",
+    "journeys/Inventory-reorder.journey.json",
+    "journeys/Inventory-transfer.journey.json",
+    "journeys/Inventory.journey.json",
+    "journeys/Invoicing-procure-to-pay.journey.json",
+    "journeys/Invoicing.journey.json",
+    "journeys/Partners.journey.json",
+    "journeys/Products.journey.json",
+    "journeys/Purchasing-approval.journey.json",
+    "journeys/Purchasing-reject.journey.json",
+    "journeys/Purchasing.journey.json",
+    "journeys/Sales.journey.json"
+   ]
+  },
+  "page-scope": {
+   "exists": true,
+   "found": [
+    ".claude/loop/page-scope.json"
+   ]
+  },
+  "lint-last": {
+   "exists": true,
+   "found": [
+    ".claude/loop/lint-last.json"
+   ]
+  },
+  "improvement-register": {
+   "exists": true,
+   "found": [
+    "docs/improvement-register.md"
+   ]
+  },
+  "improvement-register-html": {
+   "exists": false,
+   "found": []
+  },
+  "report-json": {
+   "exists": true,
+   "found": [
+    "docs/report.json"
+   ]
+  },
+  "verification-html": {
+   "exists": true,
+   "found": [
+    "docs/verification/report.html"
+   ]
+  },
+  "workflow-design": {
+   "exists": false,
+   "found": []
+  },
+  "swimlanes": {
+   "exists": false,
+   "found": []
+  },
+  "sequence-diagrams": {
+   "exists": false,
+   "found": []
+  },
+  "erd": {
+   "exists": true,
+   "found": [
+    "architecture/erd.md"
+   ]
+  },
+  "nfr-sheet": {
+   "exists": false,
+   "found": []
+  },
+  "integration-contracts": {
+   "exists": false,
+   "found": []
+  },
+  "test-plan": {
+   "exists": false,
+   "found": []
+  },
+  "acceptance-criteria": {
+   "exists": false,
+   "found": []
+  },
+  "demo-script": {
+   "exists": true,
+   "found": [
+    "docs/demo-script.md"
+   ]
+  }
+ },
+ "obligationLines": {
+  "look": {
+   "verdict": "PENDING",
+   "detail": "0 of 6 discharged (1 waived); NOT DONE: Core Inventory Invoicing Products Purchasing Sales — owner: review-agent, governed by skills/module-review.md",
+   "stale": "Core(valid-at 8f542a0, 6 model commit(s) since) Inventory(valid-at 8f542a0, 6 model commit(s) since) Invoicing(valid-at 8f542a0, 6 model commit(s) since) Products(valid-at 8f542a0, 6 model commit(s) since) Purchasing(valid-at 8f542a0, 6 model commit(s) since) Sales(valid-at 8f542a0, 6 model commit(s) since) — the model was built past the report; re-run the pass (module-review.md stage 5, VALID AT)"
+  },
+  "sweep": {
+   "verdict": "PENDING",
+   "detail": "6 of 7 discharged; NOT DONE: Invoicing — owner: test-agent, governed by skills/wiring-sweep.md",
+   "stale": null
+  },
+  "journeys": {
+   "verdict": "PASS",
+   "detail": "7 of 7 discharged (skills/journey-proof.md)",
+   "stale": null
+  },
+  "coherence": {
+   "verdict": "PASS",
+   "detail": "1 of 1 discharged (skills/process-coherence-pass.md)",
+   "stale": null
+  },
+  "skeleton": {
+   "verdict": "PASS",
+   "detail": "1 of 1 discharged (skills/walking-skeleton.md)",
+   "stale": null
+  },
+  "workflow-count": {
+   "verdict": "PENDING",
+   "detail": "0 of 1 discharged; NOT DONE: project — owner: architect-agent, governed by skills/workflow-structure-rules.md",
+   "stale": null
+  },
+  "design-reaches-app": {
+   "verdict": "PASS",
+   "detail": "1 of 1 discharged (project-bin/check-design-reaches-app.sh)",
+   "stale": null
+  },
+  "fidelity": {
+   "verdict": "PENDING",
+   "detail": "6 of 7 discharged; NOT DONE: Invoicing — owner: mdl-agent, governed by skills/ui-loop.md",
+   "stale": null
+  },
+  "dispatch": {
+   "verdict": "PENDING",
+   "detail": "0 of 7 discharged; NOT DONE: Core Inventory Invoicing Partners Products Purchasing Sales — owner: mdl-agent, governed by skills/agent-roles.md",
+   "stale": null
+  },
+  "final-look": {
+   "verdict": "NOT YET DUE",
+   "detail": "owed from stage 6; the register's Current stage is 5 (skills/module-review.md)",
+   "stale": null
+  }
+ },
+ "template": {
+  "commit": "b46db5a7",
+  "modes": [
+   {
+    "id": "migration",
+    "label": "Migration",
+    "from": "Legacy source code",
+    "stagesThatRun": "P, 0–7 (all)"
+   },
+   {
+    "id": "requirements",
+    "label": "Requirements-driven",
+    "from": "Requirements only",
+    "stagesThatRun": "P, 0–6 (skip 7)"
+   },
+   {
+    "id": "greenfield",
+    "label": "Greenfield",
+    "from": "Just an idea / a running start on the model",
+    "stagesThatRun": "P (light), 0 (scope only), 5–6"
+   },
+   {
+    "id": "existing-app-change",
+    "label": "Change an existing app",
+    "from": "A live Mendix app you are changing",
+    "stagesThatRun": "P, 0–6 per change (skip 7 — the app is live)"
+   }
+  ],
+  "runs": {
+   "migration": {
+    "0": "runs",
+    "1": "runs",
+    "2": "runs",
+    "3": "runs",
+    "4": "runs",
+    "5": "runs",
+    "6": "runs",
+    "7": "runs",
+    "P": "runs"
+   },
+   "requirements": {
+    "0": "runs",
+    "1": "runs",
+    "2": "runs",
+    "3": "runs",
+    "4": "runs",
+    "5": "runs",
+    "6": "runs",
+    "7": "skip — runbook: \"P, 0–6 (skip 7)\"",
+    "P": "runs"
+   },
+   "greenfield": {
+    "0": "runs — scope only",
+    "1": "skip — not in this mode's stages (runbook: \"P (light), 0 (scope only), 5–6\")",
+    "2": "skip — not in this mode's stages (runbook: \"P (light), 0 (scope only), 5–6\")",
+    "3": "skip — not in this mode's stages (runbook: \"P (light), 0 (scope only), 5–6\")",
+    "4": "skip — not in this mode's stages (runbook: \"P (light), 0 (scope only), 5–6\")",
+    "5": "runs",
+    "6": "runs",
+    "7": "skip — not in this mode's stages (runbook: \"P (light), 0 (scope only), 5–6\")",
+    "P": "runs — light"
+   },
+   "existing-app-change": {
+    "0": "runs — per change",
+    "1": "runs — per change",
+    "2": "runs — per change",
+    "3": "runs — per change",
+    "4": "runs — per change",
+    "5": "runs — per change",
+    "6": "runs — per change",
+    "7": "skip — the app is live",
+    "P": "runs"
+   }
+  },
+  "checkpoints": {
+   "CAC-1": {
+    "name": "checkpoint-scope",
+    "title": "CAC-1 — Scope Checkpoint",
+    "question": "Scope **in** — full scope or a slice, and in what order? Opens with a brainstorm, not options.",
+    "fires": "Stage 0 — Triage & Scope (migration: after Phase 1 Source Triage)",
+    "file": "skills/checkpoints/checkpoint-scope.md",
+    "stage": "0",
+    "qualifier": null
+   },
+   "CAC-1b": {
+    "name": "checkpoint-extraction",
+    "title": "CAC-1b — Extraction Scope Checkpoint",
+    "question": "Scope **out** — is what extraction produced what you meant?",
+    "fires": "Stage 1 Analysis — every extraction path has run or been declared unavailable",
+    "file": "skills/checkpoints/checkpoint-extraction.md",
+    "stage": "1",
+    "qualifier": null
+   },
+   "CAC-2": {
+    "name": "checkpoint-brd",
+    "title": "CAC-2 — BRD Checkpoint",
+    "question": "Capability grouping and enrichment order.",
+    "fires": "Phase 3 BRD Scaffolding",
+    "file": "skills/checkpoints/checkpoint-brd.md",
+    "stage": "2",
+    "qualifier": "scaffold"
+   },
+   "CAC-3": {
+    "name": "checkpoint-architecture",
+    "title": "CAC-3 — Architecture Checkpoint",
+    "question": "Hidden business rules before architecture locks.",
+    "fires": "Phase 5 BRD Enrichment + Validation",
+    "file": "skills/checkpoints/checkpoint-architecture.md",
+    "stage": "2",
+    "qualifier": "validated"
+   },
+   "CAC-4": {
+    "name": "checkpoint-design",
+    "title": "CAC-4 — Design Checkpoint",
+    "question": "Branding and UI direction. Opens with a brainstorm.",
+    "fires": "Phase 6 Rearchitect sign-off (.mx-brd.json complete)",
+    "file": "skills/checkpoints/checkpoint-design.md",
+    "stage": "3",
+    "qualifier": null
+   },
+   "CAC-5": {
+    "name": "checkpoint-build",
+    "title": "CAC-5 — Build Plan Checkpoint",
+    "question": "Build order and slice boundaries. Opens with a brainstorm.",
+    "fires": "Design sign-off (design-artifacts.md complete)",
+    "file": "skills/checkpoints/checkpoint-build.md",
+    "stage": "4",
+    "qualifier": null
+   },
+   "CAC-6": {
+    "name": "checkpoint-cutover",
+    "title": "CAC-6 — Cutover Checkpoint",
+    "question": "Cutover readiness. `✋`, `CONFIRMED` only.",
+    "fires": "Stage 6 (Test) has passed — never before; you don't migrate real data onto an app that hasn't cleared its E2E gate.",
+    "file": "skills/checkpoints/checkpoint-cutover.md",
+    "stage": "6",
+    "qualifier": null
+   }
+  },
+  "gates": [
+   {
+    "id": "gP",
+    "after": "P",
+    "hard": false,
+    "label": "Gate P → 0",
+    "criteria": "Every intake question has an answer or an explicit \"Unverified — how to verify\". No blanks.",
+    "tool": null,
+    "checkpoints": [],
+    "verdict": "PASS",
+    "verdictDetail": "Surface present — all 13 intake questions carry an answer marker [/home/user/erpv1/intake.md]"
+   },
+   {
+    "id": "g0",
+    "after": "0",
+    "hard": true,
+    "label": "Gate 0 → 1",
+    "criteria": "User signs off on the extraction-pipeline decision, every missing-dependency policy, the interview mode the sufficiency report recommends, and each shape-changing gap. No BRDs are written before this.",
+    "tool": null,
+    "checkpoints": [
+     "CAC-1"
+    ],
+    "verdict": "PASS",
+    "verdictDetail": "Surface present — triage.md signed off by \"user, in chat on 2026-10-14 (extraction approach, missing-dependency policies, interview mode assist, scope).\" [/home/user/erpv1/triage.md]"
+   },
+   {
+    "id": "g1",
+    "after": "1",
+    "hard": false,
+    "label": "Gate 1 → 2",
+    "criteria": "4 extraction quality checks pass with evidence. Paths B and C are done or declared-unavailable, with attribution (who declared it, when). Every row of the Stage 0 inventory has a disposition that holds up — bin/source-ledger.sh check <project>: an artifact that exists, is non-empty and *names* the file (with one specific finding as evidence, and for a container its images and pages accounted for: mark <rel> --artifact <path> --evidence \"<finding → where>\" --pages N --media N --by <who>; a mention is not a reading, post-mortem 2026-09-02 F3), or a person's waiver (bin/gate-check.sh <project> --waive source/<rel> --reason \"...\"), and no file on disk without an inventory row. This part blocks — bin/gate-check.sh <project> 1 exits 1 on it, and so does Stage 2 — because it is a file test, not a conversation test: \"the triage already used the deck\" is grepped, not believed (the 2026-09-02 miss). The rest stays advisory. Record CAC-1b's outcome as a Stage-1 Extraction scope: decision naming what is in and what is out, so the next session isn't guessing.",
+    "tool": null,
+    "checkpoints": [
+     "CAC-1b"
+    ],
+    "verdict": "PASS",
+    "verdictDetail": "Surface present — extraction-report.html present and non-empty"
+   },
+   {
+    "id": "g2",
+    "after": "2",
+    "hard": false,
+    "label": "Gate 2 → 3",
+    "criteria": "Every BRD validation-clean; validation-report.md has 0 issues; every openQuestions entry raised in chat — bin/open-questions.sh <root> --stage 2 reports 0 blocking, which gate-check.sh enforces. Close-out block pasted (§1b rule 7) — CAC-3 opens with it. \"Chased to closure\" was the old wording and it was unenforceable: a question logged with a self-answer read as closed.",
+    "tool": null,
+    "checkpoints": [
+     "CAC-2",
+     "CAC-3"
+    ],
+    "verdict": "PASS",
+    "verdictDetail": "Surface present — brd/*.brd.json present, Stop condition reads \"Clean — 0 open findings. 7 findings were raised during this pass and all 7 were fixed at the root\""
+   },
+   {
+    "id": "g3",
+    "after": "3",
+    "hard": true,
+    "label": "Gate 3 → 4",
+    "criteria": "Boundaries approved. Marketplace calls made. Interaction model walked with two objects, two roles. Role model, volumes, integrations and branding each asked and answered: CONFIRMED, or explicitly delegated by the user (\"you decide\" → ASSUMED with risk). Never ASSUMED without the question having reached the user. Close-out block pasted before the ✋ decision is asked (§1b rule 7) — this stage has no closing checkpoint, so the gate is where the Stage-4 open (its approach, skills and optional artifacts) is shown. No architecture/design artifact is produced before its checkpoint ran.",
+    "tool": null,
+    "checkpoints": [
+     "CAC-4"
+    ],
+    "verdict": "PASS",
+    "verdictDetail": "Surface present — fit-gap, blueprint render, design system, wireframes present and a Stage-3 CONFIRMED decision is in /home/user/erpv1/PROJECT.md"
+   },
+   {
+    "id": "g4",
+    "after": "4",
+    "hard": true,
+    "label": "Gate 4 → 5",
+    "criteria": "Close-out block pasted (§1b rule 7) — CAC-5 opens with it. Pending-decisions list empty or fully answered. Role-to-access table complete for every element. Coverage check run (procedure in coverage-ledger.md): UNCLAIMED, PHANTOM and DOUBLE-CLAIMED all empty, and the leaf counts pasted in chat — like gate-check.sh output, never attested. Every ledger entry carries a category and a reason; every open-question entry appears in the pending-decisions list and some row's blockedBy. Every CONFIRMED decision from Stages 0–3 maps to a build-plan row id or a ledger descoped entry — a confirmed decision with no build disposition is how scoped work silently vanishes (a real WMS incident: the CONFIRMED Phone-Web nav profile, wireframe and all, was never built and nothing flagged it). User approves — the coverage verdict is signed off alongside the plan.",
+    "tool": null,
+    "checkpoints": [
+     "CAC-5"
+    ],
+    "verdict": "PASS",
+    "verdictDetail": "Surface present — build-plan.md present, closing rows for 7 of 7 modules, 3 coherence row(s), final gate row, and a Stage-4 CONFIRMED decision is in /home/user/erpv1/PROJECT.md"
+   },
+   {
+    "id": "gBR",
+    "after": "4",
+    "hard": false,
+    "label": "build-ready check · before Stage 5",
+    "criteria": "bin/gate-check.sh <project-dir> build-ready. It asserts, in one shot, that the project is actually wired to build: CLAUDE.local.md has a ## Wiring block, baseline routing includes the UI-quality skills, all 6 agents are present with no placeholders, at least one module brief exists, and wireframes + a design system are present. It fails loud listing every missing item. This is the preflight that catches a project that looks wired but is UI-blind (a real WMS-class miss).",
+    "tool": "bin/gate-check.sh <project-dir> build-ready",
+    "checkpoints": [],
+    "verdict": "PASS",
+    "verdictDetail": "  ✓ crash net present (snapshot / restore / guarded exec)\n  ✓ at least one module brief exists (architecture/modules/)\n  ✓ wireframes present\n  ✓ design system present (ds.css / design-system.html)\n\nBUILD-READY: PASS — all wiring checks passed"
+   },
+   {
+    "id": "g5",
+    "after": "5",
+    "hard": false,
+    "label": "Gate 5 → 6",
+    "criteria": "Every build-plan script passes its gates and its coverage checklist. CE-error-free ≠ done. And the module-review report's headline states its denominator — pages reviewed of pages that exist, journeys executed of journeys that exist. \"All green\" is a banned phrase whenever the denominator is not stated.",
+    "tool": null,
+    "checkpoints": [],
+    "verdict": "MANUAL",
+    "verdictDetail": "Surface present — look: 49 of 49 built page(s) accounted for (44 opened, 4 by PROOF-OF-LOOK, 1 waived); the rest of Stage 5 is manual"
+   },
+   {
+    "id": "g6",
+    "after": "6",
+    "hard": false,
+    "label": "Gate 6 → 7",
+    "criteria": "Golden path + edge cases + DB assertions pass. module-review app-wide: zero open P1 (blank required fields, unclickable nav, empty grids, wrong-page wiring, silent save failures). The headline states the denominator — pages reviewed of pages that exist, journeys executed of journeys that exist, and any dimension left UNMEASURED named explicitly. A pass over 2 of 6 journeys reported as \"all green\" has already cost one demo. Failures fixed and re-run.",
+    "tool": null,
+    "checkpoints": [
+     "CAC-6"
+    ],
+    "verdict": "PASS",
+    "verdictDetail": "Surface present — test surface (test-report.html, or docs/verification/report.html + docs/report.json) + module-review report both present"
+   },
+   {
+    "id": "g7",
+    "after": "7",
+    "hard": true,
+    "label": "Gate 7 · end of pipeline",
+    "criteria": "Stage 6 passed. Decision recorded in PROJECT.md — even if the decision is \"throw the legacy data away\".",
+    "tool": null,
+    "checkpoints": [],
+    "verdict": "PENDING",
+    "verdictDetail": "Surface not declared in runbook §2 — no cutover decision row in /home/user/erpv1/PROJECT.md — add a Decisions row whose Stage field is 7 (or whose Decision names the cutover) with Status CONFIRMED"
+   }
+  ],
+  "moduleLoop": [
+   {
+    "step": "BUILD",
+    "text": "mdl-agent drafts + validates MDL (mxcli check --references, 0 errors)",
+    "who": "mdl-agent",
+    "whoSource": "the runbook line itself"
+   },
+   {
+    "step": "GATE",
+    "text": "bin/exec.sh (snapshot -> exec -> mxbuild -> auto-restore on failure); 0 errors, lint clean",
+    "who": "gate-agent (runs bin/exec.sh)",
+    "whoSource": "Stage 5 Owner row: mdl-agent → gate-agent, with review-agent/test-agent on stages 3–4 of the review"
+   },
+   {
+    "step": "PROVE",
+    "text": "the mechanical rungs: UI (Playwright) + Data (OQL/DB) + wiring-sweep (every clickable element, not just what a journey visits) + monkey pass. Deep form, when an instrument is green and you cannot say what would have made it red: journey-proof.md",
+    "who": "test-agent",
+    "whoSource": "obligations.tsv: journeys / sweep performer"
+   },
+   {
+    "step": "LOOK",
+    "text": "THE INTELLIGENCE CHECK — every screen in the module, not the ones a test visited. Is it logical? Does it look right? Does it match our design? Stages 1-3 cannot answer any of those. This is the stage that gets skipped, and the stage the escaped defects come from.",
+    "who": "review-agent",
+    "whoSource": "obligations.tsv: look performer"
+   },
+   {
+    "step": "CONFIRM",
+    "text": "one report, explicit denominator, a human look, then next module",
+    "who": "you — \"a human look\"",
+    "whoSource": "the runbook line itself"
+   }
+  ],
+  "stages": [
+   {
+    "id": "P",
+    "name": "Kickoff",
+    "hard": false,
+    "userDefines": "Which source folder. Licence/security constraints on storing the client source. Is an SME available, and who?",
+    "agentProduces": "Workspace scaffold (bin/init-project.sh), CLAUDE.local.md (paths, tools, routing), PROJECT.md (empty register), all six agent stubs (bin/init-agents.sh <session-root> — stubs are inert until completed, so all six exist from day one), intake.md (8 questions, no guesses). Complete ba/architect placeholders + domain context now (per agent-roles.md); complete mdl/gate/test/review at Stage 5 kickoff — review-agent owns module-review.md stage 4, the LOOK, and a project that leaves it a stub reviews no pages.",
+    "surface": "index.html — the project dashboard, created here, grows every stage.",
+    "owner": "ba-agent",
+    "skill": "unknown",
+    "inputs": []
+   },
+   {
+    "id": "0",
+    "name": "Triage & Scope",
+    "hard": true,
+    "userDefines": "Reuse-vs-build-new extraction pipeline (agent proposes with a coverage matrix — two-way call, not three-way, made per extractable structure found in the source and never off the entry-mode label; see source-triage.md). Policy per missing dependency: acquire / stub / declare-not-implemented. Slice ordering if the source is too big for one pass — a slice is an ordering, not an exclusion.",
+    "agentProduces": "assessment.md (inventory, 6 areas, risks), triage.md (pipeline decision, capability + coverage matrix, boundary handling, multi-app flag) — scaffolded by bin/init-project.sh, so it is filled in rather than composed from memory. If \"build new\": the new extractor, validated against hand-built ground truth.",
+    "surface": "source-sufficiency.html (bin/source-sufficiency.sh report), triage.html (bin/triage-report.sh <project>)",
+    "owner": "ba-agent",
+    "skill": "unknown",
+    "inputs": []
+   },
+   {
+    "id": "1",
+    "name": "Analysis",
+    "hard": false,
+    "userDefines": "Do documents exist that aren't in the folder (specs, manuals, field-label sheets, screenshots)? DB schema? Sample data? Who has them? SME access for what neither code nor docs answer. Then, at CAC-1b: does the extraction output match the intended scope — accept, narrow, or re-extract.",
+    "agentProduces": "Path A — code → AST extractors (always runs *in migration mode*; N/A with attribution otherwise). Path B — documents → LLM extraction (kb-generation.md). Path C — SME interview (closes openQuestions that neither code nor docs answer). Plus CAC-1b's scope-out surface — the delta table when CAC-1 recorded a slice to diff against, otherwise the one-line statement of what extraction covers (a single app dropped in a folder needs stating, not interrogating).",
+    "surface": "analysis/source-ledger.html — bin/source-ledger.sh report <project-root>: every inventoried file, its verdict, and what consumed it. <kb>/extraction-report.html — bin/extraction-report.sh <project-root>. One renderer for every entry mode: it reads the knowledge base, not the source, so a Path B document corpus gets the same surface as a Path A extraction, one page per knowledge base at the path the gate looks for. Each section carries a report-schema.md verdict, and no zero is printed unless a second record (the pre-merge extracted/*.json, or reports/summary.md) agrees with it — one method returning zero renders manual, not a green. History: process/baseline-incident-history.md §R19.",
+    "owner": "ba-agent",
+    "skill": "unknown",
+    "inputs": []
+   },
+   {
+    "id": "2",
+    "name": "Requirements",
+    "hard": false,
+    "userDefines": "Confirms business rules the code implies. Answers openQuestions (via SME). Narrative is never invented.",
+    "agentProduces": "BRD scaffolds → enrichment from KB.md → validation to clean. F{NNN}.brd.json.",
+    "surface": "analysis/brd-report.html — bin/brd-report.sh <project-root>. One renderer for every entry mode: it reads BRDs, not source, so a requirements-driven or greenfield project gets the same surface as a migration, and so does a BRD no extractor produced. Each section carries a report-schema.md verdict, so a section that is empty because this kind of BRD has nothing to put there reads differently from one that is empty because something broke. History: process/baseline-incident-history.md §R20.",
+    "owner": "ba-agent",
+    "skill": "unknown",
+    "inputs": []
+   },
+   {
+    "id": "3",
+    "name": "Architecture & Design",
+    "hard": true,
+    "userDefines": "① One Mendix app or several (if flagged at Stage 0). ② Module boundaries (agent proposes with modularize-domain.md criteria). ③ Buy vs build vs stub, per fit-gap item — the confirming step brd-to-build-plan.md assumed already happened. ④ Target security / role model — not just whether auth existed in the source, but what the target should be. ⑤ Data volumes, concurrency, NFRs — these decide indexing, pagination, datagrid-vs-paged-gallery, loop batch sizes. ⑥ Integration contracts — real or stub, endpoint, credentials, owner, test environment. ⑦ Branding inputs — logo, palette, type, spacing, per design-artifacts.md; with no brand, the design direction (Step 0b question D1: ideation-library directions or Atlas defaults).",
+    "agentProduces": ".mx-brd.json, architecture/ (module defs, layer diagram, wiring diagram, fit-gap.md, blueprint.html checkpoint render — plus a workflow diagram and/or agent-wiring diagram in blueprint.md/blueprint.html when CAC-3's Q3 flags real scope for either, plus cross-persona journey diagrams + journey list — architecture-blueprint.md Step 3d — whenever the BRDs carry more than one persona; single-persona skip recorded as a one-line note, never silent), design/ per design-artifacts.md's full output list: design/interaction-model.md (first) + ds.css + design-system.html + wireframes/*.html, one annotated wireframe per screen — the design system without the wireframes is half the deliverable and fails the gate.",
+    "surface": "module-design.html · architecture/blueprint.html (generated render of blueprint.md — architecture-blueprint.md Step 7, never hand-edited) · design-system.html + wireframes/*.html",
+    "owner": "architect-agent (interviews run by ba-agent)",
+    "skill": "unknown",
+    "inputs": []
+   },
+   {
+    "id": "4",
+    "name": "Build Plan",
+    "hard": true,
+    "userDefines": "Acceptance criteria per module — what \"done\" means beyond CE-error-free. Environment / DTAP / deployment target. Iteration granularity — the default is one use case per BUILD row; a plan outside 0.5–1.5 rows per use case goes to the user, never ASSUMED (brd-to-build-plan.md Step 3).",
+    "agentProduces": "architecture/build-plan.md — numbered, dependency-ordered (marketplace imports → module roles → entities + entity grants → associations → microflows + execute grants → pages + view grants → demo users), grants co-located with the element they protect (never a deferred security script), the role-to-access table for every element, with pending decisions promoted to the top. Plus the first module's module brief (architecture/modules/<Module>/module-brief.md, per module-brief.md) — subsequent briefs are produced just-in-time as each module's build begins. Plus the coverage ledger (architecture/modules/<Module>/coverage-ledger.md per module; architecture/coverage-ledger.md for a single-BRD project — coverage-ledger.md §\"Where the ledger lives\"), generated per coverage-ledger.md from the BRDs and the plan's claims: blocks. claims is authored *here*, row by row, as the plan is written (brd-to-build-plan.md Step 5b) — required on new rows only; a plan written before the convention existed is an accepted state that reports coverage NOT MEASURED, not a defect.",
+    "surface": "build-plan.html",
+    "owner": "architect-agent for the build plan; ba-agent drives each module brief (pulling architect-agent for the technical layer).",
+    "skill": "unknown",
+    "inputs": [
+     "module-definition"
+    ]
+   },
+   {
+    "id": "5",
+    "name": "Build",
+    "hard": false,
+    "userDefines": "Confirms the per-module business-rule coverage checklist — the definition of \"done\" for the module, not CE-error-free. The coverage *checklist* (per-module business rules, out of module-brief.md) is a different artifact from Stage 4's coverage *ledger* (coverage-ledger.md, BRD-leaf traceability across the whole plan) — same word, different producer and denominator.",
+    "agentProduces": "Working modules, one at a time, each closed out by one module-review.md pass (below). Fixtures — the data and identities the module's checks need — are established here too, per fixture-seeding.md, which owns *what this app actually needs and which channel should supply it*; the project-bundled .ai-context/skills/demo-data.md is one channel (direct SQL insert), not the decision. You cannot validate a coverage checklist against an empty database, so seeding is part of Build. Never seed from inside the harness — a harness that repairs its own fixture can no longer report that the fixture was missing.",
+    "surface": "design/ui-reviews/ui-review-<YYYY-MM-DD>.html — the module-review report, one per pass",
+    "owner": "mdl-agent → gate-agent, with review-agent/test-agent on stages 3–4 of the review",
+    "skill": "unknown",
+    "inputs": [
+     "design-system",
+     "ds-css",
+     "wireframes",
+     "module-definition",
+     "module-brief",
+     "test-plan",
+     "acceptance-criteria"
+    ]
+   },
+   {
+    "id": "6",
+    "name": "Test",
+    "hard": false,
+    "userDefines": "Test scope beyond the golden path; which edge cases matter.",
+    "agentProduces": "Playwright golden-path + edge-case tests, DB assertions, results reported verbatim. A full-app module-review.md pass: the diagnostic punch-list (design/ui-reviews/ui-review-<YYYY-MM-DD>.html) covering render/interaction/reuse/wireframe-divergence across every page, with the ba-agent conformance cross-check. journey-proof.md for any journey whose green you cannot explain — five rungs, each proven non-vacuous by a deliberately-broken control. monkey-test.md after the journeys pass, never before: a monkey run against a broken module reports the breakage as a crash and buries the real finding. process-coherence-pass.md, which asks what none of the above can — is the piece being tested even the right piece, and do the individually-passing pieces chain into the process the requirements describe. Optionally e2e-evidence-report.md, to repackage an already-rigorous run for a stakeholder who will not run anything.",
+    "surface": "test-report.html · design/ui-reviews/ui-review-<YYYY-MM-DD>.html · docs/report.json — the append-only contract instruments write and renderers only read (report-schema.md), so a renderer can be swapped without touching a harness",
+    "owner": "test-agent (E2E) + review-agent (the review pass is diagnostic; fixes route back through the build loop, and are never applied from inside the harness)",
+    "skill": "unknown",
+    "inputs": [
+     "ui-reviews",
+     "swimlanes",
+     "test-plan",
+     "acceptance-criteria"
+    ]
+   },
+   {
+    "id": "7",
+    "name": "Cutover",
+    "hard": true,
+    "userDefines": "Is legacy data migrated, or is the app going live empty/with only the Stage 5 seed data? Who cuts over, and when? Rollback plan?",
+    "agentProduces": "Legacy-data migration scripts (if any), cutover checklist.",
+    "surface": null,
+    "owner": "ba-agent → mdl-agent",
+    "skill": "unknown",
+    "inputs": []
+   }
+  ],
+  "artifacts": [
+   {
+    "artifact": "intake",
+    "stage": "P",
+    "paths": "intake.md",
+    "producer": "bin/init-project.sh scaffold + the Stage-P kickoff interview (conversion-runbook.md §2 Stage P)",
+    "consumers": "bin/gate-check.sh:596 (check_stage_P), bin/gate-check.sh:497 (entry-mode fallback read)",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "register",
+    "stage": "P",
+    "paths": "PROJECT.md",
+    "producer": "bin/init-project.sh (empty register); every checkpoint writes into it (CLAUDE.md §One decision register)",
+    "consumers": "bin/gate-check.sh:285 (register resolution feeding every ✋ gate), bin/lib/obligation-check.sh:151 (waivers/adoption read from it)",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "triage",
+    "stage": "0",
+    "paths": "triage.md",
+    "producer": "bin/init-project.sh scaffold, filled per skills/source-triage.md; N/A rows recorded, never deleted (conversion-runbook.md:130)",
+    "consumers": "bin/gate-check.sh:684 (check_stage_0 sign-off test)",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "app-report",
+    "stage": "0",
+    "paths": "analysis/app-report.json|analysis/app-report.html",
+    "producer": "project-bin/app-facts.sh (read-only: full catalog build + mxcli graph-report + loop sweep) then bin/app-report.sh — skills/app-analysis.md Procedure steps 1 and 5",
+    "consumers": "skills/existing-app-change.md §\"Map the app first\" (the findings interview reads analysis/app-report.json) and §\"Blast radius\" (reads analysis/app-facts/dependencies.json tangles and edges)",
+    "modes": "existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "extraction-report",
+    "stage": "1",
+    "paths": "analysis/*/knowledge-base/extraction-report.html|analysis/knowledge-base/extraction-report.html|knowledge-base/extraction-report.html",
+    "producer": "bin/extraction-report.sh <project-root> — one renderer for every entry mode",
+    "consumers": "bin/gate-check.sh:725 (check_stage_1)",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "source-ledger",
+    "stage": "1",
+    "paths": "analysis/source-ledger.html",
+    "producer": "bin/source-ledger.sh report <project-root> — every inventoried source file and what consumed it (Stage 1 owes a disposition per row; gate-check blocks 1–2 on the check)",
+    "consumers": "bin/gate-check.sh (LEDGER block — the check; the html is the human-facing table of the same rows)",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "brds",
+    "stage": "2",
+    "paths": "analysis/*/knowledge-base/brd/*.brd.json|analysis/knowledge-base/brd/*.brd.json|knowledge-base/brd/*.brd.json",
+    "producer": "pipeline generators (migration), skills/kb-generation.md (documents), skills/brd-generation.md (by hand) — the reader must not care which",
+    "consumers": "bin/lib/discover-brds.sh:43 (the one path authority), bin/gate-check.sh:773 (check_stage_2), bin/brd-report.sh, bin/open-questions.sh",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "brd-validation",
+    "stage": "2",
+    "paths": "analysis/*/knowledge-base/reports/validation-report.md|analysis/knowledge-base/reports/validation-report.md|knowledge-base/reports/validation-report.md",
+    "producer": "skills/brd-validation.md loop, run to Clean",
+    "consumers": "bin/gate-check.sh:777-807 (check_stage_2 Stop-condition test)",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "brd-surface",
+    "stage": "2",
+    "paths": "analysis/brd-report.html",
+    "producer": "bin/brd-report.sh <project-root> (default output, bin/brd-report.sh:113)",
+    "consumers": "conversion-runbook.md §2 Stage-2 Surface row, parsed at bin/gate-check.sh:1284 (stage_surface_cells)",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "module-design",
+    "stage": "3",
+    "paths": "architecture/module-design.html|module-design.html",
+    "producer": "skills/modularize-domain.md:88 (the human-facing sign-off artifact)",
+    "consumers": "skills/modularize-domain.md:109 (gate checklist), conversion-runbook.md:478 Stage-3 Surface row (parsed at bin/gate-check.sh:1284)",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "fit-gap",
+    "stage": "3",
+    "paths": "architecture/fit-gap.md",
+    "producer": "skills/architecture-blueprint.md Step 4",
+    "consumers": "bin/gate-check.sh:912 (check_stage_3), bin/gate-check.sh:939 (blueprint.html staleness input)",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "blueprint-md",
+    "stage": "3",
+    "paths": "architecture/blueprint.md",
+    "producer": "skills/architecture-blueprint.md Steps 2-6 — the markdown is the source of truth",
+    "consumers": "bin/gate-check.sh:939 (staleness input), skills/architecture-blueprint.md:54 (render source for blueprint.html)",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "blueprint-html",
+    "stage": "3",
+    "paths": "architecture/blueprint.html",
+    "producer": "skills/architecture-blueprint.md Step 7 (generated render, never hand-edited)",
+    "consumers": "bin/gate-check.sh:931-943 (check_stage_3 presence + freshness)",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "design-system",
+    "stage": "3",
+    "paths": "design/design-system.html",
+    "producer": "skills/design-artifacts.md:79 (annotated showcase linking ds.css)",
+    "consumers": "bin/gate-check.sh:913 (check_stage_3), bin/gate-check.sh:1135 (build-ready)",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "ds-css",
+    "stage": "3",
+    "paths": "design/ds.css",
+    "producer": "skills/design-artifacts.md:75 (the physical token/component source)",
+    "consumers": "skills/design-artifacts.md:68 (two-files rule — every wireframe links it), bin/gate-check.sh:1135 (build-ready accepts either file)",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "wireframes",
+    "stage": "3",
+    "paths": "design/wireframes/*.html",
+    "producer": "skills/design-artifacts.md Step 3, one per screen",
+    "consumers": "bin/gate-check.sh:923 (check_stage_3), bin/gate-check.sh:1129 (build-ready), skills/ui-preflight-pages.md (mdl-agent pre-flight input)",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "module-definition",
+    "stage": "3",
+    "paths": "architecture/modules/*/definition.md",
+    "producer": "skills/architecture-blueprint.md Step 1 (:60 — the directory shape, one doc per module)",
+    "consumers": "THIS ROW IS ITS FIRST MECHANICAL CONSUMER — as of 2026-08-22 nothing executable read definition.md (improvement-plan P7 residue, the newest instance of the pattern this table exists to stop); prose consumers: skills/architecture-blueprint.md:43, skills/coverage-ledger.md:27",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "build-plan",
+    "stage": "4",
+    "paths": "architecture/build-plan.md",
+    "producer": "skills/brd-to-build-plan.md",
+    "consumers": "bin/gate-check.sh:955 (check_stage_4), project-bin/build-plan-status.sh (progress board), project-bin/coverage-preflight.sh:238 (the claims join)",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "build-plan-html",
+    "stage": "4",
+    "paths": "architecture/build-plan.html",
+    "producer": "project-bin/build-plan-status.sh --html (skills/brd-to-build-plan.md:47 — derived view, never hand-edited; refreshed by exec.sh and full gate-check.sh runs via --refresh)",
+    "consumers": "conversion-runbook.md §2 Stage-4 Surface row, parsed at bin/gate-check.sh:1284",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "build-plan-json",
+    "stage": "4",
+    "paths": "architecture/build-plan.json",
+    "producer": "project-bin/build-plan-status.sh --json (derived from build-plan.md's Step-5 Phase headings, row tables and claims: blocks, never hand-edited; not written when the markdown has no Phase headings)",
+    "consumers": "MXTK Studio Plan room (a view built from data, not from the HTML); nothing in the toolkit reads it and no verdict may depend on it",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "module-brief",
+    "stage": "4",
+    "paths": "architecture/modules/*/module-brief.md|architecture/modules/*-brief.md",
+    "producer": "skills/module-brief.md — ba-agent writes the first at Stage 4, the rest just-in-time",
+    "consumers": "bin/gate-check.sh:1121 (build-ready fails without one), project-bin/build-plan-status.sh:109",
+    "modes": "migration,requirements,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "coverage-ledger",
+    "stage": "4",
+    "paths": "architecture/modules/*/coverage-ledger.md|architecture/modules/*-coverage-ledger.md|architecture/coverage-ledger.md",
+    "producer": "skills/coverage-ledger.md procedure at Stage 4 (BRD leaves × build-plan claims); the three shapes are §\"Where the ledger lives\", first canonical",
+    "consumers": "project-bin/conformance-check.sh:85-93, project-bin/coverage-preflight.sh:134-137, project-bin/verify-module.sh:299-300, project-bin/review-module.sh:289, conversion-runbook.md:487 (Stage-4 produces row) — the eleven-consumers-no-producer artifact of improvement-plan Finding 12",
+    "modes": "migration,requirements",
+    "absence": "report"
+   },
+   {
+    "artifact": "ui-reviews",
+    "stage": "5",
+    "paths": "design/ui-reviews/ui-review-*.html",
+    "producer": "skills/module-review.md pass (review-agent), one report per module close-out",
+    "consumers": "bin/gate-check.sh:984 (check_stage_6), bin/lib/obligations.tsv:47 (the look row — per-module coverage and denominators live THERE; this row only asks whether the stage produced any report at all)",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "journeys",
+    "stage": "5",
+    "paths": "${JOURNEY_DIR}/*.journey.json",
+    "producer": "journey authoring per skills/testing-shape.md / skills/journey-proof.md (worked example: project-tests/e2e/example.journey.json)",
+    "consumers": "project-bin/verify-module.sh:376,404 (the journeys rung), project-tests/e2e/journey-runner.js:5",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "page-scope",
+    "stage": "5",
+    "paths": ".claude/loop/page-scope.json",
+    "producer": "project-bin/page-scope.sh (the phantom of improvement-plan Finding 15 until 078c7d8 shipped it)",
+    "consumers": "project-tests/e2e/design-audit.js:55, project-tests/e2e/page-audit.js:66, project-tests/e2e/report-normalize.js:112 — without it the LOOK instruments degrade to --static-only",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "lint-last",
+    "stage": "5",
+    "paths": ".claude/loop/lint-last.json",
+    "producer": "project-bin/lint-gate.sh (written on every run that reaches a verdict, not only --update-baseline), run as part of skills/module-review.md stage 2 GATE (\"bin/exec.sh; gate-agent confirms 0 mxbuild errors, lint clean\" — same step named in skills/iterative-build-loop.md's \"Gate: BUILD\")",
+    "consumers": "bin/status.sh:75-81,129 (the OVERDUE line's lint readout — without it status.sh reports \"lint gate never recorded here\")",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "improvement-register",
+    "stage": "5",
+    "paths": "docs/improvement-register.md",
+    "producer": "skills/improvement-register.md:39 (append-only, one row per finding, written during build/verify passes)",
+    "consumers": "project-bin/build-plan-status.sh:69,148 (the proven-vs-built cross-reference), skills/close-the-loop.md",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "improvement-register-html",
+    "stage": "5",
+    "paths": "docs/improvement-register.html",
+    "producer": "project-bin/render-improvement-register.sh (landed 2026-08-22; in MXTK_PROJECT_BIN — bin/lib/install-manifest.sh:81-85)",
+    "consumers": "project-bin/render-improvement-register.sh:35 (output contract); human review surface for the register above — report-only by assignment",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "report"
+   },
+   {
+    "artifact": "report-json",
+    "stage": "6",
+    "paths": "docs/report.json",
+    "producer": "project-bin/verify-module.sh:518 (normalize rung → report-normalize.js), run as part of every module verify",
+    "consumers": "bin/gate-check.sh:980 (check_stage_6 requires it alongside the HTML), project-tests/e2e/report-render.js (renders from it)",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "verification-html",
+    "stage": "6",
+    "paths": "docs/verification/report.html|test-report.html|reports/test-report.html",
+    "producer": "project-bin/verify-module.sh:521 (render rung → report-render.js); the two test-report.html shapes are the legacy names check_stage_6 still accepts",
+    "consumers": "bin/gate-check.sh:970-995 (check_stage_6 — the gate that was structurally unpassable before b9c90a4/078c7d8, improvement-plan Finding 14)",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "gate"
+   },
+   {
+    "artifact": "workflow-design",
+    "stage": "3",
+    "paths": "architecture/workflow-definition.md|architecture/workflow-design.md|architecture/workflows/*.md",
+    "producer": "skills/architecture-blueprint.md Step 3b (state diagram per process: states, transitions, who moves it, SLA) + skills/learned-workflow-patterns.md for the native-Workflow shape",
+    "consumers": "skills/checkpoints/checkpoint-architecture.md Q3 (asks whether the process is Workflow or enum-driven — either way this is where it is drawn), skills/learned-workflow-patterns.md (the build-time reader), bin/lib/closeout.sh (offers it at the Stage-3 open, lists it at the close)",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "optin"
+   },
+   {
+    "artifact": "swimlanes",
+    "stage": "3",
+    "paths": "architecture/swimlanes.md|architecture/swimlane-*.md|architecture/diagrams/swimlane*.md",
+    "producer": "Mermaid per business process, one lane per role from the Stage-3 role model, one section per process; the cross-persona journey diagrams of skills/architecture-blueprint.md Step 3d are the multi-persona case of the same picture",
+    "consumers": "skills/checkpoints/checkpoint-architecture.md (the optional-artifacts question), skills/architecture-blueprint.md Step 3d (journey list it feeds), skills/journey-proof.md (the journeys a swimlane names are the ones Stage 5–6 must prove), bin/lib/closeout.sh",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "optin"
+   },
+   {
+    "artifact": "sequence-diagrams",
+    "stage": "3",
+    "paths": "architecture/sequence-diagrams.md|architecture/sequence-*.md|architecture/diagrams/sequence*.md",
+    "producer": "Mermaid sequenceDiagram per integration or agent call — caller, Mendix microflow, external system, sync/async, timeout, fallback; the agent-wiring diagram of skills/architecture-blueprint.md Step 3c is one instance",
+    "consumers": "skills/checkpoints/checkpoint-architecture.md Q3 agent-wiring half, skills/rest-integration-first-time-right.md (build-time reader for the REST ones), skills/mendix-agents.md, bin/lib/closeout.sh",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "optin"
+   },
+   {
+    "artifact": "erd",
+    "stage": "3",
+    "paths": "architecture/erd.md|architecture/domain-model.md|architecture/diagrams/erd*.md",
+    "producer": "Mermaid erDiagram of the TARGET domain across modules — entities, associations, ownership per module; the blueprint's layer diagram shows modules, not entities, and .mx-brd.json shows one module at a time",
+    "consumers": "skills/checkpoints/checkpoint-architecture.md Q2 (cross-module data strategy — the picture that question is about), skills/modularize-domain.md, bin/lib/closeout.sh",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "optin"
+   },
+   {
+    "artifact": "nfr-sheet",
+    "stage": "3",
+    "paths": "architecture/nfr.md|architecture/nfrs.md|architecture/non-functional-requirements.md",
+    "producer": "One table: NFR, target, how measured, where in the model it is enforced (XPath, index, batch size, timeout) — the per-NFR expansion of the list CAC-3's open question writes to project-profile.md",
+    "consumers": "skills/checkpoints/checkpoint-architecture.md open question (the list), skills/architecture-blueprint.md Step 5 (the register that must not lose them), bin/lib/closeout.sh",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "optin"
+   },
+   {
+    "artifact": "integration-contracts",
+    "stage": "3",
+    "paths": "architecture/integration-contracts.md|architecture/integrations.md|architecture/integrations/*.md",
+    "producer": "Per integration: endpoint, auth, payload in/out, error handling, owner, test double — written BEFORE the build plan so the plan can sequence it",
+    "consumers": "skills/rest-integration-first-time-right.md (reads it first thing at Stage 5), skills/architecture-blueprint.md Step 5 (the integrations register), bin/lib/closeout.sh",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "optin"
+   },
+   {
+    "artifact": "test-plan",
+    "stage": "4",
+    "paths": "architecture/test-plan.md|docs/test-plan.md",
+    "producer": "Per module: the journeys to prove, the fixtures they need, the DB assertions, the edge cases — the plan-side twin of the coverage ledger, written per skills/testing-shape.md before any MDL",
+    "consumers": "skills/checkpoints/checkpoint-build.md (the optional-artifacts question), skills/testing-shape.md, skills/journey-proof.md, skills/fixture-seeding.md (Stage-5 readers), bin/lib/closeout.sh",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "optin"
+   },
+   {
+    "artifact": "acceptance-criteria",
+    "stage": "4",
+    "paths": "architecture/acceptance-criteria.md|docs/acceptance-criteria.md",
+    "producer": "Per module: what \"done\" means beyond CE-error-free — the Stage-4 \"User defines\" row of conversion-runbook.md §2, written down instead of held in chat; each criterion names the journey or check that proves it",
+    "consumers": "conversion-runbook.md §2 Stage 4 \"User defines\" row, skills/module-brief.md (the brief's Done section is where these land per module), skills/module-review.md (the confirm step reads them), bin/lib/closeout.sh",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "optin"
+   },
+   {
+    "artifact": "demo-script",
+    "stage": "5",
+    "paths": "docs/demo-script.md|docs/demo/script.md",
+    "producer": "The narrated walk-through a human will give — beats, pages, fixtures on screen, what the audience must see happen; written at the Stage-5 open so the build front-loads what the demo needs",
+    "consumers": "skills/record-demo-video.md (its input), skills/handoff-to-studio-pro.md §8 (demo data the script depends on), bin/lib/closeout.sh",
+    "modes": "migration,requirements,greenfield,existing-app-change",
+    "absence": "optin"
+   }
+  ],
+  "obligations": [
+   {
+    "obligation": "look",
+    "performer": "review",
+    "scope": "module",
+    "artifact": "design/ui-reviews/ui-review-*.html",
+    "denominator": "yes",
+    "degradable": "yes",
+    "from-stage": "5",
+    "skill": "skills/module-review.md"
+   },
+   {
+    "obligation": "sweep",
+    "performer": "test",
+    "scope": "module",
+    "artifact": ".claude/loop/sweep/<Module>/sweep.md",
+    "denominator": "yes",
+    "degradable": "yes",
+    "from-stage": "5",
+    "skill": "skills/wiring-sweep.md"
+   },
+   {
+    "obligation": "journeys",
+    "performer": "test",
+    "scope": "module",
+    "artifact": ".claude/loop/verify/<Module>/summary.tsv",
+    "denominator": "no",
+    "degradable": "no",
+    "from-stage": "5",
+    "skill": "skills/journey-proof.md"
+   },
+   {
+    "obligation": "coherence",
+    "performer": "architect",
+    "scope": "cluster",
+    "artifact": ".claude/loop/coherence/last-cluster-pass.tsv",
+    "denominator": "no",
+    "degradable": "yes",
+    "from-stage": "5",
+    "skill": "skills/process-coherence-pass.md"
+   },
+   {
+    "obligation": "skeleton",
+    "performer": "mdl",
+    "scope": "project",
+    "artifact": "docs/skeleton-proof.md",
+    "denominator": "yes",
+    "degradable": "no",
+    "from-stage": "5",
+    "skill": "skills/walking-skeleton.md"
+   },
+   {
+    "obligation": "workflow-count",
+    "performer": "architect",
+    "scope": "project",
+    "artifact": "architecture/workflow-count.md",
+    "denominator": "yes",
+    "degradable": "yes",
+    "from-stage": "3",
+    "skill": "skills/workflow-structure-rules.md"
+   },
+   {
+    "obligation": "design-reaches-app",
+    "performer": "mdl",
+    "scope": "project",
+    "artifact": "docs/design-reaches-app.md",
+    "denominator": "yes",
+    "degradable": "yes",
+    "from-stage": "3",
+    "skill": "project-bin/check-design-reaches-app.sh"
+   },
+   {
+    "obligation": "fidelity",
+    "performer": "mdl",
+    "scope": "module",
+    "artifact": "docs/PAGE-FIDELITY.tsv",
+    "denominator": "no",
+    "degradable": "yes",
+    "from-stage": "5",
+    "skill": "skills/ui-loop.md"
+   },
+   {
+    "obligation": "dispatch",
+    "performer": "mdl",
+    "scope": "module",
+    "artifact": ".claude/loop/dispatch/<Module>/scripts.tsv",
+    "denominator": "no",
+    "degradable": "yes",
+    "from-stage": "5",
+    "skill": "skills/agent-roles.md"
+   },
+   {
+    "obligation": "final-look",
+    "performer": "review",
+    "scope": "project",
+    "artifact": "design/ui-reviews/final-look-*.html",
+    "denominator": "yes",
+    "degradable": "yes",
+    "from-stage": "6",
+    "skill": "skills/module-review.md"
+   }
+  ]
+ },
  "counts": {
   "runbookStages": 9,
   "stagesShown": 9,

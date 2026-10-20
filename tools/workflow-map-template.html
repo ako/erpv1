@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Toolkit Pipeline Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Unbounded:wght@500;600&display=swap">
+<style>
+/* Layout: a vertical rail of stages (phases go down) with gate rows between them; detail pane on the right, stacked below at phone width. */
+:root{
+  --bg:#f3f4f1; --surface:#ffffff; --sunk:#eceee9; --ink:#1b2a33; --muted:#5f6d76; --line:#d5dad3;
+  --cobalt:#2a62c9; --cobalt-tint:#e6edfa; --amber:#a87700; --amber-mark:#e0a106; --amber-tint:#fbf1d6;
+  --red:#c8461a; --red-tint:#fbe5dc; --off:#9aa5ab;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --rail-x:23px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#11161a; --surface:#192026; --sunk:#141a1f; --ink:#e3e8e5; --muted:#97a4ac; --line:#2b353c;
+  --cobalt:#7ea4f2; --cobalt-tint:#1b2840; --amber:#e8b33c; --amber-mark:#e0a106; --amber-tint:#35290f;
+  --red:#f07d52; --red-tint:#3a1d13; --off:#5d6970; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#11161a; --surface:#192026; --sunk:#141a1f; --ink:#e3e8e5; --muted:#97a4ac; --line:#2b353c;
+  --cobalt:#7ea4f2; --cobalt-tint:#1b2840; --amber:#e8b33c; --amber-mark:#e0a106; --amber-tint:#35290f;
+  --red:#f07d52; --red-tint:#3a1d13; --off:#5d6970; color-scheme:dark }
+
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body)}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+
+header.top .wrap{padding-block:28px 18px;display:grid;gap:10px}
+.eyebrow{font:500 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--amber)}
+h1{font:600 clamp(24px,3.4vw,34px)/1.15 var(--f-display);margin:0;text-wrap:balance}
+.lede{margin:0;max-width:68ch;color:var(--muted)}
+.controls{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;margin-top:6px}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:9px;background:var(--surface);padding:3px;gap:2px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{padding:6px 11px;border-radius:7px;cursor:pointer;font-size:13.5px;color:var(--muted);white-space:nowrap}
+.seg input:checked + label{background:var(--ink);color:var(--surface)}
+.seg input:focus-visible + label{outline:2px solid var(--cobalt);outline-offset:1px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.mode-from{font-size:13px;color:var(--muted)}
+
+main.grid{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:24px;align-items:start;padding-block:6px 48px}
+@media (max-width:920px){ main.grid{grid-template-columns:minmax(0,1fr)} }
+
+/* rail */
+#outline{position:relative;min-width:0}
+#outline::before{content:"";position:absolute;left:var(--rail-x);top:18px;bottom:18px;width:2px;background:var(--line)}
+.stage{position:relative;margin-left:0}
+.stage-head{display:grid;grid-template-columns:48px minmax(0,1fr);align-items:center;gap:10px;padding:8px 0}
+.title-btn{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;padding:0;cursor:pointer}
+.title-btn .title-row{flex:1;min-width:0}
+.num{position:relative;z-index:1;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font:600 17px var(--f-display);background:var(--surface);border:2px solid var(--ink);color:var(--ink)}
+.stage.sel .num{background:var(--ink);color:var(--surface)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:grid;gap:6px;min-width:0}
+.stage.sel .card{border-color:var(--cobalt);box-shadow:0 0 0 1px var(--cobalt)}
+.title-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.sname{font:600 17px var(--f-body)}
+.hard{font:500 11.5px var(--f-mono);color:var(--amber);background:var(--amber-tint);border-radius:999px;padding:1px 8px}
+.owner{font:12px var(--f-mono);color:var(--muted)}
+.caret{font-size:13px;color:var(--muted);transition:transform .15s}
+.stage.open .caret{transform:rotate(90deg)}
+.mode-note{font-size:13px;color:var(--amber)}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{display:inline-flex;align-items:center;gap:5px;font:12.5px var(--f-mono);padding:3px 8px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip:hover{border-color:var(--cobalt)}
+.chip .m{font-size:10px}
+.chip.chk{border-color:var(--ink)}
+.chip.report{border-style:dashed}
+.chip.optin{border-style:dotted;color:var(--muted)}
+.chip.na{opacity:.45;text-decoration:line-through}
+.chip.sel{background:var(--cobalt-tint);border-color:var(--cobalt);color:var(--cobalt)}
+.chip .from{color:var(--muted);font-size:11px}
+.stage.off .num{border-color:var(--off);color:var(--off)}
+.stage.off .card{background:var(--sunk);border-style:dashed}
+.stage.off .sname{color:var(--muted)}
+
+.body{display:grid;gap:12px;padding:4px 0 6px}
+.lbl{font:500 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
+.body p{margin:0;font-size:14px}
+.io{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:14px}
+@media (max-width:620px){ .io{grid-template-columns:minmax(0,1fr)} }
+.outgroup + .outgroup{margin-top:8px}
+.sub{font-size:12px;color:var(--muted);margin:0 0 4px}
+
+/* gate rows */
+.gate{position:relative;display:grid;grid-template-columns:48px minmax(0,1fr);gap:10px;align-items:center;padding:2px 0;background:none;border:0;width:100%;text-align:left;cursor:pointer}
+.diamond{justify-self:center;position:relative;z-index:1;width:18px;height:18px;transform:rotate(45deg);border:2px solid var(--amber-mark);background:var(--surface)}
+.gate.hardg .diamond{background:var(--amber-mark)}
+.gate.sel .diamond{box-shadow:0 0 0 4px var(--cobalt-tint);border-color:var(--cobalt)}
+.gate.sel .gtext{color:var(--cobalt)}
+.gtext{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font:13px var(--f-mono);color:var(--amber);padding:6px 0}
+.gtext .cac{color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:5px;padding:0 6px}
+.gate.off .diamond{border-color:var(--off)}
+.gate.off .gtext{color:var(--off)}
+
+/* stage 5 loop */
+.loop{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--sunk);display:grid;gap:8px}
+.tree{display:grid;gap:4px;margin:0;padding:0;list-style:none}
+.tree li{position:relative;padding-left:22px}
+.tree li::before{content:"";position:absolute;left:7px;top:-4px;bottom:50%;width:10px;border-left:1.5px solid var(--line);border-bottom:1.5px solid var(--line)}
+.step{display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;align-items:baseline;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:13.5px}
+.step b{font:500 12.5px var(--f-mono);color:var(--cobalt)}
+.step.sel{border-color:var(--cobalt)}
+
+/* detail */
+#detail{position:sticky;top:calc(12px + env(safe-area-inset-top,0px));background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:14px;min-width:0;max-height:calc(100vh - 24px);overflow:auto}
+@media (max-width:920px){ #detail{position:static;max-height:none} }
+#detail h2{font:600 20px/1.25 var(--f-display);margin:0;text-wrap:balance}
+#detail .kind{font:500 11.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--amber)}
+#detail section p{margin:0;font-size:14px}
+#detail code,.path{font:12.5px var(--f-mono);background:var(--sunk);border:1px solid var(--line);border-radius:5px;padding:1px 5px;overflow-wrap:anywhere}
+.paths{display:grid;gap:4px}
+.consumers{margin:0;padding-left:18px;font-size:13px;display:grid;gap:4px}
+.consumers li{overflow-wrap:anywhere}
+.pill{display:inline-block;font:12px var(--f-mono);border-radius:999px;padding:1px 8px;border:1px solid var(--line);margin:0 4px 4px 0}
+.pill.on{border-color:var(--cobalt);color:var(--cobalt);background:var(--cobalt-tint)}
+.pill.offp{color:var(--off)}
+.linkish{background:none;border:0;padding:0;color:var(--cobalt);cursor:pointer;text-decoration:underline;text-underline-offset:2px;font-size:14px}
+.note{font-size:12.5px;color:var(--muted)}
+footer .wrap{padding-block:0 32px;font-size:12.5px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+/* ── project status layer (erpv1): verdicts, existence, decisions, modules — added to the pipeline template ── */
+.vb{display:inline-flex;align-items:center;gap:4px;font:500 11.5px var(--f-mono);border-radius:999px;padding:1px 8px;border:1px solid transparent;white-space:nowrap}
+.vb.pass{color:var(--cobalt);background:var(--cobalt-tint)}.vb.warn{color:var(--amber);background:var(--amber-tint)}
+.vb.fail{color:var(--red);background:var(--red-tint)}.vb.grey{color:var(--off);border-color:var(--line)}
+.dcnt{font:12px var(--f-mono);color:var(--muted)}
+.chip .ex{font-size:10.5px}.chip .ex.ok{color:var(--cobalt)}.chip .ex.no{color:var(--amber)}
+.status{display:grid;gap:6px;margin-top:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:13px}
+.status .row{display:flex;flex-wrap:wrap;gap:4px 18px;color:var(--muted)}.status b{color:var(--ink);font-weight:600}
+.status .next{color:var(--amber);overflow-wrap:anywhere}
+.decs{display:grid;gap:3px;margin:0;padding:0;list-style:none}
+.decs li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px;align-items:baseline;font-size:13.5px}
+.decs li span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mods{display:grid;gap:4px;margin:0;padding:0;list-style:none}
+.modrow{display:grid;grid-template-columns:minmax(92px,auto) minmax(0,1fr);gap:8px;align-items:center;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer}
+.modrow.sel{border-color:var(--cobalt)}.modrow b{font:500 13px var(--f-body)}
+.ob{display:inline-flex;gap:3px;align-items:baseline;font:11.5px var(--f-mono);border-radius:5px;padding:0 6px;margin:1px 2px;max-width:100%;overflow-wrap:anywhere}
+.ob.pass{color:var(--cobalt);background:var(--cobalt-tint)}.ob.warn{color:var(--amber);background:var(--amber-tint)}.ob.fail{color:var(--red);background:var(--red-tint)}.ob.grey{color:var(--off)}
+.gtext .vb{font-size:11px}
+header.top .wrap{grid-template-columns:minmax(0,1fr)}
+.legend .vbs{display:inline-flex;flex-wrap:wrap;gap:4px}.status .row span{overflow-wrap:anywhere;min-width:0}
+</style>
+</head><body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow" id="eyebrow">mxcli-project-toolkit</div>
+    <h1>Toolkit Pipeline Map</h1>
+    <p class="lede">The stages a Mendix project moves through with the toolkit, top to bottom: the gates and checkpoints between them, and every artifact the toolkit's manifest says a stage owes. Pick an entry mode to see what runs.</p>
+    <div class="controls">
+      <div class="seg" role="radiogroup" aria-label="Entry mode" id="modes"></div>
+      <div class="mode-from" id="modeFrom"></div>
+    </div>
+    <div class="legend" aria-label="Legend">
+      <span><span class="diamond" style="transform:rotate(45deg) scale(.7);background:var(--amber-mark)"></span>hard gate ✋, CONFIRMED only</span>
+      <span><span class="diamond" style="transform:rotate(45deg) scale(.7)"></span>gate</span>
+      <span><span class="chip chk" style="cursor:default">■ gate-checked</span></span>
+      <span><span class="chip report" style="cursor:default">□ report</span></span>
+      <span><span class="chip optin" style="cursor:default">+ opt-in</span></span>
+      <span class="vbs"><span class="vb pass">✓ PASS</span><span class="vb warn">○ PENDING · MANUAL</span><span class="vb fail">✕ FAIL</span><span class="vb grey">– WAIVED · not in mode</span></span>
+      <span><span class="ex ok" style="color:var(--cobalt)">✓</span> exists in this project · <span style="color:var(--amber)">○</span> missing</span>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+</header>
+
+<main class="wrap grid">
+  <section id="outline" aria-label="Pipeline stages"></section>
+  <aside id="detail" aria-live="polite"></aside>
+</main>
+<footer><div class="wrap" id="foot"></div></footer>
+
+
+<script>
+const DATA = /*__DATA__*/null;
+if (!DATA) {
+  document.getElementById("outline").innerHTML = '<p class="lede">This is the page template, without data. Run <code>node tools/extract-workflow-map.js &amp;&amp; node tools/render-workflow-map.js</code> and open the generated <code>docs/workflow-map.html</code> instead.</p>';
+} else {
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ART = Object.fromEntries(DATA.artifacts.map(a => [a.artifact, a]));
+const STAGE = Object.fromEntries(DATA.stages.map(s => [s.id, s]));
+const ABS = {
+  gate: {mark: "■", label: "Gate-checked", text: "A mechanical check already refuses without it: absence at a reached stage holds a gate shut."},
+  report: {mark: "□", label: "Report", text: "Report-only: absence is named, nothing blocks on it."},
+  optin: {mark: "+", label: "Opt-in", text: "Offered at the previous stage's close-out; owed only after the register records the opt-in."}
+};
+// ── project status layer ──
+const P = DATA.project, ST = DATA.status;
+const TONE = v => /^(PASS|PRESENT|CONFIRMED)/i.test(v) ? "pass" : /^FAIL/i.test(v) ? "fail" : /^(WAIVED|OPTIONAL|NOT YET DUE|N\/A|skip)/i.test(v) ? "grey" : "warn";
+const SHAPE = {pass: "✓", warn: "○", fail: "✕", grey: "–"};
+const vb = v => `<span class="vb ${TONE(v)}" title="${esc(v)}">${SHAPE[TONE(v)]} ${esc(v)}</span>`;
+const decCount = id => { const c = {}; (ST.stage[id].decisions || []).forEach(d => { const k = (d.status.match(/^(CONFIRMED|ASSUMED)/) || [, "other"])[1]; c[k] = (c[k] || 0) + 1; });
+  return ["CONFIRMED", "ASSUMED", "other"].filter(k => c[k]).map(k => `${c[k]} ${k}`).join(" · ") || "no decisions"; };
+let state = {mode: P.modeKey, open: new Set(["5"]), sel: {type: "stage", id: P.currentStageId || "0"}};
+try { const m = localStorage.getItem("tpm-mode"); if (m && DATA.runs[m]) state.mode = m; } catch (e) {}
+
+const runs = id => DATA.runs[state.mode][id] || "runs";
+const isOff = id => runs(id).startsWith("skip");
+const owed = a => a.modes.split(",").includes(state.mode);
+const usedBy = id => DATA.stages.filter(s => s.inputs.includes(id)).map(s => s.id);
+
+function chip(a, opts = {}) {
+  const ab = ABS[a.absence] || ABS.report;
+  const sel = state.sel.type === "artifact" && state.sel.id === a.artifact ? " sel" : "";
+  const na = owed(a) ? "" : " na";
+  const from = opts.from ? ` <span class="from">· ${a.stage}</span>` : "";
+  const st = ST.art[a.artifact] || {};
+  const ex = a.absence === "optin" && !st.optedIn ? "" : (st.exists ? `<span class="ex ok" title="exists in this project">✓</span>` : `<span class="ex no" title="missing in this project">○</span>`);
+  return `<button class="chip ${a.absence === "gate" ? "chk" : a.absence}${na}${sel}" data-art="${esc(a.artifact)}" title="${esc(ab.label)}${owed(a) ? "" : " · not owed in this mode"}${st.exists ? " · exists" : " · missing"}"><span class="m" aria-hidden="true">${ab.mark}</span>${esc(a.artifact)}${from}${ex}</button>`;
+}
+
+function obligationChip(o) {
+  const sel = state.sel.type === "obligation" && state.sel.id === o.obligation ? " sel" : "";
+  return `<button class="chip${sel}" data-obl="${esc(o.obligation)}" title="Obligation · ${esc(o.scope)} scope"><span class="m" aria-hidden="true">✓</span>${esc(o.obligation)} <span class="from">${esc(o.performer)}</span></button>`;
+}
+
+function stageHTML(s) {
+  const off = isOff(s.id), open = state.open.has(s.id);
+  const sel = state.sel.type === "stage" && state.sel.id === s.id;
+  const outs = DATA.artifacts.filter(a => a.stage === s.id);
+  const gateOuts = outs.filter(a => a.absence === "gate");
+  const note = runs(s.id) === "runs" ? "" : `<div class="mode-note">${esc(runs(s.id))}</div>`;
+  const obls = DATA.obligations.filter(o => o.stage === s.id || o["from-stage"] === s.id);
+  let body = "";
+  if (open) {
+    const groups = ["gate", "report", "optin"].map(k => {
+      const list = outs.filter(a => a.absence === k);
+      return list.length ? `<div class="outgroup"><div class="sub">${ABS[k].label}</div><div class="chips">${list.map(a => chip(a)).join("")}</div></div>` : "";
+    }).join("");
+    const ins = s.inputs.map(i => chip(ART[i], {from: true})).join("");
+    const projObl = obls.filter(o => o.scope !== "module" && o.scope !== "cluster");
+    body = `<div class="body">
+      <div><div class="lbl">You decide</div><p>${esc(s.userDefines)}</p></div>
+      <div class="io">
+        <div><div class="lbl">Inputs</div>${ins ? `<div class="chips">${ins}</div>` : `<p class="note">None: this is where the project starts.</p>`}</div>
+        <div><div class="lbl">Outputs</div>${groups || `<p class="note">No manifest rows: Stage 7 reads only the decision register.</p>`}</div>
+      </div>
+      ${s.id === "5" ? loopHTML(obls) : (projObl.length ? `<div><div class="lbl">Obligations</div><div class="chips">${projObl.map(obligationChip).join("")}</div></div>` : "")}
+      <div><div class="lbl">Decisions in this project (${(ST.stage[s.id].decisions || []).length})</div>${decisionsHTML(s.id)}</div>
+    </div>`;
+  }
+  return `<div class="stage${off ? " off" : ""}${open ? " open" : ""}${sel ? " sel" : ""}" data-stage="${s.id}">
+    <div class="stage-head">
+      <span class="num" aria-hidden="true">${s.id}</span>
+      <div class="card">
+        <button class="title-btn" aria-expanded="${open}" data-stagebtn="${s.id}" data-head="1">
+          <span class="title-row"><span class="sname">${esc(s.name)}</span>${s.hard ? `<span class="hard">✋ hard gate</span>` : ""}<span class="owner">${esc(s.owner)}</span>${vb(ST.stage[s.id].verdict)}<span class="dcnt">${esc(decCount(s.id))}</span></span>
+          <span class="caret" aria-hidden="true">▸</span>
+        </button>
+        ${note}${ST.stage[s.id].greyReason ? `<div class="mode-note">${esc(ST.stage[s.id].greyReason)}</div>` : ""}
+        ${!open && gateOuts.length ? `<div class="chips">${gateOuts.map(a => chip(a)).join("")}</div>` : ""}
+      </div>
+    </div>
+    ${open ? `<div style="margin-left:58px">${body}</div>` : ""}
+  </div>`;
+}
+
+function decisionsHTML(id) {
+  const ds = ST.stage[id].decisions || [];
+  return ds.length ? `<ul class="decs">${ds.map(d => `<li>${vb((d.status.match(/^(CONFIRMED|ASSUMED)/) || [, d.status])[1])}<span title="${esc(d.decision)}">${esc(d.decision.replace(/\*\*/g, ""))}</span></li>`).join("")}</ul>` : `<p class="note">None recorded in PROJECT.md at this stage.</p>`;
+}
+function modulesHTML() {
+  return `<ul class="mods">${ST.modules.map(m => { const sel = state.sel.type === "module" && state.sel.id === m.module ? " sel" : "";
+    return `<li><button class="modrow${sel}" data-mod="${esc(m.module)}"><b>${m.order} · ${esc(m.module)}</b><span>${m.obligations.map(o => `<span class="ob ${TONE(o.status)}" title="${esc(o.status)}${o.note ? " · " + esc(o.note) : ""}">${SHAPE[TONE(o.status)]} ${esc(o.id)}${o.denominator ? " " + esc(o.denominator) : ""}</span>`).join("")}</span></button></li>`; }).join("")}</ul>`;
+}
+function loopHTML(obls) {
+  const sk = obls.filter(o => o.scope === "project");
+  const mod = obls.filter(o => o.scope === "module");
+  const cl = obls.filter(o => o.scope === "cluster");
+  const steps = DATA.moduleLoop.map(st => {
+    const sel = state.sel.type === "step" && state.sel.id === st.step ? " sel" : "";
+    return `<li><button class="step${sel}" data-step="${st.step}"><b>${st.step}</b><span>${esc(st.who)}</span></button></li>`;
+  }).join("");
+  return `<div class="loop">
+    <div><div class="lbl">Opens with</div><div class="chips">${sk.map(obligationChip).join("")}</div><p class="note" style="margin-top:4px">The walking skeleton: one entity, microflow, page, nav item, demo user, journey and screenshot, proven in the running app.</p></div>
+    <div><div class="lbl">Then per module, in build-plan order</div><ul class="tree">${steps}</ul></div>
+    <div><div class="lbl">Each module owes</div><div class="chips">${mod.map(obligationChip).join("")}</div></div>
+    <div><div class="lbl">Every 2–3 modules</div><div class="chips">${cl.map(obligationChip).join("")}</div></div>
+    <div><div class="lbl">This project's modules · build-plan order (${ST.modules.length})</div>${modulesHTML()}</div>
+  </div>`;
+}
+
+function gateHTML(g) {
+  const sel = state.sel.type === "gate" && state.sel.id === g.id ? " sel" : "";
+  const nextIdx = DATA.stages.findIndex(s => s.id === g.after) + 1;
+  const off = isOff(g.after) && (g.id !== "gBR") ? " off" : (g.id === "gBR" && isOff("5") ? " off" : "");
+  const cacs = g.checkpoints.map(c => `<span class="cac">${c} ${esc(DATA.checkpoints[c].name)}</span>`).join("");
+  return `<button class="gate${g.hard ? " hardg" : ""}${sel}${off}" data-gate="${g.id}">
+    <span class="diamond" aria-hidden="true"></span>
+    <span class="gtext">${g.hard ? "✋ " : ""}${esc(g.label)} ${cacs} ${vb(g.verdict)}</span>
+  </button>`;
+}
+
+function renderOutline() {
+  let h = "";
+  DATA.stages.forEach(s => {
+    h += stageHTML(s);
+    DATA.gates.filter(g => g.after === s.id).forEach(g => h += gateHTML(g));
+  });
+  $("#outline").innerHTML = h;
+}
+
+function pills(modesStr) {
+  const on = modesStr.split(",");
+  return DATA.modes.map(m => `<span class="pill ${on.includes(m.id) ? "on" : "offp"}">${on.includes(m.id) ? "✓" : "–"} ${esc(m.label)}</span>`).join("");
+}
+
+function renderDetail() {
+  const d = $("#detail"); const sel = state.sel; let h = "";
+  if (sel.type === "stage") {
+    const s = STAGE[sel.id];
+    const outs = DATA.artifacts.filter(a => a.stage === s.id);
+    const gate = DATA.gates.filter(g => g.after === s.id);
+    h = `<div class="kind">Stage ${s.id}${s.hard ? " · ✋ hard gate" : ""}</div><h2>${esc(s.name)}</h2>
+      ${runs(s.id) !== "runs" ? `<p class="mode-note" style="margin:0">${esc(DATA.modes.find(m => m.id === state.mode).label)}: ${esc(runs(s.id))}</p>` : ""}
+      <section><div class="lbl">You decide</div><p>${esc(s.userDefines)}</p></section>
+      <section><div class="lbl">Agent produces</div><p>${esc(s.agentProduces)}</p></section>
+      ${s.surface ? `<section><div class="lbl">Review surface</div><p>${esc(s.surface)}</p></section>` : ""}
+      <section><div class="lbl">Owner</div><p>${esc(s.owner)} · <code>${esc(s.skill)}</code></p></section>
+      <section><div class="lbl">Inputs</div>${s.inputs.length ? `<div class="chips">${s.inputs.map(i => chip(ART[i], {from: true})).join("")}</div>` : `<p class="note">None</p>`}</section>
+      <section><div class="lbl">Outputs (${outs.length})</div>${outs.length ? `<div class="chips">${outs.map(a => chip(a)).join("")}</div>` : `<p class="note">None in the manifest.</p>`}</section>
+      ${gate.map(g => `<section><div class="lbl">Closes with</div><button class="linkish" data-gate="${g.id}">${g.hard ? "✋ " : ""}${esc(g.label)}</button></section>`).join("")}
+      <section><div class="lbl">In this project</div><p>${vb(ST.stage[s.id].verdict)} ${esc(ST.stage[s.id].detail)}</p></section>
+      <section><div class="lbl">Decisions (${(ST.stage[s.id].decisions || []).length})</div>${decisionsHTML(s.id)}</section>`;
+  } else if (sel.type === "gate") {
+    const g = DATA.gates.find(x => x.id === sel.id);
+    h = `<div class="kind">${g.hard ? "✋ Hard gate · CONFIRMED only" : "Gate"} · after Stage ${g.after}</div><h2>${esc(g.label)}</h2>
+      <section><div class="lbl">Passes when</div><p>${esc(g.criteria)}</p></section>
+      ${g.tool ? `<section><div class="lbl">Run</div><p><code>${esc(g.tool)}</code></p></section>` : `<section><div class="lbl">Run</div><p><code>bin/gate-check.sh &lt;project&gt; ${g.after}</code>, output pasted in chat</p></section>`}
+      ${g.checkpoints.map(c => { const k = DATA.checkpoints[c]; return `<section><div class="lbl">Checkpoint ${c} · ${esc(k.name)}</div><p>${esc(k.question)}</p><p class="note">Fires: ${esc(k.fires)} · <code>${esc(k.file)}</code></p></section>`; }).join("")}
+      <section><div class="lbl">In this project</div><p>${vb(g.verdict)} ${esc(g.verdictDetail)}</p></section>
+      ${g.id !== "gBR" ? `<section><div class="lbl">Decisions recorded at Stage ${esc(g.after)}</div>${decisionsHTML(g.after)}</section>` : ""}
+      <p class="note">Every answer lands in PROJECT.md as CONFIRMED or ASSUMED. ASSUMED means the question was asked and you said "you decide"; hard gates accept CONFIRMED only.</p>`;
+  } else if (sel.type === "artifact") {
+    const a = ART[sel.id]; const ab = ABS[a.absence] || ABS.report; const ub = usedBy(a.artifact);
+    h = `<div class="kind">Artifact · Stage ${a.stage} · ${ab.label}</div><h2>${esc(a.artifact)}</h2>
+      <section><div class="lbl">If it is missing</div><p>${esc(ab.text)}</p></section>
+      <section><div class="lbl">Where it lives</div><div class="paths">${a.paths.split("|").map(p => `<span class="path">${esc(p)}</span>`).join("")}</div></section>
+      <section><div class="lbl">Produced by</div><p>${esc(a.producer)}</p></section>
+      <section><div class="lbl">Read by</div><ul class="consumers">${a.consumers.split(/,\s(?=(?:bin\/|skills\/|project-bin\/|project-tests\/|conversion-runbook|MXTK|THIS))/).map(c => `<li>${esc(c)}</li>`).join("")}</ul></section>
+      ${ub.length ? `<section><div class="lbl">Input to</div>${ub.map(i => `<button class="linkish" data-stagebtn="${i}">Stage ${i} · ${esc(STAGE[i].name)}</button>`).join(" · ")}</section>` : ""}
+      <section><div class="lbl">Owed in</div><div>${pills(a.modes)}</div></section>
+      <section><div class="lbl">In this project</div><p>${vb(ST.art[a.artifact].verdict || (ST.art[a.artifact].exists ? "PRESENT" : "MISSING"))} ${esc(ST.art[a.artifact].detail || "")}</p>
+        ${ST.art[a.artifact].found.length ? `<div class="paths">${ST.art[a.artifact].found.slice(0, 10).map(p => `<span class="path">${esc(p)}</span>`).join("")}${ST.art[a.artifact].found.length > 10 ? `<span class="note">+${ST.art[a.artifact].found.length - 10} more</span>` : ""}</div>` : `<p class="note">No path above matches a non-empty file (checked on disk).</p>`}</section>`;
+  } else if (sel.type === "obligation") {
+    const o = DATA.obligations.find(x => x.obligation === sel.id);
+    const scope = {module: "Once per module opened for work", cluster: "Once per cluster of 2–3 modules", project: "Once per project"}[o.scope] || o.scope;
+    h = `<div class="kind">Obligation · from Stage ${esc(o["from-stage"])}</div><h2>${esc(o.obligation)}</h2>
+      <section><div class="lbl">Performed by</div><p>${esc(o.performer)}-agent</p></section>
+      <section><div class="lbl">How often</div><p>${esc(scope)}</p></section>
+      <section><div class="lbl">Proven by</div><p><span class="path">${esc(o.artifact)}</span></p></section>
+      <section><div class="lbl">Denominator required</div><p>${o.denominator === "yes" ? "Yes: the artifact's first line states \"N of N …\"" : "No"}</p></section>
+      <section><div class="lbl">Missing input</div><p>${o.degradable === "yes" ? "Does not excuse the pass: degrade to judgement and say so." : "No degrade path: the pass needs its input."}</p></section>
+      <section><div class="lbl">Method</div><p><code>${esc(o.skill)}</code></p></section>
+      <section><div class="lbl">In this project</div><p>${ST.obl[o.obligation] ? vb(ST.obl[o.obligation].verdict) + " " + esc(ST.obl[o.obligation].detail) : '<span class="note">gate-check printed no line for it</span>'}</p>
+        ${ST.obl[o.obligation] && ST.obl[o.obligation].stale ? `<p class="note">STALE: ${esc(ST.obl[o.obligation].stale)}</p>` : ""}</section>`;
+  } else if (sel.type === "step") {
+    const st = DATA.moduleLoop.find(x => x.step === sel.id);
+    h = `<div class="kind">Stage 5 · module-review.md pass</div><h2>${esc(st.step)}</h2>
+      <section><div class="lbl">Who</div><p>${esc(st.who)}</p></section>
+      <section><div class="lbl">What</div><p>${esc(st.text)}</p></section>
+      <p class="note">One pass closes each module: BUILD → GATE → PROVE → LOOK → CONFIRM, one report with an explicit denominator. <code>bin/verify-module.sh</code> runs the mechanical PROVE instruments; it does not perform the LOOK.</p>`;
+  } else if (sel.type === "module") {
+    const m = ST.modules.find(x => x.module === sel.id);
+    h = `<div class="kind">Module · build order ${m.order} · Stage 5</div><h2>${esc(m.module)}</h2>
+      ${m.obligations.map(o => `<section><div class="lbl">${esc(o.id)} · ${esc(o.performer)}-agent</div><p>${vb(o.status)}${o.denominator ? " " + esc(o.denominator) : ""}</p>
+        ${o.note ? `<p class="note">${esc(o.note)}</p>` : ""}${o.waived ? `<p class="note">Waived: ${esc(o.waived)}</p>` : ""}
+        <p class="note"><span class="path">${esc(o.proof)}</span> ${o.proofExists ? "exists" : "missing"} · <code>${esc(o.skill)}</code></p></section>`).join("")}
+      <section><div class="lbl">BUILD-LOG</div><p>${m.scriptsInBuildLog} row(s)${m.lastLog ? ` · last <code>${esc(m.lastLog.script)}</code> ${esc(m.lastLog.result)}` : ""}</p></section>`;
+  }
+  d.innerHTML = h;
+}
+
+function renderModes() {
+  $("#modes").innerHTML = DATA.modes.map(m => `<input type="radio" name="mode" id="m-${m.id}" value="${m.id}" ${m.id === state.mode ? "checked" : ""}><label for="m-${m.id}">${esc(m.label)}${m.id === P.modeKey ? " · this project" : ""}</label>`).join("");
+  $("#modeFrom").textContent = "Starting from: " + DATA.modes.find(m => m.id === state.mode).from;
+}
+
+function render() { renderModes(); renderOutline(); renderDetail(); }
+
+function select(sel, scroll) {
+  state.sel = sel; renderOutline(); renderDetail();
+  if (scroll && window.matchMedia("(max-width: 920px)").matches) $("#detail").scrollIntoView({behavior: "smooth", block: "start"});
+}
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-art],[data-obl],[data-gate],[data-step],[data-stagebtn],[data-mod]");
+  if (!t) return;
+  if (t.dataset.mod) return select({type: "module", id: t.dataset.mod}, true);
+  if (t.dataset.art) return select({type: "artifact", id: t.dataset.art}, true);
+  if (t.dataset.obl) return select({type: "obligation", id: t.dataset.obl}, true);
+  if (t.dataset.gate) return select({type: "gate", id: t.dataset.gate}, true);
+  if (t.dataset.step) return select({type: "step", id: t.dataset.step}, true);
+  if (t.dataset.stagebtn) {
+    const id = t.dataset.stagebtn;
+    if (t.dataset.head) { state.open.has(id) && state.sel.type === "stage" && state.sel.id === id ? state.open.delete(id) : state.open.add(id); }
+    else state.open.add(id);
+    return select({type: "stage", id}, !t.dataset.head);
+  }
+});
+document.addEventListener("change", e => {
+  if (e.target.name !== "mode") return;
+  state.mode = e.target.value;
+  try { localStorage.setItem("tpm-mode", state.mode); } catch (err) {}
+  render();
+});
+
+$("#eyebrow").textContent = `mxcli-project-toolkit · ${DATA.commit} · ${P.name}`;
+$("#status").innerHTML = `<div class="row"><span>project <b>${esc(P.name)}</b></span><span>entry mode <b>${esc(P.entryMode)}</b> (${esc(P.entryModeStatus)})</span>
+  <span>toolkit <b>${esc(P.toolkitHead)}</b> · register pins ${esc(P.registerCommit)}</span><span>generated <b>${esc(P.generatedAt)}</b></span><span>gate-check: ${esc(P.gateCheckSummary)}</span></div>
+  <div class="next">NEXT (bin/status.sh) → ${esc(P.nextAction)}</div>`;
+$("#foot").innerHTML = `${DATA.stages.length} stages · ${DATA.gates.length} gates · ${Object.keys(DATA.checkpoints).length} checkpoints · ${DATA.artifacts.length} manifest artifacts · ${DATA.obligations.length} obligations. Sources: <code>skills/conversion-runbook.md</code>, <code>skills/checkpoints/</code>, <code>bin/lib/artifact-manifest.tsv</code>, <code>bin/lib/obligations.tsv</code>. The rail is the toolkit's definition; the verdicts, ✓/○ marks, decisions and modules are ${esc(P.name)}'s live status (bin/gate-check.sh --no-html, PROJECT.md, architecture/build-plan.md, docs/BUILD-LOG.md).
+  <br>${P.counts.stagesShown} of ${P.counts.runbookStages} runbook stages · ${P.counts.outputsShown} of ${P.counts.manifestRowsForMode} manifest rows owed in ${esc(P.entryMode)} (${P.counts.manifestRowsTotal} in the manifest) · ${P.counts.modulesShown} of ${P.counts.buildPlanModules} build-plan modules ·
+  ${P.unknowns.length} unknown: ${P.unknowns.map(u => esc(u.what)).join("; ") || "none"} · regenerate: <code>node tools/extract-workflow-map.js && node tools/render-workflow-map.js</code>`;
+render();
+}
+</script>
+</body></html>

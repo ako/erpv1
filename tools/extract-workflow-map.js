@@ -297,6 +297,79 @@ const moduleRows = modules.map(mod => {
 const projectObligations = obligations.filter(o => o.scope === 'project').map(o => ({ id: o.id, performer: o.performer, skill: o.skill, fromStage: o.fromStage, artifact: o.artifact,
   exists: ex(path.join(ROOT, o.artifact)), verdict: o.gate ? o.gate.verdict : unknown(`obligation ${o.id}`, 'no gate-check line'), detail: o.gate ? o.gate.detail : '' }));
 
+// ── the pipeline template's data shape (tools/workflow-map-template.html) ────────────────────────
+// runs per mode: parsed from the runbook's Entry Modes "Stages that run" column, nothing else
+function parseRuns(text) {
+  const res = {};
+  const tokens = text.split(/,\s*(?![^(]*\))/);
+  for (const t of tokens) {
+    const mm = t.trim().match(/^([P0-9])(?:–([0-9]))?\s*(.*)$/);
+    if (!mm) continue;
+    const a = STAGE_ORDER.indexOf(mm[1]), b = mm[2] ? STAGE_ORDER.indexOf(mm[2]) : a;
+    let rest = mm[3].trim();
+    const skip = rest.match(/\(skip ([P0-9])(?:\s*—\s*([^)]+))?\)/);
+    if (skip) { res[skip[1]] = 'skip' + (skip[2] ? ` — ${skip[2].trim()}` : ` — runbook: "${text.trim()}"`); rest = rest.replace(skip[0], '').trim(); }
+    const qual = rest.replace(/^\(|\)$/g, '').replace(/^all$/, '').trim();
+    for (let i = a; i <= b; i++) if (!res[STAGE_ORDER[i]]) res[STAGE_ORDER[i]] = qual ? `runs — ${qual}` : 'runs';
+  }
+  for (const s of STAGE_ORDER) if (!res[s]) res[s] = `skip — not in this mode's stages (runbook: "${text.trim()}")`;
+  return res;
+}
+const tModes = modes.map(x => ({ id: MODE_KEY[x.mode], label: x.mode, from: x.startingFrom.replace(/\*\*/g, ''), stagesThatRun: x.stagesThatRun }));
+const tRuns = Object.fromEntries(modes.map(x => [MODE_KEY[x.mode], parseRuns(x.stagesThatRun)]));
+// checkpoints keyed by CAC id
+const tCheckpoints = Object.fromEntries(checkpoints.map(c => [c.cac, { name: c.file.replace('skills/checkpoints/', '').replace('.md', ''),
+  title: c.title, question: c.question, fires: c.firesAfter || `close of Stage ${c.stage}${c.qualifier ? ` (${c.qualifier})` : ''}`, file: c.file, stage: c.stage, qualifier: c.qualifier }]));
+// gates: one at the close of every stage, plus the build-ready check the runbook puts before Stage 5
+const brAt = rb.indexOf('**Before Stage 5 starts — run the build-ready check:**');
+const brText = brAt < 0 ? null : rb.slice(brAt, rb.indexOf('\n\n', brAt)).split('\n').map(l => l.replace(/^>\s?/, '')).join(' ').replace(/\*\*/g, '').replace(/`/g, '');
+const brVerdict = (() => {
+  const o = run(path.join(TOOLKIT, 'bin', 'gate-check.sh'), ['--no-html', ROOT, 'build-ready']);
+  const mm = o.match(/build-ready[^\n]*?\b(PASS|FAIL|PENDING|MANUAL)\b/i) || o.match(/\b(PASS|FAIL)\b/);
+  return { verdict: mm ? mm[1].toUpperCase() : unknown('build-ready verdict', 'gate-check build-ready printed no verdict'), output: o.trim().split('\n').slice(-6).join('\n') };
+})();
+const tGates = [];
+stages.forEach((s, i) => {
+  const next = stages[i + 1];
+  tGates.push({ id: `g${s.id}`, after: s.id, hard: s.hard, label: next ? `Gate ${s.id} → ${next.id}` : `Gate ${s.id} · end of pipeline`,
+    criteria: String(s.gate).replace(/\*\*/g, '').replace(/`/g, ''), tool: null, checkpoints: s.checkpoints.map(c => c.cac),
+    verdict: s.verdict, verdictDetail: s.verdictDetail });
+  if (s.id === '4' && brText) tGates.push({ id: 'gBR', after: '4', hard: false, label: 'build-ready check · before Stage 5',
+    criteria: brText.replace(/^Before Stage 5 starts — run the build-ready check:\s*/, ''), tool: 'bin/gate-check.sh <project-dir> build-ready', checkpoints: [],
+    verdict: brVerdict.verdict, verdictDetail: brVerdict.output });
+});
+if (!brText) unknown('build-ready check', 'runbook has no "Before Stage 5 starts — run the build-ready check" block');
+// the module loop: the runbook's five-stage block; "who" only from the line itself, the Stage 5 Owner row or obligations.tsv
+const loopAt = rb.indexOf('\n1. BUILD');
+const loopBlock = loopAt < 0 ? '' : rb.slice(loopAt + 1, rb.indexOf('```', loopAt));
+const tLoop = [];
+for (const l of loopBlock.split('\n')) {
+  const mm = l.match(/^([1-5])\. ([A-Z]+)\s+(.*)$/);
+  if (mm) tLoop.push({ step: mm[2], text: mm[3].trim() });
+  else if (tLoop.length && l.trim()) tLoop[tLoop.length - 1].text += ' ' + l.trim();
+}
+const s5owner = (stages.find(s => s.id === '5') || {}).owner || '';
+const perf = id => (obligations.find(o => o.id === id) || {}).performer;
+for (const st of tLoop) {
+  const own = st.text.match(/^([a-z]+-agent)\b/);
+  if (own) { st.who = own[1]; st.whoSource = 'the runbook line itself'; }
+  else if (st.step === 'GATE' && /→\s*`?gate-agent/.test(s5owner)) { st.who = 'gate-agent (runs bin/exec.sh)'; st.whoSource = 'Stage 5 Owner row: ' + s5owner.replace(/`/g, ''); }
+  else if (st.step === 'PROVE' && perf('journeys')) { st.who = `${perf('journeys')}-agent`; st.whoSource = 'obligations.tsv: journeys / sweep performer'; }
+  else if (st.step === 'LOOK' && perf('look')) { st.who = `${perf('look')}-agent`; st.whoSource = 'obligations.tsv: look performer'; }
+  else if (st.step === 'CONFIRM' && /a human look/.test(st.text)) { st.who = 'you — "a human look"'; st.whoSource = 'the runbook line itself'; }
+  else { st.who = unknown(`module-loop ${st.step} performer`, 'not named by the line, the Stage 5 Owner row or obligations.tsv'); st.whoSource = ''; }
+}
+if (tLoop.length !== 5) unknown('module loop', `found ${tLoop.length} of the runbook's five module-review steps`);
+for (const a of allArtifacts) if (!artifacts.includes(a)) { a.found = []; a.exists = false; a.paths.forEach(p => expand(p).forEach(h => a.found.push(h))); a.exists = a.found.length > 0; }
+const template = {
+  commit: toolkitHead, modes: tModes, runs: tRuns, checkpoints: tCheckpoints, gates: tGates, moduleLoop: tLoop,
+  stages: stages.map(s => ({ id: s.id, name: s.name, hard: s.hard, userDefines: String(s.userDefines).replace(/\*\*/g, '').replace(/`/g, ''),
+    agentProduces: String(s.agentProduces).replace(/\*\*/g, '').replace(/`/g, ''), surface: s.surface ? s.surface.replace(/\*\*/g, '').replace(/`/g, '') : null,
+    owner: s.owner.replace(/`/g, ''), skill: 'unknown', inputs: s.inputs.map(i => i.artifact) })),
+  artifacts: allArtifacts.map(a => ({ artifact: a.id, stage: a.stage, paths: a.paths.join('|'), producer: a.producer, consumers: a.consumers, modes: a.modes.join(','), absence: a.absence })),
+  obligations: obligations.map(o => ({ obligation: o.id, performer: o.performer, scope: o.scope, artifact: o.artifact, denominator: o.denominator, degradable: o.degradable, 'from-stage': o.fromStage, skill: o.skill })),
+};
+
 // ── assemble ──────────────────────────────────────────────────────────────────────────────────
 for (const a of artifacts) {
   const g = gcArtifact[a.id];
@@ -316,6 +389,10 @@ const out = {
   nextAction, statusHeadline, gateCheckSummary: gcSummary,
   registerLines, decisions, openQuestions, assumptions,
   stages, checkpoints, agents, artifacts, excludedByMode, modules: moduleRows, projectObligations,
+  allArtifactStatus: Object.fromEntries(allArtifacts.map(a => [a.id, { exists: a.exists, found: a.found }])),
+  obligationLines: Object.fromEntries(obligations.map(o => [o.id, gcObl[o.id] ? { verdict: gcObl[o.id].verdict || unknown(`obligation ${o.id} verdict`, 'gate-check printed only a STALE line'),
+    detail: gcObl[o.id].detail || '', stale: gcObl[o.id].stale || null } : { verdict: unknown(`obligation ${o.id}`, 'gate-check printed no Obligation line for it'), detail: '', stale: null }])),
+  template,
   counts: {
     runbookStages: runbookStageIds.length, stagesShown: stages.length,
     manifestRowsTotal: allArtifacts.length, manifestRowsForMode: artifacts.length,
