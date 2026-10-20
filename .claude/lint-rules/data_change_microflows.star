@@ -1,10 +1,3 @@
-# mxtk-lint-rule: data_change_microflows
-# Shipped by mxcli-project-toolkit. This file REPLACES the same-named rule that
-# `mxcli init` seeds into .claude/lint-rules/. Do not hand-edit: `mxcli init`
-# silently overwrites it (verified 2026-08-18, mxcli v0.17.0), and sync-project.sh
-# restores it only while the marker line above is present and unmodified.
-# See skills/lint-that-actually-runs.md.
-# --- end mxtk-lint-rule header ---
 # Starlark Lint Rule: Data Changes Through Microflows
 #
 # This rule enforces that data changes (create, update, delete) should go
@@ -28,10 +21,6 @@
 #   .ref_kind     - Kind of reference ("create", "change", "retrieve", etc.)
 #   .module_name  - Module containing the reference
 
-# Platform modules every Mendix app inherits. Findings here are Mendix's design decisions,
-# not this project's, and cannot be fixed by anyone reading this report. Same list as ARCH003.
-SKIP_MODULES = ["System", "Administration"]
-
 RULE_ID = "ARCH002"
 RULE_NAME = "Data Changes Through Microflows"
 DESCRIPTION = "Persistent entities should have microflows that handle data changes (create/update)"
@@ -50,15 +39,6 @@ def check():
     for entity in entities():
         # Skip non-persistent and view entities (they don't need data-change microflows)
         if entity.entity_type != "Persistent":
-            continue
-
-        # Skip platform modules. ARCH003 has always had this skip and ARCH002 never did,
-        # which was invisible while the rule was dead. With the casing fixed it matters: on
-        # TestCLIApp every one of the 38 findings was a System entity -- nobody's code, and
-        # nothing anyone can act on. Marketplace modules are excluded at the gate instead
-        # (bin/lint-gate.sh -e, from .claude/lint-vendor-modules.txt), because which ones a
-        # project uses is per-project data and does not belong hardcoded in a shared rule.
-        if entity.module_name in SKIP_MODULES:
             continue
 
         # Get all references to this entity
